@@ -41,18 +41,23 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
         im = cv.imread(fileName)
         # slika u sivim tonovima
         im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+        # spremanje slike
         saveImage(im_gray, dim, pathToTrainingData)
 
     for f in range(round(ratio * onlyFiles.__len__()), onlyFiles.__len__(), 1):
         fileName = path + "\\" + onlyFiles[f]
-        # normalna slika
         im = cv.imread(fileName)
-        # slika u sivim tonovima
         im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
         saveImage(im_gray, dim, pathToTestData)
-        # cv.imshow("test", im)
-        # cv.waitKey(0)
-        # cv.destroyAllWindows()
+
+# funkcija za dobivanje slikovnih celija iz polazne slike
+# tehnikom kliznog prozora
+def sliding_window(image, stepSize, windowSize):
+    # slide a window across the image
+    for y in range(0, image.shape[0], stepSize):
+        for x in range(0, image.shape[1], stepSize):
+            # yield the current window
+            yield (image[y:y + windowSize[1], x:x + windowSize[0]])
 
 if __name__ == "__main__":
     view1 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_001"
