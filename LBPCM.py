@@ -4,7 +4,6 @@ from skimage.feature import local_binary_pattern
 from skimage.feature import greycomatrix
 from skimage.feature import greycoprops
 import util
-import HaralickFeatures
 import numpy as np
 
 class LBPCM:
@@ -31,14 +30,17 @@ class LBPCM:
         featureVector = []
 
         for im in util.sliding_window(self.getLBP(im_gray), stepSize, windowSize):
-            print(im)
             glcm = greycomatrix(im.astype(int), [1], [0, np.pi / 2, np.pi, np.pi + np.pi / 2], levels=256)
-            # energy = haralickFeatures.energy(glcm)
             hf = util.HaralickFeatures(glcm)
-            energy = greycoprops(glcm, prop='energy')
-            contrast = greycoprops(glcm, prop='contrast')
-            contrast2 = hf.contrast()
-            homogeneity = greycoprops(glcm, prop='homogeneity')
+            energy = hf.energy()
+            featureVector.extend(energy)
+            contrast = hf.contrast()
+            featureVector.extend(contrast)
+            homogeneity = hf.homogeneity()
+            featureVector.extend(homogeneity)
+            entropy = hf.entropy()
+            featureVector.extend(entropy)
+
 
 
         return featureVector
@@ -48,7 +50,6 @@ class LBPCM:
         for pic in pictures:
             fileName = pathToTrainingData + "\\" + pic
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
-            print(np.shape(image))
             self.featureVectors.append(self.getFeatureVector(image))
 
 
