@@ -2,9 +2,9 @@ import cv2 as cv
 from os import listdir
 from skimage.feature import local_binary_pattern
 from skimage.feature import greycomatrix
-from skimage.feature import greycoprops
 import util
 import numpy as np
+import Haralick
 
 class LBPCM:
 
@@ -19,6 +19,8 @@ class LBPCM:
     def getLBP(self, im_gray):
         return local_binary_pattern(im_gray, self.no_points, self.radius, method='default')
 
+    def getFeatureVectors(self):
+        return self.featureVectors
 
     def getFeatureVector(self, im_gray):
         # velicina klizeceg prozora
@@ -31,7 +33,7 @@ class LBPCM:
 
         for im in util.sliding_window(self.getLBP(im_gray), stepSize, windowSize):
             glcm = greycomatrix(im.astype(int), [1], [0, np.pi / 2, np.pi, np.pi + np.pi / 2], levels=256)
-            hf = util.HaralickFeatures(glcm)
+            hf = Haralick.HaralickFeatures(glcm)
             energy = hf.energy()
             featureVector.extend(energy)
             contrast = hf.contrast()
@@ -40,14 +42,13 @@ class LBPCM:
             featureVector.extend(homogeneity)
             entropy = hf.entropy()
             featureVector.extend(entropy)
-
-
-
+        print(featureVector.__len__())
         return featureVector
 
     def calculateFeatureVectors(self, pathToTrainingData):
         pictures = [f for f in listdir(pathToTrainingData)]
         for pic in pictures:
+            # staza do slike
             fileName = pathToTrainingData + "\\" + pic
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
             self.featureVectors.append(self.getFeatureVector(image))
@@ -56,4 +57,4 @@ class LBPCM:
 if __name__ == "__main__":
     lbpcm = LBPCM(radius=1)
     lbpcm.calculateFeatureVectors("data//trainingData")
-
+    featureVectors = lbpcm.getFeatureVectors()
