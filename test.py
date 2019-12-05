@@ -69,20 +69,33 @@ from PIL import ImageTk, Image
 from os import listdir
 import cv2 as cv
 
-onlyFiles = [f for f in listdir(r"data\trainingData")]
-picCounter = 1
+pictures = [f for f in listdir(r"data\trainingData")]
+picCounter = 0
 
 def nextPic():
     global picCounter
     picPath = r"data\trainingData"
-    if picCounter < len(onlyFiles):
-        fileName = picPath + "\\" + onlyFiles[picCounter]
+    errorLabel.configure(text="")
+    if picCounter < len(pictures):
+        fileName = picPath + "\\" + pictures[picCounter + 1]
         root.photo = ImageTk.PhotoImage(Image.open(fileName))
         panel.configure(image=root.photo)
         picCounter += 1
         print("Pic counter: " + str(picCounter))
     else:
-        picLbl.configure(text="No more images.")
+        errorLabel.configure(text="No more images.")
+
+def prevPic():
+    global picCounter
+    picPath = r"data\trainingData"
+    if picCounter > 0:
+        fileName = picPath + "\\" + pictures[picCounter - 1]
+        root.photo = ImageTk.PhotoImage(Image.open(fileName))
+        panel.configure(image=root.photo)
+        print("Pic counter: " + str(picCounter))
+        picCounter -= 1
+    else:
+        errorLabel.configure(text="No previous images.")
 
 
 root = Tk()
@@ -107,12 +120,26 @@ root.title("App")
 path = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
 img = ImageTk.PhotoImage(Image.open(path))
 # img = PhotoImage(file=r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg")
-picLbl = Label(root, text="IMAGE")
-picLbl.pack(padx=10, pady=2)
-panel = Label(root, image=img)
-panel.pack(padx=10, pady=10, side=LEFT)
 
-button = Button(root, text="Next", command=nextPic)
-button.pack(side=RIGHT)
+frameUp = Frame(root)
+frameUp.pack()
+
+picLbl = Label(frameUp, text="IMAGE")
+picLbl.pack(padx=10, pady=2)
+
+errorLabel = Label(frameUp, text="")
+errorLabel.pack()
+
+panel = Label(frameUp, image=img)
+panel.pack(padx=10, pady=10, fill=BOTH)
+
+frameDown = Frame(root)
+frameDown.pack(side=BOTTOM)
+
+button = Button(frameDown, text="Next", command=nextPic)
+button.pack(padx=5, pady=5, side=RIGHT)
+
+button1 = Button(frameDown, text="Prev", command=prevPic)
+button1.pack(padx=5, pady=5, side=LEFT)
 
 root.mainloop()
