@@ -15,10 +15,11 @@ class LBPCM:
         self.no_points = 8 * radius
         self.featureVectors = []
 
-
+    # funkcija za stvaranje LBP-a odredjene slike
     def getLBP(self, im_gray):
         return local_binary_pattern(im_gray, self.no_points, self.radius, method='default')
 
+    # funkcija za dohvat liste vektora znacajki
     def getFeatureVectors(self):
         return self.featureVectors
 
@@ -28,24 +29,30 @@ class LBPCM:
         windowSize = [xy, xy]
         # velicina koraka
         stepSize = xy // 2
-
+        # vektor znacajki
         featureVector = []
-
+        # stvaranje vektora znacajki za svaku celiju slikovnog elementa
         for im in util.sliding_window(self.getLBP(im_gray), stepSize, windowSize):
+            # gray level co-occurence matrix
             glcm = greycomatrix(im.astype(int), [1], [0, np.pi / 2, np.pi, np.pi + np.pi / 2], levels=256)
+            # razred s harlickovim funkcijama
             hf = Haralick.HaralickFeatures(glcm)
+            # energija
             energy = hf.energy()
             featureVector.extend(energy)
+            # kontrast
             contrast = hf.contrast()
             featureVector.extend(contrast)
+            # homogenost
             homogeneity = hf.homogeneity()
             featureVector.extend(homogeneity)
+            # entropija
             entropy = hf.entropy()
             featureVector.extend(entropy)
-        print(featureVector.__len__())
         return featureVector
 
     def calculateFeatureVectors(self, pathToTrainingData):
+        # list svih slika u folderu
         pictures = [f for f in listdir(pathToTrainingData)]
         for pic in pictures:
             # staza do slike

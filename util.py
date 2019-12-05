@@ -5,7 +5,6 @@ import cv2 as cv
 import random
 import shutil
 import numpy as np
-import util
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7
@@ -40,11 +39,11 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
     # ako ne postoje folderi za treniranje i testiranje, stovre se, a
     # ako postoje onda se njihov sadrzaj brise
     if os.path.exists(pathToTrainingData):
-        util.clearDirectory(pathToTrainingData)
+        clearDirectory(pathToTrainingData)
     else:
         os.mkdir(pathToTrainingData)
     if os.path.exists(pathToTestData):
-        util.clearDirectory(pathToTestData)
+        clearDirectory(pathToTestData)
     else:
         os.mkdir(pathToTestData)
 
@@ -53,6 +52,7 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
 
     # mijesanje slika
     random.shuffle(onlyFiles)
+    # spremanje slika za treniranje
     for f in range(round(ratio * onlyFiles.__len__())):
         fileName = path + "\\" + onlyFiles[f]
         # normalna slika
@@ -62,6 +62,7 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
         # spremanje slike
         saveImage(im_gray, dim, pathToTrainingData)
 
+    # spremanje ostalih slika
     for f in range(round(ratio * onlyFiles.__len__()), onlyFiles.__len__(), 1):
         fileName = path + "\\" + onlyFiles[f]
         im = cv.imread(fileName)
@@ -75,10 +76,11 @@ def sliding_window(image, stepSize, windowSize):
     for y in range(0, image.shape[0], stepSize):
         for x in range(0, image.shape[1], stepSize):
             # yield the current window
-            yield (image[y:y + windowSize[1], x:x + windowSize[0]])
+            yield image[y:y + windowSize[1], x:x + windowSize[0]]
 
 
-if __name__ == "__main__":
+
+# if __name__ == "__main__":
     # view1 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_001"
     # view2 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_002"
     # view3 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_003"
@@ -91,7 +93,3 @@ if __name__ == "__main__":
     # makePictureElements(view2, pathToTrainingData, pathToTestData, *(192, 144))
     # makePictureElements(view3, pathToTrainingData, pathToTestData, *(192, 144))
     # makePictureElements(view4, pathToTrainingData, pathToTestData, *(192, 144))
-    a = np.arange(24).reshape(2,3,4)
-    print(a)
-    b = np.apply_over_axes(np.sum, (a ** 2), [0,1])[0,0]
-    print(b)
