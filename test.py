@@ -34,15 +34,17 @@ def nextPic(path):
     """funkcija za dohvat sljedece slike"""
     global picCounter
     global currPicPath
+    global currCell
     errorLabel.configure(text="")
     if picCounter < len(pictures):
         fileName = path + "\\" + pictures[picCounter + 1]
-
-        root.photo = ImageTk.PhotoImage(Image.open(fileName))
+        image = cv.imread(fileName)
+        root.photo = ImageTk.PhotoImage(image=Image.fromarray(image))
         panelPic.configure(image=root.photo)
-        picCounter += 1
         currPicPath = fileName
-        print("Pic counter: " + str(picCounter) + "pic: " + currPicPath)
+        picCounter += 1
+        currCell = 0
+        currPicPath = fileName
     else:
         errorLabel.configure(text="No more images.")
 
@@ -50,51 +52,56 @@ def prevPic(path):
     """funkcija za dohvat prethodne slike"""
     global picCounter
     global currPicPath
-    global picDims
+    global currCell
     if picCounter > 0:
         fileName = path + "\\" + pictures[picCounter - 1]
-        root.photo = ImageTk.PhotoImage(Image.open(fileName))
+        image = cv.imread(fileName)
+        root.photo = ImageTk.PhotoImage(image=Image.fromarray(image))
         panelPic.configure(image=root.photo)
         currPicPath = fileName
-        print("Pic counter: " + str(picCounter) + "pic: " + currPicPath)
         picCounter -= 1
+        currCell = 0
     else:
         errorLabel.configure(text="No previous images.")
 
-
-currXCoord = 0
-currYCoord = 0
-currRow = 0
-currColumn = 0
-
+# staza do slike po kojoj se trenutno iterira
 currPicPath = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
+# lista pozicija celije u nekom slikovnom elementu
 picDims = []
-
+# indeks trenutne celije
+currCell = 0
 
 def nextCell():
-    global currXCoord, currYCoord, currRow, currColumn
-    start_point = (currXCoord, currYCoord)
-    end_point = (currXCoord + windowSize[0], currYCoord + windowSize[1])
+    """funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu"""
 
-    image = cv.imread(currPicPath)
-
-    if currXCoord + stepSize > image.shape[1]:
-
-
-    currXCoord += stepSize
-    currYCoord += stepSize
-
-
-    image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
-    root.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
-    panelPic.configure(image=root.img)
+    global currCell
+    # ako nismo stigli do kraja slikovnog elementa
+    if currCell < picDims.__len__():
+        image = cv.imread(currPicPath)
+        # dohvat pocetne i krajnje tocke pojedine celije
+        start_point, end_point = picDims[currCell]
+        currCell += 1
+        # kopija slike kako celija ne bi ostala na slici nakon svake iteracije
+        image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
+        # stvaranje slike iz numpy arraya
+        root.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+        # postavljanje slike u labelu
+        panelPic.configure(image=root.img)
+    else:
+        errorLabel.configure(text="No further cells remaining.")
 
 def makePicDims(image):
+    """funkcija koja sluzi za stvaranje prozora iz kojeg
+    se tvori vektor znacajki
+
+    u polju dims su elementi oblika (start_point, end_point), a koji
+    oznacavaju lijevi desni i desni donji kut celije koje se koristi
+    za stvaranje vektora znacajki
+    """
 
     dims = []
-
-    for y in range(0, image.shape[0], stepSize):
-        for x in range(0, image.shape[1], stepSize):
+    for y in range(0, image.shape[0] - stepSize, stepSize):
+        for x in range(0, image.shape[1] - stepSize, stepSize):
             start_point = (x, y)
             end_point = (x + windowSize[0], y + windowSize[1])
             dims.append((start_point, end_point))
@@ -106,9 +113,10 @@ root.title("App")
 # staza do slika za treniranje
 picPath = r"data\trainingData"
 
-# staza do prve slke za treniranje
-path0 = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
-img = ImageTk.PhotoImage(Image.open(path0))
+# inicijalizacija prvog slikovnog elementa
+initialImage = cv.imread(currPicPath)
+img = ImageTk.PhotoImage(image=Image.fromarray(initialImage))
+picDims = makePicDims(initialImage)
 
 # gornji frame
 frameUp = Frame(root)
