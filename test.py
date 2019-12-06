@@ -1,41 +1,34 @@
 import cv2 as cv
 from os import listdir
-from os.path import isfile, join
 import numpy as np
-import util
-import skimage.feature
+from tkinter import *
+from tkinter import filedialog
+from PIL import ImageTk, Image
 
 color = (255, 0, 0)
 thickness = 2
 
+# stranica kvadrata celije
 xy = 64
 windowSize = [xy, xy]
+# velicina koraka u x, y smjeru kod klizeceg prozora
 stepSize = xy // 2
-desired_window_name = "picture"
-
-onlyFiles = [f for f in listdir(r"data\trainingData")]
-
-# for y in range(0, image.shape[0], stepSize):
-#     for x in range(0, image.shape[1], stepSize):
-#         start_point = (x, y)
-#         end_point = (x + windowSize[0], y + windowSize[1])
-#         image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
-#         cv.imshow(desired_window_name, image_copy)
-#         cv.waitKey(0)
-
-
-from tkinter import *
-from PIL import ImageTk, Image
-
+# lista slika u datom folderu
 pictures = [f for f in listdir(r"data\trainingData")]
+# brojac za dohvat slike iz polja slikovnih elemenata koja se trenutno prikazuje
 picCounter = 0
+
+trainingFolderPath = ""
+testFolderPath = ""
+
 
 def nextPic(path):
     """funkcija za dohvat sljedece slike"""
-    global picCounter
-    global currPicPath
-    global currCell
+
+    global picCounter, currPicPath, currCell
+    # brisanje eventualnih prethodnih poruka
     errorLabel.configure(text="")
+    # ako ima jos slikovnih elemenata
     if picCounter < len(pictures):
         fileName = path + "\\" + pictures[picCounter + 1]
         image = cv.imread(fileName)
@@ -43,16 +36,16 @@ def nextPic(path):
         panelPic.configure(image=root.photo)
         currPicPath = fileName
         picCounter += 1
+        # resetiranje brojaca celije
         currCell = 0
-        currPicPath = fileName
     else:
         errorLabel.configure(text="No more images.")
 
 def prevPic(path):
     """funkcija za dohvat prethodne slike"""
-    global picCounter
-    global currPicPath
-    global currCell
+
+    global picCounter, currPicPath, currCell
+    errorLabel.configure(text="")
     if picCounter > 0:
         fileName = path + "\\" + pictures[picCounter - 1]
         image = cv.imread(fileName)
@@ -89,6 +82,26 @@ def nextCell():
         panelPic.configure(image=root.img)
     else:
         errorLabel.configure(text="No further cells remaining.")
+
+def selectFolder(testOrTrain):
+    global trainingFolderPath, testFolderPath
+    filename = filedialog.askdirectory()
+    if testOrTrain == "train":
+        trainingFolderPath = filename
+    else:
+        testFolderPath = filename
+    errorLabel.configure(text="Folder selected: " + filename)
+
+def createWindow():
+    window = Toplevel(root)
+    window.title("New Window")
+    window.focus()
+
+    buttonTraining = Button(window, text="Select folder for training", command=lambda: selectFolder("train"))
+    buttonTraining.pack(padx=10, pady=10)
+
+    buttonTest = Button(window, text="Select folder for test", command=lambda: selectFolder("test"))
+    buttonTest.pack(padx=10, pady=10)
 
 def makePicDims(image):
     """funkcija koja sluzi za stvaranje prozora iz kojeg
@@ -138,6 +151,7 @@ panelPic.pack(padx=10, pady=10, fill=BOTH)
 frameDown = Frame(root)
 frameDown.pack(side=BOTTOM)
 
+# gumbi
 buttonOK = Button(frameDown, text="NextPic", command=lambda: nextPic(picPath))
 buttonOK.pack(padx=5, pady=5, side=RIGHT)
 
@@ -146,5 +160,8 @@ buttonPrev.pack(padx=5, pady=5, side=LEFT)
 
 buttonNextCell = Button(frameDown, text="NextCell", command=nextCell)
 buttonNextCell.pack(padx=5, pady=5, side=LEFT)
+
+buttonNewWindow = Button(frameDown, text="NewWindow", command=createWindow)
+buttonNewWindow.pack(padx=5, pady=5, side=RIGHT)
 
 root.mainloop()
