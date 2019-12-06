@@ -1,59 +1,19 @@
-# import cv2 as cv
-# from os import listdir
-# from os.path import isfile, join
-# import numpy as np
-# import util
-# import skimage.feature
-#
-# from win32gui import GetWindowText, GetForegroundWindow
-#
-#
-# from pynput import keyboard
-#
-# def on_press(key):
-#     print('{0} pressed'.format(
-#         key))
-#     if key == keyboard.Key.space:
-#         print("baba")
-#         return False
-#
-#
-# def on_release(key):
-#     print('{0} release'.format(
-#         key))
-#     if key == keyboard.Key.esc:
-#         cv.destroyAllWindows()
-#         return False
-#
-#
-# path = r"C:\Users\kuzmi\Desktop\frame_0100.jpg"
-#
-# image = cv.imread(path)
-# color = (255, 0, 0)
-# thickness = 2
-#
-# xy = 64
-# windowSize = [xy, xy]
-# stepSize = xy // 2
-# desired_window_name = "picture"
-#
-# current_window = (GetWindowText(GetForegroundWindow()))
-#
-# onlyFiles = [f for f in listdir(r"data\trainingData")]
-# for f in onlyFiles:
-#     path2 = r"data\trainingData"
-#     fileName = path2 + "\\" + f
-#     # normalna slika
-#     im = cv.imread(fileName)
-#     cv.imshow(desired_window_name, im)
-#     current_window = (GetWindowText(GetForegroundWindow()))
-#     if current_window == desired_window_name:
-#         with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
-#             listener.join()
-#         cv.imshow(desired_window_name, im)
-#         cv.waitKey(0)
+import cv2 as cv
+from os import listdir
+from os.path import isfile, join
+import numpy as np
+import util
+import skimage.feature
 
+color = (255, 0, 0)
+thickness = 2
 
+xy = 64
+windowSize = [xy, xy]
+stepSize = xy // 2
+desired_window_name = "picture"
+
+onlyFiles = [f for f in listdir(r"data\trainingData")]
 
 # for y in range(0, image.shape[0], stepSize):
 #     for x in range(0, image.shape[1], stepSize):
@@ -66,80 +26,117 @@
 
 from tkinter import *
 from PIL import ImageTk, Image
-from os import listdir
-import cv2 as cv
 
 pictures = [f for f in listdir(r"data\trainingData")]
 picCounter = 0
 
-def nextPic():
+def nextPic(path):
+    """funkcija za dohvat sljedece slike"""
     global picCounter
-    picPath = r"data\trainingData"
+    global currPicPath
     errorLabel.configure(text="")
     if picCounter < len(pictures):
-        fileName = picPath + "\\" + pictures[picCounter + 1]
+        fileName = path + "\\" + pictures[picCounter + 1]
+
         root.photo = ImageTk.PhotoImage(Image.open(fileName))
-        panel.configure(image=root.photo)
+        panelPic.configure(image=root.photo)
         picCounter += 1
-        print("Pic counter: " + str(picCounter))
+        currPicPath = fileName
+        print("Pic counter: " + str(picCounter) + "pic: " + currPicPath)
     else:
         errorLabel.configure(text="No more images.")
 
-def prevPic():
+def prevPic(path):
+    """funkcija za dohvat prethodne slike"""
     global picCounter
-    picPath = r"data\trainingData"
+    global currPicPath
+    global picDims
     if picCounter > 0:
-        fileName = picPath + "\\" + pictures[picCounter - 1]
+        fileName = path + "\\" + pictures[picCounter - 1]
         root.photo = ImageTk.PhotoImage(Image.open(fileName))
-        panel.configure(image=root.photo)
-        print("Pic counter: " + str(picCounter))
+        panelPic.configure(image=root.photo)
+        currPicPath = fileName
+        print("Pic counter: " + str(picCounter) + "pic: " + currPicPath)
         picCounter -= 1
     else:
         errorLabel.configure(text="No previous images.")
 
 
+currXCoord = 0
+currYCoord = 0
+currRow = 0
+currColumn = 0
+
+currPicPath = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
+picDims = []
+
+
+def nextCell():
+    global currXCoord, currYCoord, currRow, currColumn
+    start_point = (currXCoord, currYCoord)
+    end_point = (currXCoord + windowSize[0], currYCoord + windowSize[1])
+
+    image = cv.imread(currPicPath)
+
+    if currXCoord + stepSize > image.shape[1]:
+
+
+    currXCoord += stepSize
+    currYCoord += stepSize
+
+
+    image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
+    root.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+    panelPic.configure(image=root.img)
+
+def makePicDims(image):
+
+    dims = []
+
+    for y in range(0, image.shape[0], stepSize):
+        for x in range(0, image.shape[1], stepSize):
+            start_point = (x, y)
+            end_point = (x + windowSize[0], y + windowSize[1])
+            dims.append((start_point, end_point))
+    return dims
+
+# pocetni prozor
 root = Tk()
-"""window"""
 root.title("App")
-""""label"""
-# lbl = Label(window, text="Hello", font=("Arial Bold", 25))
-# lbl.grid(column=0, row=0)
-# # lbl = Label(window, text="Hello")
-# """"button"""
-# button = Button(window, text='Click me', command=clicked)
-# button.grid(row=0, column=2)
-# """entry"""
-# entry = Entry(window, width=10)
-# entry.grid(column=1, row=0)
-# entry.focus()
+# staza do slika za treniranje
+picPath = r"data\trainingData"
 
+# staza do prve slke za treniranje
+path0 = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
+img = ImageTk.PhotoImage(Image.open(path0))
 
-
-
-
-path = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
-img = ImageTk.PhotoImage(Image.open(path))
-# img = PhotoImage(file=r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg")
-
+# gornji frame
 frameUp = Frame(root)
 frameUp.pack()
 
+# labela IMAGE
 picLbl = Label(frameUp, text="IMAGE")
 picLbl.pack(padx=10, pady=2)
 
+# labela za ispis errora
 errorLabel = Label(frameUp, text="")
 errorLabel.pack()
 
-panel = Label(frameUp, image=img)
-panel.pack(padx=10, pady=10, fill=BOTH)
+# labela za prikaz slike
+panelPic = Label(frameUp, image=img)
+panelPic.pack(padx=10, pady=10, fill=BOTH)
 
+# donji frame
 frameDown = Frame(root)
 frameDown.pack(side=BOTTOM)
 
-button = Button(frameDown, text="Next", command=nextPic)
-button.pack(padx=5, pady=5, side=RIGHT)
+buttonOK = Button(frameDown, text="NextPic", command=lambda: nextPic(picPath))
+buttonOK.pack(padx=5, pady=5, side=RIGHT)
 
-button1 = Button(frameDown, text="Prev", command=prevPic)
-button1.pack(padx=5, pady=5, side=LEFT)
+buttonPrev = Button(frameDown, text="PrevPic", command=lambda: prevPic(picPath))
+buttonPrev.pack(padx=5, pady=5, side=LEFT)
+
+buttonNextCell = Button(frameDown, text="NextCell", command=nextCell)
+buttonNextCell.pack(padx=5, pady=5, side=LEFT)
 
 root.mainloop()
