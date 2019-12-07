@@ -1,5 +1,12 @@
 import tkinter as tk
 from tkinter import filedialog
+import cv2 as cv
+import numpy as np
+from PIL import ImageTk, Image
+import util
+
+color = (255, 0, 0)
+thickness = 2
 
 
 class App(tk.Tk):
@@ -32,7 +39,20 @@ class App(tk.Tk):
         # rjecnik svih stranica
         self.frames = {}
 
-        for F in (StartPage, PageOne, PageTwo, PageInitialization, ParameterSetting):
+        # trenutna slika
+        self.currPicPath = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
+        # pocetna slika
+        self.initialImage = cv.imread(self.currPicPath)
+        # polje lokacija celije koja se krece po slici
+        self.picDims = util.makePicDims(self.initialImage, self.stepSize, self.cellSize)
+        # brojac trenutne celije
+        self.currCell = 0
+        # brojac trenutne slike
+        self.picCounter = 0
+        # polje imena slika
+        self.pictures = []
+
+        for F in (StartPage, PageOne, PageTwo, PageInitialization, ParameterSetting, SlidingWindow):
 
             frame = F(container, self)
 
@@ -53,8 +73,42 @@ class App(tk.Tk):
     def setTestPath(self, path):
         self.testPath = path
 
-def printTrainingPath():
-    print(app.trainingPath)
+def nextCell():
+    """funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu"""
+
+    # ako nismo stigli do kraja slikovnog elementa
+    if app.currCell < app.picDims.__len__():
+        image = cv.imread(app.currPicPath)
+        # dohvat pocetne i krajnje tocke pojedine celije
+        start_point, end_point = app.picDims[app.currCell]
+        app.currCell += 1
+        # kopija slike kako celija ne bi ostala na slici nakon svake iteracije
+        image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
+        # stvaranje slike iz numpy arraya
+        app.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+        # postavljanje slike u labelu
+        app.frames[SlidingWindow].labelPic.configure(image=app.img)
+        app.frames[SlidingWindow].labelPicName.configure(text=app.pictures[app.picCounter])
+    else:
+        app.console.insert(tk.END, "[WARNING] no more cells remaining\n")
+        app.console.insert(tk.END, "----------------------------------------\n")
+
+def nextPic(path):
+    """funkcija za dohvat sljedece slike"""
+
+    # ako ima jos slikovnih elemenata
+    if self.picCounter < len(self.pictures):
+        fileName = path + "\\" + pictures[picCounter + 1]
+        image = cv.imread(fileName)
+        app.photo = ImageTk.PhotoImage(image=Image.fromarray(image))
+        panelPic.configure(image=app.photo)
+        app.currPicPath = fileName
+        picCounter += 1
+        # resetiranje brojaca celije
+        app.currCell = 0
+    else:
+        pass
+
 
 class StartPage(tk.Frame):
 
@@ -91,6 +145,9 @@ class PageInitialization(tk.Frame):
 
         buttonParameters = tk.Button(buttonFrame,text="Parameters", command=lambda: controller.show_frame(ParameterSetting))
         buttonParameters.pack(padx=10, pady=10, side=tk.LEFT)
+
+        buttonSW = tk.Button(buttonFrame, text="Sliding Window", command=lambda: controller.show_frame(SlidingWindow))
+        buttonSW.pack(padx=10, pady=10, side=tk.LEFT)
 
 
 class ParameterSetting(tk.Frame):
@@ -142,7 +199,31 @@ class SlidingWindow(tk.Frame):
 
         tk.Frame.__init__(self, parent)
         description = tk.Label(self, text="Here you can see sliding window method.")
-        description.grid(row=0)
+        description.pack()
+
+        self.labelPicName = tk.Label(self, text="")
+        self.labelPicName.pack()
+
+        self.labelPic = tk.Label(self, text="No picture\nloaded")
+        self.labelPic.pack()
+
+        buttonFrame = tk.Frame(self)
+        buttonFrame.pack(side="bottom", expand=True)
+
+        buttonNextPicture = tk.Button(buttonFrame, text="Next pic")
+        buttonNextPicture.grid(row=0, column=0, padx=5, pady=5)
+
+        buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic")
+        buttonPreviousPicture.grid(row=0, column=1, padx=5, pady=5)
+
+        buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=nextCell)
+        buttonNextCell.grid(row=0, column=2, padx=5, pady=5)
+
+        buttonPreviousCell = tk.Button(buttonFrame, text="Prev cell")
+        buttonPreviousCell.grid(row=0, column=3, padx=5, pady=5)
+
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.grid(row=0, column=4, padx=5, pady=5)
 
 
 def saveParameters(radius, cellSize, stepSize):
