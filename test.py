@@ -81,15 +81,6 @@ testFolderPath = ""
 #         pass
 #         # errorLabel.configure(text="No further cells remaining.")
 
-# def selectFolder(testOrTrain):
-#     global trainingFolderPath, testFolderPath
-#     filename = filedialog.askdirectory()
-#     if testOrTrain == "train":
-#         trainingFolderPath = filename
-#     else:
-#         testFolderPath = filename
-#     errorLabel.configure(text="Folder selected: " + filename)
-#
 # def createWindow():
 #     # pocetni prozor
 #     window = Toplevel(root)
@@ -133,22 +124,7 @@ testFolderPath = ""
 #     buttonNewWindow = Button(frameDown, text="NewWindow", command=createWindow)
 #     buttonNewWindow.pack(padx=5, pady=5, side=RIGHT)
 #
-def makePicDims(image):
-    """funkcija koja sluzi za stvaranje prozora iz kojeg
-    se tvori vektor znacajki
 
-    u polju dims su elementi oblika (start_point, end_point), a koji
-    oznacavaju lijevi desni i desni donji kut celije koje se koristi
-    za stvaranje vektora znacajki
-    """
-
-    dims = []
-    for y in range(0, image.shape[0] - stepSize, stepSize):
-        for x in range(0, image.shape[1] - stepSize, stepSize):
-            start_point = (x, y)
-            end_point = (x + windowSize[0], y + windowSize[1])
-            dims.append((start_point, end_point))
-    return dims
 
 
 # root = Tk()
@@ -240,3 +216,4 @@ class Open(Frame):
 prog = App()
 prog.title("Prog")
 prog.mainloop()
+

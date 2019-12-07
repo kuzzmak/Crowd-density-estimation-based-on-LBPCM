@@ -5,16 +5,31 @@ from tkinter import filedialog
 class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+
         container = tk.Frame(self)
 
         container.pack(side="top", fill="both", expand=True)
 
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+        # container.grid_rowconfigure(0, weight=1)
+        # container.grid_columnconfigure(0, weight=1)
 
+        # konzola
+        self.console = tk.Text(self, height=2, width=30)
+        self.console.pack(side="bottom", fill="both", expand=True)
+        labelConsole = tk.Label(self, text="Console window")
+        labelConsole.pack(side="bottom")
+
+        # staza do slika za treniranje
         self.trainingPath = ""
+        # staza do slika za testiranje
         self.testPath = ""
-
+        # radijus LBP-a
+        self.radius = 1
+        # velicina celije
+        self.cellSize = [64, 64]
+        # velicina koraka
+        self.stepSize = 32
+        # rjecnik svih stranica
         self.frames = {}
 
         for F in (StartPage, PageOne, PageTwo, PageInitialization, ParameterSetting):
@@ -95,6 +110,62 @@ class ParameterSetting(tk.Frame):
         entryRadius = tk.Entry(rightFrame, width=15)
         entryRadius.pack()
 
+        labelCellSize = tk.Label(leftFrame, text="Specify cell size, eg. \"64x64\".")
+        labelCellSize.pack()
+        # upis velicine celije za klizni prozor
+        entryCellSize = tk.Entry(rightFrame, width=15)
+        entryCellSize.pack()
+
+        labelStepSize = tk.Label(leftFrame, text="Specify step size:")
+        labelStepSize.pack()
+        # upis velicine koraka
+        entryStepSize = tk.Entry(rightFrame, width=15)
+        entryStepSize.pack()
+        # gumb za spremanje parametara LBP-a
+        buttonSave = tk.Button(self, text="Save", command=lambda: saveParameters(entryRadius.get(),
+                                                                                 entryCellSize.get(),
+                                                                                 entryStepSize.get()))
+        buttonSave.grid(row=2, column=0)
+
+        buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.grid(row=2, column=1)
+
+
+class SlidingWindow(tk.Frame):
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+        description = tk.Label(self, text="Here you can see sliding window method.")
+        description.grid(row=0)
+
+
+def saveParameters(radius, cellSize, stepSize):
+
+    """funkcija za spremanje parametara u razerd"""
+
+    flag = True
+    try:
+        app.radius = int(radius)
+    except ValueError:
+        app.console.insert(tk.END, "[ERROR] -- radius must be positive integer\n")
+        flag = False
+    # konverzija stringa npr. 64x64 u int [64, 64]
+    try:
+        app.cellSize = [int(i) for i in cellSize.split("x")]
+    except ValueError:
+        app.console.insert(tk.END, "[ERROR] -- invalid cellsize configuration\n")
+        flag = False
+
+    try:
+        app.stepSize = int(stepSize)
+    except ValueError:
+        app.console.insert(tk.END, "[ERROR] -- step must be positive integer\n")
+        flag = False
+
+    if flag is True:
+        app.console.insert(tk.END, "[INFO] -- parameters saved\n")
+    app.console.insert(tk.END, "----------------------------------------\n")
+
 
 class PageOne(tk.Frame):
 
@@ -138,4 +209,5 @@ class PageTwo(tk.Frame):
 
 if __name__ == "__main__":
     app = App()
+    app.geometry("640x320")
     app.mainloop()
