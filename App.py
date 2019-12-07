@@ -10,8 +10,8 @@ class App(tk.Tk):
 
         container.pack(side="top", fill="both", expand=True)
 
-        # container.grid_rowconfigure(0, weight=1)
-        # container.grid_columnconfigure(0, weight=1)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
         # konzola
         self.console = tk.Text(self, height=2, width=30)
@@ -38,7 +38,7 @@ class App(tk.Tk):
 
             self.frames[F] = frame
 
-            frame.grid(row=0, column=0, sticky="nsew")
+            frame.grid(row=0, sticky="nsew")
 
         self.show_frame(StartPage)
 
@@ -49,6 +49,9 @@ class App(tk.Tk):
 
     def setTrainPath(self, path):
         self.trainingPath = path
+
+    def setTestPath(self, path):
+        self.testPath = path
 
 def printTrainingPath():
     print(app.trainingPath)
@@ -95,32 +98,35 @@ class ParameterSetting(tk.Frame):
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+
         description = tk.Label(self, text="Here you select parameters required for LBP.")
-        description.grid(row=0)
+        description.grid(row=0, columnspan=2)
         # lijevi dio prozora
         leftFrame = tk.Frame(self)
         leftFrame.grid(row=1, column=0)
         # desni dio prozora
-        rightFrame = tk.Frame(self)
+        rightFrame = tk.Frame(self, width=400)
         rightFrame.grid(row=1, column=1)
 
         labelRadius = tk.Label(leftFrame, text="Specify LBP radius:")
         labelRadius.pack()
         # upis radijusa
         entryRadius = tk.Entry(rightFrame, width=15)
-        entryRadius.pack()
+        entryRadius.pack(padx=10, pady=5)
 
         labelCellSize = tk.Label(leftFrame, text="Specify cell size, eg. \"64x64\".")
         labelCellSize.pack()
         # upis velicine celije za klizni prozor
         entryCellSize = tk.Entry(rightFrame, width=15)
-        entryCellSize.pack()
+        entryCellSize.pack(padx=10, pady=5)
 
         labelStepSize = tk.Label(leftFrame, text="Specify step size:")
         labelStepSize.pack()
         # upis velicine koraka
         entryStepSize = tk.Entry(rightFrame, width=15)
-        entryStepSize.pack()
+        entryStepSize.pack(padx=10, pady=5)
         # gumb za spremanje parametara LBP-a
         buttonSave = tk.Button(self, text="Save", command=lambda: saveParameters(entryRadius.get(),
                                                                                  entryCellSize.get(),
@@ -186,9 +192,13 @@ def selectFolder(testOrTrain):
     filename = filedialog.askdirectory()
     if testOrTrain == "train":
         app.setTrainPath(filename)
+        app.console.insert(tk.END, "[INFO] training path set: " + filename + "\n")
+        app.console.insert(tk.END, "----------------------------------------\n")
     else:
         app.setTestPath(filename)
-    # errorLabel.configure(text="Folder selected: " + filename)
+        app.console.insert(tk.END, "[INFO] test path set: " + filename + "\n")
+        app.console.insert(tk.END, "----------------------------------------\n")
+
 
 class PageTwo(tk.Frame):
 
@@ -209,5 +219,5 @@ class PageTwo(tk.Frame):
 
 if __name__ == "__main__":
     app = App()
-    app.geometry("640x320")
+    # app.geometry("640x320")
     app.mainloop()
