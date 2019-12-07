@@ -12,11 +12,13 @@ class App(tk.Tk):
 
         self.frames = {}
 
-        frame = StartPage(container, self)
+        for F in (StartPage, PageOne, PageTwo):
 
-        self.frames[StartPage] = frame
+            frame = F(container, self)
 
-        frame.grid(row=0, column=0, sticky="nsew")
+            self.frames[F] = frame
+
+            frame.grid(row=0, column=0, sticky="nsew")
 
         self.show_frame(StartPage)
 
@@ -33,6 +35,40 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Start page")
         label.pack(padx=10, pady=10)
+
+        button1 = tk.Button(self, text="Page 1", command=lambda: controller.show_frame(PageOne))
+        button1.pack()
+
+        button2 = tk.Button(self, text="Page 2", command=lambda: controller.show_frame(PageTwo))
+        button2.pack()
+
+class PageOne(tk.Frame):
+
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Page one")
+        label.pack(padx=10, pady=10)
+
+        button1 = tk.Button(self, text="Start Page", command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+
+        button2 = tk.Button(self, text="Page 2", command=lambda: controller.show_frame(PageTwo))
+        button2.pack()
+
+
+class PageTwo(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Page two")
+        label.pack(padx=10, pady=10)
+
+        button2 = tk.Button(self, text="Start Page", command=lambda: controller.show_frame(StartPage))
+        button2.pack()
+
+        button1 = tk.Button(self, text="Page 1", command=lambda: controller.show_frame(PageOne))
+        button1.pack()
 
 
 if __name__ == "__main__":
