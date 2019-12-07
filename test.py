@@ -189,7 +189,6 @@ picPath = r"data\trainingData"
 
 def createWindow():
     window = Toplevel(prog)
-
     frame = Open(window)
     frame.pack()
 
@@ -198,22 +197,26 @@ class Open(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent)
         self.createWidgets()
-        # # inicijalizacija prvog slikovnog elementa
-        # initialImage = cv.imread(currPicPath)
-        # img = ImageTk.PhotoImage(image=Image.fromarray(initialImage))
-        # picDims = makePicDims(initialImage)
-        #
-        # frameUp = Frame(self)
-        # frameUp.pack()
+        # inicijalizacija prvog slikovnog elementa
+        initialImage = cv.imread(currPicPath)
+        img = ImageTk.PhotoImage(image=Image.fromarray(initialImage))
+        picDims = makePicDims(initialImage)
+
+        self.frameUp = Frame(self)
+        self.frameUp.pack()
+
+        # labela za ispis errora
+        self.errorLabel = Label(self.frameUp, text="")
+        self.errorLabel.pack()
 
         # labela IMAGE
     def createWidgets(self):
         picLbl = Label(self, text="IMAGE")
         picLbl.pack(padx=10, pady=2)
 
-        # # labela za ispis errora
-        # errorLabel = Label(frameUp, text="")
-        # errorLabel.pack()
+    def change(self, text):
+        self.errorLabel.configure(text=text)
+
         #
         # # labela za prikaz slike
         # panelPic = Label(frameUp, image=img)
