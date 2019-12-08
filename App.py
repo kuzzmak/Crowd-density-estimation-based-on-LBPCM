@@ -5,8 +5,11 @@ import cv2 as cv
 import numpy as np
 from PIL import ImageTk, Image
 import util
+from skimage.feature import local_binary_pattern
 
+# boja obruba celije
 color = (255, 0, 0)
+# debljina crte celije
 thickness = 2
 
 
@@ -14,10 +17,9 @@ class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
+        # frame koji sadrzi pojedinu stranicu
         container = tk.Frame(self)
-
         container.pack(side="top", fill="both", expand=True)
-
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
@@ -28,7 +30,7 @@ class App(tk.Tk):
         scroll = tk.Scrollbar(consoleFrame)
         scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.console = tk.Text(consoleFrame, height=5, width=30)
+        self.console = tk.Text(consoleFrame, height=10, width=30)
         self.console.pack(side="left", fill="both", expand=True)
         scroll.config(command=self.console.yview)
         self.console.config(yscrollcommand=scroll.set)
@@ -64,7 +66,7 @@ class App(tk.Tk):
         # polje imena slika za testiranje
         self.testPictures = []
 
-        for F in (StartPage, PageOne, PageTwo, PageInitialization, ParameterSetting, SlidingWindow):
+        for F in (StartPage, PageInitialization, ParameterSetting, SlidingWindow):
 
             frame = F(container, self)
 
@@ -75,14 +77,16 @@ class App(tk.Tk):
         self.show_frame(StartPage)
 
     def show_frame(self, cont):
-
+        """funkcija za prikaz odredjenog frame-a"""
         frame = self.frames[cont]
         frame.tkraise()
 
     def setTrainPath(self, path):
+        """funkcija za postavljanje staze za treniranje"""
         self.trainingPath = path
 
     def setTestPath(self, path):
+        """funkcija za postavljanje staze za testiranje"""
         self.testPath = path
 
 def nextCell():
@@ -104,6 +108,7 @@ def nextCell():
     else:
         app.console.insert(tk.END, "[WARNING] no more cells remaining\n")
         app.console.insert(tk.END, "----------------------------------------\n")
+        app.console.see(tk.END)
 
 def nextPic():
     """funkcija za dohvat sljedece slike"""
@@ -123,6 +128,7 @@ def nextPic():
     else:
         app.console.insert(tk.END, "[WARNING] no more pictures remaining\n")
         app.console.insert(tk.END, "----------------------------------------\n")
+        app.console.see(tk.END)
 
 
 class StartPage(tk.Frame):
@@ -149,79 +155,116 @@ class PageInitialization(tk.Frame):
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
 
-        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
-        buttonBack.pack(padx=10, pady=10, side=tk.LEFT)
-
         buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder", command=lambda: selectFolder("train"))
-        buttonSelectTraining.pack(padx=5, pady=10, side=tk.LEFT)
+        buttonSelectTraining.pack(padx=5, pady=10, fill="x")
 
         buttonSelectTest = tk.Button(buttonFrame, text="Test Folder", command=lambda: selectFolder("test"))
-        buttonSelectTest.pack(padx=10, pady=10, side=tk.LEFT)
+        buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
-        buttonParameters = tk.Button(buttonFrame,text="Parameters", command=lambda: controller.show_frame(ParameterSetting))
-        buttonParameters.pack(padx=10, pady=10, side=tk.LEFT)
+        buttonParameters = tk.Button(buttonFrame, text="Parameters", command=lambda: controller.show_frame(ParameterSetting))
+        buttonParameters.pack(padx=10, pady=10, fill="x")
 
-        buttonSW = tk.Button(buttonFrame, text="Sliding Window", command=lambda: controller.show_frame(SlidingWindow))
-        buttonSW.pack(padx=10, pady=10, side=tk.LEFT)
+        self.buttonSW = tk.Button(buttonFrame, text="Sliding Window", state="disabled", command=lambda: controller.show_frame(SlidingWindow))
+        self.buttonSW.pack(padx=10, pady=10, fill="x")
+
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
+        buttonBack.pack(padx=10, pady=10, fill="x")
 
 
 class ParameterSetting(tk.Frame):
+    """ razred gdje se odabiru parametri LBP-a
+    """
 
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
 
         description = tk.Label(self, text="Here you select parameters required for LBP.")
-        description.grid(row=0, columnspan=2)
-        # lijevi dio prozora
-        leftFrame = tk.Frame(self)
-        leftFrame.grid(row=1, column=0)
-        # desni dio prozora
-        rightFrame = tk.Frame(self, width=400)
-        rightFrame.grid(row=1, column=1)
+        description.pack()
+        # prvi redak---------------------------
+        frame1 = tk.Frame(self)
+        frame1.pack(padx=10, pady=10, expand=True)
 
-        labelRadius = tk.Label(leftFrame, text="Specify LBP radius:")
-        labelRadius.pack()
+        labelRadius = tk.Label(frame1, text="Specify LBP radius:")
+        labelRadius.pack(side="left")
         # upis radijusa
-        entryRadius = tk.Entry(rightFrame, width=15)
-        entryRadius.pack(padx=10, pady=5)
+        entryRadius = tk.Entry(frame1)
+        entryRadius.pack(side="right")
 
-        labelCellSize = tk.Label(leftFrame, text="Specify cell size, eg. \"64x64\".")
-        labelCellSize.pack()
+        # drugi redak--------------------------
+        frame2 = tk.Frame(self)
+        frame2.pack(padx=10, pady=10, expand=True)
+
+        labelCellSize = tk.Label(frame2, text="Specify cell size, eg. \"64x64\".")
+        labelCellSize.pack(side="left")
         # upis velicine celije za klizni prozor
-        entryCellSize = tk.Entry(rightFrame, width=15)
-        entryCellSize.pack(padx=10, pady=5)
+        entryCellSize = tk.Entry(frame2)
+        entryCellSize.pack(side="right")
 
-        labelStepSize = tk.Label(leftFrame, text="Specify step size:")
-        labelStepSize.pack()
+        # treci redak--------------------------
+        frame3 = tk.Frame(self)
+        frame3.pack(padx=10, pady=10, expand=True)
+
+        labelStepSize = tk.Label(frame3, text="Specify step size:")
+        labelStepSize.pack(side="left")
         # upis velicine koraka
-        entryStepSize = tk.Entry(rightFrame, width=15)
-        entryStepSize.pack(padx=10, pady=5)
+        entryStepSize = tk.Entry(frame3)
+        entryStepSize.pack(side="right")
+
+        # cetvrti redak------------------------
+        frame4 = tk.Frame(self)
+        frame4.pack(expand=True)
         # gumb za spremanje parametara LBP-a
-        buttonSave = tk.Button(self, text="Save", command=lambda: saveParameters(entryRadius.get(),
-                                                                                 entryCellSize.get(),
-                                                                                 entryStepSize.get()))
-        buttonSave.grid(row=2, column=0)
+        buttonSave = tk.Button(frame4, text="Save", command=lambda: saveParameters(entryRadius.get(),
+                                                                                   entryCellSize.get(),
+                                                                                   entryStepSize.get()))
+        buttonSave.pack(pady=5)
 
-        buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(PageInitialization))
-        buttonBack.grid(row=2, column=1)
+        buttonBack = tk.Button(frame4, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.pack(pady=5)
 
+        # peti redak---------------------------
+        frame5 = tk.Frame(self)
+        frame5.pack(padx=10, pady=10, expand=True)
+        # desni frame
+        frame5_D = tk.Frame(frame5, background="blue")
+        frame5_D.pack(side="right", padx=5, pady=5)
+        # lijevi frame
+        frame5_L = tk.Frame(frame5)
+        frame5_L.pack(side="left", padx=5, pady=5)
+
+        buttonSelectPic = tk.Button(frame5_L, text="Select img", command=selectImg)
+        buttonSelectPic.pack(padx=5, pady=5)
+
+        buttonRefresh = tk.Button(frame5_L, text="Refresh", command=refresh)
+        buttonRefresh.pack(padx=5, pady=5)
+
+
+        self.labelNormalPic = tk.Label(frame5_D, text="no pic\nselected")
+        self.labelNormalPic.grid(row=0, column=0, padx=10, pady=10)
+
+        self.labelLBPPic = tk.Label(frame5_D, text="select pic\nfirst")
+        self.labelLBPPic.grid(row=0, column=1, padx=10, pady=10)
 
 class SlidingWindow(tk.Frame):
+    """Razred gdje se prikazuje funkcionalnost kliznog prozora i vrijednost
+        haralickovih funkcija u odredjenenim celijama slikovnog elementa
+    """
+
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
+        # opis stranice
         description = tk.Label(self, text="Here you can see sliding window method.")
         description.pack()
-
+        # labela za ime slike
         self.labelPicName = tk.Label(self, text="")
         self.labelPicName.pack()
-
+        # labela za sliku
         self.labelPic = tk.Label(self, text="No picture\nloaded")
         self.labelPic.pack()
 
+        # gumbi--------------------------
         buttonFrame = tk.Frame(self)
         buttonFrame.pack(side="bottom", expand=True)
 
@@ -238,8 +281,29 @@ class SlidingWindow(tk.Frame):
         buttonBack.grid(row=0, column=4, padx=5, pady=5)
 
 
-def saveParameters(radius, cellSize, stepSize):
+def selectImg():
 
+    try:
+        path = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled", title="Select file",
+                                                 filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
+
+        image = cv.imread(path, cv.IMREAD_GRAYSCALE)
+        app.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+
+        app.frames[ParameterSetting].labelNormalPic.configure(image=app.im)
+
+        lbp = local_binary_pattern(image, app.radius * 8, app.radius)
+        app.lbp = ImageTk.PhotoImage(image=Image.fromarray(lbp))
+
+        app.frames[ParameterSetting].labelLBPPic.configure(image=app.lbp)
+
+    except AttributeError:
+        pass
+
+def refresh():
+    pass
+
+def saveParameters(radius, cellSize, stepSize):
     """funkcija za spremanje parametara u razerd"""
 
     flag = True
@@ -247,38 +311,28 @@ def saveParameters(radius, cellSize, stepSize):
         app.radius = int(radius)
     except ValueError:
         app.console.insert(tk.END, "[ERROR] -- radius must be positive integer\n")
+        app.console.see(tk.END)
         flag = False
     # konverzija stringa npr. 64x64 u int [64, 64]
     try:
         app.cellSize = [int(i) for i in cellSize.split("x")]
     except ValueError:
         app.console.insert(tk.END, "[ERROR] -- invalid cellsize configuration\n")
+        app.console.see(tk.END)
         flag = False
 
     try:
         app.stepSize = int(stepSize)
     except ValueError:
         app.console.insert(tk.END, "[ERROR] -- step must be positive integer\n")
+        app.console.see(tk.END)
         flag = False
 
     if flag is True:
         app.console.insert(tk.END, "[INFO] -- parameters saved\n")
+        app.console.see(tk.END)
     app.console.insert(tk.END, "----------------------------------------\n")
-
-
-class PageOne(tk.Frame):
-
-    def __init__(self, parent, controller):
-
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page one")
-        label.pack(padx=10, pady=10)
-
-        button1 = tk.Button(self, text="Start Page", command=lambda: controller.show_frame(StartPage))
-        button1.pack()
-
-        button2 = tk.Button(self, text="Page 2", command=lambda: controller.show_frame(PageTwo))
-        button2.pack()
+    app.console.see(tk.END)
 
 
 def selectFolder(testOrTrain):
@@ -286,32 +340,18 @@ def selectFolder(testOrTrain):
     if testOrTrain == "train":
         app.setTrainPath(filename)
         app.trainPictures = [f for f in listdir(app.trainingPath)]
+        app.frames[PageInitialization].buttonSW.config(state="normal")
         app.console.insert(tk.END, "[INFO] training path set: " + filename + "\n")
         app.console.insert(tk.END, "[INFO] loaded " + str(app.trainPictures.__len__()) + " training pictures\n")
         app.console.insert(tk.END, "----------------------------------------\n")
+        app.console.see(tk.END)
     else:
         app.setTestPath(filename)
         app.testPictures = [f for f in listdir(app.testPath)]
         app.console.insert(tk.END, "[INFO] test path set: " + filename + "\n")
         app.console.insert(tk.END, "[INFO] loaded " + str(app.testPictures.__len__()) + " test pictures\n")
         app.console.insert(tk.END, "----------------------------------------\n")
-
-
-class PageTwo(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page two")
-        label.pack(padx=10, pady=10)
-
-        button2 = tk.Button(self, text="Start Page", command=lambda: controller.show_frame(StartPage))
-        button2.pack()
-
-        button1 = tk.Button(self, text="Page 1", command=lambda: controller.show_frame(PageOne))
-        button1.pack()
-
-        button2 = tk.Button(self, text="Select train folder", command=lambda: selectFolder("train"))
-        button2.pack()
+        app.console.see(tk.END)
 
 
 if __name__ == "__main__":
