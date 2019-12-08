@@ -22,8 +22,17 @@ class App(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         # konzola
-        self.console = tk.Text(self, height=2, width=30)
-        self.console.pack(side="bottom", fill="both", expand=True)
+        consoleFrame = tk.Frame(self)
+        consoleFrame.pack(side="bottom", fill="both", expand=True)
+        # scrollbar konzole
+        scroll = tk.Scrollbar(consoleFrame)
+        scroll.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.console = tk.Text(consoleFrame, height=5, width=30)
+        self.console.pack(side="left", fill="both", expand=True)
+        scroll.config(command=self.console.yview)
+        self.console.config(yscrollcommand=scroll.set)
+
         labelConsole = tk.Label(self, text="Console window")
         labelConsole.pack(side="bottom")
 
@@ -54,7 +63,6 @@ class App(tk.Tk):
         self.trainPictures = []
         # polje imena slika za testiranje
         self.testPictures = []
-
 
         for F in (StartPage, PageOne, PageTwo, PageInitialization, ParameterSetting, SlidingWindow):
 
