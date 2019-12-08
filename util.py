@@ -4,6 +4,7 @@ import os
 import cv2 as cv
 import random
 import shutil
+from skimage.feature import local_binary_pattern
 import numpy as np
 
 # postotak ukupne kolicine slika koji se koristi za treniranje

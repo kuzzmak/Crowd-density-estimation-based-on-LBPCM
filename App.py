@@ -30,7 +30,7 @@ class App(tk.Tk):
         scroll = tk.Scrollbar(consoleFrame)
         scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
-        self.console = tk.Text(consoleFrame, height=10, width=30)
+        self.console = tk.Text(consoleFrame, height=5, width=30)
         self.console.pack(side="left", fill="both", expand=True)
         scroll.config(command=self.console.yview)
         self.console.config(yscrollcommand=scroll.set)
@@ -52,11 +52,9 @@ class App(tk.Tk):
         self.frames = {}
 
         # trenutna slika
-        self.currPicPath = r"C:\Users\kuzmi\PycharmProjects\untitled\data\trainingData\0.jpg"
-        # pocetna slika
-        self.initialImage = cv.imread(self.currPicPath)
+        self.currPicPath = ""
         # polje lokacija celije koja se krece po slici
-        self.picDims = util.makePicDims(self.initialImage, self.stepSize, self.cellSize)
+        self.picDims = []
         # brojac trenutne celije
         self.currCell = 0
         # brojac trenutne slike
@@ -88,6 +86,7 @@ class App(tk.Tk):
     def setTestPath(self, path):
         """funkcija za postavljanje staze za testiranje"""
         self.testPath = path
+
 
 def nextCell():
     """funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu"""
@@ -136,11 +135,15 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
-        welcomeText = "This is the starting screen of the app.\nPlease use with caution!"
-        label = tk.Label(self, text=welcomeText)
-        label.pack(padx=10, pady=10)
 
-        buttonAgree = tk.Button(self, text="Agree", command=lambda: controller.show_frame(PageInitialization))
+        frame = tk.Frame(self)
+        frame.place(in_=self, anchor="c", relx=.5, rely=.5)
+
+        welcomeText = "This is the starting screen of the app.\nPlease use with caution!"
+        label = tk.Label(frame, text=welcomeText)
+        label.pack()
+
+        buttonAgree = tk.Button(frame, text="Agree", command=lambda: controller.show_frame(PageInitialization))
         buttonAgree.pack()
 
 
@@ -246,6 +249,7 @@ class ParameterSetting(tk.Frame):
         self.labelLBPPic = tk.Label(frame5_D, text="select pic\nfirst")
         self.labelLBPPic.grid(row=0, column=1, padx=10, pady=10)
 
+
 class SlidingWindow(tk.Frame):
     """Razred gdje se prikazuje funkcionalnost kliznog prozora i vrijednost
         haralickovih funkcija u odredjenenim celijama slikovnog elementa
@@ -278,6 +282,8 @@ class SlidingWindow(tk.Frame):
         buttonNextCell.grid(row=0, column=2, padx=5, pady=5)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        #FIXME dodati mogucnost resetiranja slike na pcetak prilikom klika nazad
+
         buttonBack.grid(row=0, column=4, padx=5, pady=5)
 
 
@@ -338,9 +344,18 @@ def saveParameters(radius, cellSize, stepSize):
 def selectFolder(testOrTrain):
     filename = filedialog.askdirectory()
     if testOrTrain == "train":
+        # staza za treniranje
         app.setTrainPath(filename)
+        # stvaranje polja slika za treniranje
         app.trainPictures = [f for f in listdir(app.trainingPath)]
+        # dohvat prve slike
+        app.currPicPath = filename + "/" + app.trainPictures[0]
+        image = cv.imread(app.currPicPath)
+        # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
+        app.picDims = util.makePicDims(image, app.stepSize, app.cellSize)  #FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
+        # omogucavanje gumba sliding window
         app.frames[PageInitialization].buttonSW.config(state="normal")
+
         app.console.insert(tk.END, "[INFO] training path set: " + filename + "\n")
         app.console.insert(tk.END, "[INFO] loaded " + str(app.trainPictures.__len__()) + " training pictures\n")
         app.console.insert(tk.END, "----------------------------------------\n")
@@ -356,5 +371,5 @@ def selectFolder(testOrTrain):
 
 if __name__ == "__main__":
     app = App()
-    # app.geometry("640x320")
+    app.geometry("1024x768")
     app.mainloop()
