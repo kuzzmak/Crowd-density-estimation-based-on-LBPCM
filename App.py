@@ -90,7 +90,6 @@ class App(tk.Tk):
 
 def nextCell():
     """funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu"""
-
     # ako nismo stigli do kraja slikovnog elementa
     if app.currCell < app.picDims.__len__():
         image = cv.imread(app.currPicPath)
@@ -351,6 +350,9 @@ def selectFolder(testOrTrain):
         # dohvat prve slike
         app.currPicPath = filename + "/" + app.trainPictures[0]
         image = cv.imread(app.currPicPath)
+        app.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[0])
+        app.frames[SlidingWindow].labelPic.configure(image=app.im)
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
         app.picDims = util.makePicDims(image, app.stepSize, app.cellSize)  #FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
         # omogucavanje gumba sliding window
