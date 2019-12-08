@@ -1,4 +1,5 @@
 import tkinter as tk
+from os import listdir
 from tkinter import filedialog
 import cv2 as cv
 import numpy as np
@@ -49,8 +50,11 @@ class App(tk.Tk):
         self.currCell = 0
         # brojac trenutne slike
         self.picCounter = 0
-        # polje imena slika
-        self.pictures = []
+        # polje imena slika za treniranje
+        self.trainPictures = []
+        # polje imena slika za testiranje
+        self.testPictures = []
+
 
         for F in (StartPage, PageOne, PageTwo, PageInitialization, ParameterSetting, SlidingWindow):
 
@@ -88,26 +92,29 @@ def nextCell():
         app.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
         # postavljanje slike u labelu
         app.frames[SlidingWindow].labelPic.configure(image=app.img)
-        app.frames[SlidingWindow].labelPicName.configure(text=app.pictures[app.picCounter])
+        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
     else:
         app.console.insert(tk.END, "[WARNING] no more cells remaining\n")
         app.console.insert(tk.END, "----------------------------------------\n")
 
-def nextPic(path):
+def nextPic():
     """funkcija za dohvat sljedece slike"""
 
     # ako ima jos slikovnih elemenata
-    if self.picCounter < len(self.pictures):
-        fileName = path + "\\" + pictures[picCounter + 1]
+    if app.picCounter < len(app.trainPictures):
+        print(app.picCounter)
+        app.picCounter += 1
+        fileName = app.trainingPath + "/" + app.trainPictures[app.picCounter]
         image = cv.imread(fileName)
         app.photo = ImageTk.PhotoImage(image=Image.fromarray(image))
-        panelPic.configure(image=app.photo)
+        app.frames[SlidingWindow].labelPic.configure(image=app.photo)
+        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
         app.currPicPath = fileName
-        picCounter += 1
         # resetiranje brojaca celije
         app.currCell = 0
     else:
-        pass
+        app.console.insert(tk.END, "[WARNING] no more pictures remaining\n")
+        app.console.insert(tk.END, "----------------------------------------\n")
 
 
 class StartPage(tk.Frame):
@@ -210,7 +217,7 @@ class SlidingWindow(tk.Frame):
         buttonFrame = tk.Frame(self)
         buttonFrame.pack(side="bottom", expand=True)
 
-        buttonNextPicture = tk.Button(buttonFrame, text="Next pic")
+        buttonNextPicture = tk.Button(buttonFrame, text="Next pic", command=nextPic)
         buttonNextPicture.grid(row=0, column=0, padx=5, pady=5)
 
         buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic")
@@ -218,9 +225,6 @@ class SlidingWindow(tk.Frame):
 
         buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=nextCell)
         buttonNextCell.grid(row=0, column=2, padx=5, pady=5)
-
-        buttonPreviousCell = tk.Button(buttonFrame, text="Prev cell")
-        buttonPreviousCell.grid(row=0, column=3, padx=5, pady=5)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.grid(row=0, column=4, padx=5, pady=5)
@@ -273,11 +277,15 @@ def selectFolder(testOrTrain):
     filename = filedialog.askdirectory()
     if testOrTrain == "train":
         app.setTrainPath(filename)
+        app.trainPictures = [f for f in listdir(app.trainingPath)]
         app.console.insert(tk.END, "[INFO] training path set: " + filename + "\n")
+        app.console.insert(tk.END, "[INFO] loaded " + str(app.trainPictures.__len__()) + " training pictures\n")
         app.console.insert(tk.END, "----------------------------------------\n")
     else:
         app.setTestPath(filename)
+        app.testPictures = [f for f in listdir(app.testPath)]
         app.console.insert(tk.END, "[INFO] test path set: " + filename + "\n")
+        app.console.insert(tk.END, "[INFO] loaded " + str(app.testPictures.__len__()) + " test pictures\n")
         app.console.insert(tk.END, "----------------------------------------\n")
 
 
