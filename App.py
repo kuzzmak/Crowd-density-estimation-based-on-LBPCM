@@ -379,13 +379,13 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
     if os.path.exists(pathToTrainingData):
         util.clearDirectory(pathToTrainingData)
     else:
-        train = r"data\trainingData"
-        os.mkdir(train)
+        app.trainingPath = r"data\trainingData"
+        os.mkdir(app.trainingPath)
     if os.path.exists(pathToTestData):
         util.clearDirectory(pathToTestData)
     else:
-        test = r"data\testData"
-        os.mkdir(test)
+        app.testPath = r"data\testData"
+        os.mkdir(app.testPath)
 
     # popis svih slika izvorne velicine
     onlyFiles = [f for f in listdir(path) if isfile(join(path, f))]
@@ -394,24 +394,26 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
     random.shuffle(onlyFiles)
     # spremanje slika za treniranje
     for f in range(round(0.7 * onlyFiles.__len__())):
-        fileName = path + "\\" + onlyFiles[f]
+        fileName = path + "/" + onlyFiles[f]
         # normalna slika
         im = cv.imread(fileName)
         # # slika u sivim tonovima
         # im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
         # spremanje slike
-        util.saveImage(im, dim, pathToTrainingData)
+        util.saveImage(im, dim, app.trainingPath)
         app.frames[PreprocessPage].progressbar.step()
         app.update()
 
     # spremanje ostalih slika
     for f in range(round(0.7 * onlyFiles.__len__()), onlyFiles.__len__(), 1):
-        fileName = path + "\\" + onlyFiles[f]
+        fileName = path + "/" + onlyFiles[f]
         im = cv.imread(fileName)
         # im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-        util.saveImage(im, dim, pathToTestData)
+        util.saveImage(im, dim, app.testPath)
         app.frames[PreprocessPage].progressbar.step()
         app.update()
+
+    app.trainPictures = [f for f in listdir(app.trainingPath)]
 
 def selectImg():
     """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
@@ -541,8 +543,6 @@ def selectFolder(testOrTrain):
         app.console.insert(tk.END, "[INFO] loaded " + str(app.testPictures.__len__()) + " test pictures\n")
         app.console.insert(tk.END, "----------------------------------------\n")
         app.console.see(tk.END)
-
-
 
 
 if __name__ == "__main__":

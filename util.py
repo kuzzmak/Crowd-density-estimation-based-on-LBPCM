@@ -13,12 +13,12 @@ ratio = 0.7
 picCounter = 0
 
 # funkcija za rezanje slike u 4 dijela i spremanje
-def saveImage(im_gray, dim, path):
+def saveImage(im, dim, path):
     global picCounter
 
     for i in range(4):
-        croppedImage = im_gray[i * dim[1]:(i + 1) * dim[1], i * dim[0]:(i + 1) * dim[0]]
-        imName = path + "\\" + str(picCounter) + ".jpg"
+        croppedImage = im[i * dim[1]:(i + 1) * dim[1], i * dim[0]:(i + 1) * dim[0]]
+        imName = path + "/" + str(picCounter) + ".jpg"
         cv.imwrite(imName, croppedImage)
         picCounter += 1
     print(picCounter)
