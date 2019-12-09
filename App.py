@@ -14,6 +14,8 @@ import random
 # TODO dodati funkciju koja osvjezava na potrebnim mjestima sliku koja se prikazuje u sliding window - da ima onaj
 #  crveni kvadrat
 
+# TODO napraviti da se picDims updatea ako se ne izaberu pocetni folderi->ako je kliknuto odmah na preprocess
+
 # boja obruba celije
 color = (255, 0, 0)
 # debljina crte celije
@@ -106,9 +108,8 @@ class App(tk.Tk):
 def nextCell():
     """ funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu
     """
-
     # ako nismo stigli do kraja slikovnog elementa
-    if app.currCell < app.picDims.__len__():
+    if app.currCell < app.picDims.__len__() - 1:
         image = cv.imread(app.currPicPath)
         app.currCell += 1
         # dohvat pocetne i krajnje tocke pojedine celije
@@ -193,12 +194,10 @@ class PageInitialization(tk.Frame):
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
 
-        buttonPreprocess = tk.Button(buttonFrame, text="Preprocess data", command=lambda: controller.show_frame(PreprocessPage))
+        buttonPreprocess = tk.Button(buttonFrame, text="Preprocess data",
+                                     command=lambda: controller.show_frame(PreprocessPage))
+
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
-        #TODO dodati da se ovo ispod napravi nakon klika na gumb preprocess data
-        # app.console.insert(tk.END, "[WARNING] data path not set yet\n")
-        # app.console.insert(tk.END, "----------------------------------------\n")
-        # app.console.see(tk.END)
 
         buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder", command=lambda: selectFolder("train"))
         buttonSelectTraining.pack(padx=5, pady=10, fill="x")
@@ -397,6 +396,10 @@ def resetCell():
     # postavljanje slike u labelu
     app.frames[SlidingWindow].labelPic.configure(image=app.img)
     app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
+    app.console.insert(tk.END, "[INFO] cell has been reset\n")
+    app.console.insert(tk.END, "----------------------------------------\n")
+    app.console.see(tk.END)
+
 
 def process():
     # dohvat x, y dimenzija
@@ -432,9 +435,9 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
         # normalna slika
         im = cv.imread(fileName)
         # # slika u sivim tonovima
-        # im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+        im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
         # spremanje slike
-        util.saveImage(im, dim, app.trainingPath)
+        util.saveImage(im_gray, dim, app.trainingPath)
         app.frames[PreprocessPage].progressbar.step()
         app.update()
 
@@ -442,8 +445,8 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
     for f in range(round(0.7 * onlyFiles.__len__()), onlyFiles.__len__(), 1):
         fileName = path + "/" + onlyFiles[f]
         im = cv.imread(fileName)
-        # im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-        util.saveImage(im, dim, app.testPath)
+        im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+        util.saveImage(im_gray, dim, app.testPath)
         app.frames[PreprocessPage].progressbar.step()
         app.update()
 
@@ -542,6 +545,15 @@ def updatePics():
     app.dataPictures = [f for f in listdir(app.dataPath)]
     app.frames[PreprocessPage].progressbar.configure(maximum=app.dataPictures.__len__())
 
+def updateSlidingWindowImage(image):
+    start_point, end_point = app.picDims[app.currCell]
+    image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
+    app.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+    # postavaljanje imena slike u odgovarajucu labelu
+    app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[0])
+    # postavljanje slike
+    app.frames[SlidingWindow].labelPic.configure(image=app.img)
+
 def selectFolder(testOrTrain):
     """ funkcija za odabir folera za treniranje ili testiranje
     """
@@ -556,14 +568,18 @@ def selectFolder(testOrTrain):
         # dohvat prve slike
         app.currPicPath = filename + "/" + app.trainPictures[0]
         image = cv.imread(app.currPicPath)
-        # trenutno pamcenje da se ne ukloni iz memorije
-        app.im = ImageTk.PhotoImage(image=Image.fromarray(image))
-        # postavaljanje imena slike u odgovarajucu labelu
-        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[0])
-        # postavljanje slike
-        app.frames[SlidingWindow].labelPic.configure(image=app.im)
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
-        app.picDims = util.makePicDims(image, app.stepSize, app.cellSize)  #FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
+        app.picDims = util.makePicDims(image, app.stepSize,
+                                       app.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
+        updateSlidingWindowImage(image)
+        # # trenutno pamcenje da se ne ukloni iz memorije
+        # app.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+        # # postavaljanje imena slike u odgovarajucu labelu
+        # app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[0])
+        # # postavljanje slike
+        # app.frames[SlidingWindow].labelPic.configure(image=app.im)
+
+
         # omogucavanje gumba sliding window
         app.frames[PageInitialization].buttonSW.config(state="normal")
 
