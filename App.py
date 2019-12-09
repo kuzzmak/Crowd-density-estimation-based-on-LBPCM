@@ -55,6 +55,8 @@ class App(tk.Tk):
 
         # trenutna slika
         self.currPicPath = ""
+        # staza do slika za pretprocesiranje
+        self.dataPath = ""
         # polje lokacija celije koja se krece po slici
         self.picDims = []
         # brojac trenutne celije
@@ -66,7 +68,7 @@ class App(tk.Tk):
         # polje imena slika za testiranje
         self.testPictures = []
 
-        for F in (StartPage, PageInitialization, ParameterSetting, SlidingWindow):
+        for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow):
 
             frame = F(container, self)
 
@@ -158,6 +160,13 @@ class PageInitialization(tk.Frame):
 
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
+
+        buttonPreprocess = tk.Button(buttonFrame, text="Preprocess data", command=lambda: controller.show_frame(PreprocessPage))
+        buttonPreprocess.pack(padx=5, pady=10, fill="x")
+        #TODO dodati da se ovo ispod napravi nakon klika na gumb preprocess data
+        # app.console.insert(tk.END, "[WARNING] data path not set yet\n")
+        # app.console.insert(tk.END, "----------------------------------------\n")
+        # app.console.see(tk.END)
 
         buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder", command=lambda: selectFolder("train"))
         buttonSelectTraining.pack(padx=5, pady=10, fill="x")
@@ -287,6 +296,49 @@ class SlidingWindow(tk.Frame):
         buttonBack.grid(row=0, column=4, padx=5, pady=5)
 
 
+class PreprocessPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+
+        labelDescription = tk.Label(self, text="Here you can specify parameters needed for data preprocessing")
+        labelDescription.pack()
+
+        frame1 = tk.Frame(self)
+        frame1.pack()
+
+        buttonSelectFolder = tk.Button(frame1, text="Select data folder", command=selectDataFolder)
+        buttonSelectFolder.pack(padx=10, pady=5)
+
+        frame2 = tk.Frame(self)
+        frame2.pack()
+
+        labelRatio = tk.Label(frame2, text="training set:test set, eg. \"0.7:0.3\"")
+        labelRatio.pack(padx=10, pady=5, side="left")
+
+        entryRatio = tk.Entry(frame2)
+        entryRatio.pack(side="right")
+
+        labelDimDescription = tk.Label(self, text="Specify size of a picture element")
+        labelDimDescription.pack(padx=10, pady=10)
+
+        frame3 = tk.Frame(self)
+        frame3.pack()
+
+        labelDimensionX = tk.Label(frame3, text="X:")
+        labelDimensionX.pack(side="left", padx=10, pady=5)
+
+        entryX = tk.Entry(frame3)
+        entryX.pack(side="left")
+
+        labelDimensionY = tk.Label(frame3, text="Y:")
+        labelDimensionY.pack(side="left", padx=10, pady=5)
+
+        entryY = tk.Entry(frame3)
+        entryY.pack(side="left")
+
+
 def selectImg():
     """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
         i dodatno izracun LBP-a
@@ -304,7 +356,7 @@ def selectImg():
         app.im = ImageTk.PhotoImage(image=Image.fromarray(app.currPicPar))
         # postavaljanje slike u frame parametersetting
         app.frames[ParameterSetting].labelNormalPic.configure(image=app.im)
-
+        # postavljanje imena ucitane slike
         app.frames[ParameterSetting].labelImageName.configure(text="image: " + path.split("/")[-1])
         # izracun LBP-a
         lbp = local_binary_pattern(app.currPicPar, app.radius * 8, app.radius)
@@ -360,6 +412,20 @@ def saveParameters(radius, cellSize, stepSize):
     app.console.insert(tk.END, "----------------------------------------\n")
     app.console.see(tk.END)
 
+def selectDataFolder():
+
+    dir = filedialog.askdirectory()
+    print(dir)
+
+    if dir != "":
+        app.dataPath = dir
+        app.console.insert(tk.END, "[INFO] data folder set: " + dir + "\n")
+        app.console.insert(tk.END, "----------------------------------------\n")
+        app.console.see(tk.END)
+    else:
+        app.console.insert(tk.END, "[WARNING] you did not select folder\n")
+        app.console.insert(tk.END, "----------------------------------------\n")
+        app.console.see(tk.END)
 
 def selectFolder(testOrTrain):
     """ funkcija za odabir folera za treniranje ili testiranje
@@ -401,5 +467,5 @@ def selectFolder(testOrTrain):
 
 if __name__ == "__main__":
     app = App()
-    app.geometry("1024x768")
+    # app.geometry("800x600")
     app.mainloop()
