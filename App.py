@@ -11,6 +11,9 @@ import util
 from skimage.feature import local_binary_pattern
 import random
 
+# TODO dodati funkciju koja osvjezava na potrebnim mjestima sliku koja se prikazuje u sliding window - da ima onaj
+#  crveni kvadrat
+
 # boja obruba celije
 color = (255, 0, 0)
 # debljina crte celije
@@ -141,7 +144,26 @@ def nextPic():
         app.console.insert(tk.END, "----------------------------------------\n")
         app.console.see(tk.END)
 
-#TODO previous pic function
+def prevPic():
+    """funkcija za dohvat prethodne slike"""
+
+    # ako ima jos slikovnih elemenata
+    print(app.picCounter)
+    if app.picCounter >= 1:
+        app.picCounter -= 1
+        fileName = app.trainingPath + "/" + app.trainPictures[app.picCounter]
+        image = cv.imread(fileName)
+        app.photo = ImageTk.PhotoImage(image=Image.fromarray(image))
+        app.frames[SlidingWindow].labelPic.configure(image=app.photo)
+        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
+        app.currPicPath = fileName
+        # resetiranje brojaca celije
+        app.currCell = 0
+    else:
+        app.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
+        app.console.insert(tk.END, "----------------------------------------\n")
+        app.console.see(tk.END)
+
 
 class StartPage(tk.Frame):
 
@@ -294,7 +316,7 @@ class SlidingWindow(tk.Frame):
         buttonNextPicture = tk.Button(buttonFrame, text="Next pic", command=nextPic)
         buttonNextPicture.grid(row=0, column=1, padx=5, pady=5)
 
-        buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic")
+        buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic", command=prevPic)
         buttonPreviousPicture.grid(row=0, column=0, padx=5, pady=5)
 
         buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=nextCell)
