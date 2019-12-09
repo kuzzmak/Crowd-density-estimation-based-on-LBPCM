@@ -306,7 +306,7 @@ class PreprocessPage(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         labelDescription = tk.Label(self, text="Here you can specify parameters needed for data preprocessing")
-        labelDescription.pack()
+        labelDescription.pack(padx=10, pady=10)
 
         frame1 = tk.Frame(self)
         frame1.pack()
@@ -333,14 +333,14 @@ class PreprocessPage(tk.Frame):
         labelDimensionX = tk.Label(frame3, text="X:")
         labelDimensionX.pack(side="left", padx=10, pady=5)
 
-        entryX = tk.Entry(frame3)
-        entryX.pack(side="left")
+        self.entryX = tk.Entry(frame3)
+        self.entryX.pack(side="left")
 
         labelDimensionY = tk.Label(frame3, text="Y:")
         labelDimensionY.pack(side="left", padx=10, pady=5)
 
-        entryY = tk.Entry(frame3)
-        entryY.pack(side="left")
+        self.entryY = tk.Entry(frame3)
+        self.entryY.pack(side="left")
 
         # frame s gumbom i progressbar-----------------------------------------
         frame4 = tk.Frame(self)
@@ -352,9 +352,16 @@ class PreprocessPage(tk.Frame):
         self.progressbar = Progressbar(frame4, orient=tk.HORIZONTAL, length=200, mode='determinate')
         self.progressbar.pack(side="left", padx=10, pady=10)
 
+        buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.pack(padx=10, pady=10)
+
 
 def process():
-
+    x = int(app.frames[PreprocessPage].entryX.get())
+    y = int(app.frames[PreprocessPage].entryY.get())
+    # dimenzija svakog slikovnog elementa
+    dim = (x, y)
+    util.makePictureElements(app.dataPath, app.trainingPath, app.testPath, *dim)
     app.frames[PreprocessPage].progressbar.step()
 
 def selectImg():
@@ -433,7 +440,6 @@ def saveParameters(radius, cellSize, stepSize):
 def selectDataFolder():
     """ funkcija za odabir foldera koji se koristi za preprocesiranje
     """
-
     dir = filedialog.askdirectory()
 
     if dir != "":

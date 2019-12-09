@@ -15,11 +15,14 @@ picCounter = 0
 # funkcija za rezanje slike u 4 dijela i spremanje
 def saveImage(im_gray, dim, path):
     global picCounter
+
     for i in range(4):
+
         croppedImage = im_gray[i * dim[1]:(i + 1) * dim[1], i * dim[0]:(i + 1) * dim[0]]
         imName = path + "\\" + str(picCounter) + ".jpg"
         cv.imwrite(imName, croppedImage)
         picCounter += 1
+    print(picCounter)
 
 # funkcija za brisanje sadrzaja direktorija
 def clearDirectory(pathToDirectory):
@@ -36,17 +39,18 @@ def clearDirectory(pathToDirectory):
 
 # rezolucjia slika 768 x 576
 def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
-
     # ako ne postoje folderi za treniranje i testiranje, stovre se, a
     # ako postoje onda se njihov sadrzaj brise
     if os.path.exists(pathToTrainingData):
         clearDirectory(pathToTrainingData)
     else:
-        os.mkdir(pathToTrainingData)
+        train = r"data\trainingData"
+        os.mkdir(train)
     if os.path.exists(pathToTestData):
         clearDirectory(pathToTestData)
     else:
-        os.mkdir(pathToTestData)
+        test = r"data\testData"
+        os.mkdir(test)
 
     # popis svih slika izvorne velicine
     onlyFiles = [f for f in listdir(path) if isfile(join(path, f))]
