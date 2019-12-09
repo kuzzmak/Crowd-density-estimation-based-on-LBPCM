@@ -255,7 +255,7 @@ class ParameterSetting(tk.Frame):
         buttonSelectPic = tk.Button(frame5, text="Select img", command=selectImg)
         buttonSelectPic.pack(padx=10, pady=5, side="left")
 
-        self.buttonRefresh = tk.Button(frame5, text="Refresh", state="disabled", command=refresh)
+        self.buttonRefresh = tk.Button(frame5, text="Refresh", state="disabled", command=refreshLBP)
         self.buttonRefresh.pack(padx=10, pady=5, side="left")
 
         buttonBack = tk.Button(frame5, text="Back", command=lambda: controller.show_frame(PageInitialization))
@@ -311,7 +311,7 @@ class PreprocessPage(tk.Frame):
         frame1 = tk.Frame(self)
         frame1.pack()
 
-        buttonSelectFolder = tk.Button(frame1, text="Select data folder", command=selectDataFolder)
+        buttonSelectFolder = tk.Button(frame1, text="Select data folder", command=lambda: [selectDataFolder(), updatePics()])
         buttonSelectFolder.pack(padx=10, pady=5)
 
         frame2 = tk.Frame(self)
@@ -357,10 +357,12 @@ class PreprocessPage(tk.Frame):
 
 
 def process():
+    # dohvat x, y dimenzija
     x = int(app.frames[PreprocessPage].entryX.get())
     y = int(app.frames[PreprocessPage].entryY.get())
     # dimenzija svakog slikovnog elementa
     dim = (x, y)
+    # stvaranje slikovnih elemenata
     util.makePictureElements(app.dataPath, app.trainingPath, app.testPath, *dim)
     app.frames[PreprocessPage].progressbar.step()
 
@@ -393,7 +395,7 @@ def selectImg():
     except AttributeError:
         pass
 
-def refresh():
+def refreshLBP():
     """ funkcija za refresh LBP-a ako su se promjenili parametri na stranici parametersetting
     """
 
@@ -440,19 +442,21 @@ def saveParameters(radius, cellSize, stepSize):
 def selectDataFolder():
     """ funkcija za odabir foldera koji se koristi za preprocesiranje
     """
-    dir = filedialog.askdirectory()
+    directory = filedialog.askdirectory()
 
-    if dir != "":
-        app.dataPath = dir
-        app.dataPictures = [f for f in listdir(app.dataPath)]
-        app.frames[PreprocessPage].progressbar.configure(maximum=app.dataPictures.__len__())
-        app.console.insert(tk.END, "[INFO] data folder set: " + dir + "\n")
+    if directory != "":
+        app.dataPath = directory
+        app.console.insert(tk.END, "[INFO] data folder set: " + directory + "\n")
         app.console.insert(tk.END, "----------------------------------------\n")
         app.console.see(tk.END)
     else:
         app.console.insert(tk.END, "[WARNING] you did not select folder\n")
         app.console.insert(tk.END, "----------------------------------------\n")
         app.console.see(tk.END)
+
+def updatePics():
+    app.dataPictures = [f for f in listdir(app.dataPath)]
+    app.frames[PreprocessPage].progressbar.configure(maximum=app.dataPictures.__len__())
 
 def selectFolder(testOrTrain):
     """ funkcija za odabir folera za treniranje ili testiranje
