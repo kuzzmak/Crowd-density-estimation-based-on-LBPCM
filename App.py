@@ -6,6 +6,7 @@ import numpy as np
 from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
+from tkinter.ttk import Progressbar
 
 # boja obruba celije
 color = (255, 0, 0)
@@ -57,6 +58,8 @@ class App(tk.Tk):
         self.currPicPath = ""
         # staza do slika za pretprocesiranje
         self.dataPath = ""
+        # polje slika za pretprocesiranje
+        self.dataPictures = []
         # polje lokacija celije koja se krece po slici
         self.picDims = []
         # brojac trenutne celije
@@ -323,6 +326,7 @@ class PreprocessPage(tk.Frame):
         labelDimDescription = tk.Label(self, text="Specify size of a picture element")
         labelDimDescription.pack(padx=10, pady=10)
 
+        # frame s unosom dimenzija slikovnih elemenata-------------------------
         frame3 = tk.Frame(self)
         frame3.pack()
 
@@ -338,6 +342,20 @@ class PreprocessPage(tk.Frame):
         entryY = tk.Entry(frame3)
         entryY.pack(side="left")
 
+        # frame s gumbom i progressbar-----------------------------------------
+        frame4 = tk.Frame(self)
+        frame4.pack()
+
+        buttonProcess = tk.Button(frame4, text="Preprocess", command=process)
+        buttonProcess.pack(side="left", padx=10, pady=10)
+
+        self.progressbar = Progressbar(frame4, orient=tk.HORIZONTAL, length=200, mode='determinate')
+        self.progressbar.pack(side="left", padx=10, pady=10)
+
+
+def process():
+
+    app.frames[PreprocessPage].progressbar.step()
 
 def selectImg():
     """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
@@ -413,12 +431,15 @@ def saveParameters(radius, cellSize, stepSize):
     app.console.see(tk.END)
 
 def selectDataFolder():
+    """ funkcija za odabir foldera koji se koristi za preprocesiranje
+    """
 
     dir = filedialog.askdirectory()
-    print(dir)
 
     if dir != "":
         app.dataPath = dir
+        app.dataPictures = [f for f in listdir(app.dataPath)]
+        app.frames[PreprocessPage].progressbar.configure(maximum=app.dataPictures.__len__())
         app.console.insert(tk.END, "[INFO] data folder set: " + dir + "\n")
         app.console.insert(tk.END, "----------------------------------------\n")
         app.console.see(tk.END)
