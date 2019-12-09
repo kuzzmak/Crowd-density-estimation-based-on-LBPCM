@@ -48,6 +48,8 @@ class App(tk.Tk):
         self.cellSize = [64, 64]
         # velicina koraka
         self.stepSize = 32
+        # trenutna slika na stranici za parametre
+        self.currPicPar = [[]]
         # rjecnik svih stranica
         self.frames = {}
 
@@ -213,40 +215,39 @@ class ParameterSetting(tk.Frame):
         entryStepSize = tk.Entry(frame3)
         entryStepSize.pack(side="right")
 
-        # cetvrti redak------------------------
+        labelRepresentation = tk.Label(self, text="Loaded image on the left and LBP on the right")
+        labelRepresentation.pack()
+
+        self.labelImageName = tk.Label(self, text="")
+        self.labelImageName.pack()
+
+        # cetvrti redak---------------------------
         frame4 = tk.Frame(self)
-        frame4.pack(expand=True)
-        # gumb za spremanje parametara LBP-a
-        buttonSave = tk.Button(frame4, text="Save", command=lambda: saveParameters(entryRadius.get(),
-                                                                                   entryCellSize.get(),
-                                                                                   entryStepSize.get()))
-        buttonSave.pack(pady=5)
+        frame4.pack(padx=10, pady=10, expand=True)
 
-        buttonBack = tk.Button(frame4, text="Back", command=lambda: controller.show_frame(PageInitialization))
-        buttonBack.pack(pady=5)
-
-        # peti redak---------------------------
-        frame5 = tk.Frame(self)
-        frame5.pack(padx=10, pady=10, expand=True)
-        # desni frame
-        frame5_D = tk.Frame(frame5, background="blue")
-        frame5_D.pack(side="right", padx=5, pady=5)
-        # lijevi frame
-        frame5_L = tk.Frame(frame5)
-        frame5_L.pack(side="left", padx=5, pady=5)
-
-        buttonSelectPic = tk.Button(frame5_L, text="Select img", command=selectImg)
-        buttonSelectPic.pack(padx=5, pady=5)
-
-        buttonRefresh = tk.Button(frame5_L, text="Refresh", command=refresh)
-        buttonRefresh.pack(padx=5, pady=5)
-
-
-        self.labelNormalPic = tk.Label(frame5_D, text="no pic\nselected")
+        self.labelNormalPic = tk.Label(frame4, text="no pic\nselected")
         self.labelNormalPic.grid(row=0, column=0, padx=10, pady=10)
 
-        self.labelLBPPic = tk.Label(frame5_D, text="select pic\nfirst")
+        self.labelLBPPic = tk.Label(frame4, text="select pic\nfirst")
         self.labelLBPPic.grid(row=0, column=1, padx=10, pady=10)
+
+        # peti redak------------------------
+        frame5 = tk.Frame(self)
+        frame5.pack(expand=True)
+        # gumb za spremanje parametara LBP-a
+        buttonSave = tk.Button(frame5, text="Save", command=lambda: saveParameters(entryRadius.get(),
+                                                                                   entryCellSize.get(),
+                                                                                   entryStepSize.get()))
+        buttonSave.pack(padx=10, pady=5, side="left")
+
+        buttonSelectPic = tk.Button(frame5, text="Select img", command=selectImg)
+        buttonSelectPic.pack(padx=10, pady=5, side="left")
+
+        self.buttonRefresh = tk.Button(frame5, text="Refresh", state="disabled", command=refresh)
+        self.buttonRefresh.pack(padx=10, pady=5, side="left")
+
+        buttonBack = tk.Button(frame5, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.pack(padx=10, pady=5, side="left")
 
 
 class SlidingWindow(tk.Frame):
@@ -287,26 +288,44 @@ class SlidingWindow(tk.Frame):
 
 
 def selectImg():
+    """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
+        i dodatno izracun LBP-a
+    """
 
     try:
+        # staza do odabrane slike preko izbornika
         path = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled", title="Select file",
-                                                 filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
+                                          filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
 
-        image = cv.imread(path, cv.IMREAD_GRAYSCALE)
-        app.im = ImageTk.PhotoImage(image=Image.fromarray(image))
-
+        # pamcenje slike radi moguconsti refresha prilikom promjene parametra
+        app.currPicPar = cv.imread(path, cv.IMREAD_GRAYSCALE)
+        # omogucavanje gumba refresh
+        app.frames[ParameterSetting].buttonRefresh.config(state="normal")
+        app.im = ImageTk.PhotoImage(image=Image.fromarray(app.currPicPar))
+        # postavaljanje slike u frame parametersetting
         app.frames[ParameterSetting].labelNormalPic.configure(image=app.im)
 
-        lbp = local_binary_pattern(image, app.radius * 8, app.radius)
-        app.lbp = ImageTk.PhotoImage(image=Image.fromarray(lbp))
+        app.frames[ParameterSetting].labelImageName.configure(text="image: " + path.split("/")[-1])
+        # izracun LBP-a
+        lbp = local_binary_pattern(app.currPicPar, app.radius * 8, app.radius)
 
+        app.lbp = ImageTk.PhotoImage(image=Image.fromarray(lbp))
+        # postavljanje lbp u labelu
         app.frames[ParameterSetting].labelLBPPic.configure(image=app.lbp)
 
     except AttributeError:
         pass
 
 def refresh():
-    pass
+    """ funkcija za refresh LBP-a ako su se promjenili parametri na stranici parametersetting
+    """
+
+    # ponovni izracun LBP-a
+    lbp = local_binary_pattern(app.currPicPar, app.radius * 8, app.radius)
+    # konstrukcija slike iz polja
+    app.lbp = ImageTk.PhotoImage(image=Image.fromarray(lbp))
+    # prikaz slike u odgovarajucoj labeli
+    app.frames[ParameterSetting].labelLBPPic.configure(image=app.lbp)
 
 def saveParameters(radius, cellSize, stepSize):
     """funkcija za spremanje parametara u razerd"""
@@ -318,6 +337,7 @@ def saveParameters(radius, cellSize, stepSize):
         app.console.insert(tk.END, "[ERROR] -- radius must be positive integer\n")
         app.console.see(tk.END)
         flag = False
+
     # konverzija stringa npr. 64x64 u int [64, 64]
     try:
         app.cellSize = [int(i) for i in cellSize.split("x")]
@@ -336,11 +356,16 @@ def saveParameters(radius, cellSize, stepSize):
     if flag is True:
         app.console.insert(tk.END, "[INFO] -- parameters saved\n")
         app.console.see(tk.END)
+
     app.console.insert(tk.END, "----------------------------------------\n")
     app.console.see(tk.END)
 
 
 def selectFolder(testOrTrain):
+    """ funkcija za odabir folera za treniranje ili testiranje
+    """
+
+    # odabran put
     filename = filedialog.askdirectory()
     if testOrTrain == "train":
         # staza za treniranje
@@ -350,8 +375,11 @@ def selectFolder(testOrTrain):
         # dohvat prve slike
         app.currPicPath = filename + "/" + app.trainPictures[0]
         image = cv.imread(app.currPicPath)
+        # trenutno pamcenje da se ne ukloni iz memorije
         app.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+        # postavaljanje imena slike u odgovarajucu labelu
         app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[0])
+        # postavljanje slike
         app.frames[SlidingWindow].labelPic.configure(image=app.im)
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
         app.picDims = util.makePicDims(image, app.stepSize, app.cellSize)  #FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
