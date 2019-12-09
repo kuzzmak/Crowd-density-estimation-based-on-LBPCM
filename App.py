@@ -1,5 +1,8 @@
 import tkinter as tk
 from os import listdir
+from os.path import isfile, join
+import os
+import os
 from tkinter import filedialog
 import cv2 as cv
 import numpy as np
@@ -7,6 +10,7 @@ from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
 from tkinter.ttk import Progressbar
+import random
 
 # boja obruba celije
 color = (255, 0, 0)
@@ -94,9 +98,13 @@ class App(tk.Tk):
         """funkcija za postavljanje staze za testiranje"""
         self.testPath = path
 
+    def step(self):
+        self.frames[PreprocessPage].progressbar.step()
 
 def nextCell():
-    """funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu"""
+    """ funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu
+    """
+
     # ako nismo stigli do kraja slikovnog elementa
     if app.currCell < app.picDims.__len__():
         image = cv.imread(app.currPicPath)
@@ -363,8 +371,47 @@ def process():
     # dimenzija svakog slikovnog elementa
     dim = (x, y)
     # stvaranje slikovnih elemenata
-    util.makePictureElements(app.dataPath, app.trainingPath, app.testPath, *dim)
-    app.frames[PreprocessPage].progressbar.step()
+    makePictureElements(app.dataPath, app.trainingPath, app.testPath, *dim)
+
+def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
+    # ako ne postoje folderi za treniranje i testiranje, stovre se, a
+    # ako postoje onda se njihov sadrzaj brise
+    if os.path.exists(pathToTrainingData):
+        util.clearDirectory(pathToTrainingData)
+    else:
+        train = r"data\trainingData"
+        os.mkdir(train)
+    if os.path.exists(pathToTestData):
+        util.clearDirectory(pathToTestData)
+    else:
+        test = r"data\testData"
+        os.mkdir(test)
+
+    # popis svih slika izvorne velicine
+    onlyFiles = [f for f in listdir(path) if isfile(join(path, f))]
+
+    # mijesanje slika
+    random.shuffle(onlyFiles)
+    # spremanje slika za treniranje
+    for f in range(round(0.7 * onlyFiles.__len__())):
+        fileName = path + "\\" + onlyFiles[f]
+        # normalna slika
+        im = cv.imread(fileName)
+        # # slika u sivim tonovima
+        # im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+        # spremanje slike
+        util.saveImage(im, dim, pathToTrainingData)
+        app.frames[PreprocessPage].progressbar.step()
+        app.update()
+
+    # spremanje ostalih slika
+    for f in range(round(0.7 * onlyFiles.__len__()), onlyFiles.__len__(), 1):
+        fileName = path + "\\" + onlyFiles[f]
+        im = cv.imread(fileName)
+        # im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+        util.saveImage(im, dim, pathToTestData)
+        app.frames[PreprocessPage].progressbar.step()
+        app.update()
 
 def selectImg():
     """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
@@ -496,7 +543,10 @@ def selectFolder(testOrTrain):
         app.console.see(tk.END)
 
 
+
+
 if __name__ == "__main__":
     app = App()
     # app.geometry("800x600")
     app.mainloop()
+

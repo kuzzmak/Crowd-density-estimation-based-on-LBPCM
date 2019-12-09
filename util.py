@@ -17,7 +17,6 @@ def saveImage(im_gray, dim, path):
     global picCounter
 
     for i in range(4):
-
         croppedImage = im_gray[i * dim[1]:(i + 1) * dim[1], i * dim[0]:(i + 1) * dim[0]]
         imName = path + "\\" + str(picCounter) + ".jpg"
         cv.imwrite(imName, croppedImage)
@@ -99,17 +98,3 @@ def makePicDims(image, stepSize, windowSize):
             end_point = (x + windowSize[0], y + windowSize[1])
             dims.append((start_point, end_point))
     return dims
-
-# if __name__ == "__main__":
-    # view1 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_001"
-    # view2 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_002"
-    # view3 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_003"
-    # view4 = r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_004"
-    #
-    #
-    # pathToTrainingData = r"data\trainingData"
-    # pathToTestData = r"data\testData"
-    # makePictureElements(view1, pathToTrainingData, pathToTestData, *(192, 144))
-    # makePictureElements(view2, pathToTrainingData, pathToTestData, *(192, 144))
-    # makePictureElements(view3, pathToTrainingData, pathToTestData, *(192, 144))
-    # makePictureElements(view4, pathToTrainingData, pathToTestData, *(192, 144))
