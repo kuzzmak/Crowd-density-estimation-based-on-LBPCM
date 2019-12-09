@@ -2,6 +2,7 @@
   <dictionary name="kuzmi">
     <words>
       <w>haralick</w>
+      <w>preprocess</w>
     </words>
   </dictionary>
 </component>

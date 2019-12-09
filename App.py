@@ -1,15 +1,14 @@
 import tkinter as tk
+from tkinter import filedialog
+from tkinter.ttk import Progressbar
 from os import listdir
 from os.path import isfile, join
 import os
-import os
-from tkinter import filedialog
 import cv2 as cv
 import numpy as np
 from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
-from tkinter.ttk import Progressbar
 import random
 
 # boja obruba celije
@@ -108,9 +107,9 @@ def nextCell():
     # ako nismo stigli do kraja slikovnog elementa
     if app.currCell < app.picDims.__len__():
         image = cv.imread(app.currPicPath)
+        app.currCell += 1
         # dohvat pocetne i krajnje tocke pojedine celije
         start_point, end_point = app.picDims[app.currCell]
-        app.currCell += 1
         # kopija slike kako celija ne bi ostala na slici nakon svake iteracije
         image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
         # stvaranje slike iz numpy arraya
@@ -128,7 +127,6 @@ def nextPic():
 
     # ako ima jos slikovnih elemenata
     if app.picCounter < len(app.trainPictures):
-        print(app.picCounter)
         app.picCounter += 1
         fileName = app.trainingPath + "/" + app.trainPictures[app.picCounter]
         image = cv.imread(fileName)
@@ -143,6 +141,7 @@ def nextPic():
         app.console.insert(tk.END, "----------------------------------------\n")
         app.console.see(tk.END)
 
+#TODO previous pic function
 
 class StartPage(tk.Frame):
 
@@ -301,9 +300,10 @@ class SlidingWindow(tk.Frame):
         buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=nextCell)
         buttonNextCell.grid(row=0, column=2, padx=5, pady=5)
 
-        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
-        #FIXME dodati mogucnost resetiranja slike na pcetak prilikom klika nazad
+        buttonReset = tk.Button(buttonFrame, text="Reset", command=resetCell)
+        buttonReset.grid(row=0, column=3, padx=5, pady=5)
 
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.grid(row=0, column=4, padx=5, pady=5)
 
 
@@ -363,6 +363,18 @@ class PreprocessPage(tk.Frame):
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(padx=10, pady=10)
 
+def resetCell():
+    app.currCell = 0
+    image = cv.imread(app.currPicPath)
+    # dohvat pocetne i krajnje tocke pojedine celije
+    start_point, end_point = app.picDims[app.currCell]
+    # kopija slike kako celija ne bi ostala na slici nakon svake iteracije
+    image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
+    # stvaranje slike iz numpy arraya
+    app.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+    # postavljanje slike u labelu
+    app.frames[SlidingWindow].labelPic.configure(image=app.img)
+    app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
 
 def process():
     # dohvat x, y dimenzija
@@ -414,6 +426,7 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
         app.update()
 
     app.trainPictures = [f for f in listdir(app.trainingPath)]
+    app.frames[PageInitialization].buttonSW['state'] = "normal"
 
 def selectImg():
     """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
