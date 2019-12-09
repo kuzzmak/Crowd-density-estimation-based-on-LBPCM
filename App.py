@@ -272,10 +272,10 @@ class SlidingWindow(tk.Frame):
         buttonFrame.pack(side="bottom", expand=True)
 
         buttonNextPicture = tk.Button(buttonFrame, text="Next pic", command=nextPic)
-        buttonNextPicture.grid(row=0, column=0, padx=5, pady=5)
+        buttonNextPicture.grid(row=0, column=1, padx=5, pady=5)
 
         buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic")
-        buttonPreviousPicture.grid(row=0, column=1, padx=5, pady=5)
+        buttonPreviousPicture.grid(row=0, column=0, padx=5, pady=5)
 
         buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=nextCell)
         buttonNextCell.grid(row=0, column=2, padx=5, pady=5)
