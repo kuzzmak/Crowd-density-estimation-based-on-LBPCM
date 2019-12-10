@@ -8,12 +8,18 @@ import Haralick
 
 class LBPCM:
 
-    def __init__(self, radius):
+    def __init__(self, radius, stepSize, windowSize):
         # udaljenost centralnog piksela
         self.radius = radius
+        # velicina pomaka udesno ili dolje
+        self.stepSize = stepSize
+        # velicina stranice kvadrata celije koja se mice po slici
+        self.windowSize = windowSize
         # broj piksela oko centralnog piksela
         self.no_points = 8 * radius
+        # kutovi za koje se racuna glcm
         self.angles = []
+        # lista vektora znacajki
         self.featureVectors = []
 
     # funkcija za stvaranje LBP-a odredjene slike
@@ -25,15 +31,15 @@ class LBPCM:
         return self.featureVectors
 
     def getFeatureVector(self, im_gray):
-        # velicina klizeceg prozora
-        xy = 64
-        windowSize = [xy, xy]
-        # velicina koraka
-        stepSize = xy // 2
-        # vektor znacajki
+        # # velicina klizeceg prozora
+        # xy = 64
+        # windowSize = [xy, xy]
+        # # velicina koraka
+        # stepSize = xy // 2
+        # # vektor znacajki
         featureVector = []
         # stvaranje vektora znacajki za svaku celiju slikovnog elementa
-        for im in util.sliding_window(self.getLBP(im_gray), stepSize, windowSize):
+        for im in util.sliding_window(self.getLBP(im_gray), self.stepSize, self.windowSize):
             # gray level co-occurence matrix
             glcm = self.getGLCM(im)
             # razred s harlickovim funkcijama
@@ -57,6 +63,15 @@ class LBPCM:
 
     def setAngles(self, angles):
         self.angles = angles
+
+    def setStepSize(self, stepSize):
+        self.stepSize = stepSize
+
+    def setWindowSize(self, windowSize):
+        self.windowSize= windowSize
+
+    def setRadius(self, radius):
+        self.radius = radius
 
     def calculateFeatureVectors(self, pathToTrainingData):
         # list svih slika u folderu

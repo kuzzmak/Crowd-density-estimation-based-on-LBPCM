@@ -54,12 +54,12 @@ class App(tk.Tk):
         self.testPath = ""
         # radijus LBP-a
         self.radius = 1
-        # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
-        self.lbpcm = LBPCM.LBPCM(self.radius)
         # velicina celije
         self.cellSize = [64, 64]
         # velicina koraka
         self.stepSize = 32
+        # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
+        self.lbpcm = LBPCM.LBPCM(self.radius, self.stepSize, self.cellSize) # stvaranje lbpcm s defaultnim vrijednostima
         # kutevi za glcm
         self.angles = []
         # trenutna slika na stranici za parametre
@@ -131,10 +131,10 @@ class App(tk.Tk):
         if self.picCounter < len(self.trainPictures):
             self.picCounter += 1
             fileName = self.trainingPath + "/" + self.trainPictures[self.picCounter]
+            self.currPicPath = fileName
             image = cv.imread(fileName)
             self.updateSlidingWindowImage(image)
             self.updateParameterFrame()
-            self.currPicPath = fileName
         else:
             self.console.insert(tk.END, "[WARNING] no more pictures remaining\n")
             self.console.insert(tk.END, "----------------------------------------\n")
@@ -151,11 +151,11 @@ class App(tk.Tk):
             self.picCounter -= 1
             # staza do sljedece slike
             fileName = self.trainingPath + "/" + self.trainPictures[self.picCounter]
+            self.currPicPath = fileName
             image = cv.imread(fileName)
             # azuriranje slike
             self.updateSlidingWindowImage(image)
             self.updateParameterFrame()
-            self.currPicPath = fileName
         else:
             self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
             self.console.insert(tk.END, "----------------------------------------\n")
@@ -408,6 +408,7 @@ class App(tk.Tk):
         entropy = haralick.entropy()
 
         self.frames[SlidingWindow].labelEntropyValue.configure(text=str(entropy))
+        self.update()
 
 
 # frames----------------------------------
