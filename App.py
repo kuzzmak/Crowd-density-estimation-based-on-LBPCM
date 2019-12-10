@@ -12,6 +12,7 @@ from skimage.feature import local_binary_pattern
 import random
 import Haralick
 import LBPCM
+from math import radians
 
 # TODO napraviti da se picDims updatea ako se ne izaberu pocetni folderi->ako je kliknuto odmah na preprocess
 
@@ -292,7 +293,9 @@ class App(tk.Tk):
             flag = False
 
         try:
-
+            self.angles = [radians(int(i)) for i in angles.split(",")]
+            self.lbpcm.setAngles(self.angles)
+            self.frames[SlidingWindow].labelAnglesListValue.configure(text=str(self.angles))
         except ValueError:
             self.console.insert(tk.END, "[ERROR] -- angles must be positive integers, eg. 45,90\n")
             self.console.see(tk.END)
@@ -588,35 +591,41 @@ class SlidingWindow(tk.Frame):
         parameterFrame = tk.Frame(self)
         parameterFrame.grid(row=1, column=1, padx=20, pady=20)
 
+        labelAnglesList = tk.Label(parameterFrame, text="Function values for angles(in rad): ")
+        labelAnglesList.grid(row=0, column=0, padx=10, pady=10)
+        
+        self.labelAnglesListValue = tk.Label(parameterFrame, text="")
+        self.labelAnglesListValue.grid(row=0, column=1, padx=10, pady=10)
+        
         labelCellNumber = tk.Label(parameterFrame, text="Cell num. ")
-        labelCellNumber.grid(row=0, column=0, padx=10, pady=10)
+        labelCellNumber.grid(row=1, column=0, padx=10, pady=10)
 
         self.labelCellNumberValue = tk.Label(parameterFrame, text="")
-        self.labelCellNumberValue.grid(row=0, column=1, padx=10, pady=10)
+        self.labelCellNumberValue.grid(row=1, column=1, padx=10, pady=10)
 
         labelContrast = tk.Label(parameterFrame, text="Contrast: ")
-        labelContrast.grid(row=1, column=0, padx=10, pady=10)
+        labelContrast.grid(row=2, column=0, padx=10, pady=10)
 
         self.labelContrastValue = tk.Label(parameterFrame, text="")
-        self.labelContrastValue.grid(row=1, column=1, padx=10, pady=10)
+        self.labelContrastValue.grid(row=2, column=1, padx=10, pady=10)
 
         labelEnergy = tk.Label(parameterFrame, text="Energy: ")
-        labelEnergy.grid(row=2, column=0, padx=10, pady=10)
+        labelEnergy.grid(row=3, column=0, padx=10, pady=10)
 
         self.labelEnergyValue = tk.Label(parameterFrame, text="")
-        self.labelEnergyValue.grid(row=2, column=1, padx=10, pady=10)
+        self.labelEnergyValue.grid(row=3, column=1, padx=10, pady=10)
 
         labelHomogeneity = tk.Label(parameterFrame, text="Homogeneity: ")
-        labelHomogeneity.grid(row=3, column=0, padx=10, pady=10)
+        labelHomogeneity.grid(row=4, column=0, padx=10, pady=10)
 
         self.labelHomogeneityValue = tk.Label(parameterFrame, text="")
-        self.labelHomogeneityValue.grid(row=3, column=1, padx=10, pady=10)
+        self.labelHomogeneityValue.grid(row=4, column=1, padx=10, pady=10)
 
         labelEntropy = tk.Label(parameterFrame, text="Entropy: ")
-        labelEntropy.grid(row=4, column=0, padx=10, pady=10)
+        labelEntropy.grid(row=5, column=0, padx=10, pady=10)
 
         self.labelEntropyValue = tk.Label(parameterFrame, text="")
-        self.labelEntropyValue.grid(row=4, column=1, padx=10, pady=10)
+        self.labelEntropyValue.grid(row=5, column=1, padx=10, pady=10)
 
 
 class PreprocessPage(tk.Frame):

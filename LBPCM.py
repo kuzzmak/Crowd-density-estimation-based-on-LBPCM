@@ -13,6 +13,7 @@ class LBPCM:
         self.radius = radius
         # broj piksela oko centralnog piksela
         self.no_points = 8 * radius
+        self.angles = []
         self.featureVectors = []
 
     # funkcija za stvaranje LBP-a odredjene slike
@@ -52,7 +53,10 @@ class LBPCM:
         return featureVector
 
     def getGLCM(self, image):
-        return greycomatrix(image.astype(int), [1], [0, np.pi / 2, np.pi, np.pi + np.pi / 2], levels=256)
+        return greycomatrix(image.astype(int), [1], self.angles, levels=256)
+
+    def setAngles(self, angles):
+        self.angles = angles
 
     def calculateFeatureVectors(self, pathToTrainingData):
         # list svih slika u folderu

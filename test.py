@@ -31,5 +31,8 @@
 #
 #     app = MonApp()
 #     app.mainloop()
+import math
+string = "45,90,135, 180"
 
-string = "45,90,135"
+temp = [math.radians(int(i)) for i in string.split(",")]
+print(str(temp))
