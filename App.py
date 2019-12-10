@@ -20,6 +20,7 @@ color = (255, 0, 0)
 # debljina crte celije
 thickness = 2
 
+
 # main class------------------------------
 class App(tk.Tk):
     def __init__(self, *args, **kwargs):
@@ -58,6 +59,8 @@ class App(tk.Tk):
         self.cellSize = [64, 64]
         # velicina koraka
         self.stepSize = 32
+        # kutevi za glcm
+        self.angles = []
         # trenutna slika na stranici za parametre
         self.currPicPar = [[]]
         # rjecnik svih stranica
@@ -81,7 +84,6 @@ class App(tk.Tk):
         self.testPictures = []
 
         for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow):
-
             frame = F(container, self)
 
             self.frames[F] = frame
@@ -263,7 +265,7 @@ class App(tk.Tk):
         # prikaz slike u odgovarajucoj labeli
         self.frames[ParameterSetting].labelLBPPic.configure(image=self.lbp)
 
-    def saveParameters(self, radius, cellSize, stepSize):
+    def saveParameters(self, radius, cellSize, stepSize, angles):
         """funkcija za spremanje parametara u razerd"""
 
         flag = True
@@ -286,6 +288,13 @@ class App(tk.Tk):
             self.stepSize = int(stepSize)
         except ValueError:
             self.console.insert(tk.END, "[ERROR] -- step must be positive integer\n")
+            self.console.see(tk.END)
+            flag = False
+
+        try:
+
+        except ValueError:
+            self.console.insert(tk.END, "[ERROR] -- angles must be positive integers, eg. 45,90\n")
             self.console.see(tk.END)
             flag = False
 
@@ -351,7 +360,7 @@ class App(tk.Tk):
             image = cv.imread(self.currPicPath)
             # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
             self.picDims = util.makePicDims(image, self.stepSize,
-                                           self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
+                                            self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
             self.updateSlidingWindowImage(image)
             self.updateParameterFrame()
 
@@ -372,25 +381,36 @@ class App(tk.Tk):
 
     def updateParameterFrame(self):
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
+        # trenutna slika
         image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
+        # dohvacanje pozicija trenutne celije
         picDims = self.picDims[self.currCell]
-        print(picDims)
+        # izlucivanje dijela slike koji priakzuje celija
         croppedImage = image[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
         # razred s haralickovim funkcijama
         haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
+        # prikaz kontrasta
         contrast = haralick.contrast()
-        print(contrast[0])
-        print(contrast[1])
-        print(contrast[2])
-        print(contrast[3])
 
+        self.frames[SlidingWindow].labelContrastValue.configure(text=str(contrast))
+
+        energy = haralick.energy()
+
+        self.frames[SlidingWindow].labelEnergyValue.configure(text=str(energy))
+
+        homogeneity = haralick.homogeneity()
+
+        self.frames[SlidingWindow].labelHomogeneityValue.configure(text=str(homogeneity))
+
+        entropy = haralick.entropy()
+
+        self.frames[SlidingWindow].labelEntropyValue.configure(text=str(entropy))
 
 
 # frames----------------------------------
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
-
         tk.Frame.__init__(self, parent)
 
         frame = tk.Frame(self)
@@ -407,7 +427,6 @@ class StartPage(tk.Frame):
 class PageInitialization(tk.Frame):
 
     def __init__(self, parent, controller):
-
         tk.Frame.__init__(self, parent)
         description = tk.Label(self, text="Here you select training and testing folder.")
         description.pack(padx=10, pady=10)
@@ -420,16 +439,19 @@ class PageInitialization(tk.Frame):
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
 
-        buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder", command=lambda: controller.selectFolder("train"))
+        buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder",
+                                         command=lambda: controller.selectFolder("train"))
         buttonSelectTraining.pack(padx=5, pady=10, fill="x")
 
         buttonSelectTest = tk.Button(buttonFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
         buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
-        buttonParameters = tk.Button(buttonFrame, text="Parameters", command=lambda: controller.show_frame(ParameterSetting))
+        buttonParameters = tk.Button(buttonFrame, text="Parameters",
+                                     command=lambda: controller.show_frame(ParameterSetting))
         buttonParameters.pack(padx=10, pady=10, fill="x")
 
-        self.buttonSW = tk.Button(buttonFrame, text="Sliding Window", state="disabled", command=lambda: controller.show_frame(SlidingWindow))
+        self.buttonSW = tk.Button(buttonFrame, text="Sliding Window", state="disabled",
+                                  command=lambda: controller.show_frame(SlidingWindow))
         self.buttonSW.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
@@ -441,7 +463,6 @@ class ParameterSetting(tk.Frame):
     """
 
     def __init__(self, parent, controller):
-
         tk.Frame.__init__(self, parent)
 
         description = tk.Label(self, text="Here you select parameters required for LBP.")
@@ -476,6 +497,16 @@ class ParameterSetting(tk.Frame):
         entryStepSize = tk.Entry(frame3)
         entryStepSize.pack(side="right")
 
+        frame31 = tk.Frame(self)
+        frame31.pack(padx=10, pady=10, expand=True)
+
+        labelAngles = tk.Label(frame31,
+                               text="Specify angles(in degrees) for which you'd like to \ncalculate co-occurence matrix(separate them by comma, eg. 45,90,135): ")
+        labelAngles.pack(side="left")
+
+        entryAngles = tk.Entry(frame31)
+        entryAngles.pack(side="right")
+
         labelRepresentation = tk.Label(self, text="Loaded image on the left and LBP on the right")
         labelRepresentation.pack()
 
@@ -497,8 +528,9 @@ class ParameterSetting(tk.Frame):
         frame5.pack(expand=True)
         # gumb za spremanje parametara LBP-a
         buttonSave = tk.Button(frame5, text="Save", command=lambda: controller.saveParameters(entryRadius.get(),
-                                                                                   entryCellSize.get(),
-                                                                                   entryStepSize.get()))
+                                                                                              entryCellSize.get(),
+                                                                                              entryStepSize.get(),
+                                                                                              entryAngles.get()))
         buttonSave.pack(padx=10, pady=5, side="left")
 
         buttonSelectPic = tk.Button(frame5, text="Select img", command=controller.selectImg)
@@ -517,7 +549,6 @@ class SlidingWindow(tk.Frame):
     """
 
     def __init__(self, parent, controller):
-
         tk.Frame.__init__(self, parent)
 
         mainFrame = tk.Frame(self)
@@ -553,6 +584,7 @@ class SlidingWindow(tk.Frame):
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.grid(row=0, column=4, padx=5, pady=5)
 
+        # dio stranice s izracunatim vrijednostima haralickovih funkcija
         parameterFrame = tk.Frame(self)
         parameterFrame.grid(row=1, column=1, padx=20, pady=20)
 
@@ -568,11 +600,28 @@ class SlidingWindow(tk.Frame):
         self.labelContrastValue = tk.Label(parameterFrame, text="")
         self.labelContrastValue.grid(row=1, column=1, padx=10, pady=10)
 
+        labelEnergy = tk.Label(parameterFrame, text="Energy: ")
+        labelEnergy.grid(row=2, column=0, padx=10, pady=10)
+
+        self.labelEnergyValue = tk.Label(parameterFrame, text="")
+        self.labelEnergyValue.grid(row=2, column=1, padx=10, pady=10)
+
+        labelHomogeneity = tk.Label(parameterFrame, text="Homogeneity: ")
+        labelHomogeneity.grid(row=3, column=0, padx=10, pady=10)
+
+        self.labelHomogeneityValue = tk.Label(parameterFrame, text="")
+        self.labelHomogeneityValue.grid(row=3, column=1, padx=10, pady=10)
+
+        labelEntropy = tk.Label(parameterFrame, text="Entropy: ")
+        labelEntropy.grid(row=4, column=0, padx=10, pady=10)
+
+        self.labelEntropyValue = tk.Label(parameterFrame, text="")
+        self.labelEntropyValue.grid(row=4, column=1, padx=10, pady=10)
+
 
 class PreprocessPage(tk.Frame):
 
     def __init__(self, parent, controller):
-
         tk.Frame.__init__(self, parent)
 
         labelDescription = tk.Label(self, text="Here you can specify parameters needed for data preprocessing")
@@ -581,8 +630,9 @@ class PreprocessPage(tk.Frame):
         frame1 = tk.Frame(self)
         frame1.pack()
 
-        buttonSelectFolder = tk.Button(frame1, text="Select data folder", command=lambda: [controller.selectDataFolder(),
-                                                                                           controller.updatePics()])
+        buttonSelectFolder = tk.Button(frame1, text="Select data folder",
+                                       command=lambda: [controller.selectDataFolder(),
+                                                        controller.updatePics()])
         buttonSelectFolder.pack(padx=10, pady=5)
 
         frame2 = tk.Frame(self)
@@ -631,4 +681,3 @@ if __name__ == "__main__":
     app = App()
     # app.geometry("800x600")
     app.mainloop()
-

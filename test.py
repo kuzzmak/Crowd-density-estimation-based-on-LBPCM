@@ -32,6 +32,4 @@
 #     app = MonApp()
 #     app.mainloop()
 
-picDim = ((0, 0), (63, 64))
-print(str(picDim[0][0]))
-print(str(picDim[1][0]))
+string = "45,90,135"
