@@ -129,17 +129,16 @@ def nextCell():
 def nextPic():
     """funkcija za dohvat sljedece slike"""
 
+    # resetiranje brojaca celije
+    app.currCell = 0
+
     # ako ima jos slikovnih elemenata
     if app.picCounter < len(app.trainPictures):
         app.picCounter += 1
         fileName = app.trainingPath + "/" + app.trainPictures[app.picCounter]
         image = cv.imread(fileName)
-        app.photo = ImageTk.PhotoImage(image=Image.fromarray(image))
-        app.frames[SlidingWindow].labelPic.configure(image=app.photo)
-        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
+        updateSlidingWindowImage(image)
         app.currPicPath = fileName
-        # resetiranje brojaca celije
-        app.currCell = 0
     else:
         app.console.insert(tk.END, "[WARNING] no more pictures remaining\n")
         app.console.insert(tk.END, "----------------------------------------\n")
@@ -148,18 +147,18 @@ def nextPic():
 def prevPic():
     """funkcija za dohvat prethodne slike"""
 
+    # resetriranje brojaca celije
+    app.currCell = 0
+
     # ako ima jos slikovnih elemenata
-    print(app.picCounter)
     if app.picCounter >= 1:
         app.picCounter -= 1
+        # staza do sljedece slike
         fileName = app.trainingPath + "/" + app.trainPictures[app.picCounter]
         image = cv.imread(fileName)
-        app.photo = ImageTk.PhotoImage(image=Image.fromarray(image))
-        app.frames[SlidingWindow].labelPic.configure(image=app.photo)
-        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
+        # azuriranje slike
+        updateSlidingWindowImage(image)
         app.currPicPath = fileName
-        # resetiranje brojaca celije
-        app.currCell = 0
     else:
         app.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
         app.console.insert(tk.END, "----------------------------------------\n")
@@ -529,6 +528,7 @@ def saveParameters(radius, cellSize, stepSize):
 def selectDataFolder():
     """ funkcija za odabir foldera koji se koristi za preprocesiranje
     """
+
     directory = filedialog.askdirectory()
 
     if directory != "":
@@ -542,15 +542,25 @@ def selectDataFolder():
         app.console.see(tk.END)
 
 def updatePics():
+    """ funkcija za azuriranje polja slika i maksimalne velicine progressbara
+        prilikom ucitavanja i procesiranja slika
+    """
+
     app.dataPictures = [f for f in listdir(app.dataPath)]
     app.frames[PreprocessPage].progressbar.configure(maximum=app.dataPictures.__len__())
 
 def updateSlidingWindowImage(image):
+    """ funkcija za azuriranje slike i informacija na sliding window stranici
+    """
+
+    # pocetna i zavrsna tocka trenutne celije
     start_point, end_point = app.picDims[app.currCell]
+    # stvaranje kopije izvorne slike kako celija ne bi ostala u slici prilikom kretanja na sljedecu celiju
     image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
+    # trenutno pamcenje slike da se ne izbrise
     app.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
     # postavaljanje imena slike u odgovarajucu labelu
-    app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[0])
+    app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
     # postavljanje slike
     app.frames[SlidingWindow].labelPic.configure(image=app.img)
 
