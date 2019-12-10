@@ -11,9 +11,6 @@ import util
 from skimage.feature import local_binary_pattern
 import random
 
-# TODO dodati funkciju koja osvjezava na potrebnim mjestima sliku koja se prikazuje u sliding window - da ima onaj
-#  crveni kvadrat
-
 # TODO napraviti da se picDims updatea ako se ne izaberu pocetni folderi->ako je kliknuto odmah na preprocess
 
 # boja obruba celije
@@ -102,9 +99,6 @@ class App(tk.Tk):
         """funkcija za postavljanje staze za testiranje"""
         self.testPath = path
 
-    def step(self):
-        self.frames[PreprocessPage].progressbar.step()
-
     def nextCell(self):
         """ funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu
         """
@@ -114,6 +108,7 @@ class App(tk.Tk):
             image = cv.imread(self.currPicPath)
             self.currCell += 1
             self.updateSlidingWindowImage(image)
+            self.updateParameterFrame()
         else:
             self.console.insert(tk.END, "[WARNING] no more cells remaining\n")
             self.console.insert(tk.END, "----------------------------------------\n")
@@ -131,6 +126,7 @@ class App(tk.Tk):
             fileName = self.trainingPath + "/" + self.trainPictures[self.picCounter]
             image = cv.imread(fileName)
             self.updateSlidingWindowImage(image)
+            self.updateParameterFrame()
             self.currPicPath = fileName
         else:
             self.console.insert(tk.END, "[WARNING] no more pictures remaining\n")
@@ -151,6 +147,7 @@ class App(tk.Tk):
             image = cv.imread(fileName)
             # azuriranje slike
             self.updateSlidingWindowImage(image)
+            self.updateParameterFrame()
             self.currPicPath = fileName
         else:
             self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
@@ -164,6 +161,7 @@ class App(tk.Tk):
         self.currCell = 0
         image = cv.imread(self.currPicPath)
         self.updateSlidingWindowImage(image)
+        self.updateParameterFrame()
         self.console.insert(tk.END, "[INFO] cell has been reset\n")
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
@@ -184,12 +182,12 @@ class App(tk.Tk):
             util.clearDirectory(pathToTrainingData)
         else:
             self.trainingPath = r"data\trainingData"
-            os.mkdir(app.trainingPath)
+            os.mkdir(self.trainingPath)
         if os.path.exists(pathToTestData):
             util.clearDirectory(pathToTestData)
         else:
             self.testPath = r"data\testData"
-            os.mkdir(app.testPath)
+            os.mkdir(self.testPath)
 
         # popis svih slika izvorne velicine
         onlyFiles = [f for f in listdir(path) if isfile(join(path, f))]
@@ -351,6 +349,7 @@ class App(tk.Tk):
             self.picDims = util.makePicDims(image, self.stepSize,
                                            self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
             self.updateSlidingWindowImage(image)
+            self.updateParameterFrame()
 
             # omogucavanje gumba sliding window
             self.frames[PageInitialization].buttonSW.config(state="normal")
@@ -367,6 +366,8 @@ class App(tk.Tk):
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
 
+    def updateParameterFrame(self):
+        self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -501,19 +502,24 @@ class SlidingWindow(tk.Frame):
     def __init__(self, parent, controller):
 
         tk.Frame.__init__(self, parent)
+
+        mainFrame = tk.Frame(self)
+        # mainFrame.pack(side="left")
+        mainFrame.grid(row=1, column=0, padx=20, pady=20)
+
         # opis stranice
         description = tk.Label(self, text="Here you can see sliding window method.")
-        description.pack()
+        description.grid(padx=10, pady=10, row=0, columnspan=2)
         # labela za ime slike
-        self.labelPicName = tk.Label(self, text="")
+        self.labelPicName = tk.Label(mainFrame, text="")
         self.labelPicName.pack()
         # labela za sliku
-        self.labelPic = tk.Label(self, text="No picture\nloaded")
+        self.labelPic = tk.Label(mainFrame, text="No picture\nloaded")
         self.labelPic.pack()
 
         # gumbi--------------------------
-        buttonFrame = tk.Frame(self)
-        buttonFrame.pack(side="bottom", expand=True)
+        buttonFrame = tk.Frame(mainFrame)
+        buttonFrame.pack(padx=20, pady=20, side="bottom", expand=True)
 
         buttonNextPicture = tk.Button(buttonFrame, text="Next pic", command=controller.nextPic)
         buttonNextPicture.grid(row=0, column=1, padx=5, pady=5)
@@ -529,6 +535,21 @@ class SlidingWindow(tk.Frame):
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.grid(row=0, column=4, padx=5, pady=5)
+
+        parameterFrame = tk.Frame(self)
+        parameterFrame.grid(row=1, column=1, padx=20, pady=20)
+
+        labelCellNumber = tk.Label(parameterFrame, text="Cell num. ")
+        labelCellNumber.grid(row=0, column=0, padx=10, pady=10)
+
+        self.labelCellNumberValue = tk.Label(parameterFrame, text="")
+        self.labelCellNumberValue.grid(row=0, column=1, padx=10, pady=10)
+
+        labelContrast = tk.Label(parameterFrame, text="Contrast: ")
+        labelContrast.grid(row=1, column=0, padx=10, pady=10)
+
+        self.labelContrastValue = tk.Label(parameterFrame, text="")
+        self.labelContrast.grid(row=1, column=1, padx=10, pady=10)
 
 
 class PreprocessPage(tk.Frame):
@@ -587,19 +608,6 @@ class PreprocessPage(tk.Frame):
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(padx=10, pady=10)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
