@@ -108,19 +108,12 @@ class App(tk.Tk):
 def nextCell():
     """ funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu
     """
+
     # ako nismo stigli do kraja slikovnog elementa
     if app.currCell < app.picDims.__len__() - 1:
         image = cv.imread(app.currPicPath)
         app.currCell += 1
-        # dohvat pocetne i krajnje tocke pojedine celije
-        start_point, end_point = app.picDims[app.currCell]
-        # kopija slike kako celija ne bi ostala na slici nakon svake iteracije
-        image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
-        # stvaranje slike iz numpy arraya
-        app.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
-        # postavljanje slike u labelu
-        app.frames[SlidingWindow].labelPic.configure(image=app.img)
-        app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
+        updateSlidingWindowImage(image)
     else:
         app.console.insert(tk.END, "[WARNING] no more cells remaining\n")
         app.console.insert(tk.END, "----------------------------------------\n")
@@ -384,21 +377,15 @@ class PreprocessPage(tk.Frame):
         buttonBack.pack(padx=10, pady=10)
 
 def resetCell():
+    """ funkcija za resetiranje celije na sliding window stranici
+    """
+
     app.currCell = 0
     image = cv.imread(app.currPicPath)
-    # dohvat pocetne i krajnje tocke pojedine celije
-    start_point, end_point = app.picDims[app.currCell]
-    # kopija slike kako celija ne bi ostala na slici nakon svake iteracije
-    image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
-    # stvaranje slike iz numpy arraya
-    app.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
-    # postavljanje slike u labelu
-    app.frames[SlidingWindow].labelPic.configure(image=app.img)
-    app.frames[SlidingWindow].labelPicName.configure(text=app.trainPictures[app.picCounter])
+    updateSlidingWindowImage(image)
     app.console.insert(tk.END, "[INFO] cell has been reset\n")
     app.console.insert(tk.END, "----------------------------------------\n")
     app.console.see(tk.END)
-
 
 def process():
     # dohvat x, y dimenzija
