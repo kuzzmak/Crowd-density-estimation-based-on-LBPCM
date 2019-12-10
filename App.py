@@ -10,6 +10,8 @@ from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
 import random
+import Haralick
+import LBPCM
 
 # TODO napraviti da se picDims updatea ako se ne izaberu pocetni folderi->ako je kliknuto odmah na preprocess
 
@@ -50,6 +52,8 @@ class App(tk.Tk):
         self.testPath = ""
         # radijus LBP-a
         self.radius = 1
+        # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
+        self.lbpcm = LBPCM.LBPCM(self.radius)
         # velicina celije
         self.cellSize = [64, 64]
         # velicina koraka
@@ -368,6 +372,19 @@ class App(tk.Tk):
 
     def updateParameterFrame(self):
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
+        image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
+        picDims = self.picDims[self.currCell]
+        print(picDims)
+        croppedImage = image[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
+        # razred s haralickovim funkcijama
+        haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
+        contrast = haralick.contrast()
+        print(contrast[0])
+        print(contrast[1])
+        print(contrast[2])
+        print(contrast[3])
+
+
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -549,7 +566,7 @@ class SlidingWindow(tk.Frame):
         labelContrast.grid(row=1, column=0, padx=10, pady=10)
 
         self.labelContrastValue = tk.Label(parameterFrame, text="")
-        self.labelContrast.grid(row=1, column=1, padx=10, pady=10)
+        self.labelContrastValue.grid(row=1, column=1, padx=10, pady=10)
 
 
 class PreprocessPage(tk.Frame):

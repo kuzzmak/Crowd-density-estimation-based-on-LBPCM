@@ -34,7 +34,7 @@ class LBPCM:
         # stvaranje vektora znacajki za svaku celiju slikovnog elementa
         for im in util.sliding_window(self.getLBP(im_gray), stepSize, windowSize):
             # gray level co-occurence matrix
-            glcm = greycomatrix(im.astype(int), [1], [0, np.pi / 2, np.pi, np.pi + np.pi / 2], levels=256)
+            glcm = self.getGLCM(im)
             # razred s harlickovim funkcijama
             hf = Haralick.HaralickFeatures(glcm)
             # energija
@@ -50,6 +50,9 @@ class LBPCM:
             entropy = hf.entropy()
             featureVector.extend(entropy)
         return featureVector
+
+    def getGLCM(self, image):
+        return greycomatrix(image.astype(int), [1], [0, np.pi / 2, np.pi, np.pi + np.pi / 2], levels=256)
 
     def calculateFeatureVectors(self, pathToTrainingData):
         # list svih slika u folderu
