@@ -133,7 +133,7 @@ class App(tk.Tk):
         self.currCell = 0
 
         # ako ima jos slikovnih elemenata
-        if self.picCounter < len(self.trainPictures):
+        if self.picCounter < len(self.processedDataPictures):
             self.picCounter += 1
             fileName = self.pathToProcessedData + "/" + self.processedDataPictures[self.picCounter]
             self.currPicPath = fileName
@@ -216,7 +216,7 @@ class App(tk.Tk):
         # omogucavanje gumba za oznacavanje slika
         self.frames[PageInitialization].buttonDataAnnotation["state"] = "normal"
 
-        self.currPicPath = self.pathToProcessedData + "/" +  self.processedDataPictures[0]
+        self.currPicPath = self.pathToProcessedData + "/" + self.processedDataPictures[0]
         image = cv.imread(self.currPicPath)
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
         self.picDims = util.makePicDims(image, self.stepSize,
@@ -413,6 +413,28 @@ class App(tk.Tk):
         self.frames[SlidingWindow].labelEntropyValue.configure(text=str(entropy))
         self.update()
 
+    def selectProcessedDataFolder(self):
+        try:
+            filename = filedialog.askdirectory()
+            self.pathToProcessedData = filename
+            self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
+            self.frames[PageInitialization].buttonSW["state"] = "normal"
+
+            self.currPicPath = self.pathToProcessedData + "/" + self.processedDataPictures[0]
+            image = cv.imread(self.currPicPath)
+            # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
+            self.picDims = util.makePicDims(image, self.stepSize,
+                                            self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
+            self.updateSlidingWindowImage(image)
+            self.updateParameterFrame()
+
+            self.console.insert(tk.END, "[INFO] processed data folder path set: " + filename + "\n")
+            self.console.insert(tk.END, "[INFO] loaded " + str(self.processedDataPictures.__len__()) + " processed pictures\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+        except AttributeError:
+            pass
+
     def updateDataAnnotationFrame(self):
         self.frames[DataAnnotation].labelPic.configure()
 
@@ -448,6 +470,9 @@ class PageInitialization(tk.Frame):
                                      command=lambda: controller.show_frame(PreprocessPage))
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
+
+        buttonSelectProcessedData = tk.Button(buttonFrame, text="Processed data", command=controller.selectProcessedDataFolder)
+        buttonSelectProcessedData.pack(padx=5, pady=10, fill="x")
 
         buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder",
                                          command=lambda: controller.selectFolder("train"))
