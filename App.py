@@ -24,6 +24,7 @@ thickness = 2
 
 # main class------------------------------
 class App(tk.Tk):
+
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
@@ -84,7 +85,7 @@ class App(tk.Tk):
         # polje imena slika za testiranje
         self.testPictures = []
 
-        for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow):
+        for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow, DataAnnotation):
             frame = F(container, self)
 
             self.frames[F] = frame
@@ -450,6 +451,9 @@ class PageInitialization(tk.Frame):
         buttonSelectTest = tk.Button(buttonFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
         buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
+        buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation", command=lambda: controller.show_frame(DataAnnotation))
+        buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
+
         buttonParameters = tk.Button(buttonFrame, text="Parameters",
                                      command=lambda: controller.show_frame(ParameterSetting))
         buttonParameters.pack(padx=10, pady=10, fill="x")
@@ -685,6 +689,39 @@ class PreprocessPage(tk.Frame):
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(padx=10, pady=10)
+
+
+class DataAnnotation(tk.Frame):
+    """ razred za oznacavanje pripadnosti pojedinog slikovnog elementa odredjenom razredu gustoce
+    """
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.imageNameFrame = tk.Frame(self)
+        self.imageNameFrame.pack()
+
+        self.picFrame = tk.Frame(self)
+        self.picFrame.pack()
+
+        buttonFrame = tk.Frame(self)
+        buttonFrame.pack()
+
+        # gumbi
+        buttonZero = tk.Button(buttonFrame, text="No flow")
+        buttonZero.grid(row=0, column=0, padx=10, pady=10)
+
+        buttonFreeFlow = tk.Button(buttonFrame, text="Free Flow")
+        buttonFreeFlow.grid(row=0, column=1, padx=10, pady=10)
+
+        buttonRestrictedFlow = tk.Button(buttonFrame, text="Restricted flow")
+        buttonRestrictedFlow.grid(row=0, column=2, padx=10, pady=10)
+
+        buttonDenseFlow = tk.Button(buttonFrame, text="Dense flow")
+        buttonDenseFlow.grid(row=0, column=3, padx=10, pady=10)
+
+        buttonJammedFlow = tk.Button(buttonFrame, text="Jammed flow")
+        buttonJammedFlow.grid(row=0, column=4, padx=10, pady=10)
 
 
 if __name__ == "__main__":
