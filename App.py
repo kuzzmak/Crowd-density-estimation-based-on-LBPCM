@@ -50,10 +50,6 @@ class App(tk.Tk):
         labelConsole = tk.Label(self, text="Console window")
         labelConsole.pack(side="bottom")
 
-        # staza do slika za treniranje
-        self.trainingPath = ""
-        # staza do slika za testiranje
-        self.testPath = ""
         # radijus LBP-a
         self.radius = 1
         # velicina celije
@@ -88,6 +84,10 @@ class App(tk.Tk):
         self.testPictures = []
         # brojac za slike kod oznacavanja
         self.dataAnnotationCounter = 0
+        # staza do procesiranih slika
+        self.pathToProcessedData = r"data\processedData"
+        # lista imena procesiranih slika
+        self.processedDataPictures = []
 
         for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow, DataAnnotation):
             frame = F(container, self)
@@ -135,7 +135,7 @@ class App(tk.Tk):
         # ako ima jos slikovnih elemenata
         if self.picCounter < len(self.trainPictures):
             self.picCounter += 1
-            fileName = self.trainingPath + "/" + self.trainPictures[self.picCounter]
+            fileName = self.pathToProcessedData + "/" + self.processedDataPictures[self.picCounter]
             self.currPicPath = fileName
             image = cv.imread(fileName)
             self.updateSlidingWindowImage(image)
@@ -155,7 +155,7 @@ class App(tk.Tk):
         if self.picCounter >= 1:
             self.picCounter -= 1
             # staza do sljedece slike
-            fileName = self.trainingPath + "/" + self.trainPictures[self.picCounter]
+            fileName = self.pathToProcessedData + "/" + self.processedDataPictures[self.picCounter]
             self.currPicPath = fileName
             image = cv.imread(fileName)
             # azuriranje slike
@@ -185,32 +185,45 @@ class App(tk.Tk):
         # dimenzija svakog slikovnog elementa
         dim = (x, y)
         # stvaranje slikovnih elemenata
-        self.makePictureElements(self.dataPath, r"data\processedData", *dim)
+        self.makePictureElements(dim)
 
-    def makePictureElements(self, pathToData, pathToProcessedData, *dim):
+    def makePictureElements(self, dim):
 
-        if os.path.exists(pathToProcessedData):
-            util.clearDirectory(pathToProcessedData)
+        if os.path.exists(self.pathToProcessedData):
+            util.clearDirectory(self.pathToProcessedData)
         else:
-            os.mkdir(pathToProcessedData)
+            os.mkdir(self.pathToProcessedData)
 
         # popis svih slika izvorne velicine
-        onlyFiles = [f for f in listdir(pathToData) if isfile(join(pathToData, f))]
+        onlyFiles = [f for f in listdir(self.dataPath)]
 
         # mijesanje slika
         random.shuffle(onlyFiles)
         # spremanje slika za treniranje
         for f in onlyFiles:
-            fileName = pathToData + "/" + f
+            fileName = self.dataPath + "/" + f
             # normalna slika
             im = cv.imread(fileName)
             # # slika u sivim tonovima
             im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
             # spremanje slike
-            util.saveImage(im_gray, dim, pathToProcessedData)
+            util.saveImage(im_gray, self.pathToProcessedData, dim)
             self.dataAnnotationCounter += 1
             self.frames[PreprocessPage].progressbar.step()
             self.update()
+
+        self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
+        # omogucavanje gumba za oznacavanje slika
+        self.frames[PageInitialization].buttonDataAnnotation["state"] = "normal"
+
+        self.currPicPath = self.pathToProcessedData + "/" +  self.processedDataPictures[0]
+        image = cv.imread(self.currPicPath)
+        # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
+        self.picDims = util.makePicDims(image, self.stepSize,
+                                        self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
+        self.updateSlidingWindowImage(image)
+        self.updateParameterFrame()
+
 
         # self.trainPictures = [f for f in listdir(self.trainingPath)]
         # self.frames[PageInitialization].buttonSW['state'] = "normal"
@@ -333,7 +346,7 @@ class App(tk.Tk):
         # trenutno pamcenje slike da se ne izbrise
         self.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
         # postavaljanje imena slike u odgovarajucu labelu
-        self.frames[SlidingWindow].labelPicName.configure(text=self.trainPictures[self.picCounter])
+        self.frames[SlidingWindow].labelPicName.configure(text=self.processedDataPictures[self.picCounter])
         # postavljanje slike
         self.frames[SlidingWindow].labelPic.configure(image=self.img)
 
@@ -371,9 +384,6 @@ class App(tk.Tk):
             self.console.insert(tk.END, "[INFO] loaded " + str(self.testPictures.__len__()) + " test pictures\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
-
-        if self.testPath != "" and self.trainingPath != "":
-            self.frames[PageInitialization].buttonDataAnnotation["state"] = "normal"
 
     def updateParameterFrame(self):
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))

@@ -13,7 +13,7 @@ ratio = 0.7
 picCounter = 0
 
 # funkcija za rezanje slike u 4 dijela i spremanje
-def saveImage(im, dim, path):
+def saveImage(im, path, dim):
     global picCounter
 
     for i in range(4):
