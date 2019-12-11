@@ -15,7 +15,6 @@ import LBPCM
 from math import radians
 from math import pi
 
-# TODO napraviti da se picDims updatea ako se ne izaberu pocetni folderi->ako je kliknuto odmah na preprocess
 
 # boja obruba celije
 color = (255, 0, 0)
@@ -88,6 +87,8 @@ class App(tk.Tk):
         self.pathToProcessedData = r"data\processedData"
         # lista imena procesiranih slika
         self.processedDataPictures = []
+        # rjecnik s oznacenim slikama
+        self.labelDictionary = {}
 
         for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow, DataAnnotation):
             frame = F(container, self)
@@ -461,12 +462,24 @@ class App(tk.Tk):
             self.console.see(tk.END)
 
     def annotate(self, label):
+        """ funkcija za stvaranje oznake pojedine slke i spremanje u rjecnik i datoteku
+        """
+
+        # ime slike
         picName = self.processedDataPictures[self.dataAnnotationCounter]
+        # dodijeljena labela
         saveString = picName + ":" + label + "\n"
-        self.console.insert(tk.END, "string to save: " + saveString)
+        self.labelDictionary[picName] = label
+        self.console.insert(tk.END, str(self.labelDictionary) + "\n")
         self.console.see(tk.END)
-        self.dataAnnotationCounter += 1
-        self.updateDataAnnotationFrame()
+        # ako smo dosli do zadnje onda se staje
+        if self.dataAnnotationCounter < self.processedDataPictures.__len__():
+            self.dataAnnotationCounter += 1
+            self.updateDataAnnotationFrame()
+        else:
+            self.console.insert(tk.END, "[INFO] all pictures labeled\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
 
 # frames----------------------------------
 class StartPage(tk.Frame):

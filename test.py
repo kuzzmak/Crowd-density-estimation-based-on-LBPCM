@@ -32,11 +32,23 @@
 #     app = MonApp()
 #     app.mainloop()
 
-f = open("test.txt", "w")
+# f = open("test.txt", "w")
+#
+# row1 = "pic1.jpg:1\n"
+# row2 = "pic2.jpg:2\n"
+#
+#
+# f.write(row1)
+# f.write(row2)
 
-row1 = "pic1.jpg:1\n"
-row2 = "pic2.jpg:2\n"
+dic = {}
 
+dic["pic1"] = 0
+dic["pic2"] = 2
+dic["pic3"] = 1
 
-f.write(row1)
-f.write(row2)
+print(dic)
+
+dic["pic2"] = 0
+
+print(dic)
