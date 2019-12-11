@@ -31,8 +31,12 @@
 #
 #     app = MonApp()
 #     app.mainloop()
-import math
-string = "45,90,135, 180"
 
-temp = [math.radians(int(i)) for i in string.split(",")]
-print(str(temp))
+f = open("test.txt", "w")
+
+row1 = "pic1.jpg:1\n"
+row2 = "pic2.jpg:2\n"
+
+
+f.write(row1)
+f.write(row2)

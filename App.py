@@ -436,8 +436,37 @@ class App(tk.Tk):
             pass
 
     def updateDataAnnotationFrame(self):
-        self.frames[DataAnnotation].labelPic.configure()
+        """ funkcija za azuriranje stranice za oznacavanje slika
+        """
 
+        # staza do trenutne slike
+        imagePath = self.pathToProcessedData + "/" + self.processedDataPictures[self.dataAnnotationCounter]
+        image = cv.imread(imagePath)
+        self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+        # postavljanje slike u labelu
+        self.frames[DataAnnotation].labelPic.configure(image=self.im)
+        # postavljanje imena slike u labelu
+        self.frames[DataAnnotation].labelImageName.configure(text=self.processedDataPictures[self.dataAnnotationCounter])
+
+    def prevPicAnnotation(self):
+        """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
+        """
+
+        if self.dataAnnotationCounter >= 1:
+            self.dataAnnotationCounter -= 1
+            self.updateDataAnnotationFrame()
+        else:
+            self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+
+    def annotate(self, label):
+        picName = self.processedDataPictures[self.dataAnnotationCounter]
+        saveString = picName + ":" + label + "\n"
+        self.console.insert(tk.END, "string to save: " + saveString)
+        self.console.see(tk.END)
+        self.dataAnnotationCounter += 1
+        self.updateDataAnnotationFrame()
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -481,8 +510,8 @@ class PageInitialization(tk.Frame):
         buttonSelectTest = tk.Button(buttonFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
         buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
-        self.buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation", state="disabled",
-                                              command=lambda: controller.show_frame(DataAnnotation))
+        self.buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation",
+                                              command=lambda: [controller.show_frame(DataAnnotation), controller.updateDataAnnotationFrame()])
 
         self.buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
 
@@ -740,25 +769,25 @@ class DataAnnotation(tk.Frame):
         buttonFrame.pack()
 
         # gumbi
-        buttonZero = tk.Button(buttonFrame, text="No flow")
+        buttonZero = tk.Button(buttonFrame, text="No flow", command=lambda: controller.annotate('0'))
         buttonZero.grid(row=0, column=0, padx=10, pady=10)
 
-        buttonFreeFlow = tk.Button(buttonFrame, text="Free Flow")
+        buttonFreeFlow = tk.Button(buttonFrame, text="Free Flow", command=lambda: controller.annotate('1'))
         buttonFreeFlow.grid(row=0, column=1, padx=10, pady=10)
 
-        buttonRestrictedFlow = tk.Button(buttonFrame, text="Restricted flow")
+        buttonRestrictedFlow = tk.Button(buttonFrame, text="Restricted flow", command=lambda: controller.annotate('2'))
         buttonRestrictedFlow.grid(row=0, column=2, padx=10, pady=10)
 
-        buttonDenseFlow = tk.Button(buttonFrame, text="Dense flow")
+        buttonDenseFlow = tk.Button(buttonFrame, text="Dense flow", command=lambda: controller.annotate('3'))
         buttonDenseFlow.grid(row=0, column=3, padx=10, pady=10)
 
-        buttonJammedFlow = tk.Button(buttonFrame, text="Jammed flow")
+        buttonJammedFlow = tk.Button(buttonFrame, text="Jammed flow", command=lambda: controller.annotate('4'))
         buttonJammedFlow.grid(row=0, column=4, padx=10, pady=10)
 
         frameNav = tk.Frame(self)
         frameNav.pack(padx=10, pady=10)
 
-        buttonPreviousPic = tk.Button(frameNav, text="Prev pic")
+        buttonPreviousPic = tk.Button(frameNav, text="Prev pic", command=controller.prevPicAnnotation)
         buttonPreviousPic.grid(row=0, column=0, padx=10, pady=10)
 
         buttonSave = tk.Button(frameNav, text="Save")
