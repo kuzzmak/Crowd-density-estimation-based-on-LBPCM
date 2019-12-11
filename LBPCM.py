@@ -8,7 +8,7 @@ import Haralick
 
 class LBPCM:
 
-    def __init__(self, radius, stepSize, windowSize):
+    def __init__(self, radius, stepSize, windowSize, angles):
         # udaljenost centralnog piksela
         self.radius = radius
         # velicina pomaka udesno ili dolje
@@ -18,7 +18,7 @@ class LBPCM:
         # broj piksela oko centralnog piksela
         self.no_points = 8 * radius
         # kutovi za koje se racuna glcm
-        self.angles = []
+        self.angles = angles
         # lista vektora znacajki
         self.featureVectors = []
 

@@ -13,6 +13,7 @@ import random
 import Haralick
 import LBPCM
 from math import radians
+from math import pi
 
 # TODO napraviti da se picDims updatea ako se ne izaberu pocetni folderi->ako je kliknuto odmah na preprocess
 
@@ -59,10 +60,11 @@ class App(tk.Tk):
         self.cellSize = [64, 64]
         # velicina koraka
         self.stepSize = 32
-        # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
-        self.lbpcm = LBPCM.LBPCM(self.radius, self.stepSize, self.cellSize) # stvaranje lbpcm s defaultnim vrijednostima
         # kutevi za glcm
-        self.angles = []
+        self.angles = [pi / 4, pi / 2, pi - pi / 4]
+        # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
+        self.lbpcm = LBPCM.LBPCM(self.radius, self.stepSize, self.cellSize,
+                                 self.angles)  # stvaranje lbpcm s defaultnim vrijednostima
         # trenutna slika na stranici za parametre
         self.currPicPar = [[]]
         # rjecnik svih stranica
@@ -84,6 +86,8 @@ class App(tk.Tk):
         self.trainPictures = []
         # polje imena slika za testiranje
         self.testPictures = []
+        # brojac za slike kod oznacavanja
+        self.dataAnnotationCounter = 0
 
         for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow, DataAnnotation):
             frame = F(container, self)
@@ -181,50 +185,35 @@ class App(tk.Tk):
         # dimenzija svakog slikovnog elementa
         dim = (x, y)
         # stvaranje slikovnih elemenata
-        self.makePictureElements(self.dataPath, self.trainingPath, self.testPath, *dim)
+        self.makePictureElements(self.dataPath, r"data\processedData", *dim)
 
-    def makePictureElements(self, path, pathToTrainingData, pathToTestData, *dim):
-        # ako ne postoje folderi za treniranje i testiranje, stovre se, a
-        # ako postoje onda se njihov sadrzaj brise
-        if os.path.exists(pathToTrainingData):
-            util.clearDirectory(pathToTrainingData)
+    def makePictureElements(self, pathToData, pathToProcessedData, *dim):
+
+        if os.path.exists(pathToProcessedData):
+            util.clearDirectory(pathToProcessedData)
         else:
-            self.trainingPath = r"data\trainingData"
-            os.mkdir(self.trainingPath)
-        if os.path.exists(pathToTestData):
-            util.clearDirectory(pathToTestData)
-        else:
-            self.testPath = r"data\testData"
-            os.mkdir(self.testPath)
+            os.mkdir(pathToProcessedData)
 
         # popis svih slika izvorne velicine
-        onlyFiles = [f for f in listdir(path) if isfile(join(path, f))]
+        onlyFiles = [f for f in listdir(pathToData) if isfile(join(pathToData, f))]
 
         # mijesanje slika
         random.shuffle(onlyFiles)
         # spremanje slika za treniranje
-        for f in range(round(0.7 * onlyFiles.__len__())):
-            fileName = path + "/" + onlyFiles[f]
+        for f in onlyFiles:
+            fileName = pathToData + "/" + f
             # normalna slika
             im = cv.imread(fileName)
             # # slika u sivim tonovima
             im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
             # spremanje slike
-            util.saveImage(im_gray, dim, self.trainingPath)
+            util.saveImage(im_gray, dim, pathToProcessedData)
+            self.dataAnnotationCounter += 1
             self.frames[PreprocessPage].progressbar.step()
             self.update()
 
-        # spremanje ostalih slika
-        for f in range(round(0.7 * onlyFiles.__len__()), onlyFiles.__len__(), 1):
-            fileName = path + "/" + onlyFiles[f]
-            im = cv.imread(fileName)
-            im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-            util.saveImage(im_gray, dim, self.testPath)
-            self.frames[PreprocessPage].progressbar.step()
-            self.update()
-
-        self.trainPictures = [f for f in listdir(self.trainingPath)]
-        self.frames[PageInitialization].buttonSW['state'] = "normal"
+        # self.trainPictures = [f for f in listdir(self.trainingPath)]
+        # self.frames[PageInitialization].buttonSW['state'] = "normal"
 
     def selectImg(self):
         """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
@@ -383,6 +372,9 @@ class App(tk.Tk):
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
 
+        if self.testPath != "" and self.trainingPath != "":
+            self.frames[PageInitialization].buttonDataAnnotation["state"] = "normal"
+
     def updateParameterFrame(self):
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
         # trenutna slika
@@ -410,6 +402,9 @@ class App(tk.Tk):
 
         self.frames[SlidingWindow].labelEntropyValue.configure(text=str(entropy))
         self.update()
+
+    def updateDataAnnotationFrame(self):
+        self.frames[DataAnnotation].labelPic.configure()
 
 
 # frames----------------------------------
@@ -451,8 +446,10 @@ class PageInitialization(tk.Frame):
         buttonSelectTest = tk.Button(buttonFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
         buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
-        buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation", command=lambda: controller.show_frame(DataAnnotation))
-        buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
+        self.buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation", state="disabled",
+                                              command=lambda: controller.show_frame(DataAnnotation))
+
+        self.buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
 
         buttonParameters = tk.Button(buttonFrame, text="Parameters",
                                      command=lambda: controller.show_frame(ParameterSetting))
@@ -598,10 +595,10 @@ class SlidingWindow(tk.Frame):
 
         labelAnglesList = tk.Label(parameterFrame, text="Function values for angles(in rad): ")
         labelAnglesList.grid(row=0, column=0, padx=10, pady=10)
-        
+
         self.labelAnglesListValue = tk.Label(parameterFrame, text="")
         self.labelAnglesListValue.grid(row=0, column=1, padx=10, pady=10)
-        
+
         labelCellNumber = tk.Label(parameterFrame, text="Cell num. ")
         labelCellNumber.grid(row=1, column=0, padx=10, pady=10)
 
@@ -698,11 +695,11 @@ class DataAnnotation(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        self.imageNameFrame = tk.Frame(self)
-        self.imageNameFrame.pack()
+        self.labelImageName = tk.Label(self, text="")
+        self.labelImageName.pack(padx=10, pady=10)
 
-        self.picFrame = tk.Frame(self)
-        self.picFrame.pack()
+        self.labelPic = tk.Label(self, text="")
+        self.labelPic.pack(padx=10, pady=10)
 
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
@@ -722,6 +719,18 @@ class DataAnnotation(tk.Frame):
 
         buttonJammedFlow = tk.Button(buttonFrame, text="Jammed flow")
         buttonJammedFlow.grid(row=0, column=4, padx=10, pady=10)
+
+        frameNav = tk.Frame(self)
+        frameNav.pack(padx=10, pady=10)
+
+        buttonPreviousPic = tk.Button(frameNav, text="Prev pic")
+        buttonPreviousPic.grid(row=0, column=0, padx=10, pady=10)
+
+        buttonSave = tk.Button(frameNav, text="Save")
+        buttonSave.grid(row=0, column=1, padx=10, pady=10)
+
+        buttonBack = tk.Button(frameNav, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.grid(row=0, column=2, padx=10, pady=10)
 
 
 if __name__ == "__main__":
