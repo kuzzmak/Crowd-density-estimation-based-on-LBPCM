@@ -415,9 +415,14 @@ class App(tk.Tk):
         self.update()
 
     def selectProcessedDataFolder(self):
-        try:
-            filename = filedialog.askdirectory()
-            self.pathToProcessedData = filename
+        """ funkcija za odabir folders s vec procesiranim slikama
+        """
+
+        directory = filedialog.askdirectory()
+
+        if directory != "":
+
+            self.pathToProcessedData = directory
             self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
             self.frames[PageInitialization].buttonSW["state"] = "normal"
 
@@ -429,12 +434,17 @@ class App(tk.Tk):
             self.updateSlidingWindowImage(image)
             self.updateParameterFrame()
 
-            self.console.insert(tk.END, "[INFO] processed data folder path set: " + filename + "\n")
+            # omogucavanje gumba za oznacavanje slika
+            self.frames[PageInitialization].buttonDataAnnotation['state'] = "normal"
+
+            self.console.insert(tk.END, "[INFO] processed data folder path set: " + directory + "\n")
             self.console.insert(tk.END, "[INFO] loaded " + str(self.processedDataPictures.__len__()) + " processed pictures\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
-        except AttributeError:
-            pass
+        else:
+            self.console.insert(tk.END, "[WARNING] you did not select folder\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
 
     def updateDataAnnotationFrame(self):
         """ funkcija za azuriranje stranice za oznacavanje slika
@@ -539,7 +549,7 @@ class PageInitialization(tk.Frame):
         buttonSelectTest = tk.Button(buttonFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
         buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
-        self.buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation",
+        self.buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation", state="disabled",
                                               command=lambda: [controller.show_frame(DataAnnotation), controller.updateDataAnnotationFrame()])
 
         self.buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
