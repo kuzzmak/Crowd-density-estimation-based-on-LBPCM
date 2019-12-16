@@ -40,15 +40,3 @@
 #
 # f.write(row1)
 # f.write(row2)
-
-dic = {}
-
-dic["pic1"] = 0
-dic["pic2"] = 2
-dic["pic3"] = 1
-
-print(dic)
-
-dic["pic2"] = 0
-
-print(dic)

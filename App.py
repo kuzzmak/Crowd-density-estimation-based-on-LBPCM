@@ -470,16 +470,32 @@ class App(tk.Tk):
         # dodijeljena labela
         saveString = picName + ":" + label + "\n"
         self.labelDictionary[picName] = label
-        self.console.insert(tk.END, str(self.labelDictionary) + "\n")
-        self.console.see(tk.END)
+
         # ako smo dosli do zadnje onda se staje
         if self.dataAnnotationCounter < self.processedDataPictures.__len__():
             self.dataAnnotationCounter += 1
             self.updateDataAnnotationFrame()
+            self.console.insert(tk.END, saveString + "\n")
+            self.console.see(tk.END)
         else:
             self.console.insert(tk.END, "[INFO] all pictures labeled\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
+
+    def saveAnnotedData(self):
+        """ funkcija za spremanje rjecnika slika i oznaka
+        """
+
+        path = r"data\labeledData.txt"
+        f = open(path, "w")
+        for i in self.labelDictionary:
+            row = str(i) + ":" + str(self.labelDictionary[i]) + "\n"
+            f.write(row)
+        f.close()
+
+        self.console.insert(tk.END, "[INFO] labels and images saved to: " + path + "\n")
+        self.console.insert(tk.END, "----------------------------------------\n")
+        self.console.see(tk.END)
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -803,7 +819,7 @@ class DataAnnotation(tk.Frame):
         buttonPreviousPic = tk.Button(frameNav, text="Prev pic", command=controller.prevPicAnnotation)
         buttonPreviousPic.grid(row=0, column=0, padx=10, pady=10)
 
-        buttonSave = tk.Button(frameNav, text="Save")
+        buttonSave = tk.Button(frameNav, text="Save", command=controller.saveAnnotedData)
         buttonSave.grid(row=0, column=1, padx=10, pady=10)
 
         buttonBack = tk.Button(frameNav, text="Back", command=lambda: controller.show_frame(PageInitialization))
