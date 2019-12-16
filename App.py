@@ -15,10 +15,9 @@ import LBPCM
 from math import radians
 from math import pi
 
-
 # boja obruba celije
 color = (255, 0, 0)
-# debljina crte celije
+# debljina crte putujuce celije
 thickness = 2
 
 
@@ -189,6 +188,10 @@ class App(tk.Tk):
         self.makePictureElements(dim)
 
     def makePictureElements(self, dim):
+        """ funkcija za stvaranje slikovnih elemenata od slika koje se nalaze u data folderu,
+            svaki slikovni element je velicine dim i sprema se u processeddata folder nakon
+            sto je pretvoren u nijanse sive
+        """
 
         if os.path.exists(self.pathToProcessedData):
             util.clearDirectory(self.pathToProcessedData)
@@ -224,7 +227,6 @@ class App(tk.Tk):
                                         self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
         self.updateSlidingWindowImage(image)
         self.updateParameterFrame()
-
 
         # self.trainPictures = [f for f in listdir(self.trainingPath)]
         # self.frames[PageInitialization].buttonSW['state'] = "normal"
@@ -387,6 +389,9 @@ class App(tk.Tk):
             self.console.see(tk.END)
 
     def updateParameterFrame(self):
+        """ funkcija za azuriranje parametara na stranici s LBP-om
+        """
+
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
         # trenutna slika
         image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
@@ -398,20 +403,17 @@ class App(tk.Tk):
         haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
         # prikaz kontrasta
         contrast = haralick.contrast()
-
         self.frames[SlidingWindow].labelContrastValue.configure(text=str(contrast))
 
         energy = haralick.energy()
-
         self.frames[SlidingWindow].labelEnergyValue.configure(text=str(energy))
 
         homogeneity = haralick.homogeneity()
-
         self.frames[SlidingWindow].labelHomogeneityValue.configure(text=str(homogeneity))
 
         entropy = haralick.entropy()
-
         self.frames[SlidingWindow].labelEntropyValue.configure(text=str(entropy))
+
         self.update()
 
     def selectProcessedDataFolder(self):
@@ -420,6 +422,7 @@ class App(tk.Tk):
 
         directory = filedialog.askdirectory()
 
+        # ako je izabran neki direktorij
         if directory != "":
 
             self.pathToProcessedData = directory
@@ -438,7 +441,8 @@ class App(tk.Tk):
             self.frames[PageInitialization].buttonDataAnnotation['state'] = "normal"
 
             self.console.insert(tk.END, "[INFO] processed data folder path set: " + directory + "\n")
-            self.console.insert(tk.END, "[INFO] loaded " + str(self.processedDataPictures.__len__()) + " processed pictures\n")
+            self.console.insert(tk.END,
+                                "[INFO] loaded " + str(self.processedDataPictures.__len__()) + " processed pictures\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
@@ -457,7 +461,8 @@ class App(tk.Tk):
         # postavljanje slike u labelu
         self.frames[DataAnnotation].labelPic.configure(image=self.im)
         # postavljanje imena slike u labelu
-        self.frames[DataAnnotation].labelImageName.configure(text=self.processedDataPictures[self.dataAnnotationCounter])
+        self.frames[DataAnnotation].labelImageName.configure(
+            text=self.processedDataPictures[self.dataAnnotationCounter])
 
     def prevPicAnnotation(self):
         """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
@@ -507,6 +512,7 @@ class App(tk.Tk):
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
+
 # frames----------------------------------
 class StartPage(tk.Frame):
 
@@ -539,7 +545,8 @@ class PageInitialization(tk.Frame):
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
 
-        buttonSelectProcessedData = tk.Button(buttonFrame, text="Processed data", command=controller.selectProcessedDataFolder)
+        buttonSelectProcessedData = tk.Button(buttonFrame, text="Processed data",
+                                              command=controller.selectProcessedDataFolder)
         buttonSelectProcessedData.pack(padx=5, pady=10, fill="x")
 
         buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder",
@@ -550,7 +557,8 @@ class PageInitialization(tk.Frame):
         buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
         self.buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation", state="disabled",
-                                              command=lambda: [controller.show_frame(DataAnnotation), controller.updateDataAnnotationFrame()])
+                                              command=lambda: [controller.show_frame(DataAnnotation),
+                                                               controller.updateDataAnnotationFrame()])
 
         self.buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
 
