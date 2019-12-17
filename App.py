@@ -21,7 +21,6 @@ color = (255, 0, 0)
 thickness = 2
 
 
-# main class------------------------------
 def resizePercent(image, percent):
 
     width = int(image.shape[1] * percent / 100)
@@ -31,6 +30,7 @@ def resizePercent(image, percent):
     return imageResized
 
 
+# main class------------------------------
 class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -542,36 +542,49 @@ class App(tk.Tk):
             slikovnih elemenata
         """
 
-        # slika na kojoj se prikazuju slikovni elementi
-        image = cv.imread(self.dataPath + "/" + self.dataPictures[0])
-        # zeljena sirina slikovnog elementa
-        x_size = int(self.frames[PreprocessPage].entryX.get())
-        # zeljena visina slikovnog elementa
-        y_size = int(self.frames[PreprocessPage].entryY.get())
-        # sirina slike
-        imageX = np.shape(image)[1]
-        # visina slike
-        imageY = np.shape(image)[0]
-        # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
-        stepX = imageX // x_size
-        # koraci u y smjeru
-        stepY = imageY // y_size
+        # ako nije izabran folder prvo, nista se dalje ne izvodi
+        if self.dataPath == "":
+            self.console.insert(tk.END, "[WARNING] please select data folder" + "\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+        else:
+            # slika na kojoj se prikazuju slikovni elementi
+            image = cv.imread(self.dataPath + "/" + self.dataPictures[0])
 
-        # stvaranje crta u horizontalnom smjeru
-        for x in range(stepX + 1):
-            cv.line(image, (x * x_size, 0), (x * x_size, imageY), color, thickness)
+            # ako nisu upisane dimenzije slikovnog elementa
+            if self.frames[PreprocessPage].entryX.get() == "" or self.frames[PreprocessPage].entryY.get() == "":
+                self.console.insert(tk.END, "[WARNING] you haven't specifeid dimensions of a picture element" + "\n")
+                self.console.insert(tk.END, "----------------------------------------\n")
+                self.console.see(tk.END)
+            else:
+                # zeljena sirina slikovnog elementa
+                x_size = int(self.frames[PreprocessPage].entryX.get())
+                # zeljena visina slikovnog elementa
+                y_size = int(self.frames[PreprocessPage].entryY.get())
+                # sirina slike
+                imageX = np.shape(image)[1]
+                # visina slike
+                imageY = np.shape(image)[0]
+                # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
+                stepX = imageX // x_size
+                # koraci u y smjeru
+                stepY = imageY // y_size
 
-        # stvaranje crta u vertikalnom smjeru
-        for y in range(stepY + 1):
-            cv.line(image, (0, y * y_size), (imageX, y * y_size), color, thickness)
+                # stvaranje crta u horizontalnom smjeru
+                for x in range(stepX + 1):
+                    cv.line(image, (x * x_size, 0), (x * x_size, imageY), color, thickness)
 
-        # ako je potrebno promijeniti velicinu slike
-        if image.shape[0] > 300:
-            image = resizePercent(image, 30)
+                # stvaranje crta u vertikalnom smjeru
+                for y in range(stepY + 1):
+                    cv.line(image, (0, y * y_size), (imageX, y * y_size), color, thickness)
 
-        # postavljanje slike u labelu
-        self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
-        self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
+                # ako je potrebno promijeniti velicinu slike
+                if image.shape[0] > 300:
+                    image = resizePercent(image, 30)
+
+                # postavljanje slike u labelu
+                self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
+                self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
 
 
 # frames----------------------------------
