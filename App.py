@@ -22,6 +22,15 @@ thickness = 2
 
 
 # main class------------------------------
+def resizePercent(image, percent):
+
+    width = int(image.shape[1] * percent / 100)
+    height = int(image.shape[0] * percent / 100)
+    dim = (width, height)
+    imageResized = cv.resize(image, dim, interpolation=cv.INTER_AREA)
+    return imageResized
+
+
 class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -336,7 +345,23 @@ class App(tk.Tk):
         """
 
         self.dataPictures = [f for f in listdir(self.dataPath)]
-        self.frames[PreprocessPage].progressbar.configure(maximum=self.dataPictures.__len__())
+        if not self.dataPictures:
+            self.console.insert(tk.END, "[WARNING] no pictures were found on: " + self.dataPath)
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+        else:
+            # postavljanje progressbara na maksimalnu vrijednost velicine polje slika koje treba obraditi
+            self.frames[PreprocessPage].progressbar.configure(maximum=self.dataPictures.__len__())
+            # staza do prve slike koja se postavlja u frameu radi prikaza kako dimenzije utjecu na slikovne elemente
+            path = self.dataPath + "/" + self.dataPictures[0]
+            image = cv.imread(path)
+
+            # ako je visina slike veca od 300 piksela, radi se skaliranje
+            if image.shape[0] > 300:
+               image = resizePercent(image, 30)
+
+            self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
+            self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
 
     def updateSlidingWindowImage(self, image):
         """ funkcija za azuriranje slike i informacija na sliding window stranici
@@ -511,6 +536,33 @@ class App(tk.Tk):
         self.console.insert(tk.END, "[INFO] labels and images saved to: " + path + "\n")
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
+
+    def seeOnPic(self):
+        # cv2.line(image, (x1, y1), (x2, y2), (0,255,0), lineThickness)
+        image = cv.imread(self.dataPath + "/" + self.dataPictures[0])
+        x_size = int(self.frames[PreprocessPage].entryX.get())
+        y_size = int(self.frames[PreprocessPage].entryY.get())
+        # print(np.shape(image))   (144,192,3)
+
+        imageX = np.shape(image)[1]
+        imageY = np.shape(image)[0]
+
+        stepX = imageX // x_size
+        stepY = imageY // y_size
+
+        print(str(stepX) + " " + str(stepY))
+
+        for x in range(stepX + 1):
+            cv.line(image, (x * x_size, 0), (x * x_size, imageY), color, thickness)
+
+        for y in range(stepY + 1):
+            cv.line(image, (0, y * y_size), (imageX, y * y_size), color, thickness)
+
+        if image.shape[0] > 300:
+            image = resizePercent(image, 30)
+
+        self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
+        self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
 
 
 # frames----------------------------------
@@ -785,6 +837,12 @@ class PreprocessPage(tk.Frame):
         self.entryY = tk.Entry(frame3)
         self.entryY.pack(side="left")
 
+        buttonSeePicElements = tk.Button(frame3, text="See on pic", command=controller.seeOnPic)
+        buttonSeePicElements.pack(side="left", padx=10, pady=10)
+
+        self.labelSeePicElements = tk.Label(self, text="No picture\nloaded.\nSelect data\nfolder first.")
+        self.labelSeePicElements.pack(padx=10, pady=10)
+
         # frame s gumbom i progressbar-----------------------------------------
         frame4 = tk.Frame(self)
         frame4.pack()
@@ -846,5 +904,5 @@ class DataAnnotation(tk.Frame):
 
 if __name__ == "__main__":
     app = App()
-    # app.geometry("800x600")
+    app.geometry("800x600")
     app.mainloop()
