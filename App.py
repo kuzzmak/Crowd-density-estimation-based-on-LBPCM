@@ -14,6 +14,7 @@ import Haralick
 import LBPCM
 from math import radians
 from math import pi
+import re
 
 # boja obruba celije
 color = (255, 0, 0)
@@ -293,9 +294,10 @@ class App(tk.Tk):
             flag = False
 
         # konverzija stringa npr. 64x64 u int [64, 64]
-        try:
+        pattern = r"\b[0-9]{2}x[0-9]{2}\b"
+        if re.match(pattern, cellSize):
             self.cellSize = [int(i) for i in cellSize.split("x")]
-        except ValueError:
+        else:
             self.console.insert(tk.END, "[ERROR] -- invalid cellsize configuration\n")
             self.console.see(tk.END)
             flag = False
@@ -508,7 +510,7 @@ class App(tk.Tk):
         # ime slike
         picName = self.processedDataPictures[self.dataAnnotationCounter]
         # dodijeljena labela
-        saveString = picName + ":" + label + "\n"
+        saveString = picName + ":" + label
         self.labelDictionary[picName] = label
 
         # ako smo dosli do zadnje onda se staje
