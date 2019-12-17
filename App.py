@@ -538,29 +538,38 @@ class App(tk.Tk):
         self.console.see(tk.END)
 
     def seeOnPic(self):
-        # cv2.line(image, (x1, y1), (x2, y2), (0,255,0), lineThickness)
+        """ funkcija za prikaz slikovnih elemenata na slici ako su zadane dimenzije
+            slikovnih elemenata
+        """
+
+        # slika na kojoj se prikazuju slikovni elementi
         image = cv.imread(self.dataPath + "/" + self.dataPictures[0])
+        # zeljena sirina slikovnog elementa
         x_size = int(self.frames[PreprocessPage].entryX.get())
+        # zeljena visina slikovnog elementa
         y_size = int(self.frames[PreprocessPage].entryY.get())
-        # print(np.shape(image))   (144,192,3)
-
+        # sirina slike
         imageX = np.shape(image)[1]
+        # visina slike
         imageY = np.shape(image)[0]
-
+        # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
         stepX = imageX // x_size
+        # koraci u y smjeru
         stepY = imageY // y_size
 
-        print(str(stepX) + " " + str(stepY))
-
+        # stvaranje crta u horizontalnom smjeru
         for x in range(stepX + 1):
             cv.line(image, (x * x_size, 0), (x * x_size, imageY), color, thickness)
 
+        # stvaranje crta u vertikalnom smjeru
         for y in range(stepY + 1):
             cv.line(image, (0, y * y_size), (imageX, y * y_size), color, thickness)
 
+        # ako je potrebno promijeniti velicinu slike
         if image.shape[0] > 300:
             image = resizePercent(image, 30)
 
+        # postavljanje slike u labelu
         self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
         self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
 
