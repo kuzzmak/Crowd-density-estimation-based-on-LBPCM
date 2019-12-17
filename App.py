@@ -73,7 +73,10 @@ class App(tk.Tk):
         self.currPicPar = [[]]
         # rjecnik svih stranica
         self.frames = {}
-
+        # staza do foldera sa slikama za treniranje
+        self.trainingPath = ""
+        # staza do foldera sa slikama za testiranje
+        self.testPath = ""
         # trenutna slika
         self.currPicPath = ""
         # staza do slika za pretprocesiranje
@@ -99,7 +102,14 @@ class App(tk.Tk):
         # rjecnik s oznacenim slikama
         self.labelDictionary = {}
 
-        for F in (PreprocessPage, StartPage, PageInitialization, ParameterSetting, SlidingWindow, DataAnnotation):
+        for F in (PreprocessPage,
+                  StartPage,
+                  PageInitialization,
+                  ParameterSetting,
+                  SlidingWindow,
+                  DataAnnotation,
+                  FeatureVectorCreation):
+
             frame = F(container, self)
 
             self.frames[F] = frame
@@ -115,10 +125,12 @@ class App(tk.Tk):
 
     def setTrainPath(self, path):
         """funkcija za postavljanje staze za treniranje"""
+
         self.trainingPath = path
 
     def setTestPath(self, path):
         """funkcija za postavljanje staze za testiranje"""
+
         self.testPath = path
 
     def nextCell(self):
@@ -138,7 +150,7 @@ class App(tk.Tk):
 
     def nextPic(self):
         """funkcija za dohvat sljedece slike"""
-
+        #TODO napraviti da funkcionira kad se prvo izabere training folder, sad samo radi kad se prvo izabere data folder
         # resetiranje brojaca celije
         self.currCell = 0
 
@@ -376,7 +388,10 @@ class App(tk.Tk):
         # trenutno pamcenje slike da se ne izbrise
         self.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
         # postavaljanje imena slike u odgovarajucu labelu
-        self.frames[SlidingWindow].labelPicName.configure(text=self.processedDataPictures[self.picCounter])
+        if not self.processedDataPictures:
+            self.frames[SlidingWindow].labelPicName.configure(text=self.trainPictures[self.picCounter])
+        else:
+            self.frames[SlidingWindow].labelPicName.configure(text=self.processedDataPictures[self.picCounter])
         # postavljanje slike
         self.frames[SlidingWindow].labelPic.configure(image=self.img)
 
@@ -588,6 +603,20 @@ class App(tk.Tk):
                 self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
                 self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
 
+    def showFVCinfo(self):
+        """ funkcija za azuriranje informacija u frameu feature vector creation
+        """
+
+        if self.trainingPath == "":
+            self.frames[FeatureVectorCreation].labelTrainValue.configure(text="NOT SET")
+        else:
+            self.frames[FeatureVectorCreation].labelTrainValue.configure(text=self.trainingPath +
+                                                                              "  (" + str(self.trainPictures.__len__()) + ") pictures")
+        if self.testPath == "":
+            self.frames[FeatureVectorCreation].labelTestValue.configure(text="NOT SET")
+        else:
+            self.frames[FeatureVectorCreation].labelTestValue.configure(text=self.testPath +
+                                                                             "  (" + str(self.testPictures.__len__()) + ") pictures")
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -645,6 +674,10 @@ class PageInitialization(tk.Frame):
         self.buttonSW = tk.Button(buttonFrame, text="Sliding Window", state="disabled",
                                   command=lambda: controller.show_frame(SlidingWindow))
         self.buttonSW.pack(padx=10, pady=10, fill="x")
+
+        buttonFVC = tk.Button(buttonFrame, text="FVC", command=lambda: [controller.show_frame(FeatureVectorCreation),
+                                                                        controller.showFVCinfo()])
+        buttonFVC.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
         buttonBack.pack(padx=10, pady=10, fill="x")
@@ -924,6 +957,49 @@ class DataAnnotation(tk.Frame):
 
         buttonBack = tk.Button(frameNav, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.grid(row=0, column=2, padx=10, pady=10)
+
+
+class FeatureVectorCreation(tk.Frame):
+    """ razred za stvaranje vektora znacajki
+    """
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        labelDescription = tk.Label(self, text="Here you can see program parameters and available info")
+        labelDescription.pack(padx=10, pady=10)
+
+        # frame s parametrima
+        parameterFrame = tk.Frame(self)
+        parameterFrame.pack()
+
+        # frame sa stazom do foldera sa slikama za treniranje
+        trainFrame = tk.Frame(parameterFrame)
+        trainFrame.pack()
+
+        labelTrain = tk.Label(trainFrame, text="Training path: ")
+        labelTrain.pack(side="left", padx=10, pady=5)
+
+        self.labelTrainValue = tk.Label(trainFrame, text="")
+        self.labelTrainValue.pack(side="right", padx=10, pady=5)
+
+        testFrame = tk.Frame(parameterFrame)
+        testFrame.pack()
+
+        labelTest = tk.Label(testFrame, text="Test path: ")
+        labelTest.pack(side="left", padx=10, pady=5)
+
+        self.labelTestValue = tk.Label(testFrame, text="")
+        self.labelTestValue.pack(side="right", padx=10, pady=5)
+
+        buttonFrame = tk.Frame(self)
+        buttonFrame.pack()
+
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.pack()
+
+
+
 
 
 if __name__ == "__main__":
