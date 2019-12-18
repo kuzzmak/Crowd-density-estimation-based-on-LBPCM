@@ -15,6 +15,8 @@ import LBPCM
 from math import radians
 from math import pi
 import re
+import threading
+import queue
 
 # boja obruba celije
 color = (255, 0, 0)
@@ -602,22 +604,22 @@ class App(tk.Tk):
         if self.dataPath == "":
             self.frames[FeatureVectorCreation].labelDataPathValue.configure(text="NOT SET")
         else:
-            self.frames[FeatureVectorCreation].labelDataPathValue.configure(text=self.dataPath +
-                                                                              "  (" + str(self.dataPictures.__len__()) + ") pictures")
+            self.frames[FeatureVectorCreation].labelDataPathValue.configure(
+                text=self.dataPath + "  (" + str(self.dataPictures.__len__()) + ") pictures")
 
         # training staza
         if self.trainingPath == "":
             self.frames[FeatureVectorCreation].labelTrainValue.configure(text="NOT SET")
         else:
-            self.frames[FeatureVectorCreation].labelTrainValue.configure(text=self.trainingPath +
-                                                                              "  (" + str(self.trainPictures.__len__()) + ") pictures")
+            self.frames[FeatureVectorCreation].labelTrainValue.configure(
+                text=self.trainingPath + "  (" + str(self.trainPictures.__len__()) + ") pictures")
 
         # test staza
         if self.testPath == "":
             self.frames[FeatureVectorCreation].labelTestValue.configure(text="NOT SET")
         else:
-            self.frames[FeatureVectorCreation].labelTestValue.configure(text=self.testPath +
-                                                                             "  (" + str(self.testPictures.__len__()) + ") pictures")
+            self.frames[FeatureVectorCreation].labelTestValue.configure(
+                text=self.testPath + "  (" + str(self.testPictures.__len__()) + ") pictures")
 
         # LBP radius
         self.frames[FeatureVectorCreation].labelLBPRadiusValue.configure(text=self.radius)
@@ -630,6 +632,19 @@ class App(tk.Tk):
 
         # velicina koraka celije
         self.frames[FeatureVectorCreation].labelStepSizeValue.configure(text=self.stepSize)
+
+    def makeFeatureVectors(self):
+        """ funkcija za stvaranje vektora znacajki
+        """
+
+        # ako staza za treniranje nije postavljena
+        if self.trainingPath == "":
+            self.console.insert(tk.END, "[WARNING] training path not set" + "\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+        else:
+            self.lbpcm.calculateFeatureVectors(self.trainingPath)
+
 
 
 # frames----------------------------------
@@ -1052,8 +1067,11 @@ class FeatureVectorCreation(tk.Frame):
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
 
+        buttonMakeVectors = tk.Button(buttonFrame, text="Make vectors", command=lambda: [threading.Thread(target=controller.makeFeatureVectors, daemon=True).start()])
+        buttonMakeVectors.pack(side="left", padx=10, pady=5)
+
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
-        buttonBack.pack(padx=10, pady=5)
+        buttonBack.pack(side="left", padx=10, pady=5)
 
 
 if __name__ == "__main__":
