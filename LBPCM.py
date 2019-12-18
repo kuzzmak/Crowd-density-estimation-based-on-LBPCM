@@ -73,10 +73,9 @@ class LBPCM:
     def setRadius(self, radius):
         self.radius = radius
 
-    def calculateFeatureVectors(self, pathToTrainingData):
+    def calculateFeatureVectors(self, pathToTrainingData, progressbar, labelProgress):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToTrainingData)]
-        print("ukupno slika: " + str(pictures.__len__()))
         i = 0
         for pic in pictures:
             # staza do slike
@@ -84,7 +83,8 @@ class LBPCM:
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
             self.featureVectors.append(self.getFeatureVector(image))
             i += 1
-            print("gotovo: " + str(i))
+            progressbar.step()
+            labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
 
 
 if __name__ == "__main__":

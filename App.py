@@ -399,6 +399,8 @@ class App(tk.Tk):
             self.setTrainPath(filename)
             # stvaranje polja slika za treniranje
             self.trainPictures = [f for f in listdir(self.trainingPath)]
+            # postavljanje progressbara u frameu feature vector creation
+            self.frames[FeatureVectorCreation].progressbarVector.configure(maximum=self.trainPictures.__len__())
             # dohvat prve slike
             self.currPicPath = filename + "/" + self.trainPictures[0]
             image = cv.imread(self.currPicPath)
@@ -633,6 +635,9 @@ class App(tk.Tk):
         # velicina koraka celije
         self.frames[FeatureVectorCreation].labelStepSizeValue.configure(text=self.stepSize)
 
+        # labela za napredak
+        self.frames[FeatureVectorCreation].labelProgress.configure(text="0/" + str(self.trainPictures.__len__()))
+
     def makeFeatureVectors(self):
         """ funkcija za stvaranje vektora znacajki
         """
@@ -643,7 +648,9 @@ class App(tk.Tk):
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
-            self.lbpcm.calculateFeatureVectors(self.trainingPath)
+            self.lbpcm.calculateFeatureVectors(self.trainingPath,
+                                               self.frames[FeatureVectorCreation].progressbarVector,
+                                               self.frames[FeatureVectorCreation].labelProgress)
 
 
 
@@ -1062,6 +1069,15 @@ class FeatureVectorCreation(tk.Frame):
 
         self.labelStepSizeValue = tk.Label(frameLBPParameters, text="")
         self.labelStepSizeValue.grid(row=4, column=1, padx=10, pady=5)
+
+        frameProgress = tk.Frame(self)
+        frameProgress.pack()
+
+        self.progressbarVector = Progressbar(frameProgress, orient=tk.HORIZONTAL, length=200, mode='determinate')
+        self.progressbarVector.pack(side="left", padx=10, pady=5)
+
+        self.labelProgress = tk.Label(frameProgress, text="")
+        self.labelProgress.pack(side="right", padx=10, pady=5)
 
         # frame s gumbimaS
         buttonFrame = tk.Frame(self)
