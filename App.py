@@ -194,13 +194,20 @@ class App(tk.Tk):
         self.console.see(tk.END)
 
     def process(self):
-        # dohvat x, y dimenzija
-        x = int(self.frames[PreprocessPage].entryX.get())
-        y = int(self.frames[PreprocessPage].entryY.get())
-        # dimenzija svakog slikovnog elementa
-        dim = (x, y)
-        # stvaranje slikovnih elemenata
-        self.makePictureElements(dim)
+        """ funkcija za dohvat dimenzija slikovnih elemenata i stvaranje istih
+        """
+        try:
+            # dohvat x, y dimenzija
+            x = int(self.frames[PreprocessPage].entryX.get())
+            y = int(self.frames[PreprocessPage].entryY.get())
+            # dimenzija svakog slikovnog elementa
+            dim = (x, y)
+            # stvaranje slikovnih elemenata
+            self.makePictureElements(dim)
+        except AttributeError:
+            self.console.insert(tk.END, "[ERROR] invalid dimensions")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
 
     def makePictureElements(self, dim):
         """ funkcija za stvaranje slikovnih elemenata od slika koje se nalaze u data folderu,
@@ -652,7 +659,7 @@ class App(tk.Tk):
                                                self.frames[FeatureVectorCreation].progressbarVector,
                                                self.frames[FeatureVectorCreation].labelProgress)
 
-
+            self.console.insert(tk.END, "gotovo\n")
 
 # frames----------------------------------
 class StartPage(tk.Frame):

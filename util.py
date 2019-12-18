@@ -12,16 +12,30 @@ ratio = 0.7
 # brojac za slikovne elemente
 picCounter = 0
 
+
 # funkcija za rezanje slike u 4 dijela i spremanje
 def saveImage(im, path, dim):
     global picCounter
 
-    for i in range(4):
-        croppedImage = im[i * dim[1]:(i + 1) * dim[1], i * dim[0]:(i + 1) * dim[0]]
-        imName = path + "/" + str(picCounter) + ".jpg"
-        cv.imwrite(imName, croppedImage)
-        picCounter += 1
-    print(picCounter)
+    # zeljena sirina slikovnog elementa
+    x_size = dim[0]
+    # zeljena visina slikovnog elementa
+    y_size = dim[1]
+    # sirina slike
+    imageX = im.shape[1]
+    # visina slike
+    imageY = im.shape[0]
+    # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
+    stepX = imageX // x_size
+    # koraci u y smjeru
+    stepY = imageY // y_size
+
+    for y in range(stepY):
+        for x in range(stepX):
+            croppedImage = im[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
+            imName = path + "/" + str(picCounter) + ".jpg"
+            cv.imwrite(imName, croppedImage)
+            picCounter += 1
 
 # funkcija za brisanje sadrzaja direktorija
 def clearDirectory(pathToDirectory):
@@ -64,14 +78,14 @@ def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
         # slika u sivim tonovima
         im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
         # spremanje slike
-        saveImage(im_gray, dim, pathToTrainingData)
+        saveImage(im_gray, pathToTrainingData, dim)
 
     # spremanje ostalih slika
     for f in range(round(ratio * onlyFiles.__len__()), onlyFiles.__len__(), 1):
         fileName = path + "\\" + onlyFiles[f]
         im = cv.imread(fileName)
         im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-        saveImage(im_gray, dim, pathToTestData)
+        saveImage(im_gray, pathToTestData, dim)
 
 # funkcija za dobivanje slikovnih celija iz polazne slike
 # tehnikom kliznog prozora
@@ -83,6 +97,7 @@ def sliding_window(image, stepSize, windowSize):
             yield image[y:y + windowSize[1], x:x + windowSize[0]]
 
 def makePicDims(image, stepSize, windowSize):
+
     """funkcija koja sluzi za stvaranje prozora iz kojeg
     se tvori vektor znacajki
 
