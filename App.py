@@ -74,6 +74,8 @@ class App(tk.Tk):
         self.currPicPath = ""
         # staza do slika za pretprocesiranje
         self.dataPath = ""
+        # postotak ukupnih slika koje ce se iskoristiti za treniranje
+        self.trainingSetSize = 0.7
         # polje slika za pretprocesiranje
         self.dataPictures = []
         # polje lokacija celije koja se krece po slici
@@ -234,6 +236,7 @@ class App(tk.Tk):
             im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
             # spremanje slike
             util.saveImage(im_gray, self.pathToProcessedData, dim)
+
             self.dataAnnotationCounter += 1
             self.frames[PreprocessPage].progressbar.step()
             self.update()
@@ -912,11 +915,11 @@ class PreprocessPage(tk.Frame):
         frame2 = tk.Frame(self)
         frame2.pack()
 
-        labelRatio = tk.Label(frame2, text="training set:test set, eg. \"0.7:0.3\"")
+        labelRatio = tk.Label(frame2, text="training set size, eg. \"0.7\"")
         labelRatio.pack(padx=10, pady=5, side="left")
 
-        entryRatio = tk.Entry(frame2)
-        entryRatio.pack(side="right")
+        self.entryRatio = tk.Entry(frame2)
+        self.entryRatio.pack(side="right")
 
         labelDimDescription = tk.Label(self, text="Specify size of a picture element")
         labelDimDescription.pack(padx=10, pady=10)

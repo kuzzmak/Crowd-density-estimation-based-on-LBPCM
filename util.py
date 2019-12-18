@@ -50,7 +50,7 @@ def clearDirectory(pathToDirectory):
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 
-# rezolucjia slika 768 x 576
+
 def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
     # ako ne postoje folderi za treniranje i testiranje, stovre se, a
     # ako postoje onda se njihov sadrzaj brise
