@@ -244,6 +244,8 @@ class App(tk.Tk):
         self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
         # omogucavanje gumba za oznacavanje slika
         self.frames[PageInitialization].buttonDataAnnotation["state"] = "normal"
+        # progressbar u feature vector creation frameu
+        self.frames[FeatureVectorCreation].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
 
         self.currPicPath = self.pathToProcessedData + "/" + self.processedDataPictures[0]
         image = cv.imread(self.currPicPath)
@@ -474,6 +476,7 @@ class App(tk.Tk):
 
             self.pathToProcessedData = directory
             self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
+            self.frames[FeatureVectorCreation].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
             self.frames[PageInitialization].buttonSW["state"] = "normal"
 
             self.currPicPath = self.pathToProcessedData + "/" + self.processedDataPictures[0]
@@ -646,19 +649,19 @@ class App(tk.Tk):
         self.frames[FeatureVectorCreation].labelStepSizeValue.configure(text=self.stepSize)
 
         # labela za napredak
-        self.frames[FeatureVectorCreation].labelProgress.configure(text="0/" + str(self.trainPictures.__len__()))
+        self.frames[FeatureVectorCreation].labelProgress.configure(text="0/" + str(self.processedDataPictures.__len__()))
 
     def makeFeatureVectors(self):
         """ funkcija za stvaranje vektora znacajki
         """
 
         # ako staza za treniranje nije postavljena
-        if self.trainingPath == "":
-            self.console.insert(tk.END, "[WARNING] training path not set" + "\n")
+        if self.pathToProcessedData == "":
+            self.console.insert(tk.END, "[WARNING] processed data path not set" + "\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
-            self.lbpcm.calculateFeatureVectors(self.trainingPath,
+            self.lbpcm.calculateFeatureVectors(self.pathToProcessedData,
                                                self.frames[FeatureVectorCreation].progressbarVector,
                                                self.frames[FeatureVectorCreation].labelProgress)
 
