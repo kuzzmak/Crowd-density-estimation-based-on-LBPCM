@@ -76,11 +76,15 @@ class LBPCM:
     def calculateFeatureVectors(self, pathToTrainingData):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToTrainingData)]
+        print("ukupno slika: " + str(pictures.__len__()))
+        i = 0
         for pic in pictures:
             # staza do slike
-            fileName = pathToTrainingData + "\\" + pic
+            fileName = pathToTrainingData + "/" + pic
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
             self.featureVectors.append(self.getFeatureVector(image))
+            i += 1
+            print("gotovo: " + str(i))
 
 
 if __name__ == "__main__":

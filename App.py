@@ -22,15 +22,6 @@ color = (255, 0, 0)
 thickness = 2
 
 
-def resizePercent(image, percent):
-
-    width = int(image.shape[1] * percent / 100)
-    height = int(image.shape[0] * percent / 100)
-    dim = (width, height)
-    imageResized = cv.resize(image, dim, interpolation=cv.INTER_AREA)
-    return imageResized
-
-
 # main class------------------------------
 class App(tk.Tk):
 
@@ -372,7 +363,7 @@ class App(tk.Tk):
 
             # ako je visina slike veca od 300 piksela, radi se skaliranje
             if image.shape[0] > 300:
-               image = resizePercent(image, 30)
+               image = util.resizePercent(image, 30)
 
             self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
             self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
@@ -597,7 +588,7 @@ class App(tk.Tk):
 
                 # ako je potrebno promijeniti velicinu slike
                 if image.shape[0] > 300:
-                    image = resizePercent(image, 30)
+                    image = util.resizePercent(image, 30)
 
                 # postavljanje slike u labelu
                 self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
@@ -607,16 +598,39 @@ class App(tk.Tk):
         """ funkcija za azuriranje informacija u frameu feature vector creation
         """
 
+        # data staza
+        if self.dataPath == "":
+            self.frames[FeatureVectorCreation].labelDataPathValue.configure(text="NOT SET")
+        else:
+            self.frames[FeatureVectorCreation].labelDataPathValue.configure(text=self.dataPath +
+                                                                              "  (" + str(self.dataPictures.__len__()) + ") pictures")
+
+        # training staza
         if self.trainingPath == "":
             self.frames[FeatureVectorCreation].labelTrainValue.configure(text="NOT SET")
         else:
             self.frames[FeatureVectorCreation].labelTrainValue.configure(text=self.trainingPath +
                                                                               "  (" + str(self.trainPictures.__len__()) + ") pictures")
+
+        # test staza
         if self.testPath == "":
             self.frames[FeatureVectorCreation].labelTestValue.configure(text="NOT SET")
         else:
             self.frames[FeatureVectorCreation].labelTestValue.configure(text=self.testPath +
                                                                              "  (" + str(self.testPictures.__len__()) + ") pictures")
+
+        # LBP radius
+        self.frames[FeatureVectorCreation].labelLBPRadiusValue.configure(text=self.radius)
+
+        # velicina celije
+        self.frames[FeatureVectorCreation].labelCellSizeValue.configure(text=self.cellSize)
+
+        # kutevi za lpbcm
+        self.frames[FeatureVectorCreation].labelAnglesValue.configure(text=self.angles)
+
+        # velicina koraka celije
+        self.frames[FeatureVectorCreation].labelStepSizeValue.configure(text=self.stepSize)
+
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -973,6 +987,16 @@ class FeatureVectorCreation(tk.Frame):
         parameterFrame = tk.Frame(self)
         parameterFrame.pack()
 
+        # frame sa stazom do foldera sa slikama za procesiranje
+        dataFrame = tk.Frame(parameterFrame)
+        dataFrame.pack()
+
+        labelDataPath = tk.Label(dataFrame, text="Data path")
+        labelDataPath.pack(side="left", padx=10, pady=5)
+
+        self.labelDataPathValue = tk.Label(dataFrame, text="")
+        self.labelDataPathValue.pack(side="right", padx=10, pady=5)
+
         # frame sa stazom do foldera sa slikama za treniranje
         trainFrame = tk.Frame(parameterFrame)
         trainFrame.pack()
@@ -983,6 +1007,7 @@ class FeatureVectorCreation(tk.Frame):
         self.labelTrainValue = tk.Label(trainFrame, text="")
         self.labelTrainValue.pack(side="right", padx=10, pady=5)
 
+        # frame sa stazom do foldera sa slikama za testiranje
         testFrame = tk.Frame(parameterFrame)
         testFrame.pack()
 
@@ -992,14 +1017,43 @@ class FeatureVectorCreation(tk.Frame):
         self.labelTestValue = tk.Label(testFrame, text="")
         self.labelTestValue.pack(side="right", padx=10, pady=5)
 
+        # frame s parametrima LBP
+        frameLBPParameters = tk.Frame(parameterFrame)
+        frameLBPParameters.pack()
+
+        labelLBPParameters = tk.Label(frameLBPParameters, text="LBP parameters")
+        labelLBPParameters.grid(row=0, padx=10, pady=5, columnspan=2)
+
+        labelLBPRadius = tk.Label(frameLBPParameters, text="LBP radius: ")
+        labelLBPRadius.grid(row=1, column=0, padx=10, pady=5)
+
+        self.labelLBPRadiusValue = tk.Label(frameLBPParameters, text="")
+        self.labelLBPRadiusValue.grid(row=1, column=1, padx=10, pady=5)
+
+        labelCellSize = tk.Label(frameLBPParameters, text="Cell size: ")
+        labelCellSize.grid(row=2, column=0, padx=10, pady=5)
+
+        self.labelCellSizeValue = tk.Label(frameLBPParameters, text="")
+        self.labelCellSizeValue.grid(row=2, column=1, padx=10, pady=5)
+
+        labelAngles = tk.Label(frameLBPParameters, text="Angles: ")
+        labelAngles.grid(row=3, column=0, padx=10, pady=5)
+
+        self.labelAnglesValue = tk.Label(frameLBPParameters, text="")
+        self.labelAnglesValue.grid(row=3, column=1, padx=10, pady=5)
+
+        labelStepSize = tk.Label(frameLBPParameters, text="Step size: ")
+        labelStepSize.grid(row=4, column=0, padx=10, pady=5)
+
+        self.labelStepSizeValue = tk.Label(frameLBPParameters, text="")
+        self.labelStepSizeValue.grid(row=4, column=1, padx=10, pady=5)
+
+        # frame s gumbimaS
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
-        buttonBack.pack()
-
-
-
+        buttonBack.pack(padx=10, pady=5)
 
 
 if __name__ == "__main__":

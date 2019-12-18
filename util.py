@@ -98,3 +98,13 @@ def makePicDims(image, stepSize, windowSize):
             end_point = (x + windowSize[0], y + windowSize[1])
             dims.append((start_point, end_point))
     return dims
+
+def resizePercent(image, percent):
+    """ funkcija za reskaliranje slike na percent posto izvorne velicina
+    """
+
+    width = int(image.shape[1] * percent / 100)
+    height = int(image.shape[0] * percent / 100)
+    dim = (width, height)
+    imageResized = cv.resize(image, dim, interpolation=cv.INTER_AREA)
+    return imageResized
