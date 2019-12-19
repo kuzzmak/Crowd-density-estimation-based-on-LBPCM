@@ -73,22 +73,23 @@ class LBPCM:
     def setRadius(self, radius):
         self.radius = radius
 
-    def calculateFeatureVectors(self, pathToProcessedData, progressbar, labelProgress, labelFVCSize):
+    def calculateFeatureVectors(self, pathToProcessedData, progressbar, labelProgress, labelFVCSize, size):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
         i = 0
 
-        vecSize = str(self.getFeatureVector(cv.imread(pathToProcessedData + "/" + pictures[0], cv.IMREAD_GRAYSCALE)).__len__())
-        labelFVCSize.configure(text=vecSize)
+        # vecSize = str(self.getFeatureVector(cv.imread(pathToProcessedData + "/" + pictures[0], cv.IMREAD_GRAYSCALE)).__len__())
+        # labelFVCSize.configure(text=vecSize)
 
-        for pic in pictures:
+        for pic in range(size):
             # staza do slike
-            fileName = pathToProcessedData + "/" + pic
+            fileName = pathToProcessedData + "/" + pictures[pic]
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
             self.featureVectors.append(self.getFeatureVector(image))
             i += 1
-            progressbar.step()
-            labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
+            print(str(i) + "/" + str(pictures.__len__()))
+            # progressbar.step()
+            # labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
 
 
 if __name__ == "__main__":

@@ -60,3 +60,45 @@
 #             dictionary[keyVal[0]] = keyVal[1]
 #
 # print(dictionary)
+
+import LBPCM
+from math import radians
+from sklearn.neighbors import KNeighborsClassifier
+import cv2 as cv
+
+
+labels = r"data\labeledData.txt"
+labelDictionary = {}
+
+with open(labels) as f:
+    rows = f.read()
+    lines = rows.split("\n")
+
+    for i in lines:
+        if i != "":
+            keyVal = i.split(":")
+            labelDictionary[keyVal[0]] = keyVal[1]
+
+size = labelDictionary.__len__()
+
+radius = 1
+stepSize = 32
+windowSize = [64, 64]
+angles = [radians(45), radians(90), radians(135)]
+pathToProcessedData = r"data\processedData"
+
+lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles)
+lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None, size)
+
+X = lbpcm.getFeatureVectors()
+Y = []
+for i in labelDictionary.values():
+    Y.append(i)
+
+neigh = KNeighborsClassifier(n_neighbors=3)
+neigh.fit(X, Y)
+
+testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
+im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
+vec = lbpcm.getFeatureVector(im)
+print(neigh.predict([vec]))
