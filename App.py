@@ -631,6 +631,11 @@ class App(tk.Tk):
             self.frames[FeatureVectorCreation].labelDataPathValue.configure(
                 text=self.dataPath + "  (" + str(self.dataPictures.__len__()) + ") pictures")
 
+        if self.pathToProcessedData == "":
+            self.frames[FeatureVectorCreation].labelProcessedValue.configure(text="NOT SET")
+        else:
+            self.frames[FeatureVectorCreation].labelProcessedValue.configure(text=self.pathToProcessedData)
+
         # training staza
         if self.trainingPath == "":
             self.frames[FeatureVectorCreation].labelTrainValue.configure(text="NOT SET")
@@ -672,9 +677,12 @@ class App(tk.Tk):
         else:
             self.lbpcm.calculateFeatureVectors(self.pathToProcessedData,
                                                self.frames[FeatureVectorCreation].progressbarVector,
-                                               self.frames[FeatureVectorCreation].labelProgress)
+                                               self.frames[FeatureVectorCreation].labelProgress,
+                                               self.frames[FeatureVectorCreation].labelFVCSize)
 
-            self.console.insert(tk.END, "gotovo\n")
+            self.console.insert(tk.END, "[INFO] feature vector creation completed\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
 
     def loadLabels(self):
         """ funkcija za ucitavanje oznaka slika koje su vec procesirane
@@ -1064,6 +1072,16 @@ class FeatureVectorCreation(tk.Frame):
         self.labelDataPathValue = tk.Label(dataFrame, text="")
         self.labelDataPathValue.pack(side="right", padx=10, pady=5)
 
+        # frame sa stazom do foldera sa procesiranim slikama
+        processedFrame = tk.Frame(parameterFrame)
+        processedFrame.pack()
+
+        labelProcessed = tk.Label(processedFrame, text="Processed data path: ")
+        labelProcessed.pack(side="left", padx=10, pady=5)
+
+        self.labelProcessedValue = tk.Label(processedFrame, text="")
+        self.labelProcessedValue.pack(side="right", padx=10, pady=5)
+
         # frame sa stazom do foldera sa slikama za treniranje
         trainFrame = tk.Frame(parameterFrame)
         trainFrame.pack()
@@ -1086,7 +1104,7 @@ class FeatureVectorCreation(tk.Frame):
 
         # frame s parametrima LBP
         frameLBPParameters = tk.Frame(parameterFrame)
-        frameLBPParameters.pack()
+        frameLBPParameters.pack(pady=20)
 
         labelLBPParameters = tk.Label(frameLBPParameters, text="LBP parameters")
         labelLBPParameters.grid(row=0, padx=10, pady=5, columnspan=2)
@@ -1136,6 +1154,16 @@ class FeatureVectorCreation(tk.Frame):
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(side="left", padx=10, pady=5)
+
+        # frame s informacijom o velicini vektora znacajki
+        frameFVCSize = tk.Frame(self)
+        frameFVCSize.pack(pady=10)
+
+        labelFVCSize = tk.Label(frameFVCSize, text="Feature vector dimension: ")
+        labelFVCSize.pack(side="left", padx=10, pady=5)
+
+        self.labelFVCSize = tk.Label(frameFVCSize, text="")
+        self.labelFVCSize.pack(side="right", padx=10, pady=5)
 
 
 if __name__ == "__main__":
