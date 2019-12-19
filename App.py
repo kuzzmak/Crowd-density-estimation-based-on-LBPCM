@@ -339,6 +339,14 @@ class App(tk.Tk):
             self.console.insert(tk.END, "[INFO] -- parameters saved\n")
             self.console.see(tk.END)
 
+        # azuriranje sliding window framea
+        image = cv.imread(self.currPicPath)
+        self.picDims = util.makePicDims(image, self.stepSize,
+                                        self.cellSize)
+        self.currCell = 0
+        self.updateSlidingWindowImage(image)
+        self.updateParameterFrame()
+
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
@@ -442,6 +450,7 @@ class App(tk.Tk):
         """
 
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
+        self.frames[SlidingWindow].labelAnglesListValue.configure(text=str(self.angles))
         # trenutna slika
         image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
         # dohvacanje pozicija trenutne celije
