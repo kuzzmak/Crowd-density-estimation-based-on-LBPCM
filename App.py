@@ -667,6 +667,29 @@ class App(tk.Tk):
 
             self.console.insert(tk.END, "gotovo\n")
 
+    def loadLabels(self):
+        """ funkcija za ucitavanje oznaka slika koje su vec procesirane
+        """
+
+        file = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled\data",
+                                          title="Select file",
+                                          filetypes=(("text files", "*.txt"), ("all files", "*.*")))
+
+        if file == "":
+            self.console.insert(tk.END, "[WARNING] you did not select folder\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+        else:
+            with open(file) as f:
+                rows = f.read()
+                lines = rows.split("\n")
+
+                for i in lines:
+                    if i != "":
+                        keyVal = i.split(":")
+                        self.labelDictionary[keyVal[0]] = keyVal[1]
+
+
 # frames----------------------------------
 class StartPage(tk.Frame):
 
@@ -1095,6 +1118,9 @@ class FeatureVectorCreation(tk.Frame):
         # frame s gumbimaS
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
+
+        buttonLoadAnnotedData = tk.Button(buttonFrame, text="Load labels", command=controller.loadLabels)
+        buttonLoadAnnotedData.pack(side="left", padx=10, pady=5)
 
         buttonMakeVectors = tk.Button(buttonFrame, text="Make vectors", command=lambda: [threading.Thread(target=controller.makeFeatureVectors, daemon=True).start()])
         buttonMakeVectors.pack(side="left", padx=10, pady=5)
