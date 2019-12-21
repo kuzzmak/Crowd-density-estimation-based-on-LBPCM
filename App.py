@@ -134,9 +134,8 @@ class App(tk.Tk):
 
         # ako nismo stigli do kraja slikovnog elementa
         if self.currCell < self.picDims.__len__() - 1:
-            image = cv.imread(self.currPicPath)
             self.currCell += 1
-            self.updateSlidingWindowImage(image)
+            self.updateSlidingWindowImage()
             self.updateParameterFrame()
         else:
             self.console.insert(tk.END, "[WARNING] no more cells remaining\n")
@@ -154,8 +153,7 @@ class App(tk.Tk):
             self.picCounter += 1
             fileName = self.pathToProcessedData + "/" + self.processedDataPictures[self.picCounter]
             self.currPicPath = fileName
-            image = cv.imread(fileName)
-            self.updateSlidingWindowImage(image)
+            self.updateSlidingWindowImage()
             self.updateParameterFrame()
         else:
             self.console.insert(tk.END, "[WARNING] no more pictures remaining\n")
@@ -174,9 +172,8 @@ class App(tk.Tk):
             # staza do sljedece slike
             fileName = self.pathToProcessedData + "/" + self.processedDataPictures[self.picCounter]
             self.currPicPath = fileName
-            image = cv.imread(fileName)
             # azuriranje slike
-            self.updateSlidingWindowImage(image)
+            self.updateSlidingWindowImage()
             self.updateParameterFrame()
         else:
             self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
@@ -188,8 +185,7 @@ class App(tk.Tk):
         """
 
         self.currCell = 0
-        image = cv.imread(self.currPicPath)
-        self.updateSlidingWindowImage(image)
+        self.updateSlidingWindowImage()
         self.updateParameterFrame()
         self.console.insert(tk.END, "[INFO] cell has been reset\n")
         self.console.insert(tk.END, "----------------------------------------\n")
@@ -252,7 +248,7 @@ class App(tk.Tk):
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
         self.picDims = util.makePicDims(image, self.stepSize,
                                         self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-        self.updateSlidingWindowImage(image)
+        self.updateSlidingWindowImage()
         self.updateParameterFrame()
 
         # self.trainPictures = [f for f in listdir(self.trainingPath)]
@@ -305,6 +301,7 @@ class App(tk.Tk):
         flag = True
         try:
             self.radius = int(radius)
+            self.lbpcm.setRadius(self.radius)
         except ValueError:
             self.console.insert(tk.END, "[ERROR] -- radius must be positive integer\n")
             self.console.see(tk.END)
@@ -314,6 +311,7 @@ class App(tk.Tk):
         pattern = r"\b[0-9]{2}x[0-9]{2}\b"
         if re.match(pattern, cellSize):
             self.cellSize = [int(i) for i in cellSize.split("x")]
+            self.lbpcm.setWindowSize(self.cellSize)
         else:
             self.console.insert(tk.END, "[ERROR] -- invalid cellsize configuration\n")
             self.console.see(tk.END)
@@ -321,6 +319,7 @@ class App(tk.Tk):
 
         try:
             self.stepSize = int(stepSize)
+            self.lbpcm.setStepSize(self.stepSize)
         except ValueError:
             self.console.insert(tk.END, "[ERROR] -- step must be positive integer\n")
             self.console.see(tk.END)
@@ -341,10 +340,9 @@ class App(tk.Tk):
 
         # azuriranje sliding window framea
         image = cv.imread(self.currPicPath)
-        self.picDims = util.makePicDims(image, self.stepSize,
-                                        self.cellSize)
+        self.picDims = util.makePicDims(image, self.stepSize, self.cellSize)
         self.currCell = 0
-        self.updateSlidingWindowImage(image)
+        self.updateSlidingWindowImage()
         self.updateParameterFrame()
 
         self.console.insert(tk.END, "----------------------------------------\n")
@@ -390,16 +388,25 @@ class App(tk.Tk):
             self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
             self.frames[PreprocessPage].labelSeePicElements.configure(image=self.img)
 
-    def updateSlidingWindowImage(self, image):
+    def updateSlidingWindowImage(self):
         """ funkcija za azuriranje slike i informacija na sliding window stranici
         """
 
         # pocetna i zavrsna tocka trenutne celije
         start_point, end_point = self.picDims[self.currCell]
+        # trenutna slika
+        image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
+        # lbp trenutne slike
+        lbp = self.lbpcm.getLBP(image)
+        # samo za prikaz pravokutnika u boji na slici koja je grayscale
+        lbp = cv.cvtColor(lbp.astype('uint8') * 255, cv.COLOR_GRAY2RGB)
+
         # stvaranje kopije izvorne slike kako celija ne bi ostala u slici prilikom kretanja na sljedecu celiju
-        image_copy = cv.rectangle(np.copy(image), start_point, end_point, color, thickness)
+        image_copy = cv.rectangle(np.copy(lbp), start_point, end_point, color, thickness)
+
         # trenutno pamcenje slike da se ne izbrise
         self.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+
         # postavaljanje imena slike u odgovarajucu labelu
         if not self.processedDataPictures:
             self.frames[SlidingWindow].labelPicName.configure(text=self.trainPictures[self.picCounter])
@@ -427,7 +434,7 @@ class App(tk.Tk):
             # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
             self.picDims = util.makePicDims(image, self.stepSize,
                                             self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-            self.updateSlidingWindowImage(image)
+            self.updateSlidingWindowImage()
             self.updateParameterFrame()
 
             # omogucavanje gumba sliding window
@@ -451,24 +458,29 @@ class App(tk.Tk):
 
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
         self.frames[SlidingWindow].labelAnglesListValue.configure(text=str(self.angles))
+
         # trenutna slika
         image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
+
+        # lbp trenutne slike
+        lbp = self.lbpcm.getLBP(image)
         # dohvacanje pozicija trenutne celije
         picDims = self.picDims[self.currCell]
-        # izlucivanje dijela slike koji priakzuje celija
-        croppedImage = image[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
+        # izlucivanje dijela slike koji prikazuje celija
+        croppedImage = lbp[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
+
         # razred s haralickovim funkcijama
         haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
         # prikaz kontrasta
         contrast = haralick.contrast()
         self.frames[SlidingWindow].labelContrastValue.configure(text=str(contrast))
-
+        # prikaz energije
         energy = haralick.energy()
         self.frames[SlidingWindow].labelEnergyValue.configure(text=str(energy))
-
+        # prikaz homogenosti
         homogeneity = haralick.homogeneity()
         self.frames[SlidingWindow].labelHomogeneityValue.configure(text=str(homogeneity))
-
+        # prikaz entropije
         entropy = haralick.entropy()
         self.frames[SlidingWindow].labelEntropyValue.configure(text=str(entropy))
 
@@ -493,7 +505,7 @@ class App(tk.Tk):
             # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
             self.picDims = util.makePicDims(image, self.stepSize,
                                             self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-            self.updateSlidingWindowImage(image)
+            self.updateSlidingWindowImage()
             self.updateParameterFrame()
 
             # omogucavanje gumba za oznacavanje slika

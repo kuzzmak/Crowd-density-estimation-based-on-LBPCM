@@ -60,3 +60,26 @@
 #             dictionary[keyVal[0]] = keyVal[1]
 #
 # print(dictionary)
+
+import LBPCM
+from math import radians
+import cv2 as cv
+import numpy as np
+radius = 1
+stepSize = 32
+windowSize = [64, 64]
+angles = [radians(45), radians(90), radians(135)]
+lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles)
+im = cv.imread(r"C:\Users\kuzmi\PycharmProjects\Crowd-density-estimation-based-on-LBPCM\data\processedData\5.jpg")
+# mat = lbpcm.getGLCM(im)
+# lbp = lbpcm.getLBP(im)
+start_point = (0, 0)
+end_point = (64, 64)
+color = (255, 0, 0)
+thickness = 2
+
+image_copy = cv.rectangle(np.copy(im), start_point, end_point, color, thickness)
+
+cv.imshow("wind", image_copy)
+cv.waitKey(0)
+
