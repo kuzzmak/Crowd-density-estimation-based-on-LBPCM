@@ -49,8 +49,6 @@ def clearDirectory(pathToDirectory):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-
-
 def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
     # ako ne postoje folderi za treniranje i testiranje, stovre se, a
     # ako postoje onda se njihov sadrzaj brise

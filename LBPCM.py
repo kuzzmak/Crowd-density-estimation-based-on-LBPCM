@@ -59,7 +59,7 @@ class LBPCM:
         return featureVector
 
     def getGLCM(self, image):
-        return greycomatrix(image.astype(int), [1], self.angles, levels=256)
+        return greycomatrix(image.astype(int), [1], self.angles, levels=256, normed=True)
 
     def setAngles(self, angles):
         self.angles = angles
