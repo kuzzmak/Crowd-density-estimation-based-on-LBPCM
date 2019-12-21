@@ -405,7 +405,8 @@ class App(tk.Tk):
         image_copy = cv.rectangle(np.copy(lbp), start_point, end_point, color, thickness)
 
         # trenutno pamcenje slike da se ne izbrise
-        self.img = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+        self.LBPimg = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+        self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
 
         # postavaljanje imena slike u odgovarajucu labelu
         if not self.processedDataPictures:
@@ -413,7 +414,8 @@ class App(tk.Tk):
         else:
             self.frames[SlidingWindow].labelPicName.configure(text=self.processedDataPictures[self.picCounter])
         # postavljanje slike
-        self.frames[SlidingWindow].labelPic.configure(image=self.img)
+        self.frames[SlidingWindow].labelLBPPic.configure(image=self.LBPimg)
+        self.frames[SlidingWindow].labelPic.configure(image=self.im)
 
     def selectFolder(self, testOrTrain):
         """ funkcija za odabir folera za treniranje ili testiranje
@@ -881,7 +883,10 @@ class SlidingWindow(tk.Frame):
         self.labelPicName.pack()
         # labela za sliku
         self.labelPic = tk.Label(mainFrame, text="No picture\nloaded")
-        self.labelPic.pack()
+        self.labelPic.pack(padx=10, pady=10)
+        # labela za lbp sliku
+        self.labelLBPPic = tk.Label(mainFrame)
+        self.labelLBPPic.pack(padx=10, pady=10)
 
         # gumbi--------------------------
         buttonFrame = tk.Frame(mainFrame)
@@ -1152,5 +1157,5 @@ class FeatureVectorCreation(tk.Frame):
 
 if __name__ == "__main__":
     app = App()
-    app.geometry("800x600")
+    app.geometry("1000x600")
     app.mainloop()
