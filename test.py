@@ -61,25 +61,59 @@
 #
 # print(dictionary)
 
-import LBPCM
-from math import radians
-import cv2 as cv
+# import LBPCM
+# from math import radians
+# import cv2 as cv
+# import numpy as np
+# radius = 1
+# stepSize = 32
+# windowSize = [64, 64]
+# angles = [radians(45), radians(90), radians(135)]
+# lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles)
+# im = cv.imread(r"C:\Users\kuzmi\PycharmProjects\Crowd-density-estimation-based-on-LBPCM\data\processedData\5.jpg")
+# # mat = lbpcm.getGLCM(im)
+# # lbp = lbpcm.getLBP(im)
+# start_point = (0, 0)
+# end_point = (64, 64)
+# color = (255, 0, 0)
+# thickness = 2
+#
+# image_copy = cv.rectangle(np.copy(im), start_point, end_point, color, thickness)
+#
+# cv.imshow("wind", image_copy)
+# cv.waitKey(0)
+
 import numpy as np
-radius = 1
-stepSize = 32
-windowSize = [64, 64]
-angles = [radians(45), radians(90), radians(135)]
-lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles)
-im = cv.imread(r"C:\Users\kuzmi\PycharmProjects\Crowd-density-estimation-based-on-LBPCM\data\processedData\5.jpg")
-# mat = lbpcm.getGLCM(im)
-# lbp = lbpcm.getLBP(im)
-start_point = (0, 0)
-end_point = (64, 64)
-color = (255, 0, 0)
-thickness = 2
+import math
 
-image_copy = cv.rectangle(np.copy(im), start_point, end_point, color, thickness)
+vecs = [[1,2,3,4,5], [0,6,10,2,1], [0,8,8,1,4]]
 
-cv.imshow("wind", image_copy)
-cv.waitKey(0)
+def normalize(vectors):
 
+    numOfVecs = vecs.__len__()
+    dimension = vecs[0].__len__()
+
+    sums = [0] * dimension
+
+    for v in range(numOfVecs):
+        for i in range(dimension):
+            sums[i] += vecs[v][i]
+
+    mean = [x / numOfVecs for x in sums]
+
+    sigma = [0] * dimension
+
+    for v in range(numOfVecs):
+        for i in range(dimension):
+            sigma[i] += (vecs[v][i] - mean[i]) ** 2
+
+    sigma = [1 / (numOfVecs - 1) * x for x in sigma]
+    sigma = [math.sqrt(x) for x in sigma]
+    print(vecs)
+    print(sums)
+    print(mean)
+    print(sigma)
+
+
+if __name__ == "__main__":
+    normalize(vecs)

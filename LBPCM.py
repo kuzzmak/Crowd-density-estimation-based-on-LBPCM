@@ -31,11 +31,7 @@ class LBPCM:
         return self.featureVectors
 
     def getFeatureVector(self, im_gray):
-        # # velicina klizeceg prozora
-        # xy = 64
-        # windowSize = [xy, xy]
-        # # velicina koraka
-        # stepSize = xy // 2
+
         # # vektor znacajki
         featureVector = []
         # stvaranje vektora znacajki za svaku celiju slikovnog elementa
@@ -56,6 +52,7 @@ class LBPCM:
             # entropija
             entropy = hf.entropy()
             featureVector.extend(entropy)
+
         return featureVector
 
     def getGLCM(self, image):
