@@ -84,36 +84,35 @@
 # cv.waitKey(0)
 
 import numpy as np
-import math
-
-vecs = [[1,2,3,4,5], [0,6,10,2,1], [0,8,8,1,4]]
-
-def normalize(vectors):
-
-    numOfVecs = vecs.__len__()
-    dimension = vecs[0].__len__()
-
-    sums = [0] * dimension
-
-    for v in range(numOfVecs):
-        for i in range(dimension):
-            sums[i] += vecs[v][i]
-
-    mean = [x / numOfVecs for x in sums]
-
-    sigma = [0] * dimension
-
-    for v in range(numOfVecs):
-        for i in range(dimension):
-            sigma[i] += (vecs[v][i] - mean[i]) ** 2
-
-    sigma = [1 / (numOfVecs - 1) * x for x in sigma]
-    sigma = [math.sqrt(x) for x in sigma]
-    print(vecs)
-    print(sums)
-    print(mean)
-    print(sigma)
-
-
-if __name__ == "__main__":
-    normalize(vecs)
+# import math
+#
+# vecs = [[1,2,3,4,5], [0,6,10,2,1], [0,8,8,1,4]]
+#
+# def normalize(vectors):
+#
+#     numOfVecs = vecs.__len__()
+#     dimension = vecs[0].__len__()
+#
+#     sums = [0] * dimension
+#
+#     for v in range(numOfVecs):
+#         for i in range(dimension):
+#             sums[i] += vecs[v][i]
+#
+#     mean = [x / numOfVecs for x in sums]
+#
+#     sigma = [0] * dimension
+#
+#     for v in range(numOfVecs):
+#         for i in range(dimension):
+#             sigma[i] += (vecs[v][i] - mean[i]) ** 2
+#
+#     sigma = [math.sqrt(1 / (numOfVecs - 1) * x) for x in sigma]
+#
+#     for i in range(numOfVecs):
+#         for j in range(dimension):
+#             vecs[i][j] = (vecs[i][j] - mean[j]) / sigma[j]
+#
+#
+# if __name__ == "__main__":
+#     normalize(vecs)
