@@ -16,6 +16,7 @@ from math import radians
 from math import pi
 import re
 import threading
+import pickle
 import queue
 
 # boja obruba celije
@@ -728,6 +729,25 @@ class App(tk.Tk):
                         keyVal = i.split(":")
                         self.labelDictionary[keyVal[0]] = keyVal[1]
 
+    def saveVectorsToFile(self):
+        """ Funkcija za spremanje vektora znacajki u tekstualnu datoteku
+
+        :return:
+        """
+
+        filename = r"data/featureVectors.txt"
+
+        self.console.insert("[INFO] saving feature vectors to: " + filename + "\n")
+        self.console.insert(tk.END, "----------------------------------------\n")
+        self.console.see(tk.END)
+
+        with open(filename, "wb") as fp:  # Pickling
+            for fv in self.lbpcm.getFeatureVectors():
+                pickle.dump(fv, fp)
+
+        self.console.insert("[INFO] feature vectors saved" + "\n")
+        self.console.insert(tk.END, "----------------------------------------\n")
+        self.console.see(tk.END)
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -1161,6 +1181,9 @@ class FeatureVectorCreation(tk.Frame):
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
 
+        buttonSaveFV = tk.Button(buttonFrame, text="Save vectors", command=controller.saveVectorsToFile)
+        buttonSaveFV.pack(side="left", padx=10, pady=5)
+
         buttonLoadAnnotedData = tk.Button(buttonFrame, text="Load labels", command=controller.loadLabels)
         buttonLoadAnnotedData.pack(side="left", padx=10, pady=5)
 
@@ -1169,6 +1192,8 @@ class FeatureVectorCreation(tk.Frame):
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(side="left", padx=10, pady=5)
+
+
 
 
 if __name__ == "__main__":
