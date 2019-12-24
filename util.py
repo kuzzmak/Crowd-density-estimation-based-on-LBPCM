@@ -145,7 +145,7 @@ def resizePercent(image, percent):
     imageResized = cv.resize(image, dim, interpolation=cv.INTER_AREA)
     return imageResized
 
-def normalize(vectors):
+def normalize(vectors, progressbar, labelprogress):
     """ Funkcija koja sluzi normalizaciji vektora znacajki
     na srednju vrijednost oko nule i jedinicnu standardnu devijaciju
 
@@ -174,3 +174,7 @@ def normalize(vectors):
     for i in range(numOfVecs):
         for j in range(dimension):
             vectors[i][j] = (vectors[i][j] - mean[j]) / sigma[j]
+
+        # azuriranje progressbara i brojaca obradjenih vektora
+        progressbar.step()
+        labelprogress.configure(text=str(i) + "/" + str(numOfVecs))

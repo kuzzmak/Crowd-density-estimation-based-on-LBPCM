@@ -688,7 +688,23 @@ class App(tk.Tk):
                                                self.frames[FeatureVectorCreation].progressbarVector,
                                                self.frames[FeatureVectorCreation].labelProgress)
 
-            self.console.insert(tk.END, "gotovo\n")
+            # resetiranje progressbara na 0
+            self.frames[FeatureVectorCreation].progressbarVector.configure(value=0)
+
+            self.console.insert(tk.END, "[INFO] feature vectors made, now normalizing...\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+
+            util.normalize(self.lbpcm.getFeatureVectors(),
+                           self.frames[FeatureVectorCreation].progressbarVector,
+                           self.frames[FeatureVectorCreation].labelProgress)
+
+            self.console.insert(tk.END, "[INFO] feature vectors normalization complete\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+
+            # zadrzavanje vrijednosti kraja progressbara
+            self.frames[FeatureVectorCreation].progressbarVector.configure(value=self.processedDataPictures.__len__())
 
     def loadLabels(self):
         """ funkcija za ucitavanje oznaka slika koje su vec procesirane

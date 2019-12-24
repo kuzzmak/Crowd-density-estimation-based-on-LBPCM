@@ -116,3 +116,28 @@ import numpy as np
 #
 # if __name__ == "__main__":
 #     normalize(vecs)
+
+from tkinter import *
+from tkinter.ttk import Progressbar
+
+def step():
+    progressBar.step()
+
+def reset():
+    progressBar.configure(value=0)
+
+window = Tk()
+
+window.title("Welcome to LikeGeeks app")
+
+progressBar = Progressbar(window, orient=HORIZONTAL, length=200, mode='determinate')
+progressBar.pack()
+
+buttonStep = Button(window, text="step", command=step)
+buttonStep.pack()
+
+buttonReset = Button(window, text="reset", command=reset)
+buttonReset.pack()
+
+window.mainloop()
+
