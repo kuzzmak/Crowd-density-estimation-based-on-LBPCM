@@ -61,90 +61,65 @@
 #
 # print(dictionary)
 
-# import LBPCM
-# from math import radians
-# import cv2 as cv
-# import numpy as np
-# radius = 1
-# stepSize = 32
-# windowSize = [64, 64]
-# angles = [radians(45), radians(90), radians(135)]
-# lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles)
-# im = cv.imread(r"C:\Users\kuzmi\PycharmProjects\Crowd-density-estimation-based-on-LBPCM\data\processedData\5.jpg")
-# # mat = lbpcm.getGLCM(im)
-# # lbp = lbpcm.getLBP(im)
-# start_point = (0, 0)
-# end_point = (64, 64)
-# color = (255, 0, 0)
-# thickness = 2
-#
-# image_copy = cv.rectangle(np.copy(im), start_point, end_point, color, thickness)
-#
-# cv.imshow("wind", image_copy)
-# cv.waitKey(0)
+import LBPCM
+from math import radians
+from sklearn.neighbors import KNeighborsClassifier
+import cv2 as cv
+from sklearn.externals import joblib
 
-import numpy as np
-# import math
-#
-# vecs = [[1,2,3,4,5], [0,6,10,2,1], [0,8,8,1,4]]
-#
-# def normalize(vectors):
-#
-#     numOfVecs = vecs.__len__()
-#     dimension = vecs[0].__len__()
-#
-#     sums = [0] * dimension
-#
-#     for v in range(numOfVecs):
-#         for i in range(dimension):
-#             sums[i] += vecs[v][i]
-#
-#     mean = [x / numOfVecs for x in sums]
-#
-#     sigma = [0] * dimension
-#
-#     for v in range(numOfVecs):
-#         for i in range(dimension):
-#             sigma[i] += (vecs[v][i] - mean[i]) ** 2
-#
-#     sigma = [math.sqrt(1 / (numOfVecs - 1) * x) for x in sigma]
-#
-#     for i in range(numOfVecs):
-#         for j in range(dimension):
-#             vecs[i][j] = (vecs[i][j] - mean[j]) / sigma[j]
-#
-#
-# if __name__ == "__main__":
-#     normalize(vecs)
+labels = r"data\labeledData.txt"
+labelDictionary = {}
 
-# from tkinter import *
-# from tkinter.ttk import Progressbar
-#
-# def step():
-#     progressBar.step()
-#
-# def reset():
-#     progressBar.configure(value=0)
-#
-# window = Tk()
-#
-# window.title("Welcome to LikeGeeks app")
-#
-# progressBar = Progressbar(window, orient=HORIZONTAL, length=200, mode='determinate')
-# progressBar.pack()
-#
-# buttonStep = Button(window, text="step", command=step)
-# buttonStep.pack()
-#
-# buttonReset = Button(window, text="reset", command=reset)
-# buttonReset.pack()
-#
-# window.mainloop()
+with open(labels) as f:
+    rows = f.read()
+    lines = rows.split("\n")
 
-import pickle
-l = [[1,2,3,4], [5,5,5,5,5,55,5]]
-with open("testfile.txt", "wb") as fp:   #Pickling
-    pickle.dump(l, fp)
+    for i in lines:
+        if i != "":
+            keyVal = i.split(":")
+            labelDictionary[keyVal[0]] = keyVal[1]
 
-with open("testfile.txt", "rb") as fp:   # Unpickling
-    b = pickle.load(fp)
+size = labelDictionary.__len__()
+
+radius = 1
+stepSize = 32
+windowSize = [64, 64]
+angles = [radians(45), radians(90), radians(135)]
+pathToProcessedData = r"data\processedData"
+
+lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles)
+lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None, size)
+
+X = lbpcm.getFeatureVectors()
+Y = []
+for i in labelDictionary.values():
+    Y.append(i)
+print(Y)
+
+clf = KNeighborsClassifier(n_neighbors=3).fit(X, Y)
+
+testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
+im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
+vec = lbpcm.getFeatureVector(im)
+print(clf.predict([vec]))
+
+filename = r"data/classifier.pkl"
+joblib.dump(clf, filename, compress=9)
+
+
+classifier = joblib.load(filename)
+print(classifier.predict([vec]))
+print(classifier)
+# genMat2 = [[1, 0, 1, 1, 0],
+#            [1, 1, 0, 1, 0],
+#            [0, 1, 0, 0, 1]]
+#
+# list = []
+# for i in range(genMat2.__len__()):
+#     for j in range(genMat2.__len__()):
+#         temp = [0] * genMat2[0].__len__()
+#         for k in range(genMat2[0].__len__()):
+#             temp[k] = genMat2[i][k] ^ genMat2[j][k]
+#         if not list.__contains__(temp):
+#             list.append(temp)
+# print(list)

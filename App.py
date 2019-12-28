@@ -734,6 +734,10 @@ class App(tk.Tk):
                         keyVal = i.split(":")
                         self.labelDictionary[keyVal[0]] = keyVal[1]
 
+            self.console.insert(tk.END, "[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
+
     def saveVectorsToFile(self):
         """ Funkcija za spremanje vektora znacajki u tekstualnu datoteku
 
@@ -756,14 +760,18 @@ class App(tk.Tk):
 
     def addConf(self):
 
-        radius = self.frames[ConfigurationsPage].entryLBPRadius.get()
-        stepSize = self.frames[ConfigurationsPage].entryStepSize.get()
-        cellSize = self.frames[ConfigurationsPage].entryCellSize.get()
-        angles = self.frames[ConfigurationsPage].entryAngles.get()
-        numOfNeighbors = self.frames[ConfigurationsPage].entryNumOfNeighbors.get()
+        # dohvat parametara za konfiguraciju
+        radius = int(self.frames[ConfigurationsPage].entryLBPRadius.get())
+        stepSize = int(self.frames[ConfigurationsPage].entryStepSize.get())
+        cellSize = [int(x) for x in self.frames[ConfigurationsPage].entryCellSize.get().split(",")]
+        angles = [radians(int(i)) for i in self.frames[ConfigurationsPage].entryAngles.get().split(",")]
+        numOfNeighbors = int(self.frames[ConfigurationsPage].entryNumOfNeighbors.get())
         combine = self.rbV.get()
 
+        # pojedina konfiguracija
         conf = [radius, stepSize, cellSize, angles, numOfNeighbors, combine]
+        self.configurations.append(conf)
+
         self.console.insert(tk.END, "new configuration added\n")
         self.console.insert(tk.END, str(conf) + "\n")
         self.console.see(tk.END)
