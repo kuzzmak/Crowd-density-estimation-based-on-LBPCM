@@ -3,23 +3,24 @@ import os
 
 class Writer:
 
-    def __init__(self):
+    def __init__(self, saveDirectory=""):
 
         self.labelDictionary = {}
+        self.saveDirectory = saveDirectory
 
-    def writeAnnotedDataToFile(self, labelDictionary, saveDirectory):
+    def writeAnnotedDataToFile(self):
         """ Funkcija za spremanje oznacenih slika u datoteku self.pathToLabels
         """
 
-        if not os.path.isdir(saveDirectory):
-            os.mkdir(saveDirectory)
+        if not os.path.isdir(self.saveDirectory):
+            os.mkdir(self.saveDirectory)
 
-        filename = saveDirectory + "/" + "labeledData.txt"
+        filename = self.saveDirectory + "/" + "labeledData.txt"
 
         f = open(filename, "w")
 
-        for i in labelDictionary:
-            row = str(i) + ":" + str(labelDictionary[i]) + "\n"
+        for i in self.labelDictionary:
+            row = str(i) + ":" + str(self.labelDictionary[i]) + "\n"
             f.write(row)
         f.close()
 
@@ -36,15 +37,9 @@ class Writer:
                     keyVal = i.split(":")
                     self.labelDictionary[keyVal[0]] = keyVal[1]
 
-    def getLabelDictionary(self):
-        """ Funkcija za dohvat rjecnika labeala
-        """
+    def saveResults(self):
 
-        return self.labelDictionary
-
-    def saveResults(self, saveDirectory):
-
-        filename = saveDirectory + "/" + "results.txt"
+        filename = self.saveDirectory + "/" + "results.txt"
 
         f = open(filename, "a")
 
@@ -53,6 +48,10 @@ class Writer:
 
 if __name__ == "__main__":
 
-    writer = Writer()
     saveDirectory = r"data/normalData"
-    writer.writeAnnotedDataToFile(writer.labelDictionary, saveDirectory)
+    writer = Writer(saveDirectory)
+    dic = {}
+    dic[1] = 1
+    dic[2] = 2
+    writer.labelDictionary = dic
+    writer.writeAnnotedDataToFile()

@@ -17,6 +17,7 @@ from math import pi
 import re
 import threading
 import pickle
+import Writer
 import queue
 
 # boja obruba celije
@@ -101,6 +102,8 @@ class App(tk.Tk):
         self.configurations = []
         # vrijednost radio gumba
         self.rbV = tk.IntVar()
+        # razred za spremanje rezultata i labela
+        self.writer = Writer.Writer()
 
         for F in (PreprocessPage,
                   StartPage,
@@ -580,14 +583,12 @@ class App(tk.Tk):
         """ funkcija za spremanje rjecnika slika i oznaka
         """
 
-        path = r"data\labeledData.txt"
-        f = open(path, "w")
-        for i in self.labelDictionary:
-            row = str(i) + ":" + str(self.labelDictionary[i]) + "\n"
-            f.write(row)
-        f.close()
+        self.writer.saveDirectory = r"data/normalData"
+        self.writer.labelDictionary = self.labelDictionary
+        self.writer.writeAnnotedDataToFile()
 
-        self.console.insert(tk.END, "[INFO] labels and images saved to: " + path + "\n")
+        self.console.insert(tk.END, "[INFO] labels and images saved to: " + self.writer.saveDirectory + "\n")
+        self.console.insert(tk.END, "[INFO] saved " + str(self.labelDictionary.__len__()) + " labeled images\n")
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
@@ -717,7 +718,7 @@ class App(tk.Tk):
         """
 
         file = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled\data",
-                                          title="Select file",
+                                          title="Select labeled data file",
                                           filetypes=(("text files", "*.txt"), ("all files", "*.*")))
 
         if file == "":
@@ -725,14 +726,9 @@ class App(tk.Tk):
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
-            with open(file) as f:
-                rows = f.read()
-                lines = rows.split("\n")
-
-                for i in lines:
-                    if i != "":
-                        keyVal = i.split(":")
-                        self.labelDictionary[keyVal[0]] = keyVal[1]
+            self.writer.loadAnnotedDataFromFile(file)
+            self.labelDictionary = self.writer.labelDictionary
+            self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
 
             self.console.insert(tk.END, "[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels\n")
             self.console.insert(tk.END, "----------------------------------------\n")
