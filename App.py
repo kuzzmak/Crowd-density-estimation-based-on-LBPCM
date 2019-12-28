@@ -546,6 +546,9 @@ class App(tk.Tk):
         self.frames[DataAnnotation].labelImageName.configure(
             text=self.processedDataPictures[self.dataAnnotationCounter])
 
+        self.frames[DataAnnotation].labelAnnotedDataCounter.configure(
+            text=str(self.dataAnnotationCounter) + "/" + str(self.processedDataPictures.__len__()))
+
     def prevPicAnnotation(self):
         """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
         """
@@ -1082,6 +1085,7 @@ class DataAnnotation(tk.Frame):
     """
 
     def __init__(self, parent, controller):
+
         tk.Frame.__init__(self, parent)
 
         self.labelImageName = tk.Label(self, text="")
@@ -1089,6 +1093,9 @@ class DataAnnotation(tk.Frame):
 
         self.labelPic = tk.Label(self, text="")
         self.labelPic.pack(padx=10, pady=10)
+
+        self.labelAnnotedDataCounter = tk.Label(self, text="")
+        self.labelAnnotedDataCounter.pack(padx=10, pady=10)
 
         buttonFrame = tk.Frame(self)
         buttonFrame.pack()
