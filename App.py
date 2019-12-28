@@ -770,6 +770,10 @@ class App(tk.Tk):
 
     def selectrbV(self):
         print(self.rbV.get())
+
+    def runConfigurations(self):
+        pass
+
 # frames----------------------------------
 class StartPage(tk.Frame):
 
@@ -1308,6 +1312,9 @@ class ConfigurationsPage(tk.Frame):
 
         buttonAdd = tk.Button(buttonFrame, text="Add", command=lambda: controller.addConf())
         buttonAdd.pack(side="left", padx=10, pady=10)
+
+        buttonRunConfigurations = tk.Button(buttonFrame, text="Run configurations", command=lambda: controller.runConfigurations())
+        buttonRunConfigurations.pack(side="left", padx=10, pady=10)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(FeatureVectorCreation))
         buttonBack.pack(side="left", padx=10, pady=10)
