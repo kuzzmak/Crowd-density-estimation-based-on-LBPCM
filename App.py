@@ -97,6 +97,10 @@ class App(tk.Tk):
         self.processedDataPictures = []
         # rjecnik s oznacenim slikama
         self.labelDictionary = {}
+        # lista konfiguracija koje se trebaju izvesti
+        self.configurations = []
+        # vrijednost radio gumba
+        self.rbV = tk.IntVar()
 
         for F in (PreprocessPage,
                   StartPage,
@@ -104,7 +108,8 @@ class App(tk.Tk):
                   ParameterSetting,
                   SlidingWindow,
                   DataAnnotation,
-                  FeatureVectorCreation):
+                  FeatureVectorCreation,
+                  ConfigurationsPage):
 
             frame = F(container, self)
 
@@ -749,6 +754,22 @@ class App(tk.Tk):
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
+    def addConf(self):
+
+        radius = self.frames[ConfigurationsPage].entryLBPRadius.get()
+        stepSize = self.frames[ConfigurationsPage].entryStepSize.get()
+        cellSize = self.frames[ConfigurationsPage].entryCellSize.get()
+        angles = self.frames[ConfigurationsPage].entryAngles.get()
+        numOfNeighbors = self.frames[ConfigurationsPage].entryNumOfNeighbors.get()
+        combine = self.rbV.get()
+
+        conf = [radius, stepSize, cellSize, angles, numOfNeighbors, combine]
+        self.console.insert(tk.END, "new configuration added\n")
+        self.console.insert(tk.END, str(conf) + "\n")
+        self.console.see(tk.END)
+
+    def selectrbV(self):
+        print(self.rbV.get())
 # frames----------------------------------
 class StartPage(tk.Frame):
 
@@ -1184,16 +1205,112 @@ class FeatureVectorCreation(tk.Frame):
         buttonSaveFV = tk.Button(buttonFrame, text="Save vectors", command=controller.saveVectorsToFile)
         buttonSaveFV.pack(side="left", padx=10, pady=5)
 
+        buttonAddConfigurations = tk.Button(buttonFrame, text="Add configurations",
+                                            command=lambda: controller.show_frame(ConfigurationsPage))
+        buttonAddConfigurations.pack(side="left", padx=10, pady=5)
+
         buttonLoadAnnotedData = tk.Button(buttonFrame, text="Load labels", command=controller.loadLabels)
         buttonLoadAnnotedData.pack(side="left", padx=10, pady=5)
 
-        buttonMakeVectors = tk.Button(buttonFrame, text="Make vectors", command=lambda: [threading.Thread(target=controller.makeFeatureVectors, daemon=True).start()])
+        buttonMakeVectors = tk.Button(buttonFrame, text="Make vectors",
+                                      command=lambda: [threading.Thread(
+                                          target=controller.makeFeatureVectors, daemon=True).start()])
         buttonMakeVectors.pack(side="left", padx=10, pady=5)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(side="left", padx=10, pady=5)
 
 
+class ConfigurationsPage(tk.Frame):
+    """ razred za ucenje klasifikatora, nakon stvorenih vektora znacajki i oznacenih slika
+    """
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        # opis framea
+        descriptionLabel = tk.Label(self, text="Here you specify different configurations for running.\n")
+        descriptionLabel.pack(padx=10, pady=10)
+
+        # LBP parametri
+        labelLBP = tk.Label(self, text="LBP parameters")
+        labelLBP.pack(padx=10, pady=10)
+
+        frameLBP = tk.Frame(self)
+        frameLBP.pack()
+
+        labelLBPRadius = tk.Label(frameLBP, text="LBP radius")
+        labelLBPRadius.pack(side="left", padx=10, pady=10)
+
+        self.entryLBPRadius = tk.Entry(frameLBP)
+        self.entryLBPRadius.pack(side="right", padx=10, pady=10)
+
+        # frame s glcm parametrima
+        labelGLCM = tk.Label(self, text="GLCM parameters")
+        labelGLCM.pack()
+
+        frameGLCM = tk.Frame(self)
+        frameGLCM.pack()
+
+        labelGLCMDistance = tk.Label(frameGLCM, text="Distance")
+        labelGLCMDistance.grid(row=0, column=0, padx=10, pady=10)
+
+        self.entryGLCMDistance = tk.Entry(frameGLCM)
+        self.entryGLCMDistance.grid(row=0, column=1, padx=10, pady=10)
+
+        labelStepSize = tk.Label(frameGLCM, text="Step size")
+        labelStepSize.grid(row=1, column=0, padx=10, pady=10)
+
+        self.entryStepSize = tk.Entry(frameGLCM)
+        self.entryStepSize.grid(row=1, column=1, padx=10, pady=10)
+
+        labelCellSize = tk.Label(frameGLCM, text="Cell size")
+        labelCellSize.grid(row=2, column=0, padx=10, pady=10)
+
+        self.entryCellSize = tk.Entry(frameGLCM)
+        self.entryCellSize.grid(row=2, column=1, padx=10, pady=10)
+
+        labelAngles = tk.Label(frameGLCM, text="Angles")
+        labelAngles.grid(row=3, column=0, padx=10, pady=10)
+
+        self.entryAngles = tk.Entry(frameGLCM)
+        self.entryAngles.grid(row=3, column=1, padx=10, pady=10)
+
+        # parametri za klasifikator
+        labelClassifier = tk.Label(self, text="Classifier parameters")
+        labelClassifier.pack()
+
+        classifierFrame = tk.Frame(self)
+        classifierFrame.pack()
+
+        labelNumOfNeighbors = tk.Label(classifierFrame, text="Number of neighbors")
+        labelNumOfNeighbors.grid(row=0, column=0, padx=10, pady=10)
+
+        self.entryNumOfNeighbors = tk.Entry(classifierFrame)
+        self.entryNumOfNeighbors.grid(row=0, column=1, padx=10, pady=10)
+
+        labelCombine = tk.Label(classifierFrame, text="Combine multiple ")
+        labelCombine.grid(row=1, column=0, padx=10, pady=10)
+
+        options = [(0, "Don't combine"),
+                   (1, "Combine")]
+
+        controller.rbV.set(0)
+
+        frameRB = tk.Frame(classifierFrame)
+        frameRB.grid(row=1, column=1, padx=10)
+        for val, name in enumerate(options):
+            tk.Radiobutton(frameRB, text=name, padx=10, pady=10, variable=controller.rbV, value=val).pack(side="left")
+
+        # frame s gumbima
+        buttonFrame = tk.Frame(self)
+        buttonFrame.pack()
+
+        buttonAdd = tk.Button(buttonFrame, text="Add", command=lambda: controller.addConf())
+        buttonAdd.pack(side="left", padx=10, pady=10)
+
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(FeatureVectorCreation))
+        buttonBack.pack(side="left", padx=10, pady=10)
 
 
 if __name__ == "__main__":
