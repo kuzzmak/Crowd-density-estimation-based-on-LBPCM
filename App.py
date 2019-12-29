@@ -761,6 +761,7 @@ class App(tk.Tk):
 
         # dohvat parametara za konfiguraciju
         radius = int(self.frames[ConfigurationsPage].entryLBPRadius.get())
+        glcmDistance = int(self.frames[ConfigurationsPage].entryGLCMDistance.get())
         stepSize = int(self.frames[ConfigurationsPage].entryStepSize.get())
         cellSize = [int(x) for x in self.frames[ConfigurationsPage].entryCellSize.get().split(",")]
         angles = [radians(int(i)) for i in self.frames[ConfigurationsPage].entryAngles.get().split(",")]
@@ -768,7 +769,7 @@ class App(tk.Tk):
         combine = self.rbV.get()
 
         # pojedina konfiguracija
-        conf = [radius, stepSize, cellSize, angles, numOfNeighbors, combine]
+        conf = [radius, glcmDistance, stepSize, cellSize, angles, numOfNeighbors, combine]
         self.configurations.append(conf)
 
         self.console.insert(tk.END, "new configuration added\n")
@@ -778,8 +779,39 @@ class App(tk.Tk):
     def selectrbV(self):
         print(self.rbV.get())
 
+    def runConf(self):
+        """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
+        :return:
+        """
+
+        self.makeFeatureVectors()
+
+        fv = self.lbpcm.getFeatureVectors()
+
+        X_train = fv[:round(0.7 * fv.__len__())]
+        X_test = fv[round(0.7 * fv.__len__()):]
+
+        Y_train = []
+        for i in self.labelDictionary.values()[:round(0.7 * fv.__len__())]:
+            Y_train.append(i)
+
+        Y_test = []
+        for i in self.labelDictionary.values()[round(0.7 * fv.__len__()):]:
+            Y_test.append(i)
+
+
+
     def runConfigurations(self):
-        pass
+
+        for conf in self.configurations:
+
+            self.radius = conf[0]
+            self.stepSize = conf[2]
+            self.cellSize = conf[3]
+            self.angles = conf[4]
+
+            threading.Thread(target=self.runConf, daemon=True).start()
+
 
 # frames----------------------------------
 class StartPage(tk.Frame):

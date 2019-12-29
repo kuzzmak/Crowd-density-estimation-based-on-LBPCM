@@ -86,6 +86,7 @@ class LBPCM:
             i += 1
             progressbar.step()
             labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
+            print(str(i))
 
 
 if __name__ == "__main__":
