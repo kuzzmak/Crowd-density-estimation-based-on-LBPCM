@@ -779,14 +779,23 @@ class App(tk.Tk):
     def selectrbV(self):
         print(self.rbV.get())
 
-    def runConf(self):
+    def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
         :return:
         """
 
-        self.makeFeatureVectors()
+        radius = conf[0]
+        glcmDistance = conf[1]
+        stepSize = conf[2]
+        cellSize = conf[3]
+        angles = conf[4]
+        numOfNeighbors = conf[5]
+        combine = conf[6]
 
-        fv = self.lbpcm.getFeatureVectors()
+        lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles)
+        lbpcm.calculateFeatureVectors(self.pathToProcessedData, None, None)
+
+        fv = lbpcm.getFeatureVectors()
 
         X_train = fv[:round(0.7 * fv.__len__())]
         X_test = fv[round(0.7 * fv.__len__()):]
@@ -799,18 +808,12 @@ class App(tk.Tk):
         for i in self.labelDictionary.values()[round(0.7 * fv.__len__()):]:
             Y_test.append(i)
 
-
-
     def runConfigurations(self):
 
         for conf in self.configurations:
 
-            self.radius = conf[0]
-            self.stepSize = conf[2]
-            self.cellSize = conf[3]
-            self.angles = conf[4]
+            threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
 
-            threading.Thread(target=self.runConf, daemon=True).start()
 
 
 # frames----------------------------------

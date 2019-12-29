@@ -84,9 +84,10 @@ class LBPCM:
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
             self.featureVectors.append(self.getFeatureVector(image))
             i += 1
-            progressbar.step()
-            labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
-            print(str(i))
+            if not(progressbar is None or labelProgress is None):
+                progressbar.step()
+                labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
+            print(str(i) + " " + str(self.angles))
 
 
 if __name__ == "__main__":
