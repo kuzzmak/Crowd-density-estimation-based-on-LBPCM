@@ -78,12 +78,12 @@ class LBPCM:
     def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
+        pictures = pictures[:100]
         i = 0
-
         # vecSize = str(self.getFeatureVector(cv.imread(pathToProcessedData + "/" + pictures[0], cv.IMREAD_GRAYSCALE)).__len__())
         # labelFVCSize.configure(text=vecSize)
-        console.insert(tk.END, "[INFO] started feature vector creation\n")
-        console.see(tk.END)
+        # console.insert(tk.END, "[INFO] started feature vector creation\n")
+        # console.see(tk.END)
 
         for pic in pictures:
             # staza do slike
@@ -94,9 +94,11 @@ class LBPCM:
             if not(progressbar is None or labelProgress is None):
                 progressbar.step()
                 labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
-
-        console.insert(tk.END, "[INFO] vector creation finished\n")
-        console.see(tk.END)
+        #     console.insert(tk.END, str(i) + "/" + str(pictures.__len__()) + "\n")
+        #     console.see(tk.END)
+        #
+        # console.insert(tk.END, "[INFO] vector creation finished\n")
+        # console.see(tk.END)
 
 if __name__ == "__main__":
     lbpcm = LBPCM(radius=1)

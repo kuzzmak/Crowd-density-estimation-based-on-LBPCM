@@ -44,11 +44,19 @@ class Writer:
 
         filename = self.saveDirectory + "/" + "results.txt"
 
-        f = open(filename, "a")
+        if os.path.isfile(filename):
 
-        f.write(saveString)
+            f = open(filename, "a")
 
-        f.close()
+            f.write(saveString)
+
+            f.close()
+        else:
+            f = open(filename, "w")
+
+            f.write(saveString)
+
+            f.close()
 
     def saveModel(self, model, paramString):
 

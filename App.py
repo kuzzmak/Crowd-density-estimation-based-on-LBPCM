@@ -115,7 +115,8 @@ class App(tk.Tk):
                   SlidingWindow,
                   DataAnnotation,
                   FeatureVectorCreation,
-                  ConfigurationsPage):
+                  ConfigurationsPage,
+                  ClassificationPage):
 
             frame = F(container, self)
 
@@ -801,22 +802,31 @@ class App(tk.Tk):
         X_train = fv[:round(0.7 * fv.__len__())]
         X_test = fv[round(0.7 * fv.__len__()):]
 
-        Y_train = []
-        for i in self.labelDictionary.values()[:round(0.7 * fv.__len__())]:
-            Y_train.append(i)
+        Y = []
+        for i in self.labelDictionary.values():
+            Y.append(i)
 
-        Y_test = []
-        for i in self.labelDictionary.values()[round(0.7 * fv.__len__()):]:
-            Y_test.append(i)
+        Y_train = Y[:round(0.7 * fv.__len__())]
+        Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
 
-        kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors).fit(X_train, Y_train)
+        print("x_train: " + str(X_train.__len__()))
+        print("x_test: " + str(X_test.__len__()))
+        print("y_train: " + str(Y_train.__len__()))
+        print("y_test: " + str(Y_test.__len__()))
+
+        self.console.insert(tk.END, "[INFO] fitting started\n")
+        self.console.see(tk.END)
+
+        kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
+        kneighbors.fit(X_train, Y_train)
 
         error = kneighbors.score(X_test, Y_test)
 
         saveString = str(conf) + "--error: " + str(error)
 
+        self.writer.saveDirectory = r"data/normalData"
         self.writer.saveResults(saveString)
-        self.writer.saveModel(kneighbors)
+        self.writer.saveModel(kneighbors, saveString)
 
     def runConfigurations(self):
         """ Funkcija za pokretanje pojedine unesene konfiguracije
@@ -887,6 +897,9 @@ class PageInitialization(tk.Frame):
         buttonFVC = tk.Button(buttonFrame, text="FVC", command=lambda: [controller.show_frame(FeatureVectorCreation),
                                                                         controller.showFVCinfo()])
         buttonFVC.pack(padx=10, pady=10, fill="x")
+
+        buttonClassification = tk.Button(buttonFrame, text="Classification", command=lambda: controller.show_frame(ClassificationPage))
+        buttonClassification.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
         buttonBack.pack(padx=10, pady=10, fill="x")
@@ -1375,6 +1388,40 @@ class ConfigurationsPage(tk.Frame):
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(FeatureVectorCreation))
         buttonBack.pack(side="left", padx=10, pady=10)
+
+
+class ClassificationPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+
+        pageDescription = tk.Label(self, text="Here you can classify images.")
+        pageDescription.pack(side="top", padx=10, pady=10)
+
+        leftFrame = tk.Frame(self)
+        leftFrame.pack(side="left", padx=10, pady=10)
+
+        rightFrame = tk.Frame(self, background="red")
+        rightFrame.pack(side="right", padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+        buttonLoadModel = tk.Button(leftFrame, text="Load model")
+        buttonLoadModel.pack(padx=10, pady=5, fill="x")
+
+        buttonSelectFolder = tk.Button(leftFrame, text="Select folder")
+        buttonSelectFolder.pack(padx=10, pady=5, fill="x")
+
+        buttonSelectPicture = tk.Button(leftFrame, text="Select picture")
+        buttonSelectPicture.pack(padx=10, pady=5, fill="x")
+
+        buttonBack = tk.Button(leftFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.pack(padx=10, pady=5, fill="x")
+
+        self.labelPictureName = tk.Label(rightFrame, text="Select picture first")
+        self.labelPictureName.pack()
+
+        self.labelPicture = tk.Label(rightFrame, text="Select picture or select folder")
+        self.labelPicture.pack()
 
 
 if __name__ == "__main__":

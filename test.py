@@ -67,7 +67,7 @@ from sklearn.neighbors import KNeighborsClassifier
 import cv2 as cv
 from sklearn.externals import joblib
 
-labels = r"data\labeledData.txt"
+labels = r"data\normalData\labeledData.txt"
 labelDictionary = {}
 
 with open(labels) as f:
@@ -87,17 +87,17 @@ windowSize = [64, 64]
 angles = [radians(45), radians(90), radians(135)]
 pathToProcessedData = r"data\processedData"
 
-lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles)
-lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None, size)
+lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1])
+lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None)
 
 X = lbpcm.getFeatureVectors()
 Y = []
 for i in labelDictionary.values():
     Y.append(i)
-print(Y)
-
+Y = Y[:100]
+print("prijt")
 clf = KNeighborsClassifier(n_neighbors=3).fit(X, Y)
-
+print("poslije")
 
 testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
 im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
@@ -111,6 +111,8 @@ joblib.dump(clf, filename, compress=9)
 classifier = joblib.load(filename)
 print(classifier.predict([vec]))
 print(classifier)
+
+
 # genMat2 = [[1, 0, 1, 1, 0],
 #            [1, 1, 0, 1, 0],
 #            [0, 1, 0, 0, 1]]
