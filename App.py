@@ -9,6 +9,7 @@ import numpy as np
 from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
+from sklearn.neighbors import KNeighborsClassifier
 import random
 import Haralick
 import LBPCM
@@ -761,7 +762,7 @@ class App(tk.Tk):
 
         # dohvat parametara za konfiguraciju
         radius = int(self.frames[ConfigurationsPage].entryLBPRadius.get())
-        glcmDistance = int(self.frames[ConfigurationsPage].entryGLCMDistance.get())
+        glcmDistance = [int(x) for x in self.frames[ConfigurationsPage].entryGLCMDistance.get().split(",")]
         stepSize = int(self.frames[ConfigurationsPage].entryStepSize.get())
         cellSize = [int(x) for x in self.frames[ConfigurationsPage].entryCellSize.get().split(",")]
         angles = [radians(int(i)) for i in self.frames[ConfigurationsPage].entryAngles.get().split(",")]
@@ -792,7 +793,7 @@ class App(tk.Tk):
         numOfNeighbors = conf[5]
         combine = conf[6]
 
-        lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles)
+        lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance)
         lbpcm.calculateFeatureVectors(self.pathToProcessedData, None, None)
 
         fv = lbpcm.getFeatureVectors()
@@ -808,12 +809,22 @@ class App(tk.Tk):
         for i in self.labelDictionary.values()[round(0.7 * fv.__len__()):]:
             Y_test.append(i)
 
-    def runConfigurations(self):
+        kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors).fit(X_train, Y_train)
 
+        error = kneighbors.score(X_test, Y_test)
+
+        saveString = str(conf) + "--error: " + str(error)
+
+        self.writer.saveResults(saveString)
+        self.writer.saveModel(kneighbors)
+
+    def runConfigurations(self):
+        """ Funkcija za pokretanje pojedine unesene konfiguracije
+        :return:
+        """
         for conf in self.configurations:
 
             threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
-
 
 
 # frames----------------------------------

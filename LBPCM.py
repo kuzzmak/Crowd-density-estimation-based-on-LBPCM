@@ -8,7 +8,7 @@ import Haralick
 
 class LBPCM:
 
-    def __init__(self, radius, stepSize, windowSize, angles):
+    def __init__(self, radius, stepSize, windowSize, angles, glcmDistance, combine=0):
         # udaljenost centralnog piksela
         self.radius = radius
         # velicina pomaka udesno ili dolje
@@ -19,6 +19,10 @@ class LBPCM:
         self.no_points = 8 * radius
         # kutovi za koje se racuna glcm
         self.angles = angles
+        # udaljenosti za koje se racuna matrica
+        self.glcmDistance = glcmDistance
+        # kombiniraju li se matrice za sve kuteve u jednu ili ne
+        self.combine = combine
         # lista vektora znacajki
         self.featureVectors = []
 
@@ -56,7 +60,7 @@ class LBPCM:
         return featureVector
 
     def getGLCM(self, image):
-        return greycomatrix(image.astype(int), [1], self.angles, levels=256, normed=True)
+        return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256, normed=True)
 
     def setAngles(self, angles):
         self.angles = angles

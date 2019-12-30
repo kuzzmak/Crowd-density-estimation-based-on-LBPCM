@@ -1,4 +1,6 @@
 import os
+from sklearn.externals import joblib
+from tkinter import filedialog
 
 
 class Writer:
@@ -7,6 +9,7 @@ class Writer:
 
         self.labelDictionary = {}
         self.saveDirectory = saveDirectory
+        self.modelPath = r"data/models/"
 
     def writeAnnotedDataToFile(self):
         """ Funkcija za spremanje oznacenih slika u datoteku self.pathToLabels
@@ -37,21 +40,29 @@ class Writer:
                     keyVal = i.split(":")
                     self.labelDictionary[keyVal[0]] = keyVal[1]
 
-    def saveResults(self):
+    def saveResults(self, saveString):
 
         filename = self.saveDirectory + "/" + "results.txt"
 
         f = open(filename, "a")
 
+        f.write(saveString)
+
         f.close()
 
+    def saveModel(self, model, paramString):
 
-if __name__ == "__main__":
+        filename = self.modelPath + paramString
+        joblib.dump(model, filename, compress=9)
 
-    saveDirectory = r"data/normalData"
-    writer = Writer(saveDirectory)
-    dic = {}
-    dic[1] = 1
-    dic[2] = 2
-    writer.labelDictionary = dic
-    writer.writeAnnotedDataToFile()
+    def loadModel(self):
+
+        file = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled\data\models",
+                                          title="Select model",
+                                          filetypes=(("pickel files", "*.pkl"), ("all files", "*.*")))
+
+        classifier = joblib.load(file)
+
+        return classifier
+
+

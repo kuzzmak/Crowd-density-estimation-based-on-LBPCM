@@ -98,6 +98,7 @@ print(Y)
 
 clf = KNeighborsClassifier(n_neighbors=3).fit(X, Y)
 
+
 testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
 im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
 vec = lbpcm.getFeatureVector(im)
