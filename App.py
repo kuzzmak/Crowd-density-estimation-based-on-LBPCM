@@ -62,9 +62,11 @@ class App(tk.Tk):
         self.stepSize = 32
         # kutevi za glcm
         self.angles = [pi / 4, pi / 2, pi - pi / 4]
+        # udaljenosti za koje se racuna glcm
+        self.glcmDistance = [1]
         # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
         self.lbpcm = LBPCM.LBPCM(self.radius, self.stepSize, self.cellSize,
-                                 self.angles)  # stvaranje lbpcm s defaultnim vrijednostima
+                                 self.angles, self.glcmDistance)  # stvaranje lbpcm s defaultnim vrijednostima
         # trenutna slika na stranici za parametre
         self.currPicPar = [[]]
         # rjecnik svih stranica
@@ -696,6 +698,7 @@ class App(tk.Tk):
             self.console.see(tk.END)
         else:
             self.lbpcm.calculateFeatureVectors(self.pathToProcessedData,
+                                               self.console,
                                                self.frames[FeatureVectorCreation].progressbarVector,
                                                self.frames[FeatureVectorCreation].labelProgress)
 
@@ -777,9 +780,6 @@ class App(tk.Tk):
         self.console.insert(tk.END, str(conf) + "\n")
         self.console.see(tk.END)
 
-    def selectrbV(self):
-        print(self.rbV.get())
-
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
         :return:
@@ -794,7 +794,7 @@ class App(tk.Tk):
         combine = conf[6]
 
         lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance)
-        lbpcm.calculateFeatureVectors(self.pathToProcessedData, None, None)
+        lbpcm.calculateFeatureVectors(self.pathToProcessedData, self.console, None, None)
 
         fv = lbpcm.getFeatureVectors()
 

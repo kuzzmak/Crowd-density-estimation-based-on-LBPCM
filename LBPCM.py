@@ -5,6 +5,7 @@ from skimage.feature import greycomatrix
 import util
 import numpy as np
 import Haralick
+import tkinter as tk
 
 class LBPCM:
 
@@ -74,13 +75,15 @@ class LBPCM:
     def setRadius(self, radius):
         self.radius = radius
 
-    def calculateFeatureVectors(self, pathToProcessedData, progressbar, labelProgress):
+    def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
         i = 0
 
         # vecSize = str(self.getFeatureVector(cv.imread(pathToProcessedData + "/" + pictures[0], cv.IMREAD_GRAYSCALE)).__len__())
         # labelFVCSize.configure(text=vecSize)
+        console.insert(tk.END, "[INFO] started feature vector creation\n")
+        console.see(tk.END)
 
         for pic in pictures:
             # staza do slike
@@ -91,8 +94,9 @@ class LBPCM:
             if not(progressbar is None or labelProgress is None):
                 progressbar.step()
                 labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
-            print(str(i) + " " + str(self.angles))
 
+        console.insert(tk.END, "[INFO] vector creation finished\n")
+        console.see(tk.END)
 
 if __name__ == "__main__":
     lbpcm = LBPCM(radius=1)
