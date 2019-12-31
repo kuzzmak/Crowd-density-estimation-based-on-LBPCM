@@ -61,68 +61,111 @@
 #
 # print(dictionary)
 
-import LBPCM
-from math import radians
-from sklearn.neighbors import KNeighborsClassifier
-import cv2 as cv
-from sklearn.externals import joblib
-
-labels = r"data\normalData\labeledData.txt"
-labelDictionary = {}
-
-with open(labels) as f:
-    rows = f.read()
-    lines = rows.split("\n")
-
-    for i in lines:
-        if i != "":
-            keyVal = i.split(":")
-            labelDictionary[keyVal[0]] = keyVal[1]
-
-size = labelDictionary.__len__()
-
-radius = 1
-stepSize = 32
-windowSize = [64, 64]
-angles = [radians(45), radians(90), radians(135)]
-pathToProcessedData = r"data\processedData"
-
-lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1])
-lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None)
-
-X = lbpcm.getFeatureVectors()
-Y = []
-for i in labelDictionary.values():
-    Y.append(i)
-Y = Y[:100]
-print("prijt")
-clf = KNeighborsClassifier(n_neighbors=3).fit(X, Y)
-print("poslije")
-
-testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
-im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
-vec = lbpcm.getFeatureVector(im)
-print(clf.predict([vec]))
-
-filename = r"data/classifier.pkl"
-joblib.dump(clf, filename, compress=9)
-
-
-classifier = joblib.load(filename)
-print(classifier.predict([vec]))
-print(classifier)
-
-
-# genMat2 = [[1, 0, 1, 1, 0],
-#            [1, 1, 0, 1, 0],
-#            [0, 1, 0, 0, 1]]
+# import LBPCM
+# from math import radians
+# from sklearn.neighbors import KNeighborsClassifier
+# import cv2 as cv
+# from sklearn.externals import joblib
 #
-# list = []
-# for i in range(genMat2.__len__()):
-#     for j in range(genMat2.__len__()):
-#         temp = [0] * genMat2[0].__len__()
-#         for k in range(genMat2[0].__len__()):
-#             temp[k] = genMat2[i][k] ^ genMat2[j][k]
-#         if not list.__contains__(temp):
-#             list.append(temp)
-# print(list)
+# labels = r"data\normalData\labeledData.txt"
+# labelDictionary = {}
+#
+# with open(labels) as f:
+#     rows = f.read()
+#     lines = rows.split("\n")
+#
+#     for i in lines:
+#         if i != "":
+#             keyVal = i.split(":")
+#             labelDictionary[keyVal[0]] = keyVal[1]
+#
+# size = labelDictionary.__len__()
+#
+# radius = 1
+# stepSize = 32
+# windowSize = [64, 64]
+# angles = [radians(45), radians(90), radians(135)]
+# pathToProcessedData = r"data\processedData"
+#
+# lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1])
+# lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None)
+#
+# X = lbpcm.getFeatureVectors()
+# Y = []
+# for i in labelDictionary.values():
+#     Y.append(i)
+# Y = Y[:100]
+# print("prijt")
+# clf = KNeighborsClassifier(n_neighbors=3).fit(X, Y)
+# print("poslije")
+#
+# testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
+# im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
+# vec = lbpcm.getFeatureVector(im)
+# print(clf.predict([vec]))
+#
+# filename = r"data/classifier.pkl"
+# joblib.dump(clf, filename, compress=9)
+#
+#
+# classifier = joblib.load(filename)
+# print(classifier.predict([vec]))
+# print(classifier)
+#
+# from os import listdir
+#
+# pathToProcessedData = r"C:\Users\kuzmi\Desktop\testFolder"
+#
+# testPictures = [f for f in listdir(pathToProcessedData)]
+#
+# lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None)
+#
+# X_test = lbpcm.getFeatureVectors()
+#
+# testLabels = r"C:\Users\kuzmi\Desktop\testLabels.txt"
+# labelDictionary = {}
+#
+# predictions = []
+#
+# for x in X_test:
+#
+#     predictions.append(classifier.predict([x]))
+#
+# with open(testLabels) as f:
+#     rows = f.read()
+#     lines = rows.split("\n")
+#
+#     for i in lines:
+#         if i != "":
+#             keyVal = i.split(":")
+#             labelDictionary[keyVal[0]] = keyVal[1]
+#
+# Y_test = []
+# for i in labelDictionary.values():
+#     Y_test.append(int(i))
+#
+# print("prave labele")
+# print(Y_test)
+# print("prediction")
+# print(predictions)
+#
+# error = classifier.score(X_test, Y_test)
+# print("error: " + str(error))
+
+import cv2 as cv
+
+image = cv.imread(r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_001\frame_0011.jpg")
+
+overlay = image.copy()
+output = image.copy()
+
+cv.rectangle(overlay, (200, 0), (300, 100), (0, 0, 255), -1)
+
+alpha = 0.5
+cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
+
+cv.imshow("Output", output)
+cv.waitKey(0)
+
+
+

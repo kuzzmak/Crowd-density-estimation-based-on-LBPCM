@@ -113,7 +113,7 @@ def sliding_window(image, stepSize, windowSize):
             # yield the current window
             yield image[y:y + windowSize[1], x:x + windowSize[0]]
 
-def makePicDims(image, stepSize, windowSize):
+def makePicDims(image, stepSize=32, windowSize=[64, 64]):
 
     """funkcija koja sluzi za stvaranje prozora iz kojeg
     se tvori vektor znacajki

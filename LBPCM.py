@@ -79,6 +79,7 @@ class LBPCM:
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
         pictures = pictures[:100]
+        self.featureVectors = []
         i = 0
         # vecSize = str(self.getFeatureVector(cv.imread(pathToProcessedData + "/" + pictures[0], cv.IMREAD_GRAYSCALE)).__len__())
         # labelFVCSize.configure(text=vecSize)
@@ -94,6 +95,7 @@ class LBPCM:
             if not(progressbar is None or labelProgress is None):
                 progressbar.step()
                 labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
+            print(str(i) + "/" + str(pictures.__len__()))
         #     console.insert(tk.END, str(i) + "/" + str(pictures.__len__()) + "\n")
         #     console.see(tk.END)
         #
