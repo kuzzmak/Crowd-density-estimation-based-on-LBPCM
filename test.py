@@ -61,10 +61,11 @@
 #
 # print(dictionary)
 
-# import LBPCM
-# from math import radians
+import LBPCM
+from math import radians
 # from sklearn.neighbors import KNeighborsClassifier
-# import cv2 as cv
+import cv2 as cv
+import numpy as np
 # from sklearn.externals import joblib
 #
 # labels = r"data\normalData\labeledData.txt"
@@ -129,7 +130,7 @@
 #
 # for x in X_test:
 #
-#     predictions.append(classifier.predict([x]))
+#     predictions.append(int(classifier.predict([x])[0]))
 #
 # with open(testLabels) as f:
 #     rows = f.read()
@@ -149,23 +150,33 @@
 # print("prediction")
 # print(predictions)
 #
-# error = classifier.score(X_test, Y_test)
-# print("error: " + str(error))
+# counter = 0
+#
+# for i in range(predictions.__len__()):
+#     if predictions[i] == Y_test[i]:
+#         counter += 1
+#
+# print("error: " + str(counter / predictions.__len__()))
 
-import cv2 as cv
+radius = 1
+stepSize = 32
+windowSize = [64, 64]
+angles = [radians(45), radians(90), radians(135)]
+pathToProcessedData = r"data\processedData"
 
-image = cv.imread(r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_001\frame_0011.jpg")
+lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1])
 
-overlay = image.copy()
-output = image.copy()
+image = cv.imread(r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg", cv.IMREAD_GRAYSCALE)
+mat = lbpcm.getGLCM(image)
 
-cv.rectangle(overlay, (200, 0), (300, 100), (0, 0, 255), -1)
+saveStringNormal = r"C:\Users\kuzmi\Desktop\mattest\normal.txt"
+saveStringCombined = r"C:\Users\kuzmi\Desktop\mattest\combined.txt"
 
-alpha = 0.5
-cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
+shape = (np.shape(mat)[0], np.shape(mat)[1], np.shape(mat)[2])
+resMat = np.zeros(shape)
+for i in range(np.shape(mat)[3]):
+    np.add(resMat, mat[:, :, :, i])
 
-cv.imshow("Output", output)
-cv.waitKey(0)
-
-
+np.savetxt(saveStringNormal, mat[:, :, 0, 0], delimiter=',', newline="\n", fmt='%d')
+np.savetxt(saveStringCombined, resMat[:, :, 0], delimiter=',')
 

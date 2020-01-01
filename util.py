@@ -178,3 +178,23 @@ def normalize(vectors, progressbar, labelprogress):
         # azuriranje progressbara i brojaca obradjenih vektora
         progressbar.step()
         labelprogress.configure(text=str(i) + "/" + str(numOfVecs))
+
+def calculateError(model, X_test, Y_test):
+
+    predictions = []
+
+    for x in X_test:
+        predictions.append(int(model.predict([x])[0]))
+
+    counter = 0
+    print("u calculate error metodi")
+    print("Y_test")
+    print(Y_test)
+    print("predictions")
+    print(predictions)
+
+    for i in range(predictions.__len__()):
+        if predictions[i] == Y_test[i]:
+            counter += 1
+
+    return counter / predictions.__len__()

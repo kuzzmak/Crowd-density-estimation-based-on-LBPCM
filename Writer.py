@@ -48,19 +48,19 @@ class Writer:
 
             f = open(filename, "a")
 
-            f.write(saveString)
+            f.write(saveString + "\n")
 
             f.close()
         else:
             f = open(filename, "w")
 
-            f.write(saveString)
+            f.write(saveString + "\n")
 
             f.close()
 
     def saveModel(self, model, paramString):
 
-        filename = self.modelPath + paramString
+        filename = self.modelPath + paramString + ".pkl"
         joblib.dump(model, filename, compress=9)
 
     def loadModel(self):
@@ -72,5 +72,9 @@ class Writer:
         classifier = joblib.load(file)
 
         return classifier
+
+    def getConfiguration(self, model):
+
+        print(str(model))
 
 

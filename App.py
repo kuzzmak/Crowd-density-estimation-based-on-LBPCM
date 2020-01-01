@@ -805,15 +805,10 @@ class App(tk.Tk):
 
         Y = []
         for i in self.labelDictionary.values():
-            Y.append(i)
+            Y.append(int(i))
 
         Y_train = Y[:round(0.7 * fv.__len__())]
         Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
-
-        print("x_train: " + str(X_train.__len__()))
-        print("x_test: " + str(X_test.__len__()))
-        print("y_train: " + str(Y_train.__len__()))
-        print("y_test: " + str(Y_test.__len__()))
 
         self.console.insert(tk.END, "[INFO] fitting started\n")
         self.console.see(tk.END)
@@ -821,13 +816,15 @@ class App(tk.Tk):
         kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
         kneighbors.fit(X_train, Y_train)
 
-        error = kneighbors.score(X_test, Y_test)
+        error = util.calculateError(kneighbors, X_test, Y_test)
 
         saveString = str(conf) + "--error: " + str(error)
 
         self.writer.saveDirectory = r"data/normalData"
         self.writer.saveResults(saveString)
-        self.writer.saveModel(kneighbors, saveString)
+        self.writer.saveModel(kneighbors, str(conf))
+        self.console.insert(tk.END, "[INFO] configuration completed\n")
+        self.console.see(tk.END)
 
     def runConfigurations(self):
         """ Funkcija za pokretanje pojedine unesene konfiguracije
@@ -892,9 +889,10 @@ class App(tk.Tk):
         # postavljanje slike u labelu
         self.frames[ClassificationPage].labelPicture.configure(image=self.im)
 
+    def loadModel(self):
 
-
-
+        model = self.writer.loadModel()
+        self.writer.getConfiguration(model)
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -1464,7 +1462,7 @@ class ClassificationPage(tk.Frame):
         rightFrame = tk.Frame(self, background="red")
         rightFrame.pack(side="right", padx=10, pady=10, fill=tk.BOTH, expand=True)
 
-        buttonLoadModel = tk.Button(leftFrame, text="Load model")
+        buttonLoadModel = tk.Button(leftFrame, text="Load model", command=lambda: controller.loadModel())
         buttonLoadModel.pack(padx=10, pady=5, fill="x")
 
         buttonSelectFolder = tk.Button(leftFrame, text="Select folder")
