@@ -203,7 +203,8 @@ def calculateError(model, X_test, Y_test):
 
 def classifyImage(filename, model, conf, console):
 
-    image = cv.imread(filename, cv.IMREAD_GRAYSCALE)
+    image = cv.imread(filename)
+    image_gray = cv.imread(filename, cv.IMREAD_GRAYSCALE)
     overlay = image.copy()
     output = image.copy()
 
@@ -240,7 +241,8 @@ def classifyImage(filename, model, conf, console):
             start_point = (x * x_size, y * y_size)
             end_point = ((x + 1) * x_size, (y + 1) * y_size)
 
-            subImage = image[y:y + y_size, x:x + x_size]
+            subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
+
             subImageFv = lbpcm.getFeatureVector(subImage)
 
             labels.append(int(model.predict([subImageFv])[0]))

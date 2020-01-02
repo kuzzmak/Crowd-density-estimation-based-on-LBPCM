@@ -95,7 +95,7 @@ class LBPCM:
             if not(progressbar is None or labelProgress is None):
                 progressbar.step()
                 labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
-            # print(str(i) + "/" + str(pictures.__len__()))
+
             console.insert(tk.END, str(i) + "/" + str(pictures.__len__()) + "\n")
             console.see(tk.END)
 
