@@ -1,9 +1,7 @@
 import tkinter as tk
-from itertools import starmap
 from tkinter import filedialog
 from tkinter.ttk import Progressbar
 from os import listdir
-from os.path import isfile, join
 import os
 import cv2 as cv
 import numpy as np
@@ -20,7 +18,6 @@ import re
 import threading
 import pickle
 import Writer
-import queue
 
 # boja obruba celije
 color = (255, 0, 0)
@@ -822,7 +819,8 @@ class App(tk.Tk):
 
         self.writer.saveDirectory = r"data/normalData"
         self.writer.saveResults(saveString)
-        self.writer.saveModel(kneighbors, str(conf))
+        self.writer.saveModel(kneighbors, conf)
+
         self.console.insert(tk.END, "[INFO] configuration completed\n")
         self.console.see(tk.END)
 
@@ -851,10 +849,37 @@ class App(tk.Tk):
     def loadModel(self):
 
         self.writer.loadModel()
+        conf = self.writer.getConfiguration()
         self.console.insert(tk.END, "[INFO] configuration loaded\n")
-        self.console.insert(tk.END, str(self.writer.getConfiguration()) + "\n")
+        self.console.insert(tk.END, str(conf) + "\n")
         self.console.see(tk.END)
 
+        # omogucavanje gumba
+        self.frames[ClassificationPage].buttonSelectPicture['state'] = "normal"
+        self.frames[ClassificationPage].buttonSelectFolder['state'] = "normal"
+
+        # postavljanje parametera modela u frameu
+        self.frames[ClassificationPage].labelLBPRadiusValue.configure(text=conf[0])
+        self.frames[ClassificationPage].labelGLCMDIstance.configure(text=str(conf[1]))
+        self.frames[ClassificationPage].labelStepSize.configure(text=conf[2])
+        self.frames[ClassificationPage].labelCellSize.configure(text=str(conf[3]))
+        self.frames[ClassificationPage].labelAnglesValue.configure(text=str(util.shortAngles(conf[4])))
+        self.frames[ClassificationPage].numberOfNeighborsValue.configure(text=conf[5])
+        self.frames[ClassificationPage].labelCombineValue.configure(text=conf[6])
+
+    def loadColors(self):
+
+        self.c0c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/0.jpg")))
+        self.c1c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/1.jpg")))
+        self.c2c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/2.jpg")))
+        self.c3c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/3.jpg")))
+        self.c4c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/4.jpg")))
+
+        self.frames[ClassificationPage].c0c.configure(image=self.c0c)
+        self.frames[ClassificationPage].c1c.configure(image=self.c1c)
+        self.frames[ClassificationPage].c2c.configure(image=self.c2c)
+        self.frames[ClassificationPage].c3c.configure(image=self.c3c)
+        self.frames[ClassificationPage].c4c.configure(image=self.c4c)
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -917,7 +942,9 @@ class PageInitialization(tk.Frame):
                                                                         controller.showFVCinfo()])
         buttonFVC.pack(padx=10, pady=10, fill="x")
 
-        buttonClassification = tk.Button(buttonFrame, text="Classification", command=lambda: controller.show_frame(ClassificationPage))
+        buttonClassification = tk.Button(buttonFrame, text="Classification",
+                                         command=lambda: [controller.show_frame(ClassificationPage),
+                                                          controller.loadColors()])
         buttonClassification.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
@@ -1422,17 +1449,67 @@ class ClassificationPage(tk.Frame):
         leftFrame.pack(side="left", padx=10, pady=10)
 
         rightFrame = tk.Frame(self, background="red")
-        rightFrame.pack(side="right", padx=10, pady=10, fill=tk.BOTH, expand=True)
+        rightFrame.pack(side="left", padx=10, pady=10, fill=tk.BOTH, expand=True)
 
+        # frame s bojama
+        colorFrame = tk.Frame(leftFrame)
+        colorFrame.pack(padx=10, pady=10)
+
+        # row0 = tk.Frame(colorFrame)
+        # row0.pack()
+
+        self.c0c = tk.Label(colorFrame, text="")
+        self.c0c.grid(row=0, column=0, padx=10, pady=5)
+
+        c0 = tk.Label(colorFrame, text="no flow")
+        c0.grid(row=0, column=1, padx=10, pady=5)
+
+        # row1 = tk.Frame(colorFrame)
+        # row1.pack()
+
+        self.c1c = tk.Label(colorFrame, text="")
+        self.c1c.grid(row=1, column=0, padx=10, pady=5)
+
+        c1 = tk.Label(colorFrame, text="free flow")
+        c1.grid(row=1, column=1, padx=10, pady=5)
+
+        # row2 = tk.Label(colorFrame)
+        # row2.pack()
+
+        self.c2c = tk.Label(colorFrame, text="")
+        self.c2c.grid(row=2, column=0, padx=10, pady=5)
+
+        c2 = tk.Label(colorFrame, text="restricted flow")
+        c2.grid(row=2, column=1, padx=10, pady=5)
+
+        # row3 = tk.Label(colorFrame)
+        # row3.pack()
+
+        self.c3c = tk.Label(colorFrame, text="")
+        self.c3c.grid(row=3, column=0, padx=10, pady=5)
+
+        c3 = tk.Label(colorFrame, text="dense flow")
+        c3.grid(row=3, column=1, padx=10, pady=5)
+
+        # row4 = tk.Frame(colorFrame)
+        # row4.pack()
+
+        self.c4c = tk.Label(colorFrame, text="")
+        self.c4c.grid(row=4, column=0, padx=10, pady=5)
+
+        c4 = tk.Label(colorFrame, text="jammed flow")
+        c4.grid(row=4, column=1, padx=10, pady=5)
+
+        # gumbi
         buttonLoadModel = tk.Button(leftFrame, text="Load model", command=lambda: controller.loadModel())
         buttonLoadModel.pack(padx=10, pady=5, fill="x")
 
-        buttonSelectFolder = tk.Button(leftFrame, text="Select folder")
-        buttonSelectFolder.pack(padx=10, pady=5, fill="x")
+        self.buttonSelectFolder = tk.Button(leftFrame, text="Select folder", state="disabled")
+        self.buttonSelectFolder.pack(padx=10, pady=5, fill="x")
 
-        buttonSelectPicture = tk.Button(leftFrame, text="Select picture",
+        self.buttonSelectPicture = tk.Button(leftFrame, text="Select picture", state="disabled",
                                         command=lambda: threading.Thread(target=controller.showClassifiedImage, daemon=True).start())
-        buttonSelectPicture.pack(padx=10, pady=5, fill="x")
+        self.buttonSelectPicture.pack(padx=10, pady=5, fill="x")
 
         buttonBack = tk.Button(leftFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(padx=10, pady=5, fill="x")
@@ -1443,8 +1520,57 @@ class ClassificationPage(tk.Frame):
         self.labelPicture = tk.Label(rightFrame, text="Select picture or select folder")
         self.labelPicture.pack()
 
+        # frame s parametrima ucitanog modela
+        parameterFrame = tk.Frame(self)
+        parameterFrame.pack(side="left", padx=10, pady=10, fill=tk.BOTH)
+
+        labelLBPRadius = tk.Label(parameterFrame, text="LBP radius:")
+        labelLBPRadius.grid(row=0, column=0, padx=10, pady=10)
+
+        self.labelLBPRadiusValue = tk.Label(parameterFrame, text="")
+        self.labelLBPRadiusValue.grid(row=0, column=1, padx=10, pady=10)
+
+        labelGLCMDistance = tk.Label(parameterFrame, text="GLCM disance:")
+        labelGLCMDistance.grid(row=1, column=0, padx=10, pady=10)
+
+        self.labelGLCMDIstance = tk.Label(parameterFrame, text="")
+        self.labelGLCMDIstance.grid(row=1, column=1, padx=10, pady=10)
+
+        labelStepSize = tk.Label(parameterFrame, text="Step size:")
+        labelStepSize.grid(row=2, column=0, padx=10, pady=10)
+
+        self.labelStepSize = tk.Label(parameterFrame, text="")
+        self.labelStepSize.grid(row=2, column=1, padx=10, pady=10)
+
+        labelCellSize = tk.Label(parameterFrame, text="Cell size")
+        labelCellSize.grid(row=3, column=0, padx=10, pady=10)
+
+        self.labelCellSize = tk.Label(parameterFrame, text="")
+        self.labelCellSize.grid(row=3, column=1, padx=10, pady=10)
+
+        labelAngles = tk.Label(parameterFrame, text="Angles(in rad):")
+        labelAngles.grid(row=4, column=0, padx=10, pady=10)
+
+        self.labelAnglesValue = tk.Label(parameterFrame, text="")
+        self.labelAnglesValue.grid(row=4, column=1, padx=10, pady=10)
+
+        labelNumberOfNeighbors = tk.Label(parameterFrame, text="No. of neighbors:")
+        labelNumberOfNeighbors.grid(row=5, column=0, padx=10, pady=10)
+
+        self.numberOfNeighborsValue = tk.Label(parameterFrame, text="")
+        self.numberOfNeighborsValue.grid(row=5, column=1, padx=10, pady=10)
+
+        labelCombine = tk.Label(parameterFrame, text="Cobine distances:")
+        labelCombine.grid(row=6, column=0, padx=10, pady=10)
+
+        self.labelCombineValue = tk.Label(parameterFrame, text="")
+        self.labelCombineValue.grid(row=6, column=1, padx=10, pady=10)
+
+
+
+
 
 if __name__ == "__main__":
     app = App()
-    app.geometry("1000x600")
+    # app.geometry("1000x600")
     app.mainloop()

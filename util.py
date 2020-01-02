@@ -269,3 +269,25 @@ def classifyImage(filename, model, conf, console):
     output = resizePercent(output, 60)
 
     return output
+
+def shortAngles(angles):
+
+    result = []
+
+    for i in angles:
+        result.append(round(i, 2))
+
+    return result
+
+def makeColors(dim):
+
+    dir = r"colors"
+
+    colors = [(127, 255, 0), (255, 255, 0), (255, 165, 0), (255, 69, 0), (255, 0, 0)]
+
+    for c in range(colors.__len__()):
+        rgb = np.zeros((dim[0], dim[1], 3))
+        rgb[:, :, 0] = colors[c][0]
+        rgb[:, :, 1] = colors[c][1]
+        rgb[:, :, 2] = colors[c][2]
+        cv.imwrite(dir + "/" + str(c) + ".jpg", rgb)

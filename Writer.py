@@ -60,9 +60,47 @@ class Writer:
 
             f.close()
 
-    def saveModel(self, model, paramString):
+    def saveModel(self, model, conf):
 
-        filename = self.modelPath + paramString + ".pkl"
+        saveString = ""
+
+        radius = conf[0]
+        glcmDistance = conf[1]
+        stepSize = conf[2]
+        cellSize = conf[3]
+        angles = conf[4]
+        numOfNeighbors = conf[5]
+        combine = conf[6]
+
+        saveString += str(radius)
+        saveString += "-"
+
+        for i in glcmDistance:
+            saveString += str(i)
+            saveString += ","
+        saveString = saveString[:-1]
+        saveString += "-"
+
+        saveString += str(stepSize)
+
+        for i in cellSize:
+            saveString += str(i)
+            saveString += ","
+        saveString = saveString[:-1]
+        saveString += "-"
+
+        for i in angles:
+            saveString += str(i)
+            saveString += ","
+        saveString = saveString[:-1]
+        saveString += "-"
+
+        saveString += str(numOfNeighbors)
+        saveString += "-"
+
+        saveString += str(combine)
+
+        filename = self.modelPath + saveString + ".pkl"
         joblib.dump(model, filename, compress=9)
 
     def loadModel(self):

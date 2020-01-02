@@ -158,25 +158,72 @@ import numpy as np
 #
 # print("error: " + str(counter / predictions.__len__()))
 
-radius = 1
-stepSize = 32
-windowSize = [64, 64]
-angles = [radians(45), radians(90), radians(135)]
-pathToProcessedData = r"data\processedData"
+# radius = 1
+# stepSize = 32
+# windowSize = [64, 64]
+# angles = [radians(45), radians(90), radians(135)]
+# pathToProcessedData = r"data\processedData"
+#
+# lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1])
+#
+# image = cv.imread(r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg", cv.IMREAD_GRAYSCALE)
+# mat = lbpcm.getGLCM(image)
+#
+# saveStringNormal = r"C:\Users\kuzmi\Desktop\mattest\normal.txt"
+# saveStringCombined = r"C:\Users\kuzmi\Desktop\mattest\combined.txt"
+#
+# shape = (np.shape(mat)[0], np.shape(mat)[1], np.shape(mat)[2])
+# resMat = np.zeros(shape)
+# for i in range(np.shape(mat)[3]):
+#     np.add(resMat, mat[:, :, :, i])
+#
+# np.savetxt(saveStringNormal, mat[:, :, 0, 0], delimiter=',', newline="\n", fmt='%d')
+# np.savetxt(saveStringCombined, resMat[:, :, 0], delimiter=',')
 
-lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1])
+# conf = [1, [1], 32, [64, 64], [0.7853981633974483, 1.5707963267948966, 2.356194490192345, 3.141592653589793], 2, 0]
+#
+# saveString = ""
+#
+# radius = conf[0]
+# glcmDistance = conf[1]
+# stepSize = conf[2]
+# cellSize = conf[3]
+# angles = conf[4]
+# numOfNeighbors = conf[5]
+# combine = conf[6]
+#
+# saveString += str(radius)
+# saveString += "-"
+#
+# for i in glcmDistance:
+#     saveString += str(i)
+#     saveString += ","
+# saveString = saveString[:-1]
+# saveString += "-"
+#
+# saveString += str(stepSize)
+#
+# for i in cellSize:
+#     saveString += str(i)
+#     saveString += ","
+# saveString = saveString[:-1]
+# saveString += "-"
+#
+# for i in angles:
+#     saveString += str(i)
+#     saveString += ","
+# saveString = saveString[:-1]
+# saveString += "-"
+#
+#
+# saveString += str(numOfNeighbors)
+# saveString += "-"
+#
+# saveString += str(combine)
+#
+# print(saveString)
 
-image = cv.imread(r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg", cv.IMREAD_GRAYSCALE)
-mat = lbpcm.getGLCM(image)
 
-saveStringNormal = r"C:\Users\kuzmi\Desktop\mattest\normal.txt"
-saveStringCombined = r"C:\Users\kuzmi\Desktop\mattest\combined.txt"
+import util
 
-shape = (np.shape(mat)[0], np.shape(mat)[1], np.shape(mat)[2])
-resMat = np.zeros(shape)
-for i in range(np.shape(mat)[3]):
-    np.add(resMat, mat[:, :, :, i])
-
-np.savetxt(saveStringNormal, mat[:, :, 0, 0], delimiter=',', newline="\n", fmt='%d')
-np.savetxt(saveStringCombined, resMat[:, :, 0], delimiter=',')
-
+util.makeColors((30, 30))
