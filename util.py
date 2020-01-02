@@ -7,6 +7,8 @@ import shutil
 import math
 from skimage.feature import local_binary_pattern
 import numpy as np
+import LBPCM
+import tkinter as tk
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7
@@ -198,3 +200,70 @@ def calculateError(model, X_test, Y_test):
             counter += 1
 
     return counter / predictions.__len__()
+
+def classifyImage(filename, model, conf, console):
+
+    image = cv.imread(filename, cv.IMREAD_GRAYSCALE)
+    overlay = image.copy()
+    output = image.copy()
+
+    radius = conf[0]
+    glcmDistance = conf[1]
+    stepSize = conf[2]
+    cellSize = conf[3]
+    angles = conf[4]
+    numOfNeighbors = conf[5]
+    combine = conf[6]
+
+    lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance)
+
+    labels = []
+
+    dim = (192, 144)
+    # zeljena sirina slikovnog elementa
+    x_size = dim[0]
+    # zeljena visina slikovnog elementa
+    y_size = dim[1]
+    # sirina slike
+    imageX = image.shape[1]
+    # visina slike
+    imageY = image.shape[0]
+    # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
+    stepX = imageX // x_size
+    # koraci u y smjeru
+    stepY = imageY // y_size
+
+    i = 0
+    for y in range(stepY):
+        for x in range(stepX):
+
+            start_point = (x * x_size, y * y_size)
+            end_point = ((x + 1) * x_size, (y + 1) * y_size)
+
+            subImage = image[y:y + y_size, x:x + x_size]
+            subImageFv = lbpcm.getFeatureVector(subImage)
+
+            labels.append(int(model.predict([subImageFv])[0]))
+
+            if labels[i] == 0:
+                cv.rectangle(overlay, start_point, end_point, (127, 255, 0), -1)
+            elif labels[i] == 1:
+                cv.rectangle(overlay, start_point, end_point, (255, 255, 0), -1)
+            elif labels[i] == 2:
+                cv.rectangle(overlay, start_point, end_point, (255, 165, 0), -1)
+            elif labels[i] == 3:
+                cv.rectangle(overlay, start_point, end_point, (255, 69, 0), -1)
+            else:
+                cv.rectangle(overlay, start_point, end_point, (255, 0, 0), -1)
+
+            i += 1
+            console.insert(tk.END, "[INFO] " + str(i) + "/16 sub images processed\n")
+            console.see(tk.END)
+
+    print(labels)
+    alpha = 0.5
+    cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
+
+    output = resizePercent(output, 60)
+
+    return output

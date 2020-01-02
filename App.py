@@ -840,50 +840,9 @@ class App(tk.Tk):
                                           title="Select picture",
                                           filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
 
-        image = cv.imread(filename)
-        overlay = image.copy()
-        output = image.copy()
+        conf = self.writer.getConfiguration()
 
-        labels = [0, 1, 2, 3, 4, 2, 1, 3, 4, 0, 4, 3, 2, 2, 2, 3]
-
-        dim = (192, 144)
-        # zeljena sirina slikovnog elementa
-        x_size = dim[0]
-        # zeljena visina slikovnog elementa
-        y_size = dim[1]
-        # sirina slike
-        imageX = image.shape[1]
-        # visina slike
-        imageY = image.shape[0]
-        # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
-        stepX = imageX // x_size
-        # koraci u y smjeru
-        stepY = imageY // y_size
-
-        i = 0
-        for y in range(stepY):
-            for x in range(stepX):
-
-                start_point = (x * x_size, y * y_size)
-                end_point = ((x + 1) * x_size, (y + 1) * y_size)
-
-                if labels[i] == 0:
-                    cv.rectangle(overlay, start_point, end_point, (127, 255, 0), -1)
-                elif labels[i] == 1:
-                    cv.rectangle(overlay, start_point, end_point, (255, 255, 0), -1)
-                elif labels[i] == 2:
-                    cv.rectangle(overlay, start_point, end_point, (255, 165, 0), -1)
-                elif labels[i] == 3:
-                    cv.rectangle(overlay, start_point, end_point, (255,69,0), -1)
-                else:
-                    cv.rectangle(overlay, start_point, end_point, (255, 0, 0), -1)
-
-                i += 1
-
-        alpha = 0.5
-        cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
-
-        output = util.resizePercent(output, 60)
+        output = util.classifyImage(filename, self.writer.model, conf, self.console)
 
         self.im = ImageTk.PhotoImage(image=Image.fromarray(output))
         # postavljanje slike u labelu
@@ -891,8 +850,11 @@ class App(tk.Tk):
 
     def loadModel(self):
 
-        model = self.writer.loadModel()
-        self.writer.getConfiguration(model)
+        self.writer.loadModel()
+        self.console.insert(tk.END, "[INFO] configuration loaded\n")
+        self.console.insert(tk.END, str(self.writer.getConfiguration()) + "\n")
+        self.console.see(tk.END)
+
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -1469,7 +1431,7 @@ class ClassificationPage(tk.Frame):
         buttonSelectFolder.pack(padx=10, pady=5, fill="x")
 
         buttonSelectPicture = tk.Button(leftFrame, text="Select picture",
-                                        command=lambda: controller.showClassifiedImage())
+                                        command=lambda: threading.Thread(target=controller.showClassifiedImage, daemon=True).start())
         buttonSelectPicture.pack(padx=10, pady=5, fill="x")
 
         buttonBack = tk.Button(leftFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))

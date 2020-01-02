@@ -10,6 +10,8 @@ class Writer:
         self.labelDictionary = {}
         self.saveDirectory = saveDirectory
         self.modelPath = r"data/models/"
+        self.model = []
+        self.modelString = ""
 
     def writeAnnotedDataToFile(self):
         """ Funkcija za spremanje oznacenih slika u datoteku self.pathToLabels
@@ -69,12 +71,35 @@ class Writer:
                                           title="Select model",
                                           filetypes=(("pickel files", "*.pkl"), ("all files", "*.*")))
 
-        classifier = joblib.load(file)
+        self.modelString = file.split("/")[-1]
+        self.model = joblib.load(file)
 
-        return classifier
+    def getConfiguration(self):
 
-    def getConfiguration(self, model):
+        conf = []
 
-        print(str(model))
+        # uklanjanje .pkl
+        modelString = self.modelString[:-4]
+        # svaki parametar posebno
+        splitStrings = modelString.split("-")
+
+        radius = int(splitStrings[0])
+        glcmDistance = [int(x) for x in splitStrings[1].split(",")]
+        stepSize = int(splitStrings[2])
+        cellSize = [int(x) for x in splitStrings[3].split(",")]
+        angles = [float(x) for x in splitStrings[4].split(",")]
+        numOfNeighbors = int(splitStrings[5])
+        combine = int(splitStrings[6])
+
+        conf.append(radius)
+        conf.append(glcmDistance)
+        conf.append(stepSize)
+        conf.append(cellSize)
+        conf.append(angles)
+        conf.append(numOfNeighbors)
+        conf.append(combine)
+
+        return conf
+
 
 
