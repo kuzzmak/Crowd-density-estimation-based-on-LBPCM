@@ -43,6 +43,15 @@ class LBPCM:
         for im in util.sliding_window(self.getLBP(im_gray), self.stepSize, self.windowSize):
             # gray level co-occurence matrix
             glcm = self.getGLCM(im)
+            # kombiniranje vise udaljenosti u jednu matricu
+            if self.combine == 1:
+                res = np.zeros((256, 256, 1, self.angles.__len__()), dtype='uint8')
+                for i in range(self.glcmDistance.__len__()):
+                    res = np.add(res, glcm[:, :, i, :])
+
+                res /= self.glcmDistance.__len__()
+                glcm = res
+
             # razred s harlickovim funkcijama
             hf = Haralick.HaralickFeatures(glcm)
             # energija
@@ -83,8 +92,9 @@ class LBPCM:
         i = 0
         # vecSize = str(self.getFeatureVector(cv.imread(pathToProcessedData + "/" + pictures[0], cv.IMREAD_GRAYSCALE)).__len__())
         # labelFVCSize.configure(text=vecSize)
-        console.insert(tk.END, "[INFO] started feature vector creation\n")
-        console.see(tk.END)
+        if not (console is None):
+            console.insert(tk.END, "[INFO] started feature vector creation\n")
+            console.see(tk.END)
 
         for pic in pictures:
             # staza do slike
@@ -96,11 +106,13 @@ class LBPCM:
                 progressbar.step()
                 labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
 
-            console.insert(tk.END, str(i) + "/" + str(pictures.__len__()) + "\n")
-            console.see(tk.END)
+            if not (console is None):
+                console.insert(tk.END, str(i) + "/" + str(pictures.__len__()) + "\n")
+                console.see(tk.END)
 
-        console.insert(tk.END, "[INFO] vector creation finished\n")
-        console.see(tk.END)
+        if not (console is None):
+            console.insert(tk.END, "[INFO] vector creation finished\n")
+            console.see(tk.END)
 
 if __name__ == "__main__":
     lbpcm = LBPCM(radius=1)
