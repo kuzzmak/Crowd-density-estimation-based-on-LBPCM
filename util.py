@@ -64,42 +64,6 @@ def clearDirectory(pathToDirectory):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-# def makePictureElements(path, pathToTrainingData, pathToTestData, *dim):
-#     # ako ne postoje folderi za treniranje i testiranje, stovre se, a
-#     # ako postoje onda se njihov sadrzaj brise
-#     if os.path.exists(pathToTrainingData):
-#         clearDirectory(pathToTrainingData)
-#     else:
-#         train = r"data\trainingData"
-#         os.mkdir(train)
-#     if os.path.exists(pathToTestData):
-#         clearDirectory(pathToTestData)
-#     else:
-#         test = r"data\testData"
-#         os.mkdir(test)
-#
-#     # popis svih slika izvorne velicine
-#     onlyFiles = [f for f in listdir(path) if isfile(join(path, f))]
-#
-#     # mijesanje slika
-#     random.shuffle(onlyFiles)
-#     # spremanje slika za treniranje
-#     for f in range(round(ratio * onlyFiles.__len__())):
-#         fileName = path + "\\" + onlyFiles[f]
-#         # normalna slika
-#         im = cv.imread(fileName)
-#         # slika u sivim tonovima
-#         im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-#         # spremanje slike
-#         saveImage(im_gray, pathToTrainingData, dim)
-#
-#     # spremanje ostalih slika
-#     for f in range(round(ratio * onlyFiles.__len__()), onlyFiles.__len__(), 1):
-#         fileName = path + "\\" + onlyFiles[f]
-#         im = cv.imread(fileName)
-#         im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-#         saveImage(im_gray, pathToTestData, dim)
-
 def sliding_window(image, stepSize, windowSize):
     """ Funkcija koja koristi tehniku klizeceg prozora kako bi
     se generirali slikovni elementi pocetne slike
@@ -182,19 +146,24 @@ def normalize(vectors, progressbar, labelprogress):
         labelprogress.configure(text=str(i) + "/" + str(numOfVecs))
 
 def calculateError(model, X_test, Y_test):
+    """ Funkcija za računanje greške na testnom setu blokova
 
+    :param model: klasifikator koji se ocjenjuje
+    :param X_test: vektori značajki testnih blokova
+    :param Y_test: prave oznake testnih blokova
+    :return: postotak točno klasificiranih blokova
+    """
+
+    # labele dobivene klasificiranjem
     predictions = []
 
     for x in X_test:
         predictions.append(int(model.predict([x])[0]))
 
     counter = 0
-    print("u calculate error metodi")
-    print("Y_test")
-    print(Y_test)
-    print("predictions")
-    print(predictions)
 
+    # ako se prave labele poklapaju s izračunatim onda povečamo brojač
+    # točno klasificiranih blokova
     for i in range(predictions.__len__()):
         if predictions[i] == Y_test[i]:
             counter += 1
@@ -202,12 +171,28 @@ def calculateError(model, X_test, Y_test):
     return counter / predictions.__len__()
 
 def classifyImage(filename, model, conf, console):
+    """ Funkcija za klasifikaciju slike, odnosno svrstavanje svakog bloka slike
+    u neki od razreda gustoće mnoštva. Svaka slika se sastoji od 16 blokova
+    veličine (192, 144) piksela. Iz svakog bloka se stvori vektor značajki koji
+    se nakon toga klasificira pomoću modela, odnosno klasifikatora na temelju
+    susjeda ili udaljenosti prema susjedima.
 
+    :param filename: staza do slike koju želimo klasificirati
+    :param model: objekt klasifikatora koji radi klasifikaciju svakog bloka slike
+    :param conf: konfiguracija prema kojoj se tvori vektor značajki svakog bloka
+    :param console: konzola za ispis poruka
+    :return: vraća se slika na kojoj je svaki blok u određenoj boji, ovisno o
+    razredu gustoće kojem pripada
+    """
+
+    # slika na koju se "stavljaju" kvadrati u boji, ovisno o razredu gustoće
     image = cv.imread(filename)
+    # ista slika iznad samo u sivoj inačici, služi za stvaranje vektora značajki
     image_gray = cv.imread(filename, cv.IMREAD_GRAYSCALE)
     overlay = image.copy()
     output = image.copy()
 
+    # dohvat parametara za lbpcm
     radius = conf[0]
     glcmDistance = conf[1]
     stepSize = conf[2]
@@ -216,8 +201,9 @@ def classifyImage(filename, model, conf, console):
     numOfNeighbors = conf[5]
     combine = conf[6]
 
-    lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance)
+    lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combine)
 
+    # lista labela koje odgovaraju pojedinom bloku na slici
     labels = []
 
     dim = (192, 144)
@@ -238,15 +224,18 @@ def classifyImage(filename, model, conf, console):
     for y in range(stepY):
         for x in range(stepX):
 
+            # početna i završna točka trenutnog bloka na slici
             start_point = (x * x_size, y * y_size)
             end_point = ((x + 1) * x_size, (y + 1) * y_size)
 
+            # trenutni blok slike za koji se stvara vektor značajki
             subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
-
+            # vektor značajki trenutnog bloka
             subImageFv = lbpcm.getFeatureVector(subImage)
-
+            # dodavanje labele u listu labela za koja je dobivena klasifikatorom
             labels.append(int(model.predict([subImageFv])[0]))
 
+            # bojanje trenutnoh bloka slike ovisno o labeli koju je dobivena
             if labels[i] == 0:
                 cv.rectangle(overlay, start_point, end_point, (127, 255, 0), -1)
             elif labels[i] == 1:
@@ -262,15 +251,21 @@ def classifyImage(filename, model, conf, console):
             console.insert(tk.END, "[INFO] " + str(i) + "/16 sub images processed\n")
             console.see(tk.END)
 
-    print(labels)
+    # intenzitet boje kojoj je svaki blok obojan
     alpha = 0.5
     cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
-
+    # reskaliranje slike koja se prikazuje u aplikaciji
     output = resizePercent(output, 60)
 
     return output
 
 def shortAngles(angles):
+    """ Funkcija za kraći zapis kutova kad ih treba prikazati u aplikaciji,
+    ovdje se koristi zapis s dvije najznačajnije znamenke
+
+    :param angles: lista kutova koje treba zaokružiti
+    :return: lista zaokruženih kutova
+    """
 
     result = []
 
@@ -280,9 +275,19 @@ def shortAngles(angles):
     return result
 
 def makeColors(dim):
+    """ Funkcija za stvaranje kvadrata u boji koji predstavljaju razine gustoce
+    u prozoru za klasifikaciju slike.
+    Sličice su spremljene u rgb formatu, međutim kod učitavanja se učitaju
+    u bgr formatu
 
+    :param dim: dimenzija pojedinog kvadratića
+    :return:
+    """
+
+    # direktorij u koji su spremljeni kvadratići
     dir = r"colors"
 
+    # svaka gustoća mnoštva je određene boje
     colors = [(127, 255, 0), (255, 255, 0), (255, 165, 0), (255, 69, 0), (255, 0, 0)]
 
     for c in range(colors.__len__()):
