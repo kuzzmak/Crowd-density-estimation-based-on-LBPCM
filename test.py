@@ -61,57 +61,57 @@
 #
 # print(dictionary)
 
-import LBPCM
-from math import radians
-from sklearn.neighbors import KNeighborsClassifier
-import cv2 as cv
-import numpy as np
-from sklearn.externals import joblib
-
-labels = r"data\normalData\labeledData.txt"
-labelDictionary = {}
-
-with open(labels) as f:
-    rows = f.read()
-    lines = rows.split("\n")
-
-    for i in lines:
-        if i != "":
-            keyVal = i.split(":")
-            labelDictionary[keyVal[0]] = keyVal[1]
-
-size = labelDictionary.__len__()
-
-radius = 1
-stepSize = 32
-windowSize = [64, 64]
-angles = [radians(45), radians(90), radians(135)]
-pathToProcessedData = r"data\processedData"
-
-lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1, 2], combine=1)
-lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None)
-
-X = lbpcm.getFeatureVectors()
-Y = []
-for i in labelDictionary.values():
-    Y.append(i)
-Y = Y[:100]
-print("prijt")
-clf = KNeighborsClassifier(n_neighbors=3).fit(X, Y)
-print("poslije")
-
-testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
-im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
-vec = lbpcm.getFeatureVector(im)
-print(clf.predict([vec]))
-
-filename = r"data/classifier.pkl"
-joblib.dump(clf, filename, compress=9)
-
-
-classifier = joblib.load(filename)
-print(classifier.predict([vec]))
-print(classifier)
+# import LBPCM
+# from math import radians
+# from sklearn.neighbors import KNeighborsClassifier
+# import cv2 as cv
+# import numpy as np
+# from sklearn.externals import joblib
+#
+# labels = r"data\normalData\labeledData.txt"
+# labelDictionary = {}
+#
+# with open(labels) as f:
+#     rows = f.read()
+#     lines = rows.split("\n")
+#
+#     for i in lines:
+#         if i != "":
+#             keyVal = i.split(":")
+#             labelDictionary[keyVal[0]] = keyVal[1]
+#
+# size = labelDictionary.__len__()
+#
+# radius = 1
+# stepSize = 32
+# windowSize = [64, 64]
+# angles = [radians(45), radians(90), radians(135)]
+# pathToProcessedData = r"data\processedData"
+#
+# lbpcm = LBPCM.LBPCM(radius, stepSize, windowSize, angles, [1, 2], combine=1)
+# lbpcm.calculateFeatureVectors(pathToProcessedData, None, None, None)
+#
+# X = lbpcm.getFeatureVectors()
+# Y = []
+# for i in labelDictionary.values():
+#     Y.append(i)
+# Y = Y[:100]
+# print("prijt")
+# clf = KNeighborsClassifier(n_neighbors=3).fit(X, Y)
+# print("poslije")
+#
+# testPic = r"C:\Users\kuzmi\PycharmProjects\untitled\data\processedData\75.jpg"
+# im = cv.imread(testPic, cv.IMREAD_GRAYSCALE)
+# vec = lbpcm.getFeatureVector(im)
+# print(clf.predict([vec]))
+#
+# filename = r"data/classifier.pkl"
+# joblib.dump(clf, filename, compress=9)
+#
+#
+# classifier = joblib.load(filename)
+# print(classifier.predict([vec]))
+# print(classifier)
 
 # from os import listdir
 #
@@ -224,6 +224,23 @@ print(classifier)
 # print(saveString)
 
 
-import util
+import numpy as np
+import cv2 as cv
+import LBPCM
 
-util.makeColors((30, 30))
+
+distances = [1, 2, 3]
+angles = [0, np.pi/4, np.pi/2, 3*np.pi/4]
+
+image = cv.imread(r"C:\Users\kuzmi\Desktop\testFolder\119.jpg", cv.IMREAD_GRAYSCALE)
+
+lbpcm = LBPCM.LBPCM(radius=1,
+                    stepSize=32,
+                    windowSize=[64, 64],
+                    angles=angles,
+                    glcmDistance=distances,
+                    combineDistances=0,
+                    combineAngles=0)
+
+fv = lbpcm.getFeatureVector(image)
+

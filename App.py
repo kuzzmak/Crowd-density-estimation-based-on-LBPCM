@@ -101,8 +101,10 @@ class App(tk.Tk):
         self.labelDictionary = {}
         # lista konfiguracija koje se trebaju izvesti
         self.configurations = []
-        # vrijednost radio gumba
-        self.rbV = tk.IntVar()
+        # vrijednost radio gumba combine distances
+        self.rbDistances = tk.IntVar()
+        # vrijednost radio gumba combine angles
+        self.rbAngles = tk.IntVar()
         # razred za spremanje rezultata i labela
         self.writer = Writer.Writer()
 
@@ -769,10 +771,12 @@ class App(tk.Tk):
         cellSize = [int(x) for x in self.frames[ConfigurationsPage].entryCellSize.get().split(",")]
         angles = [radians(int(i)) for i in self.frames[ConfigurationsPage].entryAngles.get().split(",")]
         numOfNeighbors = int(self.frames[ConfigurationsPage].entryNumOfNeighbors.get())
-        combine = self.rbV.get()
+        combineDistances = int(self.rbDistances.get())
+        combineAngles = int(self.rbAngles.get())
+
 
         # pojedina konfiguracija
-        conf = [radius, glcmDistance, stepSize, cellSize, angles, numOfNeighbors, combine]
+        conf = [radius, glcmDistance, stepSize, cellSize, angles, numOfNeighbors, combineDistances, combineAngles]
         self.configurations.append(conf)
 
         self.console.insert(tk.END, "new configuration added\n")
@@ -790,9 +794,10 @@ class App(tk.Tk):
         cellSize = conf[3]
         angles = conf[4]
         numOfNeighbors = conf[5]
-        combine = conf[6]
+        combineDistances = conf[6]
+        combineAngles = conf[7]
 
-        lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance)
+        lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combineDistances, combineAngles)
         lbpcm.calculateFeatureVectors(self.pathToProcessedData, self.console, None, None)
 
         fv = lbpcm.getFeatureVectors()
@@ -840,6 +845,10 @@ class App(tk.Tk):
 
         conf = self.writer.getConfiguration()
 
+        self.frames[ClassificationPage].labelPictureName.configure(text=filename)
+        self.im = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(cv.imread(filename), 60)))
+        self.frames[ClassificationPage].labelPicture.configure(image=self.im)
+
         output = util.classifyImage(filename, self.writer.model, conf, self.console)
 
         self.im = ImageTk.PhotoImage(image=Image.fromarray(output))
@@ -865,7 +874,8 @@ class App(tk.Tk):
         self.frames[ClassificationPage].labelCellSize.configure(text=str(conf[3]))
         self.frames[ClassificationPage].labelAnglesValue.configure(text=str(util.shortAngles(conf[4])))
         self.frames[ClassificationPage].numberOfNeighborsValue.configure(text=conf[5])
-        self.frames[ClassificationPage].labelCombineValue.configure(text=conf[6])
+        self.frames[ClassificationPage].labelCombineDistancesValue.configure(text=conf[6])
+        self.frames[ClassificationPage].labelCombineAnglesValue.configure(text=conf[7])
 
     def loadColors(self):
 
@@ -1409,18 +1419,29 @@ class ConfigurationsPage(tk.Frame):
         self.entryNumOfNeighbors = tk.Entry(classifierFrame)
         self.entryNumOfNeighbors.grid(row=0, column=1, padx=10, pady=10)
 
-        labelCombine = tk.Label(classifierFrame, text="Combine multiple ")
-        labelCombine.grid(row=1, column=0, padx=10, pady=10)
+        labelCombineDistances = tk.Label(classifierFrame, text="Combine multiple distances")
+        labelCombineDistances.grid(row=1, column=0, padx=10, pady=10)
 
         options = [(0, "Don't combine"),
                    (1, "Combine")]
 
-        controller.rbV.set(0)
+        controller.rbDistances.set(0)
 
-        frameRB = tk.Frame(classifierFrame)
-        frameRB.grid(row=1, column=1, padx=10)
+        frameRB1 = tk.Frame(classifierFrame)
+        frameRB1.grid(row=1, column=1, padx=10)
         for val, name in enumerate(options):
-            tk.Radiobutton(frameRB, text=name, padx=10, pady=10, variable=controller.rbV, value=val).pack(side="left")
+            tk.Radiobutton(frameRB1, text=name, padx=10, pady=10, variable=controller.rbDistances, value=val).pack(side="left")
+
+        labelCombineAngles = tk.Label(classifierFrame, text="Combine multiple angles")
+        labelCombineAngles.grid(row=2, column=0, padx=10, pady=10)
+
+        controller.rbAngles.set(0)
+
+        frameRB2 = tk.Frame(classifierFrame)
+        frameRB2.grid(row=2, column=1, padx=10)
+
+        for val, name in enumerate(options):
+            tk.Radiobutton(frameRB2, text=name, padx=10, pady=10, variable=controller.rbAngles, value=val).pack(side="left")
 
         # frame s gumbima
         buttonFrame = tk.Frame(self)
@@ -1448,7 +1469,7 @@ class ClassificationPage(tk.Frame):
         leftFrame = tk.Frame(self)
         leftFrame.pack(side="left", padx=10, pady=10)
 
-        rightFrame = tk.Frame(self, background="red")
+        rightFrame = tk.Frame(self)
         rightFrame.pack(side="left", padx=10, pady=10, fill=tk.BOTH, expand=True)
 
         # frame s bojama
@@ -1508,17 +1529,18 @@ class ClassificationPage(tk.Frame):
         self.buttonSelectFolder.pack(padx=10, pady=5, fill="x")
 
         self.buttonSelectPicture = tk.Button(leftFrame, text="Select picture", state="disabled",
-                                        command=lambda: threading.Thread(target=controller.showClassifiedImage, daemon=True).start())
+                                        command=lambda: threading.Thread(
+                                            target=controller.showClassifiedImage, daemon=True).start())
         self.buttonSelectPicture.pack(padx=10, pady=5, fill="x")
 
         buttonBack = tk.Button(leftFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(padx=10, pady=5, fill="x")
 
         self.labelPictureName = tk.Label(rightFrame, text="Select picture first")
-        self.labelPictureName.pack()
+        self.labelPictureName.pack(pady=10)
 
         self.labelPicture = tk.Label(rightFrame, text="Select picture or select folder")
-        self.labelPicture.pack()
+        self.labelPicture.pack(pady=10)
 
         # frame s parametrima ucitanog modela
         parameterFrame = tk.Frame(self)
@@ -1560,17 +1582,20 @@ class ClassificationPage(tk.Frame):
         self.numberOfNeighborsValue = tk.Label(parameterFrame, text="")
         self.numberOfNeighborsValue.grid(row=5, column=1, padx=10, pady=10)
 
-        labelCombine = tk.Label(parameterFrame, text="Cobine distances:")
-        labelCombine.grid(row=6, column=0, padx=10, pady=10)
+        labelCombineDistances = tk.Label(parameterFrame, text="Cobine distances:")
+        labelCombineDistances.grid(row=6, column=0, padx=10, pady=10)
 
-        self.labelCombineValue = tk.Label(parameterFrame, text="")
-        self.labelCombineValue.grid(row=6, column=1, padx=10, pady=10)
+        self.labelCombineDistancesValue = tk.Label(parameterFrame, text="")
+        self.labelCombineDistancesValue.grid(row=6, column=1, padx=10, pady=10)
 
+        labelCombineAngles = tk.Label(parameterFrame, text="Combine angles")
+        labelCombineAngles.grid(row=7, column=0, padx=10, pady=10)
 
-
+        self.labelCombineAnglesValue = tk.Label(parameterFrame, text="")
+        self.labelCombineAnglesValue.grid(row=7, column=1, padx=10, pady=10)
 
 
 if __name__ == "__main__":
     app = App()
-    # app.geometry("1000x600")
+    app.geometry("1100x600")
     app.mainloop()

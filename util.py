@@ -9,6 +9,8 @@ from skimage.feature import local_binary_pattern
 import numpy as np
 import LBPCM
 import tkinter as tk
+import threading
+
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7
@@ -199,9 +201,9 @@ def classifyImage(filename, model, conf, console):
     cellSize = conf[3]
     angles = conf[4]
     numOfNeighbors = conf[5]
-    combine = conf[6]
+    combineDistances = conf[6]
 
-    lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combine)
+    lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combineDistances)
 
     # lista labela koje odgovaraju pojedinom bloku na slici
     labels = []
@@ -296,3 +298,42 @@ def makeColors(dim):
         rgb[:, :, 1] = colors[c][1]
         rgb[:, :, 2] = colors[c][2]
         cv.imwrite(dir + "/" + str(c) + ".jpg", rgb)
+
+def greycoprops(P, prop='contrast'):
+
+    (num_level, num_level2, num_dist, num_angle) = P.shape
+    if num_level != num_level2:
+        raise ValueError('num_level and num_level2 must be equal.')
+    if num_dist <= 0:
+        raise ValueError('num_dist must be positive.')
+    if num_angle <= 0:
+        raise ValueError('num_angle must be positive.')
+
+    # normalize each GLCM
+    P = P.astype(np.float64)
+    glcm_sums = np.apply_over_axes(np.sum, P, axes=(0, 1))
+    glcm_sums[glcm_sums == 0] = 1
+    P /= glcm_sums
+
+    # create weights for specified property
+    I, J = np.ogrid[0:num_level, 0:num_level]
+    if prop == 'contrast':
+        weights = (I - J) ** 2
+    elif prop == 'homogeneity':
+        weights = 1. / (1. + (I - J) ** 2)
+    elif prop in ['energy', 'entropy']:
+        pass
+    else:
+        raise ValueError('%s is an invalid property' % (prop))
+
+    # compute property for each GLCM
+    if prop == 'energy':
+        results = np.apply_over_axes(np.sum, (P ** 2), axes=(0, 1))[0, 0]
+    elif prop == 'entropy':
+        results = np.apply_over_axes(np.sum, P, axes=(0, 1))[0, 0]
+    elif prop in ['contrast', 'homogeneity']:
+        weights = weights.reshape((num_level, num_level, 1, 1))
+        results = np.apply_over_axes(np.sum, (P * weights), axes=(0, 1))[0, 0]
+
+    return results
+

@@ -9,7 +9,7 @@ import tkinter as tk
 
 class LBPCM:
 
-    def __init__(self, radius, stepSize, windowSize, angles, glcmDistance, combine=0):
+    def __init__(self, radius, stepSize, windowSize, angles, glcmDistance, combineDistances=0, combineAngles=0):
         # udaljenost centralnog piksela
         self.radius = radius
         # velicina pomaka udesno ili dolje
@@ -22,8 +22,10 @@ class LBPCM:
         self.angles = angles
         # udaljenosti za koje se racuna matrica
         self.glcmDistance = glcmDistance
-        # kombiniraju li se matrice za sve kuteve u jednu ili ne
-        self.combine = combine
+        # kombiniraju li se matrice za sve udaljenosti u jednu ili ne
+        self.combineDistances = combineDistances
+        # kombiniraju li se matrice za kutove ili ne
+        self.combineAngles = combineAngles
         # lista vektora znacajki
         self.featureVectors = []
 
@@ -43,34 +45,45 @@ class LBPCM:
         for im in util.sliding_window(self.getLBP(im_gray), self.stepSize, self.windowSize):
             # gray level co-occurence matrix
             glcm = self.getGLCM(im)
-            # kombiniranje vise udaljenosti u jednu matricu
-            if self.combine == 1:
-                res = np.zeros((256, 256, 1, self.angles.__len__()), dtype='uint8')
-                for i in range(self.glcmDistance.__len__()):
-                    res = np.add(res, glcm[:, :, i, :])
 
-                res /= self.glcmDistance.__len__()
-                glcm = res
+            energy = util.greycoprops(glcm, 'energy')
+            contrast = util.greycoprops(glcm, 'contrast')
+            homogeneity = util.greycoprops(glcm, 'homogeneity')
+            entropy = util.greycoprops(glcm, 'entropy')
 
-            # razred s harlickovim funkcijama
-            hf = Haralick.HaralickFeatures(glcm)
-            # energija
-            energy = hf.energy()
-            featureVector.extend(energy)
-            # kontrast
-            contrast = hf.contrast()
-            featureVector.extend(contrast)
-            # homogenost
-            homogeneity = hf.homogeneity()
-            featureVector.extend(homogeneity)
-            # entropija
-            entropy = hf.entropy()
-            featureVector.extend(entropy)
+            if self.combineDistances:
+                energy = np.sum(energy, axis=0)
+                contrast = np.sum(contrast, axis=0)
+                homogeneity = np.sum(homogeneity, axis=0)
+                entropy = np.sum(entropy, axis=0)
+
+            if self.combineAngles:
+                energy = np.sum(energy, axis=1)
+                contrast = np.sum(contrast, axis=1)
+                homogeneity = np.sum(homogeneity, axis=1)
+                entropy = np.sum(entropy, axis=1)
+
+            if self.combineDistances == 0 and self.combineAngles == 0:
+
+                for i in energy:
+                    featureVector.extend(i)
+                for i in contrast:
+                    featureVector.extend(i)
+                for i in homogeneity:
+                    featureVector.extend(i)
+                for i in entropy:
+                    featureVector.extend(i)
+
+            else:
+                featureVector.extend(entropy)
+                featureVector.extend(contrast)
+                featureVector.extend(homogeneity)
+                featureVector.extend(entropy)
 
         return featureVector
 
     def getGLCM(self, image):
-        return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256, normed=True)
+        return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256)
 
     def setAngles(self, angles):
         self.angles = angles

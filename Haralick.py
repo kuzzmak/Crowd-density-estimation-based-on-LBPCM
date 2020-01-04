@@ -1,6 +1,7 @@
 import numpy as np
 
 class HaralickFeatures:
+
     def __init__(self, glcm):
         self.glcm = glcm
         self.num_level, _, _, _ = self.glcm.shape
@@ -25,3 +26,5 @@ class HaralickFeatures:
     def entropy(self):
         results = np.apply_over_axes(np.sum, self.glcm, axes=(0, 1))[0, 0, 0]
         return results
+
+

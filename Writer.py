@@ -70,7 +70,8 @@ class Writer:
         cellSize = conf[3]
         angles = conf[4]
         numOfNeighbors = conf[5]
-        combine = conf[6]
+        combineDistances = conf[6]
+        combineAngles = conf[7]
 
         saveString += str(radius)
         saveString += "-"
@@ -82,6 +83,7 @@ class Writer:
         saveString += "-"
 
         saveString += str(stepSize)
+        saveString += "-"
 
         for i in cellSize:
             saveString += str(i)
@@ -98,7 +100,10 @@ class Writer:
         saveString += str(numOfNeighbors)
         saveString += "-"
 
-        saveString += str(combine)
+        saveString += str(combineDistances)
+        saveString += "-"
+
+        saveString += str(combineAngles)
 
         filename = self.modelPath + saveString + ".pkl"
         joblib.dump(model, filename, compress=9)
@@ -127,7 +132,8 @@ class Writer:
         cellSize = [int(x) for x in splitStrings[3].split(",")]
         angles = [float(x) for x in splitStrings[4].split(",")]
         numOfNeighbors = int(splitStrings[5])
-        combine = int(splitStrings[6])
+        combineDistances = int(splitStrings[6])
+        combineAngles = int(splitStrings[7])
 
         conf.append(radius)
         conf.append(glcmDistance)
@@ -135,7 +141,8 @@ class Writer:
         conf.append(cellSize)
         conf.append(angles)
         conf.append(numOfNeighbors)
-        conf.append(combine)
+        conf.append(combineDistances)
+        conf.append(combineAngles)
 
         return conf
 
