@@ -116,7 +116,8 @@ class App(tk.Tk):
                   DataAnnotation,
                   FeatureVectorCreation,
                   ConfigurationsPage,
-                  ClassificationPage):
+                  ClassificationPage,
+                  GradientPage):
 
             frame = F(container, self)
 
@@ -514,6 +515,7 @@ class App(tk.Tk):
             self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
             self.frames[FeatureVectorCreation].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
             self.frames[PageInitialization].buttonSW["state"] = "normal"
+            self.frames[PageInitialization].buttonGradient["state"] = "normal"
 
             self.currPicPath = self.pathToProcessedData + "/" + self.processedDataPictures[0]
             image = cv.imread(self.currPicPath)
@@ -911,48 +913,82 @@ class StartPage(tk.Frame):
 class PageInitialization(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        description = tk.Label(self, text="Here you select training and testing folder.")
-        description.pack(padx=10, pady=10)
 
+        tk.Frame.__init__(self, parent, bg="green")
+        self.grid_columnconfigure(0, weight=1)
+
+        # dio s opisom stranice, najgornji dio stranice
+        descriptionFrame = tk.Frame(self)
+        descriptionFrame.pack(padx=10, pady=5)
+
+        description = tk.Label(descriptionFrame, text="Here you select training and testing folder.")
+        description.pack()
+
+        # dio s gumbima, srednji dio
+        middleFrame = tk.Frame(self)
+        middleFrame.pack(padx=10, pady=5, fill="both", expand=1)
+
+        preprocessingFrame = tk.Frame(middleFrame, bg="blue")
+        preprocessingFrame.pack(side="left", padx=10, pady=10, expand=1, fill="both")
+
+        parameterFrame = tk.Frame(middleFrame, bg="yellow")
+        parameterFrame.pack(side="left", padx=10, pady=10, expand=1, fill="both")
+
+        classificationFrame = tk.Frame(middleFrame, bg="red")
+        classificationFrame.pack(side="left", padx=10, pady=10, expand=1, fill="both")
+
+        # donji dio prozora
         buttonFrame = tk.Frame(self)
-        buttonFrame.pack()
+        buttonFrame.pack(padx=10, pady=5)
 
-        buttonPreprocess = tk.Button(buttonFrame, text="Preprocess data",
+        # gumbi processing frame-a----------------------------------------------------
+        preprocessingDescription = tk.Label(preprocessingFrame, text="Preprocessing")
+        preprocessingDescription.pack(padx=5, pady=10)
+
+        buttonPreprocess = tk.Button(preprocessingFrame, text="Preprocess data",
                                      command=lambda: controller.show_frame(PreprocessPage))
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
 
-        buttonSelectProcessedData = tk.Button(buttonFrame, text="Processed data",
+        buttonSelectProcessedData = tk.Button(preprocessingFrame, text="Processed data",
                                               command=controller.selectProcessedDataFolder)
         buttonSelectProcessedData.pack(padx=5, pady=10, fill="x")
 
-        buttonSelectTraining = tk.Button(buttonFrame, text="Training Folder",
+        buttonSelectTraining = tk.Button(preprocessingFrame, text="Training Folder",
                                          command=lambda: controller.selectFolder("train"))
         buttonSelectTraining.pack(padx=5, pady=10, fill="x")
 
-        buttonSelectTest = tk.Button(buttonFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
+        buttonSelectTest = tk.Button(preprocessingFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
         buttonSelectTest.pack(padx=10, pady=10, fill="x")
 
-        self.buttonDataAnnotation = tk.Button(buttonFrame, text="Data Annotation", state="disabled",
+        self.buttonDataAnnotation = tk.Button(preprocessingFrame, text="Data Annotation", state="disabled",
                                               command=lambda: [controller.show_frame(DataAnnotation),
                                                                controller.updateDataAnnotationFrame()])
 
         self.buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
 
-        buttonParameters = tk.Button(buttonFrame, text="Parameters",
+        # gumbi parameter frame-a------------------------------------------------------
+        parameterDescription = tk.Label(parameterFrame, text="Parameters")
+        parameterDescription.pack(pady=5, padx=10)
+
+        buttonParameters = tk.Button(parameterFrame, text="Parameters",
                                      command=lambda: controller.show_frame(ParameterSetting))
         buttonParameters.pack(padx=10, pady=10, fill="x")
 
-        self.buttonSW = tk.Button(buttonFrame, text="Sliding Window", state="disabled",
+        self.buttonSW = tk.Button(parameterFrame, text="Sliding Window", state="disabled",
                                   command=lambda: controller.show_frame(SlidingWindow))
         self.buttonSW.pack(padx=10, pady=10, fill="x")
 
-        buttonFVC = tk.Button(buttonFrame, text="FVC", command=lambda: [controller.show_frame(FeatureVectorCreation),
+        self.buttonGradient = tk.Button(parameterFrame, text="Gradient", state="disabled",
+                                        command=lambda: controller.show_frame(GradientPage))
+        self.buttonGradient.pack(padx=10, pady=10, fill="x")
+
+        # gumbi classification frame-a--------------------------------------------------
+        buttonFVC = tk.Button(classificationFrame, text="FVC", command=lambda: [controller.show_frame(FeatureVectorCreation),
                                                                         controller.showFVCinfo()])
         buttonFVC.pack(padx=10, pady=10, fill="x")
 
-        buttonClassification = tk.Button(buttonFrame, text="Classification",
+        buttonClassification = tk.Button(classificationFrame, text="Classification",
                                          command=lambda: [controller.show_frame(ClassificationPage),
                                                           controller.loadColors()])
         buttonClassification.pack(padx=10, pady=10, fill="x")
@@ -1595,7 +1631,23 @@ class ClassificationPage(tk.Frame):
         self.labelCombineAnglesValue.grid(row=7, column=1, padx=10, pady=10)
 
 
+class GradientPage(tk.Frame):
+
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent)
+        self.grid_columnconfigure(0, weight=1)
+
+        pageDescription = tk.Label(self, text="Here you can view gradient images.")
+        pageDescription.pack(side="top", padx=10, pady=10)
+
+        buttonFrame = tk.Frame(self)
+        buttonFrame.pack(padx=10, pady=5, fill="both", expand=1)
+
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.pack(padx=10, pady=10)
+
 if __name__ == "__main__":
     app = App()
-    app.geometry("1100x600")
+    # app.geometry("1100x600")
     app.mainloop()
