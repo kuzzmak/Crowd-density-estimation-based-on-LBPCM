@@ -478,7 +478,7 @@ class App(tk.Tk):
         """
 
         self.frames[SlidingWindow].labelCellNumberValue.configure(text=str(self.currCell))
-        self.frames[SlidingWindow].labelAnglesListValue.configure(text=str(self.angles))
+        self.frames[SlidingWindow].labelAnglesListValue.configure(text=str(util.shortAngles(self.angles)))
 
         # trenutna slika
         image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
@@ -494,16 +494,16 @@ class App(tk.Tk):
         haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
         # prikaz kontrasta
         contrast = haralick.contrast()
-        self.frames[SlidingWindow].labelContrastValue.configure(text=str(contrast))
+        self.frames[SlidingWindow].labelContrastValue.configure(text=str(util.shortAngles(contrast)))
         # prikaz energije
         energy = haralick.energy()
-        self.frames[SlidingWindow].labelEnergyValue.configure(text=str(energy))
+        self.frames[SlidingWindow].labelEnergyValue.configure(text=str(util.shortAngles(energy)))
         # prikaz homogenosti
         homogeneity = haralick.homogeneity()
-        self.frames[SlidingWindow].labelHomogeneityValue.configure(text=str(homogeneity))
+        self.frames[SlidingWindow].labelHomogeneityValue.configure(text=str(util.shortAngles(homogeneity)))
         # prikaz entropije
         entropy = haralick.entropy()
-        self.frames[SlidingWindow].labelEntropyValue.configure(text=str(entropy))
+        self.frames[SlidingWindow].labelEntropyValue.configure(text=str(util.shortAngles(entropy)))
 
         self.update()
 
@@ -687,7 +687,7 @@ class App(tk.Tk):
         self.frames[FeatureVectorCreation].labelCellSizeValue.configure(text=self.cellSize)
 
         # kutevi za lpbcm
-        self.frames[FeatureVectorCreation].labelAnglesValue.configure(text=self.angles)
+        self.frames[FeatureVectorCreation].labelAnglesValue.configure(text=str(util.shortAngles(self.angles)))
 
         # velicina koraka celije
         self.frames[FeatureVectorCreation].labelStepSizeValue.configure(text=self.stepSize)
@@ -908,8 +908,21 @@ class App(tk.Tk):
         if len(filename) > 0:
 
             img, sobel, sobelx, sobely = util.gradientImage(filename)
+            # postavljanje normalne slike
             self.frames[GradientPage].a.imshow(img, cmap='gray')
             self.frames[GradientPage].canvasa.draw()
+
+            # postavljanje sobel slike
+            self.frames[GradientPage].b.imshow(sobel, cmap='gray')
+            self.frames[GradientPage].canvasb.draw()
+
+            # postavljanje sobel_x slike
+            self.frames[GradientPage].c.imshow(sobelx, cmap='gray')
+            self.frames[GradientPage].canvasc.draw()
+
+            # postavljanje sobel_y slike
+            self.frames[GradientPage].d.imshow(sobely, cmap='gray')
+            self.frames[GradientPage].canvasd.draw()
 
         else:
             self.console.insert(tk.END, "[WARNING] no image was selected\n")
@@ -1664,7 +1677,7 @@ class GradientPage(tk.Frame):
         pageDescription = tk.Label(self, text="Here you can view gradient images.")
         pageDescription.pack(side="top", padx=10, pady=10)
 
-        pictureFrame = tk.Frame(self, bg="blue")
+        pictureFrame = tk.Frame(self)
         pictureFrame.grid_columnconfigure(0, weight=1)
         pictureFrame.grid_rowconfigure(0, weight=1)
         pictureFrame.grid_columnconfigure(1, weight=1)
@@ -1736,48 +1749,48 @@ class GradientPage(tk.Frame):
 
         # prikaz sobel slike
         figb = Figure(figsize=(3, 2), dpi=100)
-        b = figb.add_subplot(111)
-        b.set_yticks([])
-        b.set_xticks([])
-        b.imshow(sobel, cmap='gray')
+        self.b = figb.add_subplot(111)
+        self.b.set_yticks([])
+        self.b.set_xticks([])
+        self.b.imshow(sobel, cmap='gray')
 
-        canvasb = FigureCanvasTkAgg(figb, master=sobelFrame)
-        canvasb.draw()
-        canvasb.get_tk_widget().pack(side="top", fill="both", expand=1)
+        self.canvasb = FigureCanvasTkAgg(figb, master=sobelFrame)
+        self.canvasb.draw()
+        self.canvasb.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobelx slike
         figc = Figure(figsize=(3, 2), dpi=100)
-        c = figc.add_subplot(111)
-        c.set_yticks([])
-        c.set_xticks([])
-        c.imshow(sobelx, cmap='gray')
+        self.c = figc.add_subplot(111)
+        self.c.set_yticks([])
+        self.c.set_xticks([])
+        self.c.imshow(sobelx, cmap='gray')
 
-        canvasc = FigureCanvasTkAgg(figc, master=sobelXFrame)
-        canvasc.draw()
-        canvasc.get_tk_widget().pack(side="top", fill="both", expand=1)
+        self.canvasc = FigureCanvasTkAgg(figc, master=sobelXFrame)
+        self.canvasc.draw()
+        self.canvasc.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobely slike
         figd = Figure(figsize=(3, 2), dpi=100)
-        d = figd.add_subplot(111)
-        d.set_yticks([])
-        d.set_xticks([])
-        d.imshow(sobely, cmap='gray')
+        self.d = figd.add_subplot(111)
+        self.d.set_yticks([])
+        self.d.set_xticks([])
+        self.d.imshow(sobely, cmap='gray')
 
-        canvasd = FigureCanvasTkAgg(figd, master=sobelYFrame)
-        canvasd.draw()
-        canvasd.get_tk_widget().pack(side="top", fill="both", expand=1)
+        self.canvasd = FigureCanvasTkAgg(figd, master=sobelYFrame)
+        self.canvasd.draw()
+        self.canvasd.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # toolbar = NavigationToolbar2Tk(canvas, self)
         # toolbar.update()
         # canvas.get_tk_widget().pack(side="top", fill="both", expand=1)
 
-        buttonFrame = tk.Frame(self, bg="green")
+        buttonFrame = tk.Frame(self)
         buttonFrame.pack(padx=10, pady=5, fill="both", expand=1)
 
         buttonSelectPicture = tk.Button(buttonFrame, text="Select picture", command=lambda: controller.selectGradientPicture())
         buttonSelectPicture.pack(side="left", expand=1, padx=10, pady=10)
 
-        buttonBack = tk.Button(buttonFrame, text="Back")
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(side="left", expand=1, padx=10, pady=10)
 
 if __name__ == "__main__":

@@ -324,7 +324,7 @@ def greycoprops(P, prop='contrast'):
     elif prop in ['energy', 'entropy']:
         pass
     else:
-        raise ValueError('%s is an invalid property' % (prop))
+        raise ValueError('%s is an invalid property' % prop)
 
     # compute property for each GLCM
     if prop == 'energy':
@@ -338,7 +338,12 @@ def greycoprops(P, prop='contrast'):
     return results
 
 def gradientImage(imagePath):
+    """
+    Funkcija za izracun gradijenta slike
 
+    :param imagePath: staza do slike na kojoj se gradijent racuna
+    :return: izvorna slika, gradijentna slika, gradijent slike u smjeru x, gradijent slike u smjeru y
+    """
     img = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
 
     sobelx = cv.Sobel(img, cv.CV_64F, 1, 0, ksize=5)
@@ -346,5 +351,7 @@ def gradientImage(imagePath):
 
     sobel = np.power(sobelx, 2) + np.power(sobely, 2)
     sobel = np.sqrt(sobel)
+
+    # sobel = cv.Sobel(img, cv.CV_64F, 1, 1, ksize=5)
 
     return img, sobel, sobelx, sobely
