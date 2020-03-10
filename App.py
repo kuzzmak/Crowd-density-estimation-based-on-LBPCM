@@ -18,6 +18,11 @@ import re
 import threading
 import pickle
 import Writer
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+# Implement the default Matplotlib key bindings.
+from matplotlib.backend_bases import key_press_handler, GraphicsContextBase
+from matplotlib.figure import Figure
 
 # boja obruba celije
 color = (255, 0, 0)
@@ -506,7 +511,7 @@ class App(tk.Tk):
         """ funkcija za odabir folders s vec procesiranim slikama
         """
 
-        directory = filedialog.askdirectory()
+        directory = filedialog.askdirectory(initialdir=r"data/processedData")
 
         # ako je izabran neki direktorij
         if directory != "":
@@ -892,6 +897,24 @@ class App(tk.Tk):
         self.frames[ClassificationPage].c2c.configure(image=self.c2c)
         self.frames[ClassificationPage].c3c.configure(image=self.c3c)
         self.frames[ClassificationPage].c4c.configure(image=self.c4c)
+
+    def selectGradientPicture(self):
+
+        filename = filedialog.askopenfilename(
+            initialdir=r"data/processedData",
+            title="Select picture",
+            filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
+
+        if len(filename) > 0:
+
+            img, sobel, sobelx, sobely = util.gradientImage(filename)
+            self.frames[GradientPage].a.imshow(img, cmap='gray')
+            self.frames[GradientPage].canvasa.draw()
+
+        else:
+            self.console.insert(tk.END, "[WARNING] no image was selected\n")
+            self.console.insert(tk.END, "----------------------------------------\n")
+            self.console.see(tk.END)
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -1641,11 +1664,121 @@ class GradientPage(tk.Frame):
         pageDescription = tk.Label(self, text="Here you can view gradient images.")
         pageDescription.pack(side="top", padx=10, pady=10)
 
-        buttonFrame = tk.Frame(self)
+        pictureFrame = tk.Frame(self, bg="blue")
+        pictureFrame.grid_columnconfigure(0, weight=1)
+        pictureFrame.grid_rowconfigure(0, weight=1)
+        pictureFrame.grid_columnconfigure(1, weight=1)
+        pictureFrame.grid_rowconfigure(1, weight=1)
+        pictureFrame.pack(padx=10, pady=10, fill="both", expand=1)
+
+        imagePath = r"/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData/21.jpg"
+
+        img = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+
+        sobelx = cv.Sobel(img, cv.CV_64F, 1, 0, ksize=5)
+        sobely = cv.Sobel(img, cv.CV_64F, 0, 1, ksize=5)
+
+        sobel = np.power(sobelx, 2) + np.power(sobely, 2)
+        sobel = np.sqrt(sobel)
+
+        # labela i normalna slika
+        normalFrame = tk.Frame(pictureFrame)
+        normalFrame.grid(row=0, column=0, padx=10, pady=10)
+
+        normalImageLabel = tk.Label(normalFrame, text="Normal image")
+        normalImageLabel.pack(padx=10, pady=10)
+
+        sobelFrame = tk.Frame(pictureFrame)
+        sobelFrame.grid(row=0, column=1, padx=10, pady=10)
+
+        sobelImageLabel = tk.Label(sobelFrame, text="Sobel image")
+        sobelImageLabel.pack(padx=10, pady=10)
+
+        sobelXFrame = tk.Frame(pictureFrame)
+        sobelXFrame.grid(row=1, column=0, padx=10, pady=10)
+
+        sobelXImageLabel = tk.Label(sobelXFrame, text="Sobel_x image")
+        sobelXImageLabel.pack(padx=10, pady=10)
+
+        sobelYFrame = tk.Frame(pictureFrame)
+        sobelYFrame.grid(row=1, column=1, padx=10, pady=10)
+
+        sobelYImageLabel = tk.Label(sobelYFrame, text="Sobel_y image")
+        sobelYImageLabel.pack(padx=10, pady=10)
+
+        # self.img = ImageTk.PhotoImage(image=Image.fromarray(img))
+        #
+        # normalImage = tk.Label(pictureFrame)
+        # normalImage.configure(image=self.img)
+        # normalImage.grid(row=1, column=0, padx=10, pady=10)
+        #
+        # # labela i sobel slika
+        # sobelImageLabel = tk.Label(pictureFrame, text="Sobel")
+        # sobelImageLabel.grid(row=0, column=1, padx=10, pady=10)
+        #
+        # self.imgs = ImageTk.PhotoImage(image=Image.fromarray(sobely, mode="RGB"))
+        # print(sobely)
+        #
+        # sobelImage = tk.Label(pictureFrame)
+        # sobelImage.configure(image=self.imgs)
+        # sobelImage.grid(row=1, column=1, padx=10, pady=10)
+
+        # prikaz normalne slike
+        figa = Figure(figsize=(3, 2), dpi=100)
+        self.a = figa.add_subplot(111)
+        self.a.set_yticks([])
+        self.a.set_xticks([])
+        self.a.imshow(img, cmap='gray')
+
+        self.canvasa = FigureCanvasTkAgg(figa, master=normalFrame)
+        self.canvasa.draw()
+        self.canvasa.get_tk_widget().pack(side="top", fill="both", expand=1)
+
+        # prikaz sobel slike
+        figb = Figure(figsize=(3, 2), dpi=100)
+        b = figb.add_subplot(111)
+        b.set_yticks([])
+        b.set_xticks([])
+        b.imshow(sobel, cmap='gray')
+
+        canvasb = FigureCanvasTkAgg(figb, master=sobelFrame)
+        canvasb.draw()
+        canvasb.get_tk_widget().pack(side="top", fill="both", expand=1)
+
+        # prikaz sobelx slike
+        figc = Figure(figsize=(3, 2), dpi=100)
+        c = figc.add_subplot(111)
+        c.set_yticks([])
+        c.set_xticks([])
+        c.imshow(sobelx, cmap='gray')
+
+        canvasc = FigureCanvasTkAgg(figc, master=sobelXFrame)
+        canvasc.draw()
+        canvasc.get_tk_widget().pack(side="top", fill="both", expand=1)
+
+        # prikaz sobely slike
+        figd = Figure(figsize=(3, 2), dpi=100)
+        d = figd.add_subplot(111)
+        d.set_yticks([])
+        d.set_xticks([])
+        d.imshow(sobely, cmap='gray')
+
+        canvasd = FigureCanvasTkAgg(figd, master=sobelYFrame)
+        canvasd.draw()
+        canvasd.get_tk_widget().pack(side="top", fill="both", expand=1)
+
+        # toolbar = NavigationToolbar2Tk(canvas, self)
+        # toolbar.update()
+        # canvas.get_tk_widget().pack(side="top", fill="both", expand=1)
+
+        buttonFrame = tk.Frame(self, bg="green")
         buttonFrame.pack(padx=10, pady=5, fill="both", expand=1)
 
-        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
-        buttonBack.pack(padx=10, pady=10)
+        buttonSelectPicture = tk.Button(buttonFrame, text="Select picture", command=lambda: controller.selectGradientPicture())
+        buttonSelectPicture.pack(side="left", expand=1, padx=10, pady=10)
+
+        buttonBack = tk.Button(buttonFrame, text="Back")
+        buttonBack.pack(side="left", expand=1, padx=10, pady=10)
 
 if __name__ == "__main__":
     app = App()

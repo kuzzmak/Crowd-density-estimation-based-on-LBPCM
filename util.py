@@ -337,3 +337,14 @@ def greycoprops(P, prop='contrast'):
 
     return results
 
+def gradientImage(imagePath):
+
+    img = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+
+    sobelx = cv.Sobel(img, cv.CV_64F, 1, 0, ksize=5)
+    sobely = cv.Sobel(img, cv.CV_64F, 0, 1, ksize=5)
+
+    sobel = np.power(sobelx, 2) + np.power(sobely, 2)
+    sobel = np.sqrt(sobel)
+
+    return img, sobel, sobelx, sobely
