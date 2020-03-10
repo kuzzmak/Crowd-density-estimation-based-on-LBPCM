@@ -899,6 +899,10 @@ class App(tk.Tk):
         self.frames[ClassificationPage].c4c.configure(image=self.c4c)
 
     def selectGradientPicture(self):
+        """
+            Funkcija za izbor slike na kojoj se primjenjuje operator gradijenta
+        :return:
+        """
 
         filename = filedialog.askopenfilename(
             initialdir=r"data/processedData",
@@ -929,6 +933,7 @@ class App(tk.Tk):
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
 
+
 # frames----------------------------------
 class StartPage(tk.Frame):
 
@@ -950,36 +955,36 @@ class PageInitialization(tk.Frame):
 
     def __init__(self, parent, controller):
 
-        tk.Frame.__init__(self, parent, bg="green")
+        tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
 
         # dio s opisom stranice, najgornji dio stranice
         descriptionFrame = tk.Frame(self)
-        descriptionFrame.pack(padx=10, pady=5)
+        descriptionFrame.pack(padx=10, pady=10)
 
         description = tk.Label(descriptionFrame, text="Here you select training and testing folder.")
         description.pack()
 
         # dio s gumbima, srednji dio
         middleFrame = tk.Frame(self)
-        middleFrame.pack(padx=10, pady=5, fill="both", expand=1)
+        middleFrame.pack(padx=10, pady=10, fill="both", expand=1)
 
-        preprocessingFrame = tk.Frame(middleFrame, bg="blue")
+        preprocessingFrame = tk.Frame(middleFrame)
         preprocessingFrame.pack(side="left", padx=10, pady=10, expand=1, fill="both")
 
-        parameterFrame = tk.Frame(middleFrame, bg="yellow")
+        parameterFrame = tk.Frame(middleFrame)
         parameterFrame.pack(side="left", padx=10, pady=10, expand=1, fill="both")
 
-        classificationFrame = tk.Frame(middleFrame, bg="red")
+        classificationFrame = tk.Frame(middleFrame)
         classificationFrame.pack(side="left", padx=10, pady=10, expand=1, fill="both")
 
         # donji dio prozora
         buttonFrame = tk.Frame(self)
-        buttonFrame.pack(padx=10, pady=5)
+        buttonFrame.pack(padx=10, pady=10)
 
         # gumbi processing frame-a----------------------------------------------------
         preprocessingDescription = tk.Label(preprocessingFrame, text="Preprocessing")
-        preprocessingDescription.pack(padx=5, pady=10)
+        preprocessingDescription.pack(padx=10, pady=10)
 
         buttonPreprocess = tk.Button(preprocessingFrame, text="Preprocess data",
                                      command=lambda: controller.show_frame(PreprocessPage))
@@ -1005,7 +1010,7 @@ class PageInitialization(tk.Frame):
 
         # gumbi parameter frame-a------------------------------------------------------
         parameterDescription = tk.Label(parameterFrame, text="Parameters")
-        parameterDescription.pack(pady=5, padx=10)
+        parameterDescription.pack(pady=10, padx=10)
 
         buttonParameters = tk.Button(parameterFrame, text="Parameters",
                                      command=lambda: controller.show_frame(ParameterSetting))
@@ -1020,6 +1025,10 @@ class PageInitialization(tk.Frame):
         self.buttonGradient.pack(padx=10, pady=10, fill="x")
 
         # gumbi classification frame-a--------------------------------------------------
+
+        classificationDescription = tk.Label(classificationFrame, text="Classification")
+        classificationDescription.pack(pady=10, padx=10)
+
         buttonFVC = tk.Button(classificationFrame, text="FVC", command=lambda: [controller.show_frame(FeatureVectorCreation),
                                                                         controller.showFVCinfo()])
         buttonFVC.pack(padx=10, pady=10, fill="x")
@@ -1038,13 +1047,13 @@ class ParameterSetting(tk.Frame):
     """
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bg="blue")
 
         description = tk.Label(self, text="Here you select parameters required for LBP.")
-        description.pack()
+        description.pack(pady=5)
         # prvi redak---------------------------
         frame1 = tk.Frame(self)
-        frame1.pack(padx=10, pady=10, expand=True)
+        frame1.pack(pady=5)
 
         labelRadius = tk.Label(frame1, text="Specify LBP radius:")
         labelRadius.pack(side="left")
@@ -1054,7 +1063,7 @@ class ParameterSetting(tk.Frame):
 
         # drugi redak--------------------------
         frame2 = tk.Frame(self)
-        frame2.pack(padx=10, pady=10, expand=True)
+        frame2.pack()
 
         labelCellSize = tk.Label(frame2, text="Specify cell size, eg. \"64x64\".")
         labelCellSize.pack(side="left")
@@ -1064,7 +1073,7 @@ class ParameterSetting(tk.Frame):
 
         # treci redak--------------------------
         frame3 = tk.Frame(self)
-        frame3.pack(padx=10, pady=10, expand=True)
+        frame3.pack(pady=5)
 
         labelStepSize = tk.Label(frame3, text="Specify step size:")
         labelStepSize.pack(side="left")
@@ -1073,7 +1082,7 @@ class ParameterSetting(tk.Frame):
         entryStepSize.pack(side="right")
 
         frame31 = tk.Frame(self)
-        frame31.pack(padx=10, pady=10, expand=True)
+        frame31.pack()
 
         labelAngles = tk.Label(frame31,
                                text="Specify angles(in degrees) for which you'd like to \ncalculate co-occurence matrix(separate them by comma, eg. 45,90,135): ")
@@ -1090,7 +1099,7 @@ class ParameterSetting(tk.Frame):
 
         # cetvrti redak---------------------------
         frame4 = tk.Frame(self)
-        frame4.pack(padx=10, pady=10, expand=True)
+        frame4.pack(padx=10, pady=5)
 
         self.labelNormalPic = tk.Label(frame4, text="no pic\nselected")
         self.labelNormalPic.grid(row=0, column=0, padx=10, pady=10)
@@ -1100,7 +1109,7 @@ class ParameterSetting(tk.Frame):
 
         # peti redak------------------------
         frame5 = tk.Frame(self)
-        frame5.pack(expand=True)
+        frame5.pack(pady=5)
         # gumb za spremanje parametara LBP-a
         buttonSave = tk.Button(frame5, text="Save", command=lambda: controller.saveParameters(entryRadius.get(),
                                                                                               entryCellSize.get(),
@@ -1684,105 +1693,74 @@ class GradientPage(tk.Frame):
         pictureFrame.grid_rowconfigure(1, weight=1)
         pictureFrame.pack(padx=10, pady=10, fill="both", expand=1)
 
-        imagePath = r"/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData/21.jpg"
-
-        img = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
-
-        sobelx = cv.Sobel(img, cv.CV_64F, 1, 0, ksize=5)
-        sobely = cv.Sobel(img, cv.CV_64F, 0, 1, ksize=5)
-
-        sobel = np.power(sobelx, 2) + np.power(sobely, 2)
-        sobel = np.sqrt(sobel)
-
         # labela i normalna slika
         normalFrame = tk.Frame(pictureFrame)
-        normalFrame.grid(row=0, column=0, padx=10, pady=10)
+        normalFrame.grid(row=0, column=0, padx=10, pady=5)
 
         normalImageLabel = tk.Label(normalFrame, text="Normal image")
         normalImageLabel.pack(padx=10, pady=10)
 
         sobelFrame = tk.Frame(pictureFrame)
-        sobelFrame.grid(row=0, column=1, padx=10, pady=10)
+        sobelFrame.grid(row=0, column=1, padx=10, pady=5)
 
         sobelImageLabel = tk.Label(sobelFrame, text="Sobel image")
         sobelImageLabel.pack(padx=10, pady=10)
 
         sobelXFrame = tk.Frame(pictureFrame)
-        sobelXFrame.grid(row=1, column=0, padx=10, pady=10)
+        sobelXFrame.grid(row=1, column=0, padx=10, pady=5)
 
         sobelXImageLabel = tk.Label(sobelXFrame, text="Sobel_x image")
         sobelXImageLabel.pack(padx=10, pady=10)
 
         sobelYFrame = tk.Frame(pictureFrame)
-        sobelYFrame.grid(row=1, column=1, padx=10, pady=10)
+        sobelYFrame.grid(row=1, column=1, padx=10, pady=5)
 
         sobelYImageLabel = tk.Label(sobelYFrame, text="Sobel_y image")
         sobelYImageLabel.pack(padx=10, pady=10)
 
-        # self.img = ImageTk.PhotoImage(image=Image.fromarray(img))
-        #
-        # normalImage = tk.Label(pictureFrame)
-        # normalImage.configure(image=self.img)
-        # normalImage.grid(row=1, column=0, padx=10, pady=10)
-        #
-        # # labela i sobel slika
-        # sobelImageLabel = tk.Label(pictureFrame, text="Sobel")
-        # sobelImageLabel.grid(row=0, column=1, padx=10, pady=10)
-        #
-        # self.imgs = ImageTk.PhotoImage(image=Image.fromarray(sobely, mode="RGB"))
-        # print(sobely)
-        #
-        # sobelImage = tk.Label(pictureFrame)
-        # sobelImage.configure(image=self.imgs)
-        # sobelImage.grid(row=1, column=1, padx=10, pady=10)
-
         # prikaz normalne slike
-        figa = Figure(figsize=(3, 2), dpi=100)
+        figa = Figure(figsize=(2, 1), dpi=100)
         self.a = figa.add_subplot(111)
         self.a.set_yticks([])
         self.a.set_xticks([])
-        self.a.imshow(img, cmap='gray')
+        # self.a.imshow(img, cmap='gray')
 
         self.canvasa = FigureCanvasTkAgg(figa, master=normalFrame)
-        self.canvasa.draw()
+        # self.canvasa.draw()
         self.canvasa.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobel slike
-        figb = Figure(figsize=(3, 2), dpi=100)
+        figb = Figure(figsize=(2, 1), dpi=100)
         self.b = figb.add_subplot(111)
         self.b.set_yticks([])
         self.b.set_xticks([])
-        self.b.imshow(sobel, cmap='gray')
+        # self.b.imshow(sobel, cmap='gray')
 
         self.canvasb = FigureCanvasTkAgg(figb, master=sobelFrame)
-        self.canvasb.draw()
+        # self.canvasb.draw()
         self.canvasb.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobelx slike
-        figc = Figure(figsize=(3, 2), dpi=100)
+        figc = Figure(figsize=(2, 1), dpi=100)
         self.c = figc.add_subplot(111)
         self.c.set_yticks([])
         self.c.set_xticks([])
-        self.c.imshow(sobelx, cmap='gray')
+        # self.c.imshow(sobelx, cmap='gray')
 
         self.canvasc = FigureCanvasTkAgg(figc, master=sobelXFrame)
-        self.canvasc.draw()
+        # self.canvasc.draw()
         self.canvasc.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobely slike
-        figd = Figure(figsize=(3, 2), dpi=100)
+        figd = Figure(figsize=(2, 1), dpi=100)
         self.d = figd.add_subplot(111)
         self.d.set_yticks([])
         self.d.set_xticks([])
-        self.d.imshow(sobely, cmap='gray')
+        # self.d.imshow(sobely, cmap='gray')
 
         self.canvasd = FigureCanvasTkAgg(figd, master=sobelYFrame)
-        self.canvasd.draw()
+        # self.canvasd.draw()
         self.canvasd.get_tk_widget().pack(side="top", fill="both", expand=1)
-
-        # toolbar = NavigationToolbar2Tk(canvas, self)
-        # toolbar.update()
-        # canvas.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         buttonFrame = tk.Frame(self)
         buttonFrame.pack(padx=10, pady=5, fill="both", expand=1)
@@ -1792,6 +1770,7 @@ class GradientPage(tk.Frame):
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(side="left", expand=1, padx=10, pady=10)
+
 
 if __name__ == "__main__":
     app = App()
