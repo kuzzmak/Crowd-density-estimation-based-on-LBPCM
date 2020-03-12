@@ -300,6 +300,20 @@ def makeColors(dim):
         cv.imwrite(dir + "/" + str(c) + ".jpg", rgb)
 
 def greycoprops(P, prop='contrast'):
+    """
+        Funkcija za izračunavanje Haralickovih funkcija
+
+        f1 -> energy +
+        f2 -> contrast +
+        f3 -> correlation +
+        f4 -> sum of squares: variance
+        f5 -> inverse difference moment - homogeneity +
+        f6 -> sum average
+
+    :param P: glcm matrica
+    :param prop: funkcija koju je potrebno izračunati
+    :return: vrijednost funkcije koja se izračunava
+    """
 
     (num_level, num_level2, num_dist, num_angle) = P.shape
     if num_level != num_level2:
@@ -314,6 +328,10 @@ def greycoprops(P, prop='contrast'):
     glcm_sums = np.apply_over_axes(np.sum, P, axes=(0, 1))
     glcm_sums[glcm_sums == 0] = 1
     P /= glcm_sums
+
+    mean = np.apply_over_axes(np.sum, P / num_level, axes=(0, 1))
+    b = np.apply_over_axes(np.sum, (P - mean) ** 2, axes=(0, 1))
+    sigma = np.sqrt(1 / (num_level - 1) * b)
 
     # create weights for specified property
     I, J = np.ogrid[0:num_level, 0:num_level]
@@ -334,8 +352,8 @@ def greycoprops(P, prop='contrast'):
     elif prop == 'entropy':
         results = np.apply_over_axes(np.sum, P, axes=(0, 1))[0, 0]
     elif prop == 'correlation':
-        # results = np.apply_over_axes(np.sum, P * weights - )
-        pass
+        weights = weights.reshape((num_level, num_level, 1, 1))
+        results = np.apply_over_axes(np.sum, (P * weights - mean ** 2) / (sigma ** 2), axes=(0, 1))[0, 0]
     elif prop in ['contrast', 'homogeneity']:
         weights = weights.reshape((num_level, num_level, 1, 1))
         results = np.apply_over_axes(np.sum, (P * weights), axes=(0, 1))[0, 0]

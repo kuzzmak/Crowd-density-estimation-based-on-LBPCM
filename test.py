@@ -1,5 +1,5 @@
 import numpy as np
-import cv2 as cv
+# import cv2 as cv
 # from matplotlib import pyplot as plt
 # from skimage.feature import local_binary_pattern
 #
@@ -94,6 +94,7 @@ import cv2 as cv
 #
 # print(b)
 
+import cv2 as cv
 from skimage.feature import greycomatrix
 from math import radians
 import math
@@ -106,46 +107,49 @@ image = cv.imread(filename, cv.IMREAD_GRAYSCALE)
 cell = image[0:64, 0:64]
 
 distances = [1, 2]
-angles = [0, radians(90), radians(45), radians(135)]
+angles = [0, radians(90), radians(45)]
 
 dimension = len(distances) * len(angles)
 
 glcm = greycomatrix(image.astype(int), distances, angles, levels=256)
 
 import time
-
-start = time.time()
-sums_x = []
+#
+# start = time.time()
+# sums_x = []
 # sums_y = []
-
-for d in range(len(distances)):
-    for a in range(len(angles)):
-        sums_x.append(np.sum(np.sum(glcm[:, :, d, a], axis=0)))
-        # sums_y.append(np.sum(np.sum(glcm[:, :, d, a], axis=1)))
-
-mean_x = [x / 256 for x in sums_x]
-
-# print(mean_x)
+# #
+# for d in range(len(distances)):
+#     for a in range(len(angles)):
+#         sums_x.append(np.sum(np.sum(glcm[:, :, d, a], axis=0)))
+#         sums_y.append(np.sum(np.sum(glcm[:, :, d, a], axis=1)))
+#
+# mean_x = [x / 256 for x in sums_x]
 # mean_y = [y / 256 for y in sums_y]
 #
-sigma_x = [0] * dimension
-
-# sigma_y = [math.sqrt(1 / (256 - 1) * y) for y in sigma_y]
+# #
+# print(mean_x)
+# print(mean_y)
+# # mean_y = [y / 256 for y in sums_y]
+# #
+# sigma_x = [0] * dimension
 #
-k = 0
-
-for d in range(len(distances)):
-    for a in range(len(angles)):
-        for i in range(256):
-            for j in range(256):
-                sigma_x[k] += (glcm[i][j][d][a] - mean_x[k]) ** 2
-#                 sigma_y[k] += (glcm[i][j][d][a] - mean_y[k]) ** 2
-#                 f3[k] += (i * j * glcm[i][i][d][a] - mean_x[k] * mean_y[k]) / (sigma_x[k] * sigma_y[k])
-        k += 1
-
-sigma_x = [math.sqrt(1 / (256 - 1) * x) for x in sigma_x]
-end = time.time()
-print(end - start)
+# # sigma_y = [math.sqrt(1 / (256 - 1) * y) for y in sigma_y]
+# #
+# k = 0
+#
+# for d in range(len(distances)):
+#     for a in range(len(angles)):
+#         for i in range(256):
+#             for j in range(256):
+#                 sigma_x[k] += (glcm[i][j][d][a] - mean_x[k]) ** 2
+# #                 sigma_y[k] += (glcm[i][j][d][a] - mean_y[k]) ** 2
+# #                 f3[k] += (i * j * glcm[i][i][d][a] - mean_x[k] * mean_y[k]) / (sigma_x[k] * sigma_y[k])
+#         k += 1
+#
+# sigma_x = [math.sqrt(1 / (256 - 1) * x) for x in sigma_x]
+# end = time.time()
+# print(end - start)
 # print(sigma_x)
 
 # a = np.array([[[[1, 2, 3],
@@ -168,50 +172,51 @@ print(end - start)
 # row = np.sum(a, axis=(0, 1, 3)) # po redu
 # print(row)
 
-import numpy as np
+# (num_level, num_level2, num_dist, num_angle) = glcm.shape
 
-# I, J = np.ogrid[0:5, 0:5]
-#
-# weights = (I + J) ** 2
-#
-# print(weights)
-#
-# weights.reshape((5, 5, 1, 1))
-#
-# print(weights)
-
-(num_level, num_level2, num_dist, num_angle) = glcm.shape
-
-
-
-
-start = time.time()
-I, J = np.ogrid[0:num_level, 0:num_level]
-weights = I * J
-weights = weights.reshape((num_level, num_level, 1, 1))
-# a = np.apply_over_axes(np.sum, (glcm * weights), axes=(0, 1))
-a = np.apply_over_axes(np.sum, glcm / num_level, axes=(0, 1))
-b = np.apply_over_axes(np.sum, (glcm - a) ** 2, axes=(0, 1))
-
-b = np.sqrt(1 / (num_level - 1) * b)
-end = time.time()
-print(end - start)
-# print(a.shape)
-# end = time.time()
-# print(a)
-# print(end - start)
-#
 # start = time.time()
-# sums_x = []
-#
-# for d in range(len(distances)):
-#     for a in range(len(angles)):
-#         sums_x.append(np.sum(np.sum(glcm[:, :, d, a], axis=0)))
-#
-# # print(sums_x)
-# end = time.time()
-#
-# print(end - start)
 
+# glcm = glcm.astype(np.float64)
+# glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))
+# glcm_sums[glcm_sums == 0] = 1
+# glcm /= glcm_sums
+# I, J = np.ogrid[0:num_level, 0:num_level]
+# weights = I * J
+# weights = weights.reshape((num_level, num_level, 1, 1))
+# mean = np.apply_over_axes(np.sum, glcm / num_level, axes=(0, 1))
+# b = np.apply_over_axes(np.sum, (glcm - mean) ** 2, axes=(0, 1))
+# sigma = np.sqrt(1 / (num_level - 1) * b)
+# c = np.apply_over_axes(np.sum, (glcm * weights - mean ** 2) / (sigma ** 2), axes=(0, 1))
+# import util
+# print(c)
+# print(util.greycoprops(glcm, 'correlation'))
+
+# a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+def pxory(k, glcm):
+
+    (num_level, num_level2, num_dist, num_angle) = glcm.shape
+
+    sum = 0
+
+    for d in range(num_dist):
+        for a in range(num_angle):
+            for i in range(1, num_level):
+                if k - i > 0:
+                    for j in range(k - i, num_level):
+                        sum += glcm[i][j][d][a]
+                else:
+                    break
+                print("\t",i, k-i)
+    return sum
+
+
+summ = 0
+
+for i in range(2, 2 * 256):
+    print(i)
+    summ += pxory(i, glcm)
+
+print(summ)
 
 

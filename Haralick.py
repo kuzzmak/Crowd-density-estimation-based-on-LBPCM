@@ -6,8 +6,6 @@ class HaralickFeatures:
         self.glcm = glcm
 
 
-
-
     def greycoprops(self, prop='contrast'):
         """
             Funkcija za izračunavanje Haralickovih funkcija
@@ -22,8 +20,6 @@ class HaralickFeatures:
         :param prop: funkcija koju je potrebno izračunati
         :return: vrijednost funkcije koja se izračunava
         """
-
-
         (num_level, num_level2, num_dist, num_angle) = self.glcm.shape
         if num_level != num_level2:
             raise ValueError('num_level and num_level2 must be equal.')
@@ -33,10 +29,14 @@ class HaralickFeatures:
             raise ValueError('num_angle must be positive.')
 
         # normalize each GLCM
-        self.glcm.shape = self.glcm.shape.astype(np.float64)
-        glcm_sums = np.apply_over_axes(np.sum, self.glcm.shape, axes=(0, 1))
+        self.glcm = self.glcm.astype(np.float64)
+        glcm_sums = np.apply_over_axes(np.sum, self.glcm, axes=(0, 1))
         glcm_sums[glcm_sums == 0] = 1
-        self.glcm.shape /= glcm_sums
+        self.glcm /= glcm_sums
+
+        mean = np.apply_over_axes(np.sum, self.glcm / num_level, axes=(0, 1))
+        b = np.apply_over_axes(np.sum, (self.glcm - mean) ** 2, axes=(0, 1))
+        sigma = np.sqrt(1 / (num_level - 1) * b)
 
         # create weights for specified property
         I, J = np.ogrid[0:num_level, 0:num_level]
@@ -44,6 +44,8 @@ class HaralickFeatures:
             weights = (I - J) ** 2
         elif prop == 'homogeneity':
             weights = 1. / (1. + (I - J) ** 2)
+        elif prop == 'correlation':
+            weights = I * J
         elif prop in ['energy', 'entropy']:
             pass
         else:
@@ -51,12 +53,14 @@ class HaralickFeatures:
 
         # compute property for each GLCM
         if prop == 'energy':
-            results = np.apply_over_axes(np.sum, (self.glcm.shape ** 2), axes=(0, 1))[0, 0]
+            results = np.apply_over_axes(np.sum, (self.glcm ** 2), axes=(0, 1))[0, 0]
         elif prop == 'entropy':
-            results = np.apply_over_axes(np.sum, self.glcm.shape, axes=(0, 1))[0, 0]
+            results = np.apply_over_axes(np.sum, self.glcm, axes=(0, 1))[0, 0]
+        elif prop == 'correlation':
+            weights = weights.reshape((num_level, num_level, 1, 1))
+            results = np.apply_over_axes(np.sum, (self.glcm * weights - mean ** 2) / (sigma ** 2), axes=(0, 1))
         elif prop in ['contrast', 'homogeneity']:
             weights = weights.reshape((num_level, num_level, 1, 1))
-            results = np.apply_over_axes(np.sum, (self.glcm.shape * weights), axes=(0, 1))[0, 0]
+            results = np.apply_over_axes(np.sum, (self.glcm * weights), axes=(0, 1))[0, 0]
 
         return results
-
