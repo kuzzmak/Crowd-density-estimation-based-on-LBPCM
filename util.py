@@ -321,6 +321,8 @@ def greycoprops(P, prop='contrast'):
         weights = (I - J) ** 2
     elif prop == 'homogeneity':
         weights = 1. / (1. + (I - J) ** 2)
+    elif prop == 'correlation':
+        weights = I * J
     elif prop in ['energy', 'entropy']:
         pass
     else:
@@ -331,6 +333,9 @@ def greycoprops(P, prop='contrast'):
         results = np.apply_over_axes(np.sum, (P ** 2), axes=(0, 1))[0, 0]
     elif prop == 'entropy':
         results = np.apply_over_axes(np.sum, P, axes=(0, 1))[0, 0]
+    elif prop == 'correlation':
+        # results = np.apply_over_axes(np.sum, P * weights - )
+        pass
     elif prop in ['contrast', 'homogeneity']:
         weights = weights.reshape((num_level, num_level, 1, 1))
         results = np.apply_over_axes(np.sum, (P * weights), axes=(0, 1))[0, 0]
