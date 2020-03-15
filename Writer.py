@@ -110,7 +110,7 @@ class Writer:
 
     def loadModel(self):
 
-        file = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled\data\models",
+        file = filedialog.askopenfilename(initialdir=r"data/models",
                                           title="Select model",
                                           filetypes=(("pickel files", "*.pkl"), ("all files", "*.*")))
 

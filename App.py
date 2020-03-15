@@ -846,7 +846,7 @@ class App(tk.Tk):
 
     def showClassifiedImage(self):
 
-        filename = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\Desktop\Crowd_PETS09\S1\L1\Time_13-57\View_001",
+        filename = filedialog.askopenfilename(initialdir=r"data/normalData/View_001",
                                           title="Select picture",
                                           filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
 

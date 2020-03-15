@@ -94,24 +94,31 @@ import numpy as np
 #
 # print(b)
 
-import cv2 as cv
-from skimage.feature import greycomatrix
-from math import radians
-import math
-
-
-filename = r"/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData/21.jpg"
-
-image = cv.imread(filename, cv.IMREAD_GRAYSCALE)
-
-cell = image[0:64, 0:64]
-
-distances = [1, 2]
-angles = [0, radians(90), radians(45)]
-
-dimension = len(distances) * len(angles)
-
-glcm = greycomatrix(image.astype(int), distances, angles, levels=256)
+# import cv2 as cv
+# from skimage.feature import greycomatrix
+# from math import radians
+# import math
+# import util
+#
+#
+# filename = r"/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData/21.jpg"
+#
+# image = cv.imread(filename, cv.IMREAD_GRAYSCALE)
+#
+# cell = image[0:64, 0:64]
+#
+# distances = [1, 2]
+# angles = [0, radians(90), radians(45)]
+#
+# dimension = len(distances) * len(angles)
+#
+# img, sobel, sobelx, sobely = util.gradientImage(filename)
+#
+# print(sobel)
+#
+# glcm = greycomatrix(sobel.astype(int), distances, angles, levels=256)
+#
+# print(glcm)
 
 import time
 #
@@ -193,30 +200,36 @@ import time
 
 # a = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
-def pxory(k, glcm):
+# def pxory(k, glcm):
+#
+#     (num_level, num_level2, num_dist, num_angle) = glcm.shape
+#
+#     sum = 0
+#
+#     for d in range(num_dist):
+#         for a in range(num_angle):
+#             for i in range(1, num_level):
+#                 if k - i > 0:
+#                     for j in range(k - i, num_level):
+#                         sum += glcm[i][j][d][a]
+#                 else:
+#                     break
+#     return sum
+#
+#
+# summ = 0
+#
+# for i in range(2, 2 * 256):
+#     print(i)
+#     summ += pxory(i, glcm)
+#
+# print(summ)
 
-    (num_level, num_level2, num_dist, num_angle) = glcm.shape
+import multiprocessing
 
-    sum = 0
+print(multiprocessing.cpu_count())
 
-    for d in range(num_dist):
-        for a in range(num_angle):
-            for i in range(1, num_level):
-                if k - i > 0:
-                    for j in range(k - i, num_level):
-                        sum += glcm[i][j][d][a]
-                else:
-                    break
-                print("\t",i, k-i)
-    return sum
+a = [1, 2 , 3, 4]
+b = [2]
 
-
-summ = 0
-
-for i in range(2, 2 * 256):
-    print(i)
-    summ += pxory(i, glcm)
-
-print(summ)
-
-
+print(list(zip(None, "hello", "pi")))
