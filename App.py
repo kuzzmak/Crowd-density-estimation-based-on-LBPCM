@@ -112,6 +112,30 @@ class App(tk.Tk):
         self.rbAngles = tk.IntVar()
         # razred za spremanje rezultata i labela
         self.writer = Writer.Writer()
+        # varijabla za odabir vrste slika na kojima se primjenjuje LBP, na sivim ili gradijentnim slikama
+        self.rType = tk.IntVar()
+
+        # check gumbi za funkcije koje sačinjavaju vektore značajki
+        self.functionButtons = []
+        # stvaranje gumba za svaku od 14 funkcija
+
+        names = ["angular second momentum",
+                 "contrast",
+                 "correlation",
+                 "sum of squares: variance",
+                 "inverse difference moment",
+                 "sum average",
+                 "sum variance",
+                 "sum entropy",
+                 "entropy",
+                 "difference variance",
+                 "difference entropy",
+                 "imoc1",
+                 "imoc2",
+                 "maximal correlation coefficient"]
+        for c in range(14):
+            name = "f" + str(c + 1) + " - " + names[c]
+            self.functionButtons.append((name, tk.IntVar()))
 
         for F in (PreprocessPage,
                   StartPage,
@@ -122,7 +146,8 @@ class App(tk.Tk):
                   FeatureVectorCreation,
                   ConfigurationsPage,
                   ClassificationPage,
-                  GradientPage):
+                  GradientPage,
+                  CLP):
 
             frame = F(container, self)
 
@@ -933,6 +958,10 @@ class App(tk.Tk):
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
 
+    def printButton(self):
+        for name, c in self.functionButtons:
+            if c.get():
+                print(name)
 
 # frames----------------------------------
 class StartPage(tk.Frame):
@@ -1037,6 +1066,9 @@ class PageInitialization(tk.Frame):
                                          command=lambda: [controller.show_frame(ClassificationPage),
                                                           controller.loadColors()])
         buttonClassification.pack(padx=10, pady=10, fill="x")
+
+        buttonCLP = tk.Button(classificationFrame, text="CLP", command=lambda: controller.show_frame(CLP))
+        buttonCLP.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
         buttonBack.pack(padx=10, pady=10, fill="x")
@@ -1438,16 +1470,51 @@ class ConfigurationsPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
+        self.grid_columnconfigure(0, weight=1)
 
         # opis framea
         descriptionLabel = tk.Label(self, text="Here you specify different configurations for running.\n")
-        descriptionLabel.pack(padx=10, pady=10)
+        descriptionLabel.grid(row=0, padx=10, pady=10, columnspan=2)
+
+        # frame s parametrima svake konfiguracije
+        parameterFrame = tk.Frame(self)
+        parameterFrame.grid(row=1, column=0, padx=10, pady=5)
+
+        # frame s odabirom funkcija koje se koriste kod kreiranja vektora značajki
+        functionsFrame = tk.Frame(self)
+        functionsFrame.grid(row=1, column=1, padx=20, pady=5)
+
+        # odabir vrste slike nad kojim se primjenjuje LBP
+        picTypeDescription = tk.Label(parameterFrame, text="Select picture type")
+        picTypeDescription.pack(padx=10, pady=10)
+
+        picTypeFrame = tk.Frame(parameterFrame)
+        picTypeFrame.pack()
+
+        i = 0
+        for name, c in controller.functionButtons:
+            tk.Checkbutton(functionsFrame, text=name, variable=c, command=controller.printButton).grid(row=i, pady="2", sticky="w")
+            i += 1
+        # c1 = tk.Checkbutton(functionsFrame, text="f1", variable=controller.f1, height=5, width=20)
+        # c1.pack()
+
+        # c1 = tk.Checkbutton(functionsFrame, text="f2", variable=controller.f2, height=5, width=20)
+        # c1.pack()
+
+        # predpostavljena vrijednost varijable za odabir vrste slike na kojoj se prmjenjuje LBP
+        controller.rType.set(0)
+
+        rGray = tk.Radiobutton(picTypeFrame, text="Gray", variable=controller.rType, value=0)
+        rGray.pack(side="left", padx=20, pady=5)
+
+        rGradient = tk.Radiobutton(picTypeFrame, text="Gradient", variable=controller.rType, value=1)
+        rGradient.pack(side="right", padx=20, pady=5)
 
         # LBP parametri
-        labelLBP = tk.Label(self, text="LBP parameters")
+        labelLBP = tk.Label(parameterFrame, text="LBP parameters")
         labelLBP.pack(padx=10, pady=10)
 
-        frameLBP = tk.Frame(self)
+        frameLBP = tk.Frame(parameterFrame)
         frameLBP.pack()
 
         labelLBPRadius = tk.Label(frameLBP, text="LBP radius")
@@ -1457,10 +1524,10 @@ class ConfigurationsPage(tk.Frame):
         self.entryLBPRadius.pack(side="right", padx=10, pady=10)
 
         # frame s glcm parametrima
-        labelGLCM = tk.Label(self, text="GLCM parameters")
+        labelGLCM = tk.Label(parameterFrame, text="GLCM parameters")
         labelGLCM.pack()
 
-        frameGLCM = tk.Frame(self)
+        frameGLCM = tk.Frame(parameterFrame)
         frameGLCM.pack()
 
         labelGLCMDistance = tk.Label(frameGLCM, text="Distance")
@@ -1488,10 +1555,10 @@ class ConfigurationsPage(tk.Frame):
         self.entryAngles.grid(row=3, column=1, padx=10, pady=10)
 
         # parametri za klasifikator
-        labelClassifier = tk.Label(self, text="Classifier parameters")
+        labelClassifier = tk.Label(parameterFrame, text="Classifier parameters")
         labelClassifier.pack()
 
-        classifierFrame = tk.Frame(self)
+        classifierFrame = tk.Frame(parameterFrame)
         classifierFrame.pack()
 
         labelNumOfNeighbors = tk.Label(classifierFrame, text="Number of neighbors")
@@ -1526,7 +1593,7 @@ class ConfigurationsPage(tk.Frame):
 
         # frame s gumbima
         buttonFrame = tk.Frame(self)
-        buttonFrame.pack()
+        buttonFrame.grid(row=2, padx=10, pady=5, columnspan=2)
 
         buttonAdd = tk.Button(buttonFrame, text="Add", command=lambda: controller.addConf())
         buttonAdd.pack(side="left", padx=10, pady=10)
@@ -1770,6 +1837,33 @@ class GradientPage(tk.Frame):
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(side="left", expand=1, padx=10, pady=10)
+
+
+class CLP(tk.Frame):
+
+    def __init__(self, parent, controller):
+
+        tk.Frame.__init__(self, parent, bg="yellow")
+
+        parameterFrame = tk.Frame(self, bg="blue")
+        parameterFrame.pack(side="left")
+
+        controller.rType.set(0)
+
+        rGray = tk.Radiobutton(parameterFrame, text="Gray", variable=controller.rType, value=0)
+        rGray.pack(side="left")
+
+        rGradient = tk.Radiobutton(parameterFrame, text="Gradient", variable=controller.rType, value=1)
+        rGradient.pack(side="right")
+
+        functionFrame = tk.Frame(self, bg="red")
+        functionFrame.pack(side="right")
+
+        navigation = tk.Frame(self, bg="green")
+        navigation.pack(side="bottom")
+
+        buttonBack = tk.Button(navigation, text="Back", command=lambda: controller.show_frame(PageInitialization))
+        buttonBack.pack(padx=10, pady=10)
 
 
 if __name__ == "__main__":

@@ -1,20 +1,11 @@
-from os import listdir
-from os.path import isfile, join
 import os
 import cv2 as cv
-import random
 import shutil
 import math
-from skimage.feature import local_binary_pattern
 import numpy as np
 import LBPCM
 import tkinter as tk
-import threading
 import concurrent.futures
-
-lbpcm = None
-modell = None
-
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7
@@ -225,62 +216,72 @@ def classifyImage(filename, model, conf, console):
     # koraci u y smjeru
     stepY = imageY // y_size
 
-    subImages = []
+    # tuple podslike, lbpcm i modela
+    image_lbpcm_model = []
 
+    # stvaranje podslika i stavljanje u listu radi lakšeg dohvata svake pojedine podslike
     for y in range(stepY):
         for x in range(stepX):
             subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
-            subImages.append((subImage, lbpcm, model))
+            image_lbpcm_model.append((subImage, lbpcm, model))
 
-    labels = []
-
+    # pokretanje onoliko novih procesa koliko računalo procesora ima
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        for subImage, label in zip(subImages, executor.map(classify, subImages)):
+        for subImage, label in zip(image_lbpcm_model, executor.map(classify, image_lbpcm_model)):
+            # izlaz je labela pripadnosti pojedine podslike nekom od razreda gustoće
             labels.append(label)
 
-    print(labels)
-    # i = 0
-    # for y in range(stepY):
-    #     for x in range(stepX):
-    #
-    #         # početna i završna točka trenutnog bloka na slici
-    #         start_point = (x * x_size, y * y_size)
-    #         end_point = ((x + 1) * x_size, (y + 1) * y_size)
-    #
-    #         # trenutni blok slike za koji se stvara vektor značajki
-    #         subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
-    #         # vektor značajki trenutnog bloka
-    #         subImageFv = lbpcm.getFeatureVector(subImage)
-    #         # dodavanje labele u listu labela za koja je dobivena klasifikatorom
-    #         labels.append(int(model.predict([subImageFv])[0]))
-    #
-    #         # bojanje trenutnoh bloka slike ovisno o labeli koju je dobivena
-    #         if labels[i] == 0:
-    #             cv.rectangle(overlay, start_point, end_point, (127, 255, 0), -1)
-    #         elif labels[i] == 1:
-    #             cv.rectangle(overlay, start_point, end_point, (255, 255, 0), -1)
-    #         elif labels[i] == 2:
-    #             cv.rectangle(overlay, start_point, end_point, (255, 165, 0), -1)
-    #         elif labels[i] == 3:
-    #             cv.rectangle(overlay, start_point, end_point, (255, 69, 0), -1)
-    #         else:
-    #             cv.rectangle(overlay, start_point, end_point, (255, 0, 0), -1)
-    #
-    #         i += 1
-    #         console.insert(tk.END, "[INFO] " + str(i) + "/16 sub images processed\n")
-    #         console.see(tk.END)
+    i = 0
+    for y in range(stepY):
+        for x in range(stepX):
 
-    # # intenzitet boje kojoj je svaki blok obojan
-    # alpha = 0.5
-    # cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
-    # # reskaliranje slike koja se prikazuje u aplikaciji
-    # output = resizePercent(output, 60)
+            # početna i završna točka trenutnog bloka na slici
+            start_point = (x * x_size, y * y_size)
+            end_point = ((x + 1) * x_size, (y + 1) * y_size)
+
+            # # trenutni blok slike za koji se stvara vektor značajki
+            # subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
+            # # vektor značajki trenutnog bloka
+            # subImageFv = lbpcm.getFeatureVector(subImage)
+            # # dodavanje labele u listu labela za koja je dobivena klasifikatorom
+            # labels.append(int(model.predict([subImageFv])[0]))
+
+            # bojanje trenutnoh bloka slike ovisno o labeli koju je dobivena
+            if labels[i] == 0:
+                cv.rectangle(overlay, start_point, end_point, (127, 255, 0), -1)
+            elif labels[i] == 1:
+                cv.rectangle(overlay, start_point, end_point, (255, 255, 0), -1)
+            elif labels[i] == 2:
+                cv.rectangle(overlay, start_point, end_point, (255, 165, 0), -1)
+            elif labels[i] == 3:
+                cv.rectangle(overlay, start_point, end_point, (255, 69, 0), -1)
+            else:
+                cv.rectangle(overlay, start_point, end_point, (255, 0, 0), -1)
+
+            i += 1
+            console.insert(tk.END, "[INFO] " + str(i) + "/16 sub images processed\n")
+            console.see(tk.END)
+
+    # intenzitet boje kojoj je svaki blok obojan
+    alpha = 0.5
+    cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
+    # reskaliranje slike koja se prikazuje u aplikaciji
+    output = resizePercent(output, 60)
 
     return output
 
-def classify(subImage):
-    fv = subImage[1].getFeatureVector(subImage[0])
-    return int(subImage[2].predict([fv])[0])
+def classify(tuple):
+    """
+        Funkcija za klasifikaciju liste slika
+    :param subImage: lista slika koja se treba klasificirati
+    :return: oznaka pripadnosti razredu slike
+    """
+    subImage = tuple[0]
+    lbpcm = tuple[1]
+    model = tuple[2]
+
+    fv = lbpcm.getFeatureVector(subImage)
+    return int(model.predict([fv])[0])
 
 def shortAngles(angles):
     """ Funkcija za kraći zapis kutova kad ih treba prikazati u aplikaciji,
