@@ -24,11 +24,6 @@ from matplotlib.backends.backend_tkagg import (
 from matplotlib.backend_bases import key_press_handler, GraphicsContextBase
 from matplotlib.figure import Figure
 
-# boja obruba celije
-color = (255, 0, 0)
-# debljina crte putujuce celije
-thickness = 2
-
 
 # main class------------------------------
 class App(tk.Tk):
@@ -445,7 +440,7 @@ class App(tk.Tk):
         lbp = cv.cvtColor(lbp.astype('uint8') * 255, cv.COLOR_GRAY2RGB)
 
         # stvaranje kopije izvorne slike kako celija ne bi ostala u slici prilikom kretanja na sljedecu celiju
-        image_copy = cv.rectangle(np.copy(lbp), start_point, end_point, color, thickness)
+        image_copy = cv.rectangle(np.copy(lbp), start_point, end_point, (255, 0, 0), 2)
 
         # trenutno pamcenje slike da se ne izbrise
         self.LBPimg = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
@@ -665,11 +660,11 @@ class App(tk.Tk):
 
                 # stvaranje crta u horizontalnom smjeru
                 for x in range(stepX + 1):
-                    cv.line(image, (x * x_size, 0), (x * x_size, imageY), color, thickness)
+                    cv.line(image, (x * x_size, 0), (x * x_size, imageY), (255, 0, 0), 2)
 
                 # stvaranje crta u vertikalnom smjeru
                 for y in range(stepY + 1):
-                    cv.line(image, (0, y * y_size), (imageX, y * y_size), color, thickness)
+                    cv.line(image, (0, y * y_size), (imageX, y * y_size), (255, 0, 0), 2)
 
                 # ako je potrebno promijeniti velicinu slike
                 if image.shape[0] > 300:
@@ -717,7 +712,9 @@ class App(tk.Tk):
         self.frames[FeatureVectorCreation].labelStepSizeValue.configure(text=self.stepSize)
 
         # labela za napredak
-        self.frames[FeatureVectorCreation].labelProgress.configure(text="0/" + str(self.processedDataPictures.__len__()))
+        self.frames[FeatureVectorCreation].labelProgress.configure(text="0/" + str(self.processedDataPictures.__len__())
+                                                                        + "   Feature vectors completed.")
+        self.frames[FeatureVectorCreation].labelProgressConf.configure(text="0/0 Configurations completed.")
 
     def makeFeatureVectors(self):
         """ funkcija za stvaranje vektora znacajki
@@ -809,6 +806,10 @@ class App(tk.Tk):
         # pojedina konfiguracija
         conf = [radius, glcmDistance, stepSize, cellSize, angles, numOfNeighbors, combineDistances, combineAngles]
         self.configurations.append(conf)
+
+        # ažuriranje labele broja konfiguracija
+        self.frames[FeatureVectorCreation].labelProgressConf.configure(text="0/" + str(len(self.configurations))
+                                                                            + "   Configurations completed.")
 
         self.console.insert(tk.END, "new configuration added\n")
         self.console.insert(tk.END, str(conf) + "\n")
@@ -1424,15 +1425,26 @@ class FeatureVectorCreation(tk.Frame):
         frameProgress = tk.Frame(self)
         frameProgress.pack()
 
+        progressDescription = tk.Label(frameProgress, text="Progress")
+        progressDescription.grid(row=0, padx=10, pady=5)
+
+        # progressbar za broj završenih vektora značajki
         self.progressbarVector = Progressbar(frameProgress, orient=tk.HORIZONTAL, length=200, mode='determinate')
-        self.progressbarVector.pack(side="left", padx=10, pady=5)
+        self.progressbarVector.grid(row=1, column=0, padx=10, pady=5)
 
         self.labelProgress = tk.Label(frameProgress, text="")
-        self.labelProgress.pack(side="right", padx=10, pady=5)
+        self.labelProgress.grid(row=1, column=1, padx=10, pady=5, sticky="w")
 
-        # frame s gumbimaS
+        # progressbar za broj završenih konfiguracija
+        self.progressbarConf = Progressbar(frameProgress, orient=tk.HORIZONTAL, length=200, mode='determinate')
+        self.progressbarConf.grid(row=2, column=0, padx=10, pady=5)
+
+        self.labelProgressConf = tk.Label(frameProgress, text="")
+        self.labelProgressConf.grid(row=2, column=1, padx=10, pady=5, sticky="w")
+
+        # frame s gumbima
         buttonFrame = tk.Frame(self)
-        buttonFrame.pack()
+        buttonFrame.pack(pady=20, side="bottom")
 
         buttonSaveFV = tk.Button(buttonFrame, text="Save vectors", command=controller.saveVectorsToFile)
         buttonSaveFV.pack(side="left", padx=10, pady=5)

@@ -281,6 +281,7 @@ def classify(tuple):
     model = tuple[2]
 
     fv = lbpcm.getFeatureVector(subImage)
+
     return int(model.predict([fv])[0])
 
 def shortAngles(angles):
@@ -321,6 +322,22 @@ def makeColors(dim):
         rgb[:, :, 2] = colors[c][2]
         cv.imwrite(dir + "/" + str(c) + ".jpg", rgb)
 
+def pxory(k, glcm):
+
+    (num_level, num_level2, num_dist, num_angle) = glcm.shape
+
+    sum = np.zeros((num_dist, num_angle))
+
+    for d in range(num_dist):
+        for a in range(num_angle):
+            for i in range(1, num_level):
+                if k - i > 0:
+                    for j in range(k - i, num_level):
+                        sum[d][a] += glcm[i][j][d][a]
+                else:
+                    break
+    return sum
+
 def greycoprops(P, prop='contrast'):
     """
         Funkcija za izračunavanje Haralickovih funkcija
@@ -330,7 +347,11 @@ def greycoprops(P, prop='contrast'):
         f3 -> correlation +
         f4 -> sum of squares: variance
         f5 -> inverse difference moment - homogeneity +
-        f6 -> sum average
+        f6 -> sum average +
+        f7 -> sum variance
+        f8 -> sum entropy
+        f9 -> entropy
+        f10 -> difference variance
 
     :param P: glcm matrica
     :param prop: funkcija koju je potrebno izračunati
@@ -345,12 +366,13 @@ def greycoprops(P, prop='contrast'):
     if num_angle <= 0:
         raise ValueError('num_angle must be positive.')
 
-    # normalize each GLCM
+    # normalizacija glcm
     P = P.astype(np.float64)
     glcm_sums = np.apply_over_axes(np.sum, P, axes=(0, 1))
     glcm_sums[glcm_sums == 0] = 1
     P /= glcm_sums
 
+    # srednja vrijednost i varijanca
     mean = np.apply_over_axes(np.sum, P / num_level, axes=(0, 1))
     b = np.apply_over_axes(np.sum, (P - mean) ** 2, axes=(0, 1))
     sigma = np.sqrt(1 / (num_level - 1) * b)
@@ -363,7 +385,7 @@ def greycoprops(P, prop='contrast'):
         weights = 1. / (1. + (I - J) ** 2)
     elif prop == 'correlation':
         weights = I * J
-    elif prop in ['energy', 'entropy']:
+    elif prop in ['energy', 'entropy', 'sum average', 'sum variance', 'sum entropy']:
         pass
     else:
         raise ValueError('%s is an invalid property' % prop)
@@ -371,11 +393,34 @@ def greycoprops(P, prop='contrast'):
     # compute property for each GLCM
     if prop == 'energy':
         results = np.apply_over_axes(np.sum, (P ** 2), axes=(0, 1))[0, 0]
+
     elif prop == 'entropy':
-        results = np.apply_over_axes(np.sum, P, axes=(0, 1))[0, 0]
+        results = np.apply_over_axes(np.sum, -P * np.log10(P + 1e-12), axes=(0, 1))[0, 0]
+
     elif prop == 'correlation':
         weights = weights.reshape((num_level, num_level, 1, 1))
         results = np.apply_over_axes(np.sum, (P * weights - mean ** 2) / (sigma ** 2), axes=(0, 1))[0, 0]
+
+    elif prop == 'sum average':
+        summ = 0
+        for i in range(2, 2 * num_level):
+            summ += i * pxory(i, P)
+        results = summ
+
+    elif prop == 'sum variance':
+        f8 = greycoprops(P, prop='sum entropy')
+        summ = 0
+        for i in range(2, 2 * num_level):
+            summ += math.pow(i - f8, 2) * pxory(i, P)
+        results = summ
+
+    elif prop == 'sum entropy':
+        summ = 0
+        for i in range(2, 2 * num_level):
+            temp = pxory(i, P)
+            summ += temp * math.log10(temp + 1e-12)
+        results = -summ
+
     elif prop in ['contrast', 'homogeneity']:
         weights = weights.reshape((num_level, num_level, 1, 1))
         results = np.apply_over_axes(np.sum, (P * weights), axes=(0, 1))[0, 0]
