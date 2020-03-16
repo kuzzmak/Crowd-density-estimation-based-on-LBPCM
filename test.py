@@ -95,30 +95,30 @@ import numpy as np
 # print(b)
 
 import cv2 as cv
-from skimage.feature import greycomatrix
-from math import radians
-import math
-import util
+# from skimage.feature import greycomatrix
+# from math import radians
+# import math
+# import util
+# #
+# #
+# filename = r"/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData/21.jpg"
 #
+# image = cv.imread(filename, cv.IMREAD_GRAYSCALE)
 #
-filename = r"/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData/21.jpg"
-
-image = cv.imread(filename, cv.IMREAD_GRAYSCALE)
-
-cell = image[0:64, 0:64]
-
-distances = [1, 2]
-angles = [0, radians(90), radians(45)]
-
-# dimension = len(distances) * len(angles)
+# cell = image[0:64, 0:64]
 #
-# img, sobel, sobelx, sobely = util.gradientImage(filename)
-
-P = greycomatrix(cell.astype(int), distances, angles, levels=256)
-
-s_a = util.greycoprops(P, prop="sum average")
-
-print(s_a)
+# distances = [1, 2]
+# angles = [0, radians(90), radians(45)]
+#
+# # dimension = len(distances) * len(angles)
+# #
+# # img, sobel, sobelx, sobely = util.gradientImage(filename)
+#
+# P = greycomatrix(cell.astype(int), distances, angles, levels=256)
+#
+# s_a = util.greycoprops(P, prop="sum average")
+#
+# print(s_a)
 
 
 
@@ -246,19 +246,21 @@ import time
 #
 # print(list(zip(None, "hello", "pi")))
 
-# import matplotlib
-# matplotlib.rcParams['text.usetex'] = True
-# import matplotlib.pyplot as plt
-#
-#
-# t = np.linspace(0.0, 1.0, 100)
-# s = np.cos(4 * np.pi * t) + 2
-#
-# fig, ax = plt.subplots(figsize=(6, 4), tight_layout=True)
-# ax.plot(t, s)
-#
-# ax.set_xlabel(r'\textbf{time (s)}')
-# ax.set_ylabel('\\textit{Velocity (\N{DEGREE SIGN}/sec)}', fontsize=16)
-# ax.set_title(r'\TeX\ is Number $\displaystyle\sum_{n=1}^\infty'
-#              r'\frac{-e^{i\pi}}{2^n}$!', fontsize=16, color='r')
-# plt.show()
+import os
+os.environ["PATH"] += os.pathsep + '/usr/local/texlive/2019/bin/x86_64-linux'
+print(os.getenv("PATH"))
+
+import matplotlib
+matplotlib.rcParams['text.usetex'] = True
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize=(6, 4), tight_layout=True)
+ax.text(0, 0,r'\TeX\ is Number $\displaystyle\sum_{n=1}^\infty'
+             r'\frac{-e^{i\pi}}{2^n}$!', fontsize=16)
+ax.set_xticks([])
+ax.set_yticks([])
+fig.patch.set_visible(False)
+ax.patch.set_visible(False)
+ax.axis('off')
+
+plt.show()

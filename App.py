@@ -23,6 +23,7 @@ from matplotlib.backends.backend_tkagg import (
 # Implement the default Matplotlib key bindings.
 from matplotlib.backend_bases import key_press_handler, GraphicsContextBase
 from matplotlib.figure import Figure
+import FunctionDescriptions
 
 
 # main class------------------------------
@@ -149,7 +150,7 @@ class App(tk.Tk):
 
             frame.grid(row=0, sticky="nsew")
 
-        self.show_frame(PageInitialization)
+        self.show_frame(ConfigurationsPage)
 
     def show_frame(self, cont):
         """funkcija za prikaz odredjenog frame-a"""
@@ -1492,14 +1493,20 @@ class ConfigurationsPage(tk.Frame):
         picTypeFrame = tk.Frame(parameterFrame)
         picTypeFrame.pack()
 
-        functionsDescription = tk.Label(functionsFrame, text="Please select which functions\n to use in feature vector creation.")
+        functionsDescription = tk.Label(functionsFrame,
+                                        text="Please select which functions\n to use in feature vector creation.")
         functionsDescription.grid(row=0, padx=10, pady=10, sticky="w")
 
         # stvaranje checkbox gumba
         i = 1
         for name, c in controller.functionButtons:
-            tk.Checkbutton(functionsFrame, text=name, variable=c, command=controller.printButton).grid(row=i, pady="2", sticky="w")
+            tk.Checkbutton(functionsFrame, text=name, variable=c,
+                           command=controller.printButton).grid(row=i, pady="2", sticky="w")
             i += 1
+
+        functionDefinitions = tk.Button(functionsFrame, text="Function definitions",
+                                        command=lambda: FunctionDescriptions.FD(self))
+        functionDefinitions.grid(row=i, pady=2, sticky="we")
 
         # predpostavljena vrijednost varijable za odabir vrste slike na kojoj se prmjenjuje LBP
         controller.rType.set(0)
