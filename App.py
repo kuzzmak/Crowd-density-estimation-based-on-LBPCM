@@ -146,8 +146,7 @@ class App(tk.Tk):
                   FeatureVectorCreation,
                   ConfigurationsPage,
                   ClassificationPage,
-                  GradientPage,
-                  CLP):
+                  GradientPage):
 
             frame = F(container, self)
 
@@ -155,7 +154,7 @@ class App(tk.Tk):
 
             frame.grid(row=0, sticky="nsew")
 
-        self.show_frame(StartPage)
+        self.show_frame(PageInitialization)
 
     def show_frame(self, cont):
         """funkcija za prikaz odredjenog frame-a"""
@@ -1024,13 +1023,6 @@ class PageInitialization(tk.Frame):
                                               command=controller.selectProcessedDataFolder)
         buttonSelectProcessedData.pack(padx=5, pady=10, fill="x")
 
-        buttonSelectTraining = tk.Button(preprocessingFrame, text="Training Folder",
-                                         command=lambda: controller.selectFolder("train"))
-        buttonSelectTraining.pack(padx=5, pady=10, fill="x")
-
-        buttonSelectTest = tk.Button(preprocessingFrame, text="Test Folder", command=lambda: controller.selectFolder("test"))
-        buttonSelectTest.pack(padx=10, pady=10, fill="x")
-
         self.buttonDataAnnotation = tk.Button(preprocessingFrame, text="Data Annotation", state="disabled",
                                               command=lambda: [controller.show_frame(DataAnnotation),
                                                                controller.updateDataAnnotationFrame()])
@@ -1066,9 +1058,6 @@ class PageInitialization(tk.Frame):
                                          command=lambda: [controller.show_frame(ClassificationPage),
                                                           controller.loadColors()])
         buttonClassification.pack(padx=10, pady=10, fill="x")
-
-        buttonCLP = tk.Button(classificationFrame, text="CLP", command=lambda: controller.show_frame(CLP))
-        buttonCLP.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(StartPage))
         buttonBack.pack(padx=10, pady=10, fill="x")
@@ -1491,15 +1480,14 @@ class ConfigurationsPage(tk.Frame):
         picTypeFrame = tk.Frame(parameterFrame)
         picTypeFrame.pack()
 
-        i = 0
+        functionsDescription = tk.Label(functionsFrame, text="Please select which functions\n to use in feature vector creation.")
+        functionsDescription.grid(row=0, padx=10, pady=10, sticky="w")
+
+        # stvaranje checkbox gumba
+        i = 1
         for name, c in controller.functionButtons:
             tk.Checkbutton(functionsFrame, text=name, variable=c, command=controller.printButton).grid(row=i, pady="2", sticky="w")
             i += 1
-        # c1 = tk.Checkbutton(functionsFrame, text="f1", variable=controller.f1, height=5, width=20)
-        # c1.pack()
-
-        # c1 = tk.Checkbutton(functionsFrame, text="f2", variable=controller.f2, height=5, width=20)
-        # c1.pack()
 
         # predpostavljena vrijednost varijable za odabir vrste slike na kojoj se prmjenjuje LBP
         controller.rType.set(0)
@@ -1837,33 +1825,6 @@ class GradientPage(tk.Frame):
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(PageInitialization))
         buttonBack.pack(side="left", expand=1, padx=10, pady=10)
-
-
-class CLP(tk.Frame):
-
-    def __init__(self, parent, controller):
-
-        tk.Frame.__init__(self, parent, bg="yellow")
-
-        parameterFrame = tk.Frame(self, bg="blue")
-        parameterFrame.pack(side="left")
-
-        controller.rType.set(0)
-
-        rGray = tk.Radiobutton(parameterFrame, text="Gray", variable=controller.rType, value=0)
-        rGray.pack(side="left")
-
-        rGradient = tk.Radiobutton(parameterFrame, text="Gradient", variable=controller.rType, value=1)
-        rGradient.pack(side="right")
-
-        functionFrame = tk.Frame(self, bg="red")
-        functionFrame.pack(side="right")
-
-        navigation = tk.Frame(self, bg="green")
-        navigation.pack(side="bottom")
-
-        buttonBack = tk.Button(navigation, text="Back", command=lambda: controller.show_frame(PageInitialization))
-        buttonBack.pack(padx=10, pady=10)
 
 
 if __name__ == "__main__":
