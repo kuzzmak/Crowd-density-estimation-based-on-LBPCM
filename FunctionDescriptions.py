@@ -10,7 +10,7 @@ matplotlib.rcParams['text.usetex'] = True
 import matplotlib.pyplot as plt
 
 figsize = (10, 3)
-fontsize = 12
+fontsize = 14
 
 class FD:
 
@@ -52,7 +52,9 @@ class FD:
 
         f1 = r'Angular second momentum: $f_1 = \sum_{i} \sum_{j} p(i,j)^2$'
 
-        functionNotation = [f1]
+        f2 = r'Contrast: \\$f_2 = \displaystyle \sum_{n=0}^{N_g-1}n^2\{\sum_{i=1}^{N_g} \sum_{j=1}^{N_g} p(i,j)\}$'
+
+        functionNotation = [f2, f1]
 
         figf1, axf1 = plt.subplots(figsize=figsize)
         figf1.patch.set_visible(False)
@@ -63,7 +65,7 @@ class FD:
 
         i = 0
         for f in functionNotation:
-            axf1.text(0, i * 0.15, f, fontsize=fontsize)
+            axf1.text(0, i * 0.2, f, fontsize=fontsize)
             i += 1
 
 
