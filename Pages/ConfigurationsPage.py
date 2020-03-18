@@ -35,9 +35,8 @@ class ConfigurationsPage(tk.Frame):
 
         # stvaranje checkbox gumba
         i = 1
-        for name, c in controller.functionButtons:
-            tk.Checkbutton(functionsFrame, text=name, variable=c,
-                           command=controller.printButton).grid(row=i, pady="2", sticky="w")
+        for name, fName, c in controller.functionButtons:
+            tk.Checkbutton(functionsFrame, text=name + " - " + fName, variable=c).grid(row=i, pady="2", sticky="w")
             i += 1
 
         functionDefinitions = tk.Button(functionsFrame, text="Function definitions",
@@ -150,3 +149,10 @@ class ConfigurationsPage(tk.Frame):
         buttonBack = tk.Button(buttonFrame, text="Back",
                                command=lambda: controller.show_frame(fvcP.FeatureVectorCreationPage))
         buttonBack.pack(side="left", padx=10, pady=10)
+
+        self.entryLBPRadius.insert(tk.END, "1")
+        self.entryGLCMDistance.insert(tk.END, "1,2")
+        self.entryStepSize.insert(tk.END, "32")
+        self.entryCellSize.insert(tk.END, "64,64")
+        self.entryAngles.insert(tk.END, "0,45,90")
+        self.entryNumOfNeighbors.insert(tk.END, "1")

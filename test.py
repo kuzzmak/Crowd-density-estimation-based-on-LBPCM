@@ -1,4 +1,4 @@
-import numpy as np
+# import numpy as np
 # import cv2 as cv
 # from matplotlib import pyplot as plt
 # from skimage.feature import local_binary_pattern
@@ -132,7 +132,7 @@ import cv2 as cv
 #
 # print(glcm)
 
-import time
+# import time
 #
 # start = time.time()
 # sums_x = []
@@ -246,21 +246,25 @@ import time
 #
 # print(list(zip(None, "hello", "pi")))
 
-import os
-os.environ["PATH"] += os.pathsep + '/usr/local/texlive/2019/bin/x86_64-linux'
-print(os.getenv("PATH"))
+# import os
+# os.environ["PATH"] += os.pathsep + '/usr/local/texlive/2019/bin/x86_64-linux'
+# print(os.getenv("PATH"))
+#
+# import matplotlib
+# matplotlib.rcParams['text.usetex'] = True
+# import matplotlib.pyplot as plt
+#
+# fig, ax = plt.subplots(figsize=(6, 4), tight_layout=True)
+# ax.text(0, 0,r'\TeX\ is Number $\displaystyle\sum_{n=1}^\infty'
+#              r'\frac{-e^{i\pi}}{2^n}$!', fontsize=16)
+# ax.set_xticks([])
+# ax.set_yticks([])
+# fig.patch.set_visible(False)
+# ax.patch.set_visible(False)
+# ax.axis('off')
+#
+# plt.show()
 
-import matplotlib
-matplotlib.rcParams['text.usetex'] = True
-import matplotlib.pyplot as plt
 
-fig, ax = plt.subplots(figsize=(6, 4), tight_layout=True)
-ax.text(0, 0,r'\TeX\ is Number $\displaystyle\sum_{n=1}^\infty'
-             r'\frac{-e^{i\pi}}{2^n}$!', fontsize=16)
-ax.set_xticks([])
-ax.set_yticks([])
-fig.patch.set_visible(False)
-ax.patch.set_visible(False)
-ax.axis('off')
 
-plt.show()
+

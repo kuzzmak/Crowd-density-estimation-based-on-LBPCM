@@ -1,0 +1,136 @@
+{
+    "models": [
+        {
+            "id": 1,
+            "image_type": "gray",
+            "lbp_radius": 1,
+            "distances": [
+                1,
+                2
+            ],
+            "step_size": 32,
+            "cell_size": [
+                64,
+                64
+            ],
+            "angles": [
+                0.0,
+                0.7853981633974483,
+                1.5707963267948966
+            ],
+            "num_of_neighbors": 1,
+            "combine_distances": 0,
+            "combine_angles": 0,
+            "functions": [
+                "f1",
+                "f2",
+                "f3",
+                "f4",
+                "f5"
+            ]
+        },
+        {
+            "id": 2,
+            "image_type": "gray",
+            "lbp_radius": 1,
+            "distances": [
+                1,
+                2
+            ],
+            "step_size": 32,
+            "cell_size": [
+                64,
+                64
+            ],
+            "angles": [
+                0.0,
+                0.7853981633974483,
+                1.5707963267948966
+            ],
+            "num_of_neighbors": 1,
+            "combine_distances": 0,
+            "combine_angles": 0,
+            "functions": [
+                "f1",
+                "f2",
+                "f3"
+            ]
+        },
+        {
+            "id": 3,
+            "image_type": "gray",
+            "lbp_radius": 1,
+            "distances": [
+                1,
+                2
+            ],
+            "step_size": 32,
+            "cell_size": [
+                64,
+                64
+            ],
+            "angles": [
+                0.0,
+                0.7853981633974483,
+                1.5707963267948966
+            ],
+            "num_of_neighbors": 1,
+            "combine_distances": 0,
+            "combine_angles": 0,
+            "functions": [
+                "f5"
+            ]
+        },
+        {
+            "id": 4,
+            "image_type": "gray",
+            "lbp_radius": 1,
+            "distances": [
+                1,
+                2
+            ],
+            "step_size": 32,
+            "cell_size": [
+                64,
+                64
+            ],
+            "angles": [
+                0.0,
+                0.7853981633974483,
+                1.5707963267948966
+            ],
+            "num_of_neighbors": 1,
+            "combine_distances": 0,
+            "combine_angles": 0,
+            "functions": [
+                "f5"
+            ]
+        },
+        {
+            "id": 5,
+            "image_type": "gray",
+            "lbp_radius": 1,
+            "distances": [
+                1,
+                2
+            ],
+            "step_size": 32,
+            "cell_size": [
+                64,
+                64
+            ],
+            "angles": [
+                0.0,
+                0.7853981633974483,
+                1.5707963267948966
+            ],
+            "num_of_neighbors": 1,
+            "combine_distances": 0,
+            "combine_angles": 0,
+            "functions": [
+                "f4",
+                "f5"
+            ]
+        }
+    ]
+}

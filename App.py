@@ -138,9 +138,10 @@ class App(tk.Tk):
                  "imoc1",
                  "imoc2",
                  "maximal correlation coefficient"]
+
         for c in range(14):
-            name = "f" + str(c + 1) + " - " + names[c]
-            self.functionButtons.append((name, tk.IntVar()))
+            name = "f" + str(c + 1)
+            self.functionButtons.append((name, names[c], tk.IntVar()))
 
         for F in (pP.PreprocessPage,
                   sP.StartPage,
@@ -796,80 +797,147 @@ class App(tk.Tk):
             for fv in self.lbpcm.getFeatureVectors():
                 pickle.dump(fv, fp)
 
-        self.console.insert("[INFO] feature vectors saved" + "\n")
+        self.console.insert(tk.END, "[INFO] feature vectors saved" + "\n")
+        self.console.insert(tk.END, "----------------------------------------\n")
+        self.console.see(tk.END)
+
+    def consolePrint(self, message):
+        self.console.insert(tk.END, message + "\n")
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
     def addConf(self):
 
+        writer = Writer.Writer()
+        # writer.appendToJSON(conf)
+
+        print(writer.loadConfFromJSON(2))
+
+        parametersOK = True
+
+        # dohvat vrste slike nad kojom se provodi postupak LBP
+        picType = self.rType.get()
+        if picType == 0:
+            picType = "gray"
+        else:
+            picType = "grad"
+
         # dohvat parametara za konfiguraciju
-        radius = int(self.frames[coP.ConfigurationsPage].entryLBPRadius.get())
-        glcmDistance = [int(x) for x in self.frames[coP.ConfigurationsPage].entryGLCMDistance.get().split(",")]
-        stepSize = int(self.frames[coP.ConfigurationsPage].entryStepSize.get())
-        cellSize = [int(x) for x in self.frames[coP.ConfigurationsPage].entryCellSize.get().split(",")]
-        angles = [radians(int(i)) for i in self.frames[coP.ConfigurationsPage].entryAngles.get().split(",")]
-        numOfNeighbors = int(self.frames[coP.ConfigurationsPage].entryNumOfNeighbors.get())
+        try:
+            radius = int(self.frames[coP.ConfigurationsPage].entryLBPRadius.get())
+            if radius < 1:
+                raise ValueError
+        except ValueError:
+            parametersOK = False
+            self.consolePrint("[ERROR] please check your input for radius")
+
+        try:
+            glcmDistance = [int(x) for x in self.frames[coP.ConfigurationsPage].entryGLCMDistance.get().split(",")]
+            for d in glcmDistance:
+                if d < 1:
+
+                    raise ValueError
+        except ValueError:
+            parametersOK = False
+            self.consolePrint("[ERROR] please check your input for glcm distance")
+
+        try:
+            stepSize = int(self.frames[coP.ConfigurationsPage].entryStepSize.get())
+        except ValueError:
+            parametersOK = False
+            self.consolePrint("[ERROR] please check your input for step size")
+
+        try:
+            cellSize = [int(x) for x in self.frames[coP.ConfigurationsPage].entryCellSize.get().split(",")]
+            if len(cellSize) != 2:
+                raise ValueError
+            for c in cellSize:
+                if c < 1:
+                    raise ValueError
+        except ValueError:
+            parametersOK = False
+            self.consolePrint("[ERROR] please check your input for cell size")
+
+        try:
+            angles = [radians(int(i)) for i in self.frames[coP.ConfigurationsPage].entryAngles.get().split(",")]
+        except ValueError:
+            parametersOK = False
+            self.consolePrint("[ERROR] please check your input for angles")
+
+        try:
+            numOfNeighbors = int(self.frames[coP.ConfigurationsPage].entryNumOfNeighbors.get())
+            if numOfNeighbors < 1:
+                raise ValueError
+        except ValueError:
+            parametersOK = False
+            self.consolePrint("[ERROR] please check your input for number of neighbors")
+
         combineDistances = int(self.rbDistances.get())
         combineAngles = int(self.rbAngles.get())
 
+        functions = []
 
-        # pojedina konfiguracija
-        conf = [radius, glcmDistance, stepSize, cellSize, angles, numOfNeighbors, combineDistances, combineAngles]
-        self.configurations.append(conf)
+        for name, _, c in self.functionButtons:
+            if c.get():
+                functions.append(name)
 
-        # ažuriranje labele broja konfiguracija
-        self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/" + str(len(self.configurations))
-                                                                            + "   Configurations completed.")
+        if len(functions) == 0:
+            parametersOK = False
+            self.consolePrint("[INFO] please select one or more Haralick functions")
 
-        self.console.insert(tk.END, "new configuration added\n")
-        self.console.insert(tk.END, str(conf) + "\n")
-        self.console.see(tk.END)
+        if parametersOK:
+            # pojedina konfiguracija
+            conf = [picType, radius, glcmDistance, stepSize, cellSize, angles, numOfNeighbors, combineDistances, combineAngles, functions]
+            print(conf)
+
+            self.configurations.append(conf)
+
+            # ažuriranje labele broja konfiguracija
+            self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/" + str(len(self.configurations))
+                                                                                + "   Configurations completed.")
+
+            self.console.insert(tk.END, "new configuration added\n")
+            self.console.insert(tk.END, str(conf) + "\n")
+            self.console.see(tk.END)
 
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
         :return:
         """
 
-        radius = conf[0]
-        glcmDistance = conf[1]
-        stepSize = conf[2]
-        cellSize = conf[3]
-        angles = conf[4]
-        numOfNeighbors = conf[5]
-        combineDistances = conf[6]
-        combineAngles = conf[7]
+        picType, radius, glcmDist, stepSize, cellSize, angles, numOfNeighbors, combineDistances, combineAngles, functions = conf
 
-        lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combineDistances, combineAngles)
-        lbpcm.calculateFeatureVectors(self.pathToProcessedData, self.console, None, None)
-
-        fv = lbpcm.getFeatureVectors()
-
-        X_train = fv[:round(0.7 * fv.__len__())]
-        X_test = fv[round(0.7 * fv.__len__()):]
-
-        Y = []
-        for i in self.labelDictionary.values():
-            Y.append(int(i))
-
-        Y_train = Y[:round(0.7 * fv.__len__())]
-        Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
-
-        self.console.insert(tk.END, "[INFO] fitting started\n")
-        self.console.see(tk.END)
-
-        kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
-        kneighbors.fit(X_train, Y_train)
-
-        error = util.calculateError(kneighbors, X_test, Y_test)
-
-        saveString = str(conf) + "--error: " + str(error)
-
-        self.writer.saveDirectory = r"data/normalData"
-        self.writer.saveResults(saveString)
-        self.writer.saveModel(kneighbors, conf)
-
-        self.console.insert(tk.END, "[INFO] configuration completed\n")
-        self.console.see(tk.END)
+        # lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combineDistances, combineAngles)
+        # lbpcm.calculateFeatureVectors(self.pathToProcessedData, self.console, None, None)
+        #
+        # fv = lbpcm.getFeatureVectors() #TODO normalizirati vektore nakon izračuna
+        #
+        # X_train = fv[:round(0.7 * fv.__len__())]
+        # X_test = fv[round(0.7 * fv.__len__()):]
+        #
+        # Y = []
+        # for i in self.labelDictionary.values():
+        #     Y.append(int(i))
+        #
+        # Y_train = Y[:round(0.7 * fv.__len__())]
+        # Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
+        #
+        # self.console.insert(tk.END, "[INFO] fitting started\n")
+        # self.console.see(tk.END)
+        #
+        # kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
+        # kneighbors.fit(X_train, Y_train)
+        #
+        # error = util.calculateError(kneighbors, X_test, Y_test)
+        #
+        # saveString = str(conf) + "--error: " + str(error)
+        #
+        # self.writer.saveDirectory = r"data/normalData"
+        # self.writer.saveResults(saveString)
+        # self.writer.saveModel(kneighbors, conf)
+        #
+        # self.console.insert(tk.END, "[INFO] configuration completed\n")
+        # self.console.see(tk.END)
 
     def runConfigurations(self):
         """ Funkcija za pokretanje pojedine unesene konfiguracije
@@ -877,7 +945,8 @@ class App(tk.Tk):
         """
         for conf in self.configurations:
 
-            threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
+            self.runConf(conf)
+            # threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
 
     def showClassifiedImage(self):
 
@@ -967,11 +1036,6 @@ class App(tk.Tk):
             self.console.insert(tk.END, "[WARNING] no image was selected\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
-
-    def printButton(self):
-        for name, c in self.functionButtons:
-            if c.get():
-                print(name)
 
 
 if __name__ == "__main__":

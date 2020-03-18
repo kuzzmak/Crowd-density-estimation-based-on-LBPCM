@@ -1,6 +1,7 @@
 import os
 from sklearn.externals import joblib
 from tkinter import filedialog
+import json
 
 
 class Writer:
@@ -10,6 +11,7 @@ class Writer:
         self.labelDictionary = {}
         self.saveDirectory = saveDirectory
         self.modelPath = r"data/models/"
+        self.modelJSON = r'data/models_v2/models.json'
         self.model = []
         self.modelString = ""
 
@@ -145,6 +147,71 @@ class Writer:
         conf.append(combineAngles)
 
         return conf
+
+    def findModel(self, json_object, id):
+        try:
+            return [obj for obj in json_object["models"] if obj['id'] == id][0]
+        except IndexError:
+            print("Json file empty or there is no model with given index: " + str(id))
+
+    def appendToJSON(self, conf):
+
+        picType, \
+        lbpRadius, \
+        glcmDistances, \
+        stepSize, \
+        cellSize, \
+        angles, \
+        numberOfNeighbors, \
+        combineDistances, \
+        combineAngles, \
+        functions = conf
+
+        with open(self.modelJSON) as json_file:
+
+            data = json.load(json_file)
+
+            temp = data['models']
+
+            y = {
+                "id": len(temp) + 1,
+                "image_type": picType,
+                "lbp_radius": lbpRadius,
+                "distances": glcmDistances,
+                "step_size": stepSize,
+                "cell_size": cellSize,
+                "angles": angles,
+                "num_of_neighbors": numberOfNeighbors,
+                "combine_distances": combineDistances,
+                "combine_angles": combineAngles,
+                "functions": functions
+            }
+
+            temp.append(y)
+
+        with open(self.modelJSON, 'w') as f:
+            json.dump(data, f, indent=4)
+
+    def loadConfFromJSON(self, id):
+
+        with open(self.modelJSON) as f:
+
+            data = json.load(f)
+
+            temp = self.findModel(data, id)
+
+            conf = []
+            conf.append(temp['image_type'])
+            conf.append(temp['lbp_radius'])
+            conf.append(temp['distances'])
+            conf.append(temp['step_size'])
+            conf.append(temp['cell_size'])
+            conf.append(temp['angles'])
+            conf.append(temp['num_of_neighbors'])
+            conf.append(temp['combine_distances'])
+            conf.append(temp['combine_angles'])
+            conf.append(temp['functions'])
+
 
 
 
