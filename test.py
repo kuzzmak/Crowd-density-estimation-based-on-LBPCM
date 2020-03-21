@@ -1,14 +1,55 @@
-# import numpy as np
-# import cv2 as cv
-# from matplotlib import pyplot as plt
-# from skimage.feature import local_binary_pattern
+import numpy as np
+import cv2 as cv
+from skimage.feature import greycomatrix
+import math
+import util
+
+
+image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
+
+
+glcm = greycomatrix(image.astype(int), [1], [0], levels=4)
+(num_level, num_level2, num_dist, num_angle) = glcm.shape
+
+
+print("izgled glcm, dst = 0")
+print(glcm[:, :, 0, 0])
 #
-# imagePath = r"/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData/21.jpg"
+# p_x = np.apply_over_axes(np.sum, glcm, axes=1)
+# p_y = np.apply_over_axes(np.sum, glcm, axes=0)
 #
-# # imagePath = r"/home/tonkec/Desktop/220px-Lenna_(test_image).png"
+# mean_x = p_x / num_level
+# mean_y = p_y / num_level
+
+
+def pxory(mat, k, num_level):
+    _sum = 0
+
+    if k <= num_level + 1:
+        for i in range(k - 1):
+            _sum += mat[k - i - 2][i]
+    else:
+        for i in range(2 * num_level - k + 1):
+            _sum += mat[num_level - 1 - i][k - num_level - 1 + i]
+
+    return _sum
+
+
+print(pxory(glcm[:, :, 0, 0], 5, 4))
+
+# print(p_x)
+# print(mean_x)
 #
-# img = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
-#
+# print("angular second moment:")
+# print(util.greycoprops(glcm, prop='angular second moment', normalize=False))
+# print("contrast")
+# print(util.greycoprops(glcm, prop='contrast', normalize=False))
+
+
+
+
+
+
 # sobelx = cv.Sobel(img, cv.CV_16S, 1, 0, ksize=3)
 # sobely = cv.Sobel(img, cv.CV_16S, 0, 1, ksize=3)
 #
@@ -244,3 +285,12 @@ import cv2 as cv
 # a = [1, 2 , 3, 4]
 # b = [2]
 
+# import numpy as np
+# X = np.array([[-1, -1], [-2, -2], [1, 1], [2, 1]])
+# y = np.array([1, 2, 2, 2])
+#
+# from sklearn.svm import SVC
+#
+# clf = SVC(gamma='auto')
+# clf.fit(X, y)
+# print(clf.predict([[3, 1]]))
