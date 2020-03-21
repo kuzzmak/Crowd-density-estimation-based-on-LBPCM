@@ -338,11 +338,11 @@ def pxory(k, glcm):
                     break
     return sum
 
-def greycoprops(P, prop='contrast'):
+def greycoprops(P, prop='contrast', normalize=True):
     """
         Funkcija za izračunavanje Haralickovih funkcija
 
-        f1 -> energy +
+        f1 -> angular second moment +
         f2 -> contrast +
         f3 -> correlation +
         f4 -> sum of squares: variance
@@ -367,10 +367,11 @@ def greycoprops(P, prop='contrast'):
         raise ValueError('num_angle must be positive.')
 
     # normalizacija glcm
-    P = P.astype(np.float64)
-    glcm_sums = np.apply_over_axes(np.sum, P, axes=(0, 1))
-    glcm_sums[glcm_sums == 0] = 1
-    P /= glcm_sums
+    if normalize:
+        P = P.astype(np.float64)
+        glcm_sums = np.apply_over_axes(np.sum, P, axes=(0, 1))
+        glcm_sums[glcm_sums == 0] = 1
+        P /= glcm_sums
 
     # srednja vrijednost i varijanca
     mean = np.apply_over_axes(np.sum, P / num_level, axes=(0, 1))
@@ -385,13 +386,13 @@ def greycoprops(P, prop='contrast'):
         weights = 1. / (1. + (I - J) ** 2)
     elif prop == 'correlation':
         weights = I * J
-    elif prop in ['energy', 'entropy', 'sum average', 'sum variance', 'sum entropy']:
+    elif prop in ['angular second moment', 'entropy', 'sum average', 'sum variance', 'sum entropy']:
         pass
     else:
         raise ValueError('%s is an invalid property' % prop)
 
     # compute property for each GLCM
-    if prop == 'energy':
+    if prop == 'angular second moment':
         results = np.apply_over_axes(np.sum, (P ** 2), axes=(0, 1))[0, 0]
 
     elif prop == 'entropy':
@@ -403,7 +404,7 @@ def greycoprops(P, prop='contrast'):
 
     elif prop == 'sum average':
         summ = 0
-        for i in range(2, 2 * num_level):
+        for i in range(2, 2 * num_level + 1, 1):
             summ += i * pxory(i, P)
         results = summ
 

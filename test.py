@@ -5,16 +5,16 @@ import math
 import util
 
 
-image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
+# image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
+image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
+
+glcm = greycomatrix(image.astype(int), [1, 2], [0, math.pi], levels=256)
+# (num_level, num_level2, num_dist, num_angle) = glcm.shape
 
 
-glcm = greycomatrix(image.astype(int), [1], [0], levels=4)
-(num_level, num_level2, num_dist, num_angle) = glcm.shape
+# print("izgled glcm, dst = 0")
+# print(glcm[:, :, 0, 0])
 
-
-print("izgled glcm, dst = 0")
-print(glcm[:, :, 0, 0])
-#
 # p_x = np.apply_over_axes(np.sum, glcm, axes=1)
 # p_y = np.apply_over_axes(np.sum, glcm, axes=0)
 #
@@ -22,20 +22,71 @@ print(glcm[:, :, 0, 0])
 # mean_y = p_y / num_level
 
 
-def pxory(mat, k, num_level):
-    _sum = 0
+def pxory(glcm, k):
+    """
+        Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
+        pojedinih Haralickovih funkcija.
 
+    :param glcm: matrica u kojoj se zbrajaju elementi
+    :param k: dijagonala + 1 na kojoj se zbrajaju elementi
+    :return: zbroj elemenata na dijagonali
+    """
+
+    (num_level, num_level2, num_dist, num_angle) = glcm.shape
+    _sum = np.zeros((num_dist, num_angle))
+
+    # zbrajanje elemenata na dijagonali prvog trokuta matrice
     if k <= num_level + 1:
         for i in range(k - 1):
-            _sum += mat[k - i - 2][i]
+            for d in range(num_dist):
+                for a in range(num_angle):
+                    _sum[d][a] += glcm[k - i - 2][i][d][a]
     else:
-        for i in range(2 * num_level - k + 1):
-            _sum += mat[num_level - 1 - i][k - num_level - 1 + i]
+        # drugi trokut matrice
+        for d in range(num_dist):
+            for a in range(num_angle):
+                for i in range(2 * num_level - k + 1):
+                    _sum[d][a] += glcm[num_level - 1 - i][k - num_level - 1 + i][d][a]
 
     return _sum
 
 
-print(pxory(glcm[:, :, 0, 0], 5, 4))
+
+
+
+# print("glcm d:0, a:0")
+# print(glcm[:, :, 0, 0])
+# print("glcm d:0, a:1")
+# print(glcm[:, :, 0, 1])
+# print("glcm d:1, a:0")
+# print(glcm[:, :, 1, 0])
+# print("glcm d:1, a:1")
+# print(glcm[:, :, 1, 1])
+
+# print(pxory(glcm, 2))
+
+def sum_average(glcm):
+    (num_level, num_level2, num_dist, num_angle) = glcm.shape
+    _sum = np.zeros((num_dist, num_angle))
+    for i in range(2, 2 * num_level + 1, 1):
+        _sum += pxory(glcm, i)
+    return _sum
+
+import time
+
+start = time.time()
+sum_average(glcm)
+end = time.time()
+print(end-start)
+print()
+
+start = time.time()
+util.greycoprops(glcm, prop='sum average', normalize=False)
+end = time.time()
+print(end-start)
+
+
+
 
 # print(p_x)
 # print(mean_x)
