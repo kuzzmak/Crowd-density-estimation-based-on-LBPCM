@@ -5,6 +5,8 @@ class HaralickFeatures:
     def __init__(self, glcm, normalize=True):
 
         self.setGLCM(glcm, normalize)
+        # rječnik sa prethodno izračunatim vrijednostima funkcije
+        self.pxminyDict = {}
 
     def setGLCM(self, glcm, normalize):
 
@@ -65,16 +67,15 @@ class HaralickFeatures:
 
         assert 0 <= k < self.num_level, "k must be < " + str(self.num_level) + " and >= 0"
 
-        _sum = np.sum(self.glcm.diagonal(), axis=2)
+        if len(self.pxminyDict) == 0:
+            self.pxminyDict[0] = np.sum(self.glcm.diagonal(), axis=2)
 
-        if k == 0:
-            return _sum
+        _sum = np.array(self.pxminyDict[len(self.pxminyDict) - 1])
 
-        for d in range(self.num_dist):
-            for a in range(self.num_angle):
-                for _k in range(1, k + 1, 1):
-
-                    for i in range(self.num_level):
+        for _k in range(len(self.pxminyDict), k + 1, 1):
+            for i in range(self.num_level):
+                for d in range(self.num_dist):
+                    for a in range(self.num_angle):
                         j1 = i + _k
                         j2 = i - _k
 
@@ -82,6 +83,8 @@ class HaralickFeatures:
                             _sum[d][a] += self.glcm[i, j1, d, a]
                         if j2 >= 0:
                             _sum[d][a] += self.glcm[i, j2, d, a]
+
+            self.pxminyDict[_k] = _sum
         return _sum
 
     def greycoprops(self, prop='contrast'):
@@ -98,6 +101,7 @@ class HaralickFeatures:
             f8 -> sum entropy +
             f9 -> entropy +
             f10 -> difference variance
+            f11 -> difference entropy
 
         :param prop: funkcija koju je potrebno izračunati
         :return: vrijednost funkcije koja se izračunava
@@ -111,7 +115,13 @@ class HaralickFeatures:
             weights = 1. / (1. + (I - J) ** 2)
         elif prop == 'correlation':
             weights = I * J
-        elif prop in ['angular second moment', 'entropy', 'sum average', 'sum variance', 'sum entropy']:
+        elif prop in ['angular second moment',
+                      'entropy',
+                      'sum average',
+                      'sum variance',
+                      'sum entropy',
+                      'difference variance',
+                      'difference entropy']:
             pass
         else:
             raise ValueError('%s is an invalid property' % prop)
@@ -160,6 +170,16 @@ class HaralickFeatures:
             _sum = np.zeros((self.num_dist, self.num_angle))
             for i in range(2, 2 * self.num_level + 1, 1):
                 temp = self.pxory(i)
+                _sum += temp * np.log(temp + 1e-12)
+            results = -_sum
+
+        elif prop == 'difference variance':
+            pass
+
+        elif prop == 'difference entropy':
+            _sum = np.zeros((self.num_dist, self.num_angle))
+            for i in range(self.num_level):
+                temp = self.pxminy(i)
                 _sum += temp * np.log(temp + 1e-12)
             results = -_sum
 

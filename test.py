@@ -4,51 +4,27 @@ from skimage.feature import greycomatrix
 import math
 import util
 
+from Haralick import HaralickFeatures as hf
 
-image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
-# image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
-glcm = greycomatrix(image.astype(int), [1, 2], [0, np.pi], levels=4)
-(num_level, num_level2, num_dist, num_angle) = glcm.shape
+# image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
+image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
+glcm = greycomatrix(image.astype(int), [1, 2], [0, np.pi], levels=256)
 
-def pxminy(k):
-    """
-        Funkcija koja pripomaže izračunu pojedinih Haralickovih funkcija.
-        Zbrajaju se brojevi na dijagonalama ovisno o parametru k.
-        Za k=0 je to je sporedna dijagonala, za k!=0 to su koncentrične dijagonale oko sporedne
-        uključujuću prethodnu iteraciju naredbe.
-    :param k:
-    :return:
-    """
-
-    assert 0 <= k < num_level, "k must be < " + str(num_level) + " and >= 0"
-
-    _sum = np.sum(glcm.diagonal(), axis=2)
-
-    if k == 0:
-        return _sum
-
-    for d in range(num_dist):
-        for a in range(num_angle):
-            for _k in range(1, k + 1, 1):
-
-                for i in range(num_level):
-                    j1 = i + _k
-                    j2 = i - _k
-
-                    if j1 < num_level:
-                        _sum[d][a] += glcm[i, j1, d, a]
-                    if j2 >= 0:
-                        _sum[d][a] += glcm[i, j2, d, a]
-    return _sum
-
-import time
-start = time.time()
-print(pxminy(3))
-end = time.time()
-print(end-start)
+# print("glcm")
+# print(glcm[:, :, 0, 0])
+hFeatures = hf(glcm)
+# # hFeatures.greycoprops(prop='difference entropy')
+# hFeatures.pxminy(0)
+# hFeatures.pxminy(1)
+# print("dict")
+# print(hFeatures.pxminyDict)
 
 # import time
-# from Haralick import HaralickFeatures as hf
+# start = time.time()
+# end = time.time()
+# print(end-start)
+
+import time
 #
 # # funkcijski model
 #
@@ -64,10 +40,12 @@ print(end-start)
 # print("funkcijski model")
 # print(end-start)
 #
-# # objektni model
-#
-# start = time.time()
-# hFeatures = hf(glcm)
+# objektni model
+
+start = time.time()
+
+
+
 #
 #
 # prop1 = hFeatures.greycoprops(prop='sum average')
@@ -77,9 +55,10 @@ print(end-start)
 # prop5 = hFeatures.greycoprops(prop='sum variance')
 # prop6 = hFeatures.greycoprops(prop='sum entropy')
 # prop7 = hFeatures.greycoprops(prop='entropy')
-# end = time.time()
+print(hFeatures.greycoprops(prop='difference entropy'))
+end = time.time()
 # print("objektni model")
-# print(end-start)
+print(end-start)
 
 
 
