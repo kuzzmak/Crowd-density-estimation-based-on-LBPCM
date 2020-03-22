@@ -429,17 +429,18 @@ def greycoprops(P, prop='contrast', normalize=True):
 
     elif prop == 'sum variance':
         f8 = greycoprops(P, prop='sum entropy')
-        summ = 0
-        for i in range(2, 2 * num_level):
-            summ += math.pow(i - f8, 2) * pxory(i, P)
-        results = summ
+        _sum = np.zeros((num_dist, num_angle))
+
+        for i in range(2, 2 * num_level + 1, 1):
+            _sum += (i - f8) ** 2 * pxory(P, i)
+        results = _sum
 
     elif prop == 'sum entropy':
-        summ = 0
-        for i in range(2, 2 * num_level):
-            temp = pxory(i, P)
-            summ += temp * math.log10(temp + 1e-12)
-        results = -summ
+        _sum = np.zeros((num_dist, num_angle))
+        for i in range(2, 2 * num_level + 1, 1):
+            temp = pxory(P, i)
+            _sum += temp * np.log(temp + 1e-12)
+        results = -_sum
 
     elif prop in ['contrast', 'homogeneity']:
         weights = weights.reshape((num_level, num_level, 1, 1))

@@ -26,18 +26,6 @@ class HaralickFeatures:
             glcm_sums[glcm_sums == 0] = 1
             self.glcm /= glcm_sums
 
-        self.p_x = np.apply_over_axes(np.sum, glcm, axes=1)
-        self.p_y = np.apply_over_axes(np.sum, glcm, axes=0)
-
-        self.mean_x = np.sum(self.p_x, axis=(0, 1)) / self.num_level
-        self.mean_y = np.sum(self.p_y, axis=(0, 1)) / self.num_level
-
-        temp_x = np.apply_over_axes(np.sum, (self.glcm - self.mean_x) ** 2, axes=(0, 1))
-        temp_y = np.apply_over_axes(np.sum, (self.glcm - self.mean_y) ** 2, axes=(0, 1))
-
-        self.sigma_x = np.sqrt(1 / (self.num_level - 1) * temp_x)[0, 0]
-        self.sigma_y = np.sqrt(1 / (self.num_level - 1) * temp_y)[0, 0]
-
     def pxory(self, k):
         """
             Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
@@ -65,16 +53,51 @@ class HaralickFeatures:
 
         return _sum
 
+    def pxminy(self, k):
+        """
+            Funkcija koja pripomaže izračunu pojedinih Haralickovih funkcija.
+            Zbrajaju se brojevi na dijagonalama ovisno o parametru k.
+            Za k=0 je to je sporedna dijagonala, za k!=0 to su koncentrične dijagonale oko sporedne
+            uključujuću prethodnu iteraciju naredbe.
+        :param k:
+        :return:
+        """
+
+        assert 0 <= k < self.num_level, "k must be < " + str(self.num_level) + " and >= 0"
+
+        _sum = np.sum(self.glcm.diagonal(), axis=2)
+
+        if k == 0:
+            return _sum
+
+        for d in range(self.num_dist):
+            for a in range(self.num_angle):
+                for _k in range(1, k + 1, 1):
+
+                    for i in range(self.num_level):
+                        j1 = i + _k
+                        j2 = i - _k
+
+                        if j1 < self.num_level:
+                            _sum[d][a] += self.glcm[i, j1, d, a]
+                        if j2 >= 0:
+                            _sum[d][a] += self.glcm[i, j2, d, a]
+        return _sum
+
     def greycoprops(self, prop='contrast'):
         """
             Funkcija za izračunavanje Haralickovih funkcija
 
-            f1 -> energy +
+            f1 -> angular second moment +
             f2 -> contrast +
-            f3 -> correlation
+            f3 -> correlation +
             f4 -> sum of squares: variance
-            f5 -> inverse difference moment
-            f6 -> sum average
+            f5 -> inverse difference moment +
+            f6 -> sum average +
+            f7 -> sum variance +
+            f8 -> sum entropy +
+            f9 -> entropy +
+            f10 -> difference variance
 
         :param prop: funkcija koju je potrebno izračunati
         :return: vrijednost funkcije koja se izračunava
@@ -84,7 +107,7 @@ class HaralickFeatures:
         I, J = np.ogrid[0:self.num_level, 0:self.num_level]
         if prop == 'contrast':
             weights = (I - J) ** 2
-        elif prop == 'homogeneity':
+        elif prop == 'inverse difference moment':
             weights = 1. / (1. + (I - J) ** 2)
         elif prop == 'correlation':
             weights = I * J
@@ -101,12 +124,23 @@ class HaralickFeatures:
             results = np.apply_over_axes(np.sum, -self.glcm * np.log10(self.glcm + 1e-12), axes=(0, 1))[0, 0]
 
         elif prop == 'correlation':
+
+            self.p_x = np.apply_over_axes(np.sum, self.glcm, axes=1)
+            self.p_y = np.apply_over_axes(np.sum, self.glcm, axes=0)
+
+            mean_x = np.sum(self.p_x, axis=(0, 1)) / self.num_level
+            mean_y = np.sum(self.p_y, axis=(0, 1)) / self.num_level
+
+            temp_x = np.apply_over_axes(np.sum, (self.glcm - mean_x) ** 2, axes=(0, 1))
+            temp_y = np.apply_over_axes(np.sum, (self.glcm - mean_y) ** 2, axes=(0, 1))
+
+            sigma_x = np.sqrt(1 / (self.num_level - 1) * temp_x)[0, 0]
+            sigma_y = np.sqrt(1 / (self.num_level - 1) * temp_y)[0, 0]
+
             weights = weights.reshape((self.num_level, self.num_level, 1, 1))
             results = np.apply_over_axes(np.sum, self.glcm * weights, axes=(0, 1))[0, 0]
-
-            results -= self.mean_x * self.mean_y
-
-            results /= np.divide(results, self.sigma_x * self.sigma_y)
+            results -= mean_x * mean_y
+            results /= np.divide(results, sigma_x * sigma_y)
 
         elif prop == 'sum average':
             _sum = np.zeros((self.num_dist, self.num_angle))
@@ -114,21 +148,22 @@ class HaralickFeatures:
                 _sum += i * self.pxory(i)
             results = _sum
 
-        # elif prop == 'sum variance':
-        #     f8 = greycoprops(P, prop='sum entropy')
-        #     summ = 0
-        #     for i in range(2, 2 * num_level):
-        #         summ += math.pow(i - f8, 2) * pxory(i, P)
-        #     results = summ
-        #
-        # elif prop == 'sum entropy':
-        #     summ = 0
-        #     for i in range(2, 2 * num_level):
-        #         temp = pxory(i, P)
-        #         summ += temp * math.log10(temp + 1e-12)
-        #     results = -summ
+        elif prop == 'sum variance':
+            f8 = self.greycoprops(prop='sum entropy')
+            _sum = np.zeros((self.num_dist, self.num_angle))
 
-        elif prop in ['contrast', 'homogeneity']:
+            for i in range(2, 2 * self.num_level + 1, 1):
+                _sum += (i - f8) ** 2 * self.pxory(i)
+            results = _sum
+
+        elif prop == 'sum entropy':
+            _sum = np.zeros((self.num_dist, self.num_angle))
+            for i in range(2, 2 * self.num_level + 1, 1):
+                temp = self.pxory(i)
+                _sum += temp * np.log(temp + 1e-12)
+            results = -_sum
+
+        elif prop in ['contrast', 'inverse difference moment']:
             weights = weights.reshape((self.num_level, self.num_level, 1, 1))
             results = np.apply_over_axes(np.sum, (self.glcm * weights), axes=(0, 1))[0, 0]
 
