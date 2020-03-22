@@ -7,94 +7,38 @@ import util
 
 # image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
 image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
-
 glcm = greycomatrix(image.astype(int), [1, 2], [0, math.pi], levels=256)
-# (num_level, num_level2, num_dist, num_angle) = glcm.shape
-
-
-# print("izgled glcm, dst = 0")
-# print(glcm[:, :, 0, 0])
-
-# p_x = np.apply_over_axes(np.sum, glcm, axes=1)
-# p_y = np.apply_over_axes(np.sum, glcm, axes=0)
-#
-# mean_x = p_x / num_level
-# mean_y = p_y / num_level
-
-
-def pxory(glcm, k):
-    """
-        Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
-        pojedinih Haralickovih funkcija.
-
-    :param glcm: matrica u kojoj se zbrajaju elementi
-    :param k: dijagonala + 1 na kojoj se zbrajaju elementi
-    :return: zbroj elemenata na dijagonali
-    """
-
-    (num_level, num_level2, num_dist, num_angle) = glcm.shape
-    _sum = np.zeros((num_dist, num_angle))
-
-    # zbrajanje elemenata na dijagonali prvog trokuta matrice
-    if k <= num_level + 1:
-        for i in range(k - 1):
-            for d in range(num_dist):
-                for a in range(num_angle):
-                    _sum[d][a] += glcm[k - i - 2][i][d][a]
-    else:
-        # drugi trokut matrice
-        for d in range(num_dist):
-            for a in range(num_angle):
-                for i in range(2 * num_level - k + 1):
-                    _sum[d][a] += glcm[num_level - 1 - i][k - num_level - 1 + i][d][a]
-
-    return _sum
 
 
 
-
-
-# print("glcm d:0, a:0")
-# print(glcm[:, :, 0, 0])
-# print("glcm d:0, a:1")
-# print(glcm[:, :, 0, 1])
-# print("glcm d:1, a:0")
-# print(glcm[:, :, 1, 0])
-# print("glcm d:1, a:1")
-# print(glcm[:, :, 1, 1])
-
-# print(pxory(glcm, 2))
-
-def sum_average(glcm):
-    (num_level, num_level2, num_dist, num_angle) = glcm.shape
-    _sum = np.zeros((num_dist, num_angle))
-    for i in range(2, 2 * num_level + 1, 1):
-        _sum += pxory(glcm, i)
-    return _sum
 
 import time
+from Haralick import HaralickFeatures as hf
+
+# objektni model
 
 start = time.time()
-sum_average(glcm)
+hFeatures = hf(glcm)
+
+prop1 = hFeatures.greycoprops(prop='sum average')
+prop2 = hFeatures.greycoprops(prop='entropy')
+prop3 = hFeatures.greycoprops(prop='angular second moment')
+print(hFeatures.greycoprops(prop='correlation'))
 end = time.time()
+print("objektni model")
 print(end-start)
-print()
+
+# funkcijski model
 
 start = time.time()
-util.greycoprops(glcm, prop='sum average', normalize=False)
+prop1 = util.greycoprops(glcm, prop='sum average')
+prop2 = util.greycoprops(glcm, prop='entropy')
+prop3 = util.greycoprops(glcm, prop='angular second moment')
+print(util.greycoprops(glcm, prop='correlation'))
 end = time.time()
+print("funkcijski model")
 print(end-start)
 
-
-
-
-# print(p_x)
-# print(mean_x)
-#
-# print("angular second moment:")
-# print(util.greycoprops(glcm, prop='angular second moment', normalize=False))
-# print("contrast")
-# print(util.greycoprops(glcm, prop='contrast', normalize=False))
 
 
 

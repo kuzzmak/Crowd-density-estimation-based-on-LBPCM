@@ -322,21 +322,33 @@ def makeColors(dim):
         rgb[:, :, 2] = colors[c][2]
         cv.imwrite(dir + "/" + str(c) + ".jpg", rgb)
 
-def pxory(k, glcm):
+def pxory(glcm, k):
+    """
+        Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
+        pojedinih Haralickovih funkcija.
+
+    :param glcm: matrica u kojoj se zbrajaju elementi
+    :param k: dijagonala + 1 na kojoj se zbrajaju elementi
+    :return: zbroj elemenata na dijagonali
+    """
 
     (num_level, num_level2, num_dist, num_angle) = glcm.shape
+    _sum = np.zeros((num_dist, num_angle))
 
-    sum = np.zeros((num_dist, num_angle))
+    # zbrajanje elemenata na dijagonali prvog trokuta matrice
+    if k <= num_level + 1:
+        for i in range(k - 1):
+            for d in range(num_dist):
+                for a in range(num_angle):
+                    _sum[d][a] += glcm[k - i - 2][i][d][a]
+    else:
+        # drugi trokut matrice
+        for d in range(num_dist):
+            for a in range(num_angle):
+                for i in range(2 * num_level - k + 1):
+                    _sum[d][a] += glcm[num_level - 1 - i][k - num_level - 1 + i][d][a]
 
-    for d in range(num_dist):
-        for a in range(num_angle):
-            for i in range(1, num_level):
-                if k - i > 0:
-                    for j in range(k - i, num_level):
-                        sum[d][a] += glcm[i][j][d][a]
-                else:
-                    break
-    return sum
+    return _sum
 
 def greycoprops(P, prop='contrast', normalize=True):
     """
@@ -373,10 +385,17 @@ def greycoprops(P, prop='contrast', normalize=True):
         glcm_sums[glcm_sums == 0] = 1
         P /= glcm_sums
 
-    # srednja vrijednost i varijanca
-    mean = np.apply_over_axes(np.sum, P / num_level, axes=(0, 1))
-    b = np.apply_over_axes(np.sum, (P - mean) ** 2, axes=(0, 1))
-    sigma = np.sqrt(1 / (num_level - 1) * b)
+    p_x = np.apply_over_axes(np.sum, P, axes=1)
+    p_y = np.apply_over_axes(np.sum, P, axes=0)
+
+    mean_x = p_x / num_level
+    mean_y = p_y / num_level
+
+    temp_x = np.apply_over_axes(np.sum, (P - mean_x) ** 2, axes=(0, 1))
+    temp_y = np.apply_over_axes(np.sum, (P - mean_y) ** 2, axes=(0, 1))
+
+    sigma_x = np.sqrt(1 / (num_level - 1) * temp_x)
+    sigma_y = np.sqrt(1 / (num_level - 1) * temp_y)
 
     # create weights for specified property
     I, J = np.ogrid[0:num_level, 0:num_level]
@@ -400,13 +419,13 @@ def greycoprops(P, prop='contrast', normalize=True):
 
     elif prop == 'correlation':
         weights = weights.reshape((num_level, num_level, 1, 1))
-        results = np.apply_over_axes(np.sum, (P * weights - mean ** 2) / (sigma ** 2), axes=(0, 1))[0, 0]
+        results = np.apply_over_axes(np.sum, (P * weights - mean_x * mean_y) / (sigma_x * sigma_y), axes=(0, 1))[0, 0]
 
     elif prop == 'sum average':
-        summ = 0
+        _sum = np.zeros((num_dist, num_angle))
         for i in range(2, 2 * num_level + 1, 1):
-            summ += i * pxory(i, P)
-        results = summ
+            _sum += i * pxory(P, i)
+        results = _sum
 
     elif prop == 'sum variance':
         f8 = greycoprops(P, prop='sum entropy')
