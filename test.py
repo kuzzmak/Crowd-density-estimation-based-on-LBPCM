@@ -8,20 +8,32 @@ from Haralick import HaralickFeatures as hf
 
 image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
 # image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
-glcm = greycomatrix(image.astype(int), [1], [0], levels=4)
+glcm = greycomatrix(image.astype(int), [1, 2], [0, np.pi], levels=4)
 
-
+# glcm = glcm.astype(np.float64)
+# glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))
+# glcm_sums[glcm_sums == 0] = 1
+# glcm /= glcm_sums
 
 def Q(i, j):
-
-
+    #TODO napraviti nešto s dijeljenjem sa 0
+    # dodati assert
     row_i = glcm[i, :, :, :]
-    print(row_i)
+    row_j = glcm[j, :, :, :]
+    i_y = row_i * row_j
 
-    return
+    p_x = np.apply_over_axes(np.sum, glcm, axes=1)
+    p_y = np.apply_over_axes(np.sum, glcm, axes=0)
+
+    p_x_y = (p_x[i] * p_y)
+    p_x_y[p_x_y == 0] = 1
+
+    return np.apply_over_axes(np.sum, i_y / p_x_y, axes=(0, 1))
 
 
-Q(1, 0)
+# print(glcm[:, :, 0, 0])
+# print(glcm[:, :, 1, 0])
+print(Q(0, 1))
 
 # glcm = glcm.astype(np.float64)
 # glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))

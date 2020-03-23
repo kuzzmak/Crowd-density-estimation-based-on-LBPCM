@@ -87,6 +87,22 @@ class HaralickFeatures:
             self.pxminyDict[_k] = _sum
         return _sum
 
+    def Q(self, i, j):
+
+        assert 0 <= i < self.num_level and 0 <= i < self.num_level, "i and j must be in range of glcm levels"
+
+        row_i = self.glcm[i, :, :, :]
+        row_j = self.glcm[j, :, :, :]
+        i_y = row_i * row_j
+
+        p_x = np.apply_over_axes(np.sum, self.glcm, axes=1)
+        p_y = np.apply_over_axes(np.sum, self.glcm, axes=0)
+
+        p_x_y = (p_x[i] * p_y)
+        p_x_y[p_x_y == 0] = 1
+
+        return np.apply_over_axes(np.sum, i_y / p_x_y, axes=(0, 1))
+
     def greycoprops(self, prop='contrast'):
         """
             Funkcija za izračunavanje Haralickovih funkcija
