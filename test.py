@@ -6,13 +6,52 @@ import util
 
 from Haralick import HaralickFeatures as hf
 
-# image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
-image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
-glcm = greycomatrix(image.astype(int), [1, 2], [0, np.pi], levels=256)
+image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
+# image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
+glcm = greycomatrix(image.astype(int), [1], [0], levels=4)
 
-# print("glcm")
-# print(glcm[:, :, 0, 0])
-hFeatures = hf(glcm)
+
+
+def Q(i, j):
+
+
+    row_i = glcm[i, :, :, :]
+    print(row_i)
+
+    return
+
+
+Q(1, 0)
+
+# glcm = glcm.astype(np.float64)
+# glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))
+# glcm_sums[glcm_sums == 0] = 1
+# glcm /= glcm_sums
+
+# import time
+# start = time.time()
+#
+# p_x = np.apply_over_axes(np.sum, glcm, axes=1)
+# p_y = np.apply_over_axes(np.sum, glcm, axes=0)
+# HXY = -np.sum(glcm * np.log(glcm + 1e-12), axis=(0, 1))
+# p_x_y = p_x * p_y
+# HXY1 = -np.sum(glcm * np.log(p_x_y + 1e-12), axis=(0, 1))
+# HXY2 = -np.sum(p_x_y * np.log(p_x_y + 1e-12), axis=(0, 1))
+# HX = -np.sum(p_x * np.log(p_x + 1e-12), axis=(0, 1))
+# HY = -np.sum(p_y * np.log(p_y + 1e-12), axis=(0, 1))
+# results = (HXY - HXY1) / np.maximum(HX, HY)
+#
+# results2 = np.sqrt(1 - np.exp(-2 * (HXY2 - HXY)))
+
+# print(results)
+# end = time.time()
+# print(end-start)
+# p_x_y = p_x * p_y
+# print("prod")
+# print(-np.sum(glcm * np.log(p_x_y), axis=(0,1)))
+
+
+# hFeatures = hf(glcm)
 # # hFeatures.greycoprops(prop='difference entropy')
 # hFeatures.pxminy(0)
 # hFeatures.pxminy(1)
@@ -24,7 +63,7 @@ hFeatures = hf(glcm)
 # end = time.time()
 # print(end-start)
 
-import time
+# import time
 #
 # # funkcijski model
 #
@@ -42,7 +81,7 @@ import time
 #
 # objektni model
 
-start = time.time()
+# start = time.time()
 
 
 
@@ -55,10 +94,10 @@ start = time.time()
 # prop5 = hFeatures.greycoprops(prop='sum variance')
 # prop6 = hFeatures.greycoprops(prop='sum entropy')
 # prop7 = hFeatures.greycoprops(prop='entropy')
-print(hFeatures.greycoprops(prop='difference entropy'))
-end = time.time()
+# print(hFeatures.greycoprops(prop='difference entropy'))
+# end = time.time()
 # print("objektni model")
-print(end-start)
+# print(end-start)
 
 
 

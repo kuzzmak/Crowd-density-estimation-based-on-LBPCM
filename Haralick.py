@@ -101,7 +101,7 @@ class HaralickFeatures:
             f8 -> sum entropy +
             f9 -> entropy +
             f10 -> difference variance
-            f11 -> difference entropy
+            f11 -> difference entropy +
 
         :param prop: funkcija koju je potrebno izračunati
         :return: vrijednost funkcije koja se izračunava
@@ -135,11 +135,11 @@ class HaralickFeatures:
 
         elif prop == 'correlation':
 
-            self.p_x = np.apply_over_axes(np.sum, self.glcm, axes=1)
-            self.p_y = np.apply_over_axes(np.sum, self.glcm, axes=0)
+            p_x = np.apply_over_axes(np.sum, self.glcm, axes=1)
+            p_y = np.apply_over_axes(np.sum, self.glcm, axes=0)
 
-            mean_x = np.sum(self.p_x, axis=(0, 1)) / self.num_level
-            mean_y = np.sum(self.p_y, axis=(0, 1)) / self.num_level
+            mean_x = np.sum(p_x, axis=(0, 1)) / self.num_level
+            mean_y = np.sum(p_y, axis=(0, 1)) / self.num_level
 
             temp_x = np.apply_over_axes(np.sum, (self.glcm - mean_x) ** 2, axes=(0, 1))
             temp_y = np.apply_over_axes(np.sum, (self.glcm - mean_y) ** 2, axes=(0, 1))
@@ -182,6 +182,21 @@ class HaralickFeatures:
                 temp = self.pxminy(i)
                 _sum += temp * np.log(temp + 1e-12)
             results = -_sum
+
+        elif prop == 'imc1' or prop == 'imc2': # information measures of correlation
+            p_x = np.apply_over_axes(np.sum, self.glcm, axes=1)
+            p_y = np.apply_over_axes(np.sum, self.glcm, axes=0)
+            HXY = self.greycoprops(prop='entropy')
+            p_x_y = p_x * p_y
+            HXY1 = -np.sum(self.glcm * np.log(p_x_y + 1e-12), axis=(0, 1))
+            HXY2 = -np.sum(p_x_y * np.log(p_x_y + 1e-12), axis=(0, 1))
+            HX = -np.sum(p_x * np.log(p_x + 1e-12), axis=(0, 1))
+            HY = -np.sum(p_y * np.log(p_y + 1e-12), axis=(0, 1))
+
+            if prop == 'imc1':
+                results = (HXY - HXY1) / np.maximum(HX, HY)
+            else:
+                results = np.sqrt(1 - np.exp(-2 * (HXY2 - HXY)))
 
         elif prop in ['contrast', 'inverse difference moment']:
             weights = weights.reshape((self.num_level, self.num_level, 1, 1))
