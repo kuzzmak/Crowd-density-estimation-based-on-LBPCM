@@ -1,5 +1,4 @@
 import tkinter as tk
-import threading
 from tkinter.ttk import Progressbar
 import Pages.ConfigurationsPage as coP
 import Pages.InitializationPage as iP
@@ -103,20 +102,12 @@ class FeatureVectorCreationPage(tk.Frame):
         buttonFrame = tk.Frame(self)
         buttonFrame.pack(pady=20, side="bottom")
 
-        buttonSaveFV = tk.Button(buttonFrame, text="Save vectors", command=controller.saveVectorsToFile)
-        buttonSaveFV.pack(side="left", padx=10, pady=5)
-
         buttonAddConfigurations = tk.Button(buttonFrame, text="Add configurations",
                                             command=lambda: controller.show_frame(coP.ConfigurationsPage))
         buttonAddConfigurations.pack(side="left", padx=10, pady=5)
 
         buttonLoadAnnotedData = tk.Button(buttonFrame, text="Load labels", command=controller.loadLabels)
         buttonLoadAnnotedData.pack(side="left", padx=10, pady=5)
-
-        buttonMakeVectors = tk.Button(buttonFrame, text="Make vectors",
-                                      command=lambda: [threading.Thread(
-                                          target=controller.makeFeatureVectors, daemon=True).start()])
-        buttonMakeVectors.pack(side="left", padx=10, pady=5)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(side="left", padx=10, pady=5)

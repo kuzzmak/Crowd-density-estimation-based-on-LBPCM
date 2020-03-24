@@ -460,10 +460,6 @@ def gradientImage(imagePath):
     sobelx = cv.Sobel(img, -1, 1, 0, ksize=3)
     sobely = cv.Sobel(img, -1, 0, 1, ksize=3)
 
-    sobel = sobelx ** 2 + sobely ** 2
-
-    sobel = np.sqrt(sobel)
-
-    # sobel = cv.Sobel(img, cv.CV_64F, 1, 1, ksize=5)
+    sobel = cv.Sobel(img, cv.CV_8U, 1, 1, ksize=3)
 
     return img, sobel, sobelx, sobely

@@ -1,39 +1,67 @@
+import LBPCM
 import numpy as np
-import cv2 as cv
-from skimage.feature import greycomatrix
-import math
-import util
+lbpcm = LBPCM.LBPCM('grad',
+                            1,
+                            32,
+                            [64, 64],
+                            [0, np.pi],
+                            [1, 2],
+                            ['angular second moment', 'contrast', 'correlation'],
+                            0,
+                            0)
 
-from Haralick import HaralickFeatures as hf
+lbpcm.calculateFeatureVectors(r'/home/tonkec/Desktop/fo', None, None, None)
 
-image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
-# image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
-glcm = greycomatrix(image.astype(int), [1, 2], [0, np.pi], levels=4)
+fv = lbpcm.getFeatureVectors()
 
-# glcm = glcm.astype(np.float64)
-# glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))
-# glcm_sums[glcm_sums == 0] = 1
-# glcm /= glcm_sums
-
-def Q(i, j):
-    #TODO napraviti nešto s dijeljenjem sa 0
-    # dodati assert
-    row_i = glcm[i, :, :, :]
-    row_j = glcm[j, :, :, :]
-    i_y = row_i * row_j
-
-    p_x = np.apply_over_axes(np.sum, glcm, axes=1)
-    p_y = np.apply_over_axes(np.sum, glcm, axes=0)
-
-    p_x_y = (p_x[i] * p_y)
-    p_x_y[p_x_y == 0] = 1
-
-    return np.apply_over_axes(np.sum, i_y / p_x_y, axes=(0, 1))
+for f in fv:
+    print(f)
 
 
-# print(glcm[:, :, 0, 0])
-# print(glcm[:, :, 1, 0])
-print(Q(0, 1))
+
+
+
+
+
+
+
+
+# import numpy as np
+# import cv2 as cv
+# from skimage.feature import greycomatrix
+# import math
+# import util
+#
+# from Haralick import HaralickFeatures as hf
+#
+# image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
+# # image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
+# glcm = greycomatrix(image.astype(int), [1, 2], [0, np.pi], levels=4)
+#
+# # glcm = glcm.astype(np.float64)
+# # glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))
+# # glcm_sums[glcm_sums == 0] = 1
+# # glcm /= glcm_sums
+#
+# def Q(i, j):
+#     #TODO napraviti nešto s dijeljenjem sa 0
+#     # dodati assert
+#     row_i = glcm[i, :, :, :]
+#     row_j = glcm[j, :, :, :]
+#     i_y = row_i * row_j
+#
+#     p_x = np.apply_over_axes(np.sum, glcm, axes=1)
+#     p_y = np.apply_over_axes(np.sum, glcm, axes=0)
+#
+#     p_x_y = (p_x[i] * p_y)
+#     p_x_y[p_x_y == 0] = 1
+#
+#     return np.apply_over_axes(np.sum, i_y / p_x_y, axes=(0, 1))
+#
+#
+# # print(glcm[:, :, 0, 0])
+# # print(glcm[:, :, 1, 0])
+# print(Q(0, 1))
 
 # glcm = glcm.astype(np.float64)
 # glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))
@@ -113,8 +141,9 @@ print(Q(0, 1))
 
 
 
-
-
+# from skimage.feature import local_binary_pattern
+#
+# img = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
 # sobelx = cv.Sobel(img, cv.CV_16S, 1, 0, ksize=3)
 # sobely = cv.Sobel(img, cv.CV_16S, 0, 1, ksize=3)
 #
@@ -125,10 +154,9 @@ print(Q(0, 1))
 #
 # sobel = cv.Sobel(img, cv.CV_8U, 1, 1, ksize=3)
 #
+#
 # lbp = local_binary_pattern(sobel1, 8, 1, method='default')
-# print(np.amin(lbp))
-# print(np.amax(lbp))
-# print(lbp)
+# print(sobel)
 # cv.imshow("pic", lbp.astype('uint8'))
 # cv.waitKey(0)
 

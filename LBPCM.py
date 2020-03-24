@@ -7,9 +7,12 @@ import numpy as np
 import Haralick
 import tkinter as tk
 
+
 class LBPCM:
 
-    def __init__(self, radius, stepSize, windowSize, angles, glcmDistance, combineDistances=0, combineAngles=0):
+    def __init__(self, picType, radius, stepSize, windowSize, angles, glcmDistance, functions, combineDistances=0, combineAngles=0):
+        # vrsta slike na kojoj se radi LBP
+        self.picType = picType
         # udaljenost centralnog piksela
         self.radius = radius
         # velicina pomaka udesno ili dolje
@@ -22,6 +25,8 @@ class LBPCM:
         self.angles = angles
         # udaljenosti za koje se racuna matrica
         self.glcmDistance = glcmDistance
+        # Haralickove funkcije koje se izračunavaju za pojedinu konfiguraciju
+        self.functions = functions
         # kombiniraju li se matrice za sve udaljenosti u jednu ili ne
         self.combineDistances = combineDistances
         # kombiniraju li se matrice za kutove ili ne
@@ -30,81 +35,72 @@ class LBPCM:
         self.featureVectors = []
 
     # funkcija za stvaranje LBP-a odredjene slike
-    def getLBP(self, im_gray):
-        return local_binary_pattern(im_gray, self.no_points, self.radius, method='default')
+    def getLBP(self, img):
+        return local_binary_pattern(img, self.no_points, self.radius, method='default')
 
     # funkcija za dohvat liste vektora znacajki
     def getFeatureVectors(self):
         return self.featureVectors
 
-    def getFeatureVector(self, im_gray):
+    def getFeatureVector(self, img):
 
-        # # vektor znacajki
         featureVector = []
         # stvaranje vektora znacajki za svaku celiju slikovnog elementa
-        for im in util.sliding_window(self.getLBP(im_gray), self.stepSize, self.windowSize):
-            # gray level co-occurence matrix
+        for im in util.sliding_window(self.getLBP(img), self.stepSize, self.windowSize):
+
             glcm = self.getGLCM(im)
 
-            energy = util.greycoprops(glcm, 'energy')
-            contrast = util.greycoprops(glcm, 'contrast')
-            homogeneity = util.greycoprops(glcm, 'homogeneity')
-            entropy = util.greycoprops(glcm, 'entropy')
+            hf = Haralick.HaralickFeatures(glcm)
 
-            if self.combineDistances:
-                energy = np.sum(energy, axis=0)
-                contrast = np.sum(contrast, axis=0)
-                homogeneity = np.sum(homogeneity, axis=0)
-                entropy = np.sum(entropy, axis=0)
+            for f in self.functions:
+                temp = hf.greycoprops(prop=f)
+                for t in temp:
+                    featureVector.extend(list(t))
 
-            if self.combineAngles:
-                energy = np.sum(energy, axis=1)
-                contrast = np.sum(contrast, axis=1)
-                homogeneity = np.sum(homogeneity, axis=1)
-                entropy = np.sum(entropy, axis=1)
+            # energy = []
+            # contrast = []
+            # homogeneity = []
+            # entropy = []
+            #
+            # if self.combineDistances:
+            #     energy = np.sum(energy, axis=0)
+            #     contrast = np.sum(contrast, axis=0)
+            #     homogeneity = np.sum(homogeneity, axis=0)
+            #     entropy = np.sum(entropy, axis=0)
+            #
+            # if self.combineAngles:
+            #     energy = np.sum(energy, axis=1)
+            #     contrast = np.sum(contrast, axis=1)
+            #     homogeneity = np.sum(homogeneity, axis=1)
+            #     entropy = np.sum(entropy, axis=1)
+            #
+            # if self.combineDistances == 0 and self.combineAngles == 0:
+            #
+            #     for i in energy:
+            #         featureVector.extend(i)
+            #     for i in contrast:
+            #         featureVector.extend(i)
+            #     for i in homogeneity:
+            #         featureVector.extend(i)
+            #     for i in entropy:
+            #         featureVector.extend(i)
 
-            if self.combineDistances == 0 and self.combineAngles == 0:
-
-                for i in energy:
-                    featureVector.extend(i)
-                for i in contrast:
-                    featureVector.extend(i)
-                for i in homogeneity:
-                    featureVector.extend(i)
-                for i in entropy:
-                    featureVector.extend(i)
-
-            else:
-                featureVector.extend(entropy)
-                featureVector.extend(contrast)
-                featureVector.extend(homogeneity)
-                featureVector.extend(entropy)
+            # featureVector.extend(entropy)
+            # featureVector.extend(contrast)
+            # featureVector.extend(homogeneity)
+            # featureVector.extend(entropy)
 
         return featureVector
 
     def getGLCM(self, image):
         return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256)
 
-    def setAngles(self, angles):
-        self.angles = angles
-
-    def setStepSize(self, stepSize):
-        self.stepSize = stepSize
-
-    def setWindowSize(self, windowSize):
-        self.windowSize= windowSize
-
-    def setRadius(self, radius):
-        self.radius = radius
-
     def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
-        # pictures = pictures[:100]
         self.featureVectors = []
         i = 0
-        # vecSize = str(self.getFeatureVector(cv.imread(pathToProcessedData + "/" + pictures[0], cv.IMREAD_GRAYSCALE)).__len__())
-        # labelFVCSize.configure(text=vecSize)
+
         if not (console is None):
             console.insert(tk.END, "[INFO] started feature vector creation\n")
             console.see(tk.END)
@@ -112,9 +108,15 @@ class LBPCM:
         for pic in pictures:
             # staza do slike
             fileName = pathToProcessedData + "/" + pic
+
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
+
+            if self.picType == 'grad':
+                image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
+
             self.featureVectors.append(self.getFeatureVector(image))
             i += 1
+
             if not(progressbar is None or labelProgress is None):
                 progressbar.step()
                 labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
@@ -127,7 +129,3 @@ class LBPCM:
             console.insert(tk.END, "[INFO] vector creation finished\n")
             console.see(tk.END)
 
-if __name__ == "__main__":
-    lbpcm = LBPCM(radius=1)
-    lbpcm.calculateFeatureVectors("data//trainingData")
-    featureVectors = lbpcm.getFeatureVectors()

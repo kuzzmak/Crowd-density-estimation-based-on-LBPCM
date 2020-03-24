@@ -4,12 +4,6 @@ class HaralickFeatures:
 
     def __init__(self, glcm, normalize=True):
 
-        self.setGLCM(glcm, normalize)
-        # rječnik sa prethodno izračunatim vrijednostima funkcije
-        self.pxminyDict = {}
-
-    def setGLCM(self, glcm, normalize):
-
         (self.num_level, num_level2, self.num_dist, self.num_angle) = glcm.shape
 
         if self.num_level != num_level2:
@@ -27,6 +21,8 @@ class HaralickFeatures:
             glcm_sums = np.apply_over_axes(np.sum, self.glcm, axes=(0, 1))
             glcm_sums[glcm_sums == 0] = 1
             self.glcm /= glcm_sums
+        # rječnik sa prethodno izračunatim vrijednostima funkcije
+        self.pxminyDict = {}
 
     def pxory(self, k):
         """

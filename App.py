@@ -73,8 +73,8 @@ class App(tk.Tk):
         # udaljenosti za koje se racuna glcm
         self.glcmDistance = [1]
         # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
-        self.lbpcm = LBPCM.LBPCM(self.radius, self.stepSize, self.cellSize,
-                                 self.angles, self.glcmDistance)  # stvaranje lbpcm s defaultnim vrijednostima
+        self.lbpcm = LBPCM.LBPCM('grad', self.radius, self.stepSize, self.cellSize,
+                                 self.angles, self.glcmDistance, ['f1', 'f2'])  # stvaranje lbpcm s defaultnim vrijednostima
         # trenutna slika na stranici za parametre
         self.currPicPar = [[]]
         # rjecnik svih stranica
@@ -104,7 +104,7 @@ class App(tk.Tk):
         # brojac za slike kod oznacavanja
         self.dataAnnotationCounter = 0
         # staza do procesiranih slika
-        self.pathToProcessedData = r"data\processedData"
+        self.pathToProcessedData = r"data/processedData"
         # lista imena procesiranih slika
         self.processedDataPictures = []
         # rjecnik s oznacenim slikama
@@ -119,12 +119,14 @@ class App(tk.Tk):
         self.writer = Writer.Writer()
         # varijabla za odabir vrste slika na kojima se primjenjuje LBP, na sivim ili gradijentnim slikama
         self.rType = tk.IntVar()
+        # variajble za odabir vrste klasifikatora
+        self.cType = tk.IntVar()
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
         # stvaranje gumba za svaku od 14 funkcija
 
-        names = ["angular second momentum",
+        names = ["angular second moment",
                  "contrast",
                  "correlation",
                  "sum of squares: variance",
@@ -727,39 +729,6 @@ class App(tk.Tk):
                                                                         + "   Feature vectors completed.")
         self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/0 Configurations completed.")
 
-    def makeFeatureVectors(self):
-        """ funkcija za stvaranje vektora znacajki
-        """
-
-        # ako staza za treniranje nije postavljena
-        if self.pathToProcessedData == "":
-            self.console.insert(tk.END, "[WARNING] processed data path not set" + "\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-        else:
-            self.lbpcm.calculateFeatureVectors(self.pathToProcessedData,
-                                               self.console,
-                                               self.frames[fvcP.FeatureVectorCreationPage].progressbarVector,
-                                               self.frames[fvcP.FeatureVectorCreationPage].labelProgress)
-
-            # resetiranje progressbara na 0
-            self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(value=0)
-
-            self.console.insert(tk.END, "[INFO] feature vectors made, now normalizing...\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-
-            util.normalize(self.lbpcm.getFeatureVectors(),
-                           self.frames[fvcP.FeatureVectorCreationPage].progressbarVector,
-                           self.frames[fvcP.FeatureVectorCreationPage].labelProgress)
-
-            self.console.insert(tk.END, "[INFO] feature vectors normalization complete\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-
-            # zadrzavanje vrijednosti kraja progressbara
-            self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(value=self.processedDataPictures.__len__())
-
     def loadLabels(self):
         """ funkcija za ucitavanje oznaka slika koje su vec procesirane
         """
@@ -768,8 +737,8 @@ class App(tk.Tk):
                                           title="Select labeled data file",
                                           filetypes=(("text files", "*.txt"), ("all files", "*.*")))
 
-        if file == "":
-            self.console.insert(tk.END, "[WARNING] you did not select folder\n")
+        if len(file) == 0:
+            self.console.insert(tk.END, "[WARNING] you did not select file with labeled data\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
@@ -781,37 +750,22 @@ class App(tk.Tk):
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
 
-    def saveVectorsToFile(self):
-        """ Funkcija za spremanje vektora znacajki u tekstualnu datoteku
-
-        :return:
-        """
-
-        filename = r"data/featureVectors.txt"
-
-        self.console.insert("[INFO] saving feature vectors to: " + filename + "\n")
-        self.console.insert(tk.END, "----------------------------------------\n")
-        self.console.see(tk.END)
-
-        with open(filename, "wb") as fp:  # Pickling
-            for fv in self.lbpcm.getFeatureVectors():
-                pickle.dump(fv, fp)
-
-        self.console.insert(tk.END, "[INFO] feature vectors saved" + "\n")
-        self.console.insert(tk.END, "----------------------------------------\n")
-        self.console.see(tk.END)
-
     def consolePrint(self, message):
         self.console.insert(tk.END, message + "\n")
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
     def addConf(self):
+        """
+            Funkcija za dohvaćanje parametara konfiguracije iz polja za unos sa stranice
+            ConfigurationsPage
+        :return:
+        """
 
         writer = Writer.Writer()
         # writer.appendToJSON(conf)
 
-        print(writer.loadConfFromJSON(2))
+        # print(writer.loadConfFromJSON(2))
 
         parametersOK = True
 
@@ -821,6 +775,12 @@ class App(tk.Tk):
             picType = "gray"
         else:
             picType = "grad"
+
+        classifierType = self.cType.get()
+        if classifierType == 0:
+            classifierType = "kNN"
+        else:
+            classifierType = "SVM"
 
         # dohvat parametara za konfiguraciju
         try:
@@ -877,7 +837,7 @@ class App(tk.Tk):
 
         functions = []
 
-        for name, _, c in self.functionButtons:
+        for _, name, c in self.functionButtons:
             if c.get():
                 functions.append(name)
 
@@ -887,7 +847,17 @@ class App(tk.Tk):
 
         if parametersOK:
             # pojedina konfiguracija
-            conf = [picType, radius, glcmDistance, stepSize, cellSize, angles, numOfNeighbors, combineDistances, combineAngles, functions]
+            conf = [classifierType,
+                    picType,
+                    radius,
+                    glcmDistance,
+                    stepSize,
+                    cellSize,
+                    angles,
+                    numOfNeighbors,
+                    combineDistances,
+                    combineAngles,
+                    functions]
             print(conf)
 
             self.configurations.append(conf)
@@ -905,11 +875,31 @@ class App(tk.Tk):
         :return:
         """
 
-        picType, radius, glcmDist, stepSize, cellSize, angles, numOfNeighbors, combineDistances, combineAngles, functions = conf
+        classifierType, \
+        picType, \
+        radius, \
+        glcmDistance, \
+        stepSize, \
+        cellSize, \
+        angles, \
+        numOfNeighbors, \
+        combineDistances, \
+        combineAngles, \
+        functions = conf
 
-        # lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combineDistances, combineAngles)
-        # lbpcm.calculateFeatureVectors(self.pathToProcessedData, self.console, None, None)
-        #
+        lbpcm = LBPCM.LBPCM(picType,
+                            radius,
+                            stepSize,
+                            cellSize,
+                            angles,
+                            glcmDistance,
+                            functions,
+                            combineDistances,
+                            combineAngles)
+
+        lbpcm.calculateFeatureVectors(self.pathToProcessedData, self.console, None, None)
+
+
         # fv = lbpcm.getFeatureVectors() #TODO normalizirati vektore nakon izračuna
         #
         # X_train = fv[:round(0.7 * fv.__len__())]

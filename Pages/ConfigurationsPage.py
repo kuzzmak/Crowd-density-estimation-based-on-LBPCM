@@ -18,16 +18,46 @@ class ConfigurationsPage(tk.Frame):
         parameterFrame = tk.Frame(self)
         parameterFrame.grid(row=1, column=0, padx=10, pady=5)
 
+        # frame s izborom vrste slike i vrste klasifikatora
+        picAndClassifierFrame = tk.Frame(parameterFrame)
+        picAndClassifierFrame.pack()
+
+        # frame s izborom vrste slike
+        picTypeFrame = tk.Frame(picAndClassifierFrame, padx=5, pady=5)
+        picTypeFrame.pack(side="left")
+
+        # frame s izborom vrste klasifikatora
+        classifierTypeFrame = tk.Frame(picAndClassifierFrame)
+        classifierTypeFrame.pack(side="left", padx=5, pady=5)
+
         # frame s odabirom funkcija koje se koriste kod kreiranja vektora značajki
         functionsFrame = tk.Frame(self)
         functionsFrame.grid(row=1, column=1, padx=20, pady=5)
 
         # odabir vrste slike nad kojim se primjenjuje LBP
-        picTypeDescription = tk.Label(parameterFrame, text="Select picture type")
-        picTypeDescription.pack(padx=10, pady=10)
+        picTypeDescription = tk.Label(picTypeFrame, text="Select picture type")
+        picTypeDescription.pack(pady=5, padx=10)
 
-        picTypeFrame = tk.Frame(parameterFrame)
-        picTypeFrame.pack()
+        classifierTypeDescription = tk.Label(classifierTypeFrame, text="Select classifier")
+        classifierTypeDescription.pack(pady=5, padx=10)
+
+        # predpostavljena vrijednost varijable za odabir vrste slike na kojoj se prmjenjuje LBP
+        controller.rType.set(0)
+
+        rGray = tk.Radiobutton(picTypeFrame, text="Gray", variable=controller.rType, value=0)
+        rGray.pack(side="left", padx=20, pady=5)
+
+        rGradient = tk.Radiobutton(picTypeFrame, text="Gradient", variable=controller.rType, value=1)
+        rGradient.pack(side="right", padx=20, pady=5)
+
+        # pretpostavljena vrijednost za vrstu klasifikatora
+        controller.cType.set(0)
+
+        cKNN = tk.Radiobutton(classifierTypeFrame, text="kNN", variable=controller.cType, value=0)
+        cKNN.pack(side="left", padx=20, pady=5)
+
+        cSVM = tk.Radiobutton(classifierTypeFrame, text="SVM", variable=controller.cType, value=1)
+        cSVM.pack(side="left", padx=20, pady=5)
 
         functionsDescription = tk.Label(functionsFrame,
                                         text="Please select which functions\n to use in feature vector creation.")
@@ -42,15 +72,6 @@ class ConfigurationsPage(tk.Frame):
         functionDefinitions = tk.Button(functionsFrame, text="Function definitions",
                                         command=lambda: FunctionDescriptions.FD(self))
         functionDefinitions.grid(row=i, pady=2, sticky="we")
-
-        # predpostavljena vrijednost varijable za odabir vrste slike na kojoj se prmjenjuje LBP
-        controller.rType.set(0)
-
-        rGray = tk.Radiobutton(picTypeFrame, text="Gray", variable=controller.rType, value=0)
-        rGray.pack(side="left", padx=20, pady=5)
-
-        rGradient = tk.Radiobutton(picTypeFrame, text="Gradient", variable=controller.rType, value=1)
-        rGradient.pack(side="right", padx=20, pady=5)
 
         # LBP parametri
         labelLBP = tk.Label(parameterFrame, text="LBP parameters")
@@ -119,9 +140,15 @@ class ConfigurationsPage(tk.Frame):
 
         frameRB1 = tk.Frame(classifierFrame)
         frameRB1.grid(row=1, column=1, padx=10)
-        for val, name in enumerate(options):
-            tk.Radiobutton(frameRB1, text=name, padx=10, pady=10,
-                           variable=controller.rbDistances, value=val).pack(side="left")
+
+        # rGray = tk.Radiobutton(picTypeFrame, text="Gray", variable=controller.rType, value=0)
+        # rGray.pack(side="left", padx=20, pady=5)
+
+        r1Combine = tk.Radiobutton(frameRB1, text="Don't combine", variable=controller.rbDistances, value=0)
+        r1Combine.pack(side="left")
+
+        r1Dont = tk.Radiobutton(frameRB1, text="Combine", variable=controller.rbDistances, value=1)
+        r1Dont.pack(side="left")
 
         labelCombineAngles = tk.Label(classifierFrame, text="Combine multiple angles")
         labelCombineAngles.grid(row=2, column=0, padx=10, pady=10)
@@ -131,9 +158,11 @@ class ConfigurationsPage(tk.Frame):
         frameRB2 = tk.Frame(classifierFrame)
         frameRB2.grid(row=2, column=1, padx=10)
 
-        for val, name in enumerate(options):
-            tk.Radiobutton(frameRB2, text=name, padx=10, pady=10,
-                           variable=controller.rbAngles, value=val).pack(side="left")
+        r2Combine = tk.Radiobutton(frameRB2, text="Don't combine", variable=controller.rbAngles, value=0)
+        r2Combine.pack(side="left")
+
+        r2Dont = tk.Radiobutton(frameRB2, text="Combine", variable=controller.rbAngles, value=1)
+        r2Dont.pack(side="left")
 
         # frame s gumbima
         buttonFrame = tk.Frame(self)
