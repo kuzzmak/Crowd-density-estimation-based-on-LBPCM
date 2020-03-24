@@ -119,7 +119,7 @@ class LBPCM:
 
             if not(progressbar is None or labelProgress is None):
                 progressbar.step()
-                labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()))
+                labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
 
             if not (console is None):
                 console.insert(tk.END, str(i) + "/" + str(pictures.__len__()) + "\n")

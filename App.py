@@ -162,7 +162,7 @@ class App(tk.Tk):
 
             frame.grid(row=0, sticky="nsew")
 
-        self.show_frame(coP.ConfigurationsPage)
+        self.show_frame(sP.StartPage)
 
     def show_frame(self, cont):
         """funkcija za prikaz odredjenog frame-a"""
@@ -727,7 +727,7 @@ class App(tk.Tk):
         # labela za napredak
         self.frames[fvcP.FeatureVectorCreationPage].labelProgress.configure(text="0/" + str(self.processedDataPictures.__len__())
                                                                         + "   Feature vectors completed.")
-        self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/0 Configurations completed.")
+        self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/0   Configurations completed.")
 
     def loadLabels(self):
         """ funkcija za ucitavanje oznaka slika koje su vec procesirane
@@ -897,7 +897,11 @@ class App(tk.Tk):
                             combineDistances,
                             combineAngles)
 
-        lbpcm.calculateFeatureVectors(self.pathToProcessedData, self.console, None, None)
+        lbpcm.calculateFeatureVectors(self.pathToProcessedData,
+                                      self.console,
+                                      self.frames[fvcP.FeatureVectorCreationPage].progressbarVector,
+                                      self.frames[fvcP.FeatureVectorCreationPage].labelProgress)
+
 
 
         # fv = lbpcm.getFeatureVectors() #TODO normalizirati vektore nakon izračuna
@@ -935,8 +939,8 @@ class App(tk.Tk):
         """
         for conf in self.configurations:
 
-            self.runConf(conf)
-            # threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
+            # self.runConf(conf)
+            threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
 
     def showClassifiedImage(self):
 
