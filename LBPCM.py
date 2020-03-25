@@ -40,9 +40,15 @@ class LBPCM:
 
     # funkcija za dohvat liste vektora znacajki
     def getFeatureVectors(self):
-        return self.featureVectors
+        return np.array(self.featureVectors)
 
     def getFeatureVector(self, img):
+        """
+        Funkcija za stvaranje vektora značajki predane slike img
+
+        :param img: slika čiji vektor značajki treba izračunati
+        :return: vektor značajki predane slike
+        """
 
         featureVector = []
         # stvaranje vektora znacajki za svaku celiju slikovnog elementa
@@ -57,11 +63,6 @@ class LBPCM:
                 for t in temp:
                     featureVector.extend(list(t))
 
-            # energy = []
-            # contrast = []
-            # homogeneity = []
-            # entropy = []
-            #
             # if self.combineDistances:
             #     energy = np.sum(energy, axis=0)
             #     contrast = np.sum(contrast, axis=0)
@@ -93,11 +94,21 @@ class LBPCM:
         return featureVector
 
     def getGLCM(self, image):
+        """
+        Funkcija za dobivanje matrice pojavnosti sivih razina predane slike img
+        Matrica je dimenzija (num_level, num_level, num_distances, num_angles), gdje je
+        num_level broj sivih razina slike, num_distances broj različitih udaljenosti za koje
+        se matrica računa, a num_angles broj kutova za koje se matrica računa
+
+        :param image: slika čija se matrica pojavnosti računa
+        :return: matrica pojavnosti
+        """
         return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256)
 
     def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
+        pictures = pictures[:100]
         self.featureVectors = []
         i = 0
 

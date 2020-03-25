@@ -26,8 +26,8 @@ class HaralickFeatures:
 
     def pxory(self, k):
         """
-            Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
-            pojedinih Haralickovih funkcija.
+        Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
+        pojedinih Haralickovih funkcija.
 
         :param glcm: matrica u kojoj se zbrajaju elementi
         :param k: dijagonala + 1 na kojoj se zbrajaju elementi
@@ -53,10 +53,11 @@ class HaralickFeatures:
 
     def pxminy(self, k):
         """
-            Funkcija koja pripomaže izračunu pojedinih Haralickovih funkcija.
-            Zbrajaju se brojevi na dijagonalama ovisno o parametru k.
-            Za k=0 je to je sporedna dijagonala, za k!=0 to su koncentrične dijagonale oko sporedne
-            uključujuću prethodnu iteraciju naredbe.
+        Funkcija koja pripomaže izračunu pojedinih Haralickovih funkcija.
+        Zbrajaju se brojevi na dijagonalama ovisno o parametru k.
+        Za k=0 je to je sporedna dijagonala, za k!=0 to su koncentrične dijagonale oko sporedne
+        uključujuću prethodnu iteraciju naredbe.
+
         :param k:
         :return:
         """
@@ -101,19 +102,19 @@ class HaralickFeatures:
 
     def greycoprops(self, prop='contrast'):
         """
-            Funkcija za izračunavanje Haralickovih funkcija
+        Funkcija za izračunavanje Haralickovih funkcija
 
-            f1 -> angular second moment +
-            f2 -> contrast +
-            f3 -> correlation +
-            f4 -> sum of squares: variance
-            f5 -> inverse difference moment +
-            f6 -> sum average +
-            f7 -> sum variance +
-            f8 -> sum entropy +
-            f9 -> entropy +
-            f10 -> difference variance
-            f11 -> difference entropy +
+        f1 -> angular second moment +
+        f2 -> contrast +
+        f3 -> correlation +
+        f4 -> sum of squares: variance
+        f5 -> inverse difference moment +
+        f6 -> sum average +
+        f7 -> sum variance +
+        f8 -> sum entropy +
+        f9 -> entropy +
+        f10 -> difference variance
+        f11 -> difference entropy +
 
         :param prop: funkcija koju je potrebno izračunati
         :return: vrijednost funkcije koja se izračunava

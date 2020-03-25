@@ -32,7 +32,10 @@ class Writer:
         f.close()
 
     def loadAnnotedDataFromFile(self, labeledData):
-        """ Funkcija za ucitavanje vec oznacenih slika iz datoteke
+        """
+        Funkcija za ucitavanje vec oznacenih slika iz datoteke
+
+        :param labeledData staza do datoteke s označenim slikama
         """
 
         with open(labeledData, "r") as f:
@@ -62,53 +65,66 @@ class Writer:
 
             f.close()
 
-    def saveModel(self, model, conf):
+    # def saveModel(self, model, conf):
+    #
+    #     saveString = ""
+    #
+    #     radius = conf[0]
+    #     glcmDistance = conf[1]
+    #     stepSize = conf[2]
+    #     cellSize = conf[3]
+    #     angles = conf[4]
+    #     numOfNeighbors = conf[5]
+    #     combineDistances = conf[6]
+    #     combineAngles = conf[7]
+    #
+    #     saveString += str(radius)
+    #     saveString += "-"
+    #
+    #     for i in glcmDistance:
+    #         saveString += str(i)
+    #         saveString += ","
+    #     saveString = saveString[:-1]
+    #     saveString += "-"
+    #
+    #     saveString += str(stepSize)
+    #     saveString += "-"
+    #
+    #     for i in cellSize:
+    #         saveString += str(i)
+    #         saveString += ","
+    #     saveString = saveString[:-1]
+    #     saveString += "-"
+    #
+    #     for i in angles:
+    #         saveString += str(i)
+    #         saveString += ","
+    #     saveString = saveString[:-1]
+    #     saveString += "-"
+    #
+    #     saveString += str(numOfNeighbors)
+    #     saveString += "-"
+    #
+    #     saveString += str(combineDistances)
+    #     saveString += "-"
+    #
+    #     saveString += str(combineAngles)
+    #
+    #     filename = self.modelPath + saveString + ".pkl"
+    #     joblib.dump(model, filename, compress=9)
 
-        saveString = ""
+    # def saveModel(self, model, conf):
+    #
+    #     self.appendToJSON(conf)
+    #
+    #     nextIndex =
+    #
+    #
+    #
+    #
+    #     joblib.dump(model, filename, compress=9)
+    #     pass
 
-        radius = conf[0]
-        glcmDistance = conf[1]
-        stepSize = conf[2]
-        cellSize = conf[3]
-        angles = conf[4]
-        numOfNeighbors = conf[5]
-        combineDistances = conf[6]
-        combineAngles = conf[7]
-
-        saveString += str(radius)
-        saveString += "-"
-
-        for i in glcmDistance:
-            saveString += str(i)
-            saveString += ","
-        saveString = saveString[:-1]
-        saveString += "-"
-
-        saveString += str(stepSize)
-        saveString += "-"
-
-        for i in cellSize:
-            saveString += str(i)
-            saveString += ","
-        saveString = saveString[:-1]
-        saveString += "-"
-
-        for i in angles:
-            saveString += str(i)
-            saveString += ","
-        saveString = saveString[:-1]
-        saveString += "-"
-
-        saveString += str(numOfNeighbors)
-        saveString += "-"
-
-        saveString += str(combineDistances)
-        saveString += "-"
-
-        saveString += str(combineAngles)
-
-        filename = self.modelPath + saveString + ".pkl"
-        joblib.dump(model, filename, compress=9)
 
     def loadModel(self):
 
@@ -211,7 +227,3 @@ class Writer:
             conf.append(temp['combine_distances'])
             conf.append(temp['combine_angles'])
             conf.append(temp['functions'])
-
-
-
-

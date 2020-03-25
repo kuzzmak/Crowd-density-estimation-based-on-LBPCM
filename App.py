@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import filedialog
-from tkinter.ttk import Progressbar
 from os import listdir
 import os
 import cv2 as cv
@@ -8,7 +7,6 @@ import numpy as np
 from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
-from sklearn.neighbors import KNeighborsClassifier
 import random
 import Haralick
 import LBPCM
@@ -18,12 +16,9 @@ import re
 import threading
 import pickle
 import Writer
-from matplotlib.backends.backend_tkagg import (
-    FigureCanvasTkAgg, NavigationToolbar2Tk)
-# Implement the default Matplotlib key bindings.
-from matplotlib.backend_bases import key_press_handler, GraphicsContextBase
-from matplotlib.figure import Figure
-import FunctionDescriptions
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+
 import Pages.InitializationPage as iP
 import Pages.GradientPage as gP
 import Pages.StartPage as sP
@@ -559,8 +554,8 @@ class App(tk.Tk):
             # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
             self.picDims = util.makePicDims(image, self.stepSize,
                                             self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-            self.updateSlidingWindowImage()
-            self.updateParameterFrame()
+            # self.updateSlidingWindowImage()
+            # self.updateParameterFrame()
 
             # omogucavanje gumba za oznacavanje slika
             self.frames[iP.InitializationPage].buttonDataAnnotation['state'] = "normal"
@@ -733,7 +728,7 @@ class App(tk.Tk):
         """ funkcija za ucitavanje oznaka slika koje su vec procesirane
         """
 
-        file = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled\data",
+        file = filedialog.askopenfilename(initialdir=r"data/normalData",
                                           title="Select labeled data file",
                                           filetypes=(("text files", "*.txt"), ("all files", "*.*")))
 
@@ -902,36 +897,46 @@ class App(tk.Tk):
                                       self.frames[fvcP.FeatureVectorCreationPage].progressbarVector,
                                       self.frames[fvcP.FeatureVectorCreationPage].labelProgress)
 
+        fv = lbpcm.getFeatureVectors()
 
+        # normalizacija vektora
+        fv, mean, sigma = util.normalize(fv)
 
-        # fv = lbpcm.getFeatureVectors() #TODO normalizirati vektore nakon izračuna
-        #
-        # X_train = fv[:round(0.7 * fv.__len__())]
-        # X_test = fv[round(0.7 * fv.__len__()):]
-        #
-        # Y = []
-        # for i in self.labelDictionary.values():
-        #     Y.append(int(i))
-        #
-        # Y_train = Y[:round(0.7 * fv.__len__())]
-        # Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
-        #
-        # self.console.insert(tk.END, "[INFO] fitting started\n")
-        # self.console.see(tk.END)
-        #
-        # kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
-        # kneighbors.fit(X_train, Y_train)
-        #
-        # error = util.calculateError(kneighbors, X_test, Y_test)
-        #
+        X_train = fv[:round(0.7 * fv.__len__())]
+        X_test = fv[round(0.7 * fv.__len__()):]
+
+        Y = []
+        for i in self.labelDictionary.values():
+            Y.append(int(i))
+
+        Y_train = Y[:round(0.7 * fv.__len__())]
+        Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
+
+        Y_train = Y_train[:100]
+        Y_test = Y_test[:100]
+
+        self.console.insert(tk.END, "[INFO] fitting started\n")
+        self.console.see(tk.END)
+
+        if classifierType == 'kNN':
+            kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
+            kneighbors.fit(X_train, Y_train)
+            error = 1 - kneighbors.score(X_test, Y_test)
+            self.consolePrint("[INFO] error: " + str(error))
+
+        else:
+            svm = SVC(gamma='auto')
+            svm.fit(X_train, Y_train)
+            error = 1 - svm.score(X_test, Y_test)
+            self.consolePrint("[INFO] error: " + str(error))
+
         # saveString = str(conf) + "--error: " + str(error)
         #
         # self.writer.saveDirectory = r"data/normalData"
         # self.writer.saveResults(saveString)
         # self.writer.saveModel(kneighbors, conf)
-        #
-        # self.console.insert(tk.END, "[INFO] configuration completed\n")
-        # self.console.see(tk.END)
+
+        self.consolePrint("[INFO] configuration completed")
 
     def runConfigurations(self):
         """ Funkcija za pokretanje pojedine unesene konfiguracije

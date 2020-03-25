@@ -1,7 +1,7 @@
 import os
 import cv2 as cv
 import shutil
-import math
+from scipy import stats
 import numpy as np
 import LBPCM
 import tkinter as tk
@@ -62,7 +62,8 @@ def clearDirectory(pathToDirectory):
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
 def sliding_window(image, stepSize, windowSize):
-    """ Funkcija koja koristi tehniku klizeceg prozora kako bi
+    """
+    Funkcija koja koristi tehniku klizeceg prozora kako bi
     se generirali slikovni elementi pocetne slike
 
     :param image: pocetna slika
@@ -108,39 +109,23 @@ def resizePercent(image, percent):
     imageResized = cv.resize(image, dim, interpolation=cv.INTER_AREA)
     return imageResized
 
-def normalize(vectors, progressbar, labelprogress):
-    """ Funkcija koja sluzi normalizaciji vektora znacajki
+def normalize(vectors):
+    """
+    Funkcija koja sluzi normalizaciji vektora znacajki
     na srednju vrijednost oko nule i jedinicnu standardnu devijaciju
 
     :param vectors: vektori znacajki koji se trebaju normalizirati
-    :return: normalizirani vektori znacajki
+    :return: normalizirani vektori znacajki, srednje vrijednosti vektora i standardna devijacija vektora
     """
-    numOfVecs = vectors.__len__()
-    dimension = vectors[0].__len__()
 
-    sums = [0] * dimension
+    numOfVecs, dimension = vectors.shape
+    sums = np.apply_over_axes(np.sum, vectors, axes=0)
+    sums /= numOfVecs
+    sigma = np.apply_over_axes(np.sum, (vectors - sums) ** 2, axes=0)
+    sigma = np.sqrt(1 / (numOfVecs - 1) * sigma + 1e-12)
+    vectors = (vectors - sums) / sigma
 
-    for v in range(numOfVecs):
-        for i in range(dimension):
-            sums[i] += vectors[v][i]
-
-    mean = [x / numOfVecs for x in sums]
-
-    sigma = [0] * dimension
-
-    for v in range(numOfVecs):
-        for i in range(dimension):
-            sigma[i] += (vectors[v][i] - mean[i]) ** 2
-
-    sigma = [math.sqrt(1 / (numOfVecs - 1) * x) for x in sigma]
-
-    for i in range(numOfVecs):
-        for j in range(dimension):
-            vectors[i][j] = (vectors[i][j] - mean[j]) / sigma[j]
-
-        # azuriranje progressbara i brojaca obradjenih vektora
-        progressbar.step()
-        labelprogress.configure(text=str(i) + "/" + str(numOfVecs))
+    return vectors, sums, sigma
 
 def calculateError(model, X_test, Y_test):
     """ Funkcija za računanje greške na testnom setu blokova
