@@ -757,11 +757,6 @@ class App(tk.Tk):
         :return:
         """
 
-        writer = Writer.Writer()
-        # writer.appendToJSON(conf)
-
-        # print(writer.loadConfFromJSON(2))
-
         parametersOK = True
 
         # dohvat vrste slike nad kojom se provodi postupak LBP
@@ -853,7 +848,6 @@ class App(tk.Tk):
                     combineDistances,
                     combineAngles,
                     functions]
-            print(conf)
 
             self.configurations.append(conf)
 
@@ -867,7 +861,6 @@ class App(tk.Tk):
 
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
-        :return:
         """
 
         classifierType, \
@@ -901,6 +894,10 @@ class App(tk.Tk):
 
         # normalizacija vektora
         fv, mean, sigma = util.normalize(fv)
+        conf.extend(mean.tolist())
+        conf.extend(sigma.tolist())
+
+
 
         X_train = fv[:round(0.7 * fv.__len__())]
         X_test = fv[round(0.7 * fv.__len__()):]
@@ -918,17 +915,23 @@ class App(tk.Tk):
         self.console.insert(tk.END, "[INFO] fitting started\n")
         self.console.see(tk.END)
 
+        writer = Writer.Writer()
+
         if classifierType == 'kNN':
             kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
             kneighbors.fit(X_train, Y_train)
             error = 1 - kneighbors.score(X_test, Y_test)
             self.consolePrint("[INFO] error: " + str(error))
+            conf.append(error)
+            writer.appendToJSON(conf)
 
         else:
             svm = SVC(gamma='auto')
             svm.fit(X_train, Y_train)
             error = 1 - svm.score(X_test, Y_test)
             self.consolePrint("[INFO] error: " + str(error))
+            conf.append(error)
+            writer.appendToJSON(conf)
 
         # saveString = str(conf) + "--error: " + str(error)
         #

@@ -10,7 +10,8 @@ class Writer:
 
         self.labelDictionary = {}
         self.saveDirectory = saveDirectory
-        self.modelPath = r"data/models/"
+        self.grayModelsPath = r"data/models_v2/grayModels"
+        self.svmModelsPath = r"data/models_v2/svmModels"
         self.modelJSON = r'data/models_v2/models.json'
         self.model = []
         self.modelString = ""
@@ -172,6 +173,7 @@ class Writer:
 
     def appendToJSON(self, conf):
 
+        classifierType, \
         picType, \
         lbpRadius, \
         glcmDistances, \
@@ -181,7 +183,10 @@ class Writer:
         numberOfNeighbors, \
         combineDistances, \
         combineAngles, \
-        functions = conf
+        functions, \
+        mean, \
+        sigma,\
+        error = conf
 
         with open(self.modelJSON) as json_file:
 
@@ -191,6 +196,7 @@ class Writer:
 
             y = {
                 "id": len(temp) + 1,
+                "classifier_type": classifierType,
                 "image_type": picType,
                 "lbp_radius": lbpRadius,
                 "distances": glcmDistances,
@@ -200,7 +206,10 @@ class Writer:
                 "num_of_neighbors": numberOfNeighbors,
                 "combine_distances": combineDistances,
                 "combine_angles": combineAngles,
-                "functions": functions
+                "functions": functions,
+                "mean": mean,
+                "sigma": sigma,
+                "error": error
             }
 
             temp.append(y)
@@ -217,6 +226,7 @@ class Writer:
             temp = self.findModel(data, id)
 
             conf = []
+            conf.append(temp['classifier_type'])
             conf.append(temp['image_type'])
             conf.append(temp['lbp_radius'])
             conf.append(temp['distances'])
@@ -227,3 +237,6 @@ class Writer:
             conf.append(temp['combine_distances'])
             conf.append(temp['combine_angles'])
             conf.append(temp['functions'])
+            conf.append(temp['mean'])
+            conf.append(temp['sigma'])
+            conf.append(temp['error'])

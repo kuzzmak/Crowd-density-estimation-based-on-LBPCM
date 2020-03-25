@@ -1,21 +1,21 @@
-import LBPCM
-import numpy as np
-import util
-from sklearn.preprocessing import normalize
-from scipy import stats
-lbpcm = LBPCM.LBPCM('grad',
-                            1,
-                            32,
-                            [64, 64],
-                            [0],
-                            [1],
-                            ['angular second moment', 'contrast', 'correlation'],
-                            0,
-                            0)
-
-lbpcm.calculateFeatureVectors(r'/home/tonkec/Desktop/fo', None, None, None)
-
-fv = lbpcm.getFeatureVectors()
+# import LBPCM
+# import numpy as np
+# import util
+# from sklearn.preprocessing import normalize
+# from scipy import stats
+# lbpcm = LBPCM.LBPCM('grad',
+#                             1,
+#                             32,
+#                             [64, 64],
+#                             [0],
+#                             [1],
+#                             ['angular second moment', 'contrast', 'correlation'],
+#                             0,
+#                             0)
+#
+# lbpcm.calculateFeatureVectors(r'/home/tonkec/Desktop/fo', None, None, None)
+#
+# fv = lbpcm.getFeatureVectors()
 
 # for f in fv:
 #     print(f)
@@ -26,12 +26,12 @@ fv = lbpcm.getFeatureVectors()
 # print("vectors")
 # for f in fv:
 #     print(f)
-import time
-print("moje")
-start = time.time()
-util.normalize(fv)
-end = time.time()
-print(end-start)
+# import time
+# print("moje")
+# start = time.time()
+# util.normalize(fv)
+# end = time.time()
+# print(end-start)
 
 
 # for f in fv:
@@ -42,12 +42,12 @@ print(end-start)
 # a = stats.zscore(fv, ddof=1)
 # for i in a:
 #     print(i)
-print("lib")
-start = time.time()
-a = stats.zscore(fv, ddof=1)
-end = time.time()
-print(end-start)
-print()
+# print("lib")
+# start = time.time()
+# a = stats.zscore(fv, ddof=1)
+# end = time.time()
+# print(end-start)
+# print()
 
 
 
@@ -214,15 +214,22 @@ print()
 # a = [1, 2 , 3, 4]
 # b = [2]
 
-# import numpy as np
-# X = np.array([[-1, -1], [-2, -2], [1, 1], [2, 1]])
-# y = np.array([1, 2, 2, 2])
-#
-# X_test = np.array([[3, 1], [0, 0], [3, 0]])
-# Y_test = np.array([2, 2, 2])
-#
-# from sklearn.svm import SVC
-#
-# clf = SVC(gamma='auto')
-# clf.fit(X, y)
-# print(clf.score(X_test, Y_test))
+import numpy as np
+X = np.array([[-1, -1], [-2, -2], [1, 1], [2, 1]])
+y = np.array([1, 2, 2, 2])
+
+X_test = np.array([[3, 1], [0, 0], [3, 0]])
+Y_test = np.array([2, 2, 2])
+
+from sklearn.svm import SVC
+
+clf = SVC(gamma='auto')
+clf.fit(X, y)
+error = 1 - clf.score(X_test, Y_test)
+
+a = []
+a.append(error)
+a.append(2)
+
+print(a)
+
