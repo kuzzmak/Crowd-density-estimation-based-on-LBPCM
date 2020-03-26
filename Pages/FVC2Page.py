@@ -9,9 +9,6 @@ class FVC2Page(tk.Frame):
         self.numberOfModels = tk.IntVar()
         self.numberOfModels.set(1)
 
-        self.modelType = tk.StringVar()
-        self.modelType.set('gray')
-
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
 
@@ -45,11 +42,10 @@ class FVC2Page(tk.Frame):
         """
         Stvara se onoliko informacijskih panela koliko je izabrano
 
-        :param controller:
+        :param controller: referenca do glavnog prozora
         """
 
         numOfModels = self.numberOfModels.get()
-        print(numOfModels)
 
         if numOfModels == 2:
 

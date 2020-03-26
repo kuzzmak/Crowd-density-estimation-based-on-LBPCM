@@ -119,7 +119,7 @@ class App(tk.Tk):
         self.cType = tk.IntVar()
 
         self.grayModelsDirectory = r'data/models_v2/grayModels'
-        self.gradModelsdirectory = r'data/models_v2/gradModels'
+        self.gradModelsDirectory = r'data/models_v2/gradModels'
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []

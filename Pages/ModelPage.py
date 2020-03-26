@@ -1,6 +1,7 @@
 import tkinter as tk
 from os import listdir
 import Writer
+import util
 
 class ModelPage(tk.Frame):
 
@@ -8,6 +9,20 @@ class ModelPage(tk.Frame):
 
         self.currentGrayModel = 0
         self.currentGradModel = 0
+        self.modelType = tk.StringVar()
+        self.modelType.set('gray')
+
+        # dohvat svih .pkl imena
+        models = [x for x in listdir(controller.grayModelsDirectory) if x.endswith('.pkl')]
+        # dohvat svih id-ja modela
+        self.grayModels = [int(x.split('.')[0]) for x in models]
+
+        models = [x for x in listdir(controller.gradModelsDirectory) if x.endswith('.pkl')]
+
+        self.gradModels = [int(x.split('.')[0]) for x in models]
+
+        self.numberOfGrayModels = len(self.grayModels)
+        self.numberOfGradModels = len(self.gradModels)
 
         self.writer = Writer.Writer()
 
@@ -25,22 +40,13 @@ class ModelPage(tk.Frame):
         frameRadioGrayGrad = tk.Frame(selectFrame1)
         frameRadioGrayGrad.pack()
 
-        rGray = tk.Radiobutton(frameRadioGrayGrad, text="Gray", variable=upperFrame.modelType, value='gray',
-                               command=lambda: self.loadModel(upperFrame, controller))
+        rGray = tk.Radiobutton(frameRadioGrayGrad, text="Gray", variable=self.modelType, value='gray',
+                               command=lambda: self.loadModel(controller))
         rGray.pack(side="left", padx=10)
 
-        rGrad = tk.Radiobutton(frameRadioGrayGrad, text="Grad", variable=upperFrame.modelType, value='grad',
-                               command=lambda: self.loadModel(upperFrame, controller))
+        rGrad = tk.Radiobutton(frameRadioGrayGrad, text="Grad", variable=self.modelType, value='grad',
+                               command=lambda: self.loadModel(controller))
         rGrad.pack(side="left", padx=10)
-
-        frameButtonPrevNext = tk.Frame(selectFrame1)
-        frameButtonPrevNext.pack()
-
-        buttonPrev1 = tk.Button(frameButtonPrevNext, text="Previous")
-        buttonPrev1.pack(side="left", padx=10, pady=5, fill="x")
-
-        buttonNext1 = tk.Button(frameButtonPrevNext, text="Next")
-        buttonNext1.pack(side="left", padx=10, pady=5, fill="x")
 
         # frame s parametrima pojedinog modela
         parameterFrame = tk.Frame(selectFrame1)
@@ -118,24 +124,123 @@ class ModelPage(tk.Frame):
         self.functionsLabelValue = tk.Label(valueFrame, text="")
         self.functionsLabelValue.grid(row=10, sticky="w")
 
-    def loadModel(self, upperFrame, controller):
+        errorLabel = tk.Label(nameFrame, text="error:")
+        errorLabel.grid(row=11, sticky="e")
 
-        modelType = upperFrame.modelType.get()
+        self.errorLabelValue = tk.Label(valueFrame, text="")
+        self.errorLabelValue.grid(row=11, sticky="w")
+
+        frameButtonPrevNext = tk.Frame(selectFrame1)
+        frameButtonPrevNext.pack()
+
+        self.currentModelLabel = tk.Label(frameButtonPrevNext, text="")
+        self.currentModelLabel.pack()
+
+        buttonPrev = tk.Button(frameButtonPrevNext, text="Previous")
+        buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
+
+        buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get(), controller))
+        buttonNext.pack(side="left", padx=10, pady=5, fill="x")
+
+        self.loadModel(controller)
+
+    def loadModel(self, controller):
+
+        modelType = self.modelType.get()
+
+        if modelType == 'gray':
+            self.currentModelLabel.configure(text="Current model: " + str(self.currentGrayModel + 1) +
+                                                  "/" + str(self.numberOfGrayModels))
+
+            modelId = self.grayModels[self.currentGrayModel - 1]
+
+        else:
+            self.currentModelLabel.configure(text="Current model: " + str(self.currentGradModel + 1) +
+                                                  "/" + str(self.numberOfGradModels))
+            modelId = self.gradModels[self.currentGradModel - 1]
+
+        self.showInfo(modelId)
+
+    def showInfo(self, modelId):
+        """
+        Ova funkcija prikazuje detalje konfiguracije modela kojem je id modelId
+
+        :param modelId: id modela čija se konfiguracija prikazuje
+        """
+
+        classifierType, \
+        picType, \
+        lbpRadius, \
+        glcmDistances, \
+        stepSize, \
+        cellSize, \
+        angles, \
+        numberOfNeighbors, \
+        combineDistances, \
+        combineAngles, \
+        functions, \
+        mean, \
+        sigma, \
+        error = self.writer.loadConfFromJSON(modelId)
+
+        fun = []
+
+        for f in functions:
+            if f == 'angular second moment':
+                fun.append('f1')
+            elif f == 'contrast':
+                fun.append('f2')
+            elif f == 'correlation':
+                fun.append('f3')
+            elif f == 'sum of squares: variance':
+                fun.append('f4')
+            elif f == 'inverse difference moment':
+                fun.append('f5')
+            elif f == 'sum average':
+                fun.append('f6')
+            elif f == 'sum variance':
+                fun.append('f7')
+            elif f == 'sum entropy':
+                fun.append('f8')
+            elif f == 'entropy':
+                fun.append('f9')
+            elif f == 'difference variance':
+                fun.append('f10')
+            elif f == 'difference entropy':
+                fun.append('f11')
+
+        self.classifierTypeLabelValue.configure(text=classifierType)
+        self.picTypeLabelValue.configure(text=picType)
+        self.radiusLabelValue.configure(text=lbpRadius)
+        self.glcmDistancesLabel.configure(text=glcmDistances)
+        self.stepSizeLabelValue.configure(text=stepSize)
+        self.cellSizeLabelValue.configure(text=cellSize)
+        self.anglesLabelValue.configure(text=util.shortAngles(angles))
+        self.numOfNeighborsLabelValue.configure(text=numberOfNeighbors)
+        self.combineDistancesLabelValue.configure(text=combineDistances)
+        self.combineAnglesLabelValue.configure(text=combineAngles)
+        self.functionsLabelValue.configure(text=fun)
+        self.errorLabelValue.configure(text=error)
+
+    def nextModel(self, modelType, controller):
 
         if modelType == 'gray':
 
-            grayDir = controller.grayModelsDirectory
-
-            # dohvat svih .pkl imena
-            models = [x for x in listdir(grayDir) if x.endswith('.pkl')]
-            # dohvat svih id-ja modela
-            models = [int(x.split('.')[0]) for x in models]
-
-            modelId = models[self.currentGrayModel]
-
-            conf = self.writer.loadConfFromJSON(modelId)
-
-            print(conf)
-
+            next = self.currentGrayModel + 1
+            if next >= self.numberOfGrayModels:
+                next %= self.numberOfGrayModels
+                self.currentGrayModel = next
+                self.loadModel(controller)
+            else:
+                self.currentGrayModel = next
+                self.loadModel(controller)
         else:
-            pass
+
+            next = self.currentGradModel + 1
+            if next >= self.numberOfGradModels:
+                next %= self.numberOfGradModels
+                self.currentGradModel = next
+                self.loadModel(controller)
+            else:
+                self.currentGradModel = next
+                self.loadModel(controller)
