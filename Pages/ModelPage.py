@@ -2,6 +2,7 @@ import tkinter as tk
 from os import listdir
 import Writer
 import util
+from sklearn.externals import joblib
 
 class ModelPage(tk.Frame):
 
@@ -41,11 +42,11 @@ class ModelPage(tk.Frame):
         frameRadioGrayGrad.pack()
 
         rGray = tk.Radiobutton(frameRadioGrayGrad, text="Gray", variable=self.modelType, value='gray',
-                               command=lambda: self.loadModel(controller))
+                               command=lambda: self.loadModelInfo())
         rGray.pack(side="left", padx=10)
 
         rGrad = tk.Radiobutton(frameRadioGrayGrad, text="Grad", variable=self.modelType, value='grad',
-                               command=lambda: self.loadModel(controller))
+                               command=lambda: self.loadModelInfo())
         rGrad.pack(side="left", padx=10)
 
         # frame s parametrima pojedinog modela
@@ -139,27 +140,51 @@ class ModelPage(tk.Frame):
         buttonPrev = tk.Button(frameButtonPrevNext, text="Previous")
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
-        buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get(), controller))
+        buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", command=lambda: self.loadModel(controller))
+        buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
+
+        buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get()))
         buttonNext.pack(side="left", padx=10, pady=5, fill="x")
 
-        self.loadModel(controller)
+        self.loadModelInfo()
 
-    def loadModel(self, controller):
+    def loadModelInfo(self):
+        """
+        Funkcija za učitavanje i prikazivanje konfiguracije dostupnih modela
+        """
 
         modelType = self.modelType.get()
 
         if modelType == 'gray':
             self.currentModelLabel.configure(text="Current model: " + str(self.currentGrayModel + 1) +
                                                   "/" + str(self.numberOfGrayModels))
-
-            modelId = self.grayModels[self.currentGrayModel - 1]
+            modelId = self.grayModels[self.currentGrayModel]
 
         else:
             self.currentModelLabel.configure(text="Current model: " + str(self.currentGradModel + 1) +
                                                   "/" + str(self.numberOfGradModels))
-            modelId = self.gradModels[self.currentGradModel - 1]
+            modelId = self.gradModels[self.currentGradModel]
 
         self.showInfo(modelId)
+
+    def loadModel(self, controller):
+        """
+        Funkcija za učitavanje trenutno izabranog modela
+
+        :param controller: referenca do glavnog programa
+        """
+
+        modelType = self.modelType.get()
+
+        if modelType == 'gray':
+            modelPath = controller.grayModelsDirectory + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
+            self.writer.model = joblib.load(modelPath)
+            print(self.writer.model)
+
+        else:
+            modelPath = controller.gradModelsDirectory + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
+            self.writer.model = joblib.load(modelPath)
+            print(self.writer.model)
 
     def showInfo(self, modelId):
         """
@@ -184,6 +209,9 @@ class ModelPage(tk.Frame):
         error = self.writer.loadConfFromJSON(modelId)
 
         fun = []
+
+        print("conf")
+        print(modelId, classifierType, picType, functions, error)
 
         for f in functions:
             if f == 'angular second moment':
@@ -220,9 +248,14 @@ class ModelPage(tk.Frame):
         self.combineDistancesLabelValue.configure(text=combineDistances)
         self.combineAnglesLabelValue.configure(text=combineAngles)
         self.functionsLabelValue.configure(text=fun)
-        self.errorLabelValue.configure(text=error)
+        self.errorLabelValue.configure(text=round(error, 2))
 
-    def nextModel(self, modelType, controller):
+    def nextModel(self, modelType):
+        """
+        Služi za prkikaz konfiguracije sljedećeg modela tipa modelType
+
+        :param modelType: vrsta modela
+        """
 
         if modelType == 'gray':
 
@@ -230,17 +263,17 @@ class ModelPage(tk.Frame):
             if next >= self.numberOfGrayModels:
                 next %= self.numberOfGrayModels
                 self.currentGrayModel = next
-                self.loadModel(controller)
+                self.loadModelInfo()
             else:
                 self.currentGrayModel = next
-                self.loadModel(controller)
+                self.loadModelInfo()
         else:
 
             next = self.currentGradModel + 1
             if next >= self.numberOfGradModels:
                 next %= self.numberOfGradModels
                 self.currentGradModel = next
-                self.loadModel(controller)
+                self.loadModelInfo()
             else:
                 self.currentGradModel = next
-                self.loadModel(controller)
+                self.loadModelInfo()

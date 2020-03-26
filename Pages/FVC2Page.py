@@ -12,7 +12,7 @@ class FVC2Page(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
 
-        numOfModelsFrame = tk.Frame(self, bg="blue")
+        numOfModelsFrame = tk.Frame(self)
         numOfModelsFrame.grid(row=0)
 
         numOfModelsLabel = tk.Label(numOfModelsFrame, text="Select number of models to be used for classification.")
@@ -50,7 +50,7 @@ class FVC2Page(tk.Frame):
         if numOfModels == 2:
 
             rightModel = mp.ModelPage(self.middleFrame, self, controller)
-            rightModel.grid(row=0, column=1, padx=10, pady=10)
+            rightModel.grid(row=0, column=1, padx=30, pady=10)
         else:
 
             self.middleFrame.destroy()

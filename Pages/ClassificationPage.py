@@ -67,7 +67,7 @@ class ClassificationPage(tk.Frame):
         c4.grid(row=4, column=1, padx=10, pady=5)
 
         # gumbi
-        buttonLoadModel = tk.Button(leftFrame, text="Load model", command=lambda: controller.loadModel())
+        buttonLoadModel = tk.Button(leftFrame, text="Load model", command=lambda: controller.loadModelInfo())
         buttonLoadModel.pack(padx=10, pady=5, fill="x")
 
         self.buttonSelectFolder = tk.Button(leftFrame, text="Select folder", state="disabled")
