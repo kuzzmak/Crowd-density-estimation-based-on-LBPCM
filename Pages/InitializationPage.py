@@ -7,6 +7,7 @@ import Pages.DataAnnotationPage as daP
 import Pages.ParameterSettingPage as psP
 import Pages.PreprocessPage as pP
 import Pages.SlidingWindowPage as swP
+import Pages.FVC2Page as fvc2
 
 class InitializationPage(tk.Frame):
 
@@ -83,6 +84,10 @@ class InitializationPage(tk.Frame):
                               command=lambda: [controller.show_frame(fvcP.FeatureVectorCreationPage),
                                                controller.showFVCinfo()])
         buttonFVC.pack(padx=10, pady=10, fill="x")
+
+        buttonFVC2 = tk.Button(classificationFrame, text="FVC2",
+                              command=lambda: controller.show_frame(fvc2.FVC2Page))
+        buttonFVC2.pack(padx=10, pady=10, fill="x")
 
         buttonClassification = tk.Button(classificationFrame, text="Classification",
                                          command=lambda: [controller.show_frame(clP.ClassificationPage),

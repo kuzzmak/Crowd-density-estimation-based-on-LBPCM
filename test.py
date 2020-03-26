@@ -63,7 +63,13 @@
 #
 # image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
 # # image = cv.imread("/home/tonkec/Desktop/220px-Lenna_(test_image).png", cv.IMREAD_GRAYSCALE)
-# glcm = greycomatrix(image.astype(int), [1, 2], [0, np.pi], levels=4)
+# glcm = greycomatrix(image.astype(int), [1, 2], [0], levels=4)
+#
+#
+#
+# print(glcm.shape)
+
+
 #
 # # glcm = glcm.astype(np.float64)
 # # glcm_sums = np.apply_over_axes(np.sum, glcm, axes=(0, 1))
@@ -214,22 +220,31 @@
 # a = [1, 2 , 3, 4]
 # b = [2]
 
-import numpy as np
-X = np.array([[-1, -1], [-2, -2], [1, 1], [2, 1]])
-y = np.array([1, 2, 2, 2])
+# import numpy as np
+# X = np.array([[-1, -1], [-2, -2], [1, 1], [2, 1]])
+# y = np.array([1, 2, 2, 2])
+#
+# X_test = np.array([[3, 1], [0, 0], [3, 0]])
+# Y_test = np.array([2, 2, 2])
+#
+# from sklearn.svm import SVC
+#
+# clf = SVC(gamma='auto')
+# clf.fit(X, y)
+# error = 1 - clf.score(X_test, Y_test)
+#
+# a = []
+# a.append(error)
+# a.append(2)
+#
+# print(a)
 
-X_test = np.array([[3, 1], [0, 0], [3, 0]])
-Y_test = np.array([2, 2, 2])
-
-from sklearn.svm import SVC
-
-clf = SVC(gamma='auto')
-clf.fit(X, y)
-error = 1 - clf.score(X_test, Y_test)
-
-a = []
-a.append(error)
-a.append(2)
-
-print(a)
-
+# import Writer
+#
+# writer = Writer.Writer()
+# import json
+# with open("data/models_v2/models.json") as f:
+#     data = json.load(f)
+#
+# conf = writer.loadConfFromJSON(3)
+# print(conf)

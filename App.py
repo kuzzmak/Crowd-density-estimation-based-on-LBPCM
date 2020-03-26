@@ -29,6 +29,7 @@ import Pages.ParameterSettingPage as psP
 import Pages.SlidingWindowPage as swP
 import Pages.DataAnnotationPage as daP
 import Pages.ClassificationPage as clP
+import Pages.FVC2Page as fvc2P
 
 
 class App(tk.Tk):
@@ -116,6 +117,10 @@ class App(tk.Tk):
         self.rType = tk.IntVar()
         # variajble za odabir vrste klasifikatora
         self.cType = tk.IntVar()
+        # koristi li se za klasifikaciju jedan ili dva modela
+        self.numOfModels = tk.IntVar()
+        # vrsta modela koji se gleda u izborniku modela
+        self.modelType = tk.StringVar()
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
@@ -149,7 +154,8 @@ class App(tk.Tk):
                   fvcP.FeatureVectorCreationPage,
                   coP.ConfigurationsPage,
                   clP.ClassificationPage,
-                  gP.GradientPage):
+                  gP.GradientPage,
+                  fvc2P.FVC2Page):
 
             frame = F(container, self)
 
@@ -923,7 +929,7 @@ class App(tk.Tk):
             error = 1 - kneighbors.score(X_test, Y_test)
             self.consolePrint("[INFO] error: " + str(error))
             conf.append(error)
-            writer.appendToJSON(conf)
+            writer.saveModel(kneighbors, conf)
 
         else:
             svm = SVC(gamma='auto')
@@ -931,7 +937,7 @@ class App(tk.Tk):
             error = 1 - svm.score(X_test, Y_test)
             self.consolePrint("[INFO] error: " + str(error))
             conf.append(error)
-            writer.appendToJSON(conf)
+            writer.saveModel(svm, conf)
 
         # saveString = str(conf) + "--error: " + str(error)
         #

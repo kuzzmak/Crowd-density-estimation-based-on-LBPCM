@@ -133,16 +133,10 @@ class ConfigurationsPage(tk.Frame):
         labelCombineDistances = tk.Label(classifierFrame, text="Combine multiple distances")
         labelCombineDistances.grid(row=1, column=0, padx=10, pady=10)
 
-        options = [(0, "Don't combine"),
-                   (1, "Combine")]
-
         controller.rbDistances.set(0)
 
         frameRB1 = tk.Frame(classifierFrame)
         frameRB1.grid(row=1, column=1, padx=10)
-
-        # rGray = tk.Radiobutton(picTypeFrame, text="Gray", variable=controller.rType, value=0)
-        # rGray.pack(side="left", padx=20, pady=5)
 
         r1Combine = tk.Radiobutton(frameRB1, text="Don't combine", variable=controller.rbDistances, value=0)
         r1Combine.pack(side="left")

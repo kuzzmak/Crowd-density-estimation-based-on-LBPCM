@@ -11,7 +11,7 @@ class Writer:
         self.labelDictionary = {}
         self.saveDirectory = saveDirectory
         self.grayModelsPath = r"data/models_v2/grayModels"
-        self.svmModelsPath = r"data/models_v2/svmModels"
+        self.gradModelsPath = r"data/models_v2/gradModels"
         self.modelJSON = r'data/models_v2/models.json'
         self.model = []
         self.modelString = ""
@@ -114,18 +114,31 @@ class Writer:
     #     filename = self.modelPath + saveString + ".pkl"
     #     joblib.dump(model, filename, compress=9)
 
-    # def saveModel(self, model, conf):
-    #
-    #     self.appendToJSON(conf)
-    #
-    #     nextIndex =
-    #
-    #
-    #
-    #
-    #     joblib.dump(model, filename, compress=9)
-    #     pass
+    def saveModel(self, model, conf):
+        """
+        Funkcija za spremanje modela i konfuguracije modela. Model se sprema
+        kao objekt u pkl obliku, a konfiguracija se dodaje u json datoteku
+        postojećih konfiguracija.
 
+        :param model: model koji se sprema
+        :param conf: konfiguracija koja se sprema
+        """
+
+        with open(self.modelJSON) as f:
+            data = json.load(f)
+
+        # sljedeći indeks modela, za jedan više od postojećih modela
+        nextIndex = len(data['models']) + 1
+
+        if conf[1] == 'gray':
+            saveString = self.grayModelsPath + "/" + str(nextIndex) + ".pkl"
+        else:
+            saveString = self.gradModelsPath + "/" + str(nextIndex) + ".pkl"
+
+        # spremanje modela
+        joblib.dump(model, saveString, compress=9)
+        # spremanje konfiguracije
+        self.appendToJSON(conf)
 
     def loadModel(self):
 
@@ -172,7 +185,11 @@ class Writer:
             print("Json file empty or there is no model with given index: " + str(id))
 
     def appendToJSON(self, conf):
+        """
+        Funkcija za spremanje konfiguracije modela u json file
 
+        :param conf: konfiguracija koju treba spremiti
+        """
         classifierType, \
         picType, \
         lbpRadius, \
@@ -218,6 +235,11 @@ class Writer:
             json.dump(data, f, indent=4)
 
     def loadConfFromJSON(self, id):
+        """
+        Funkcija koja služi za učitavanje parametara modela prema njegvom id-u
+
+        :param id: identifikacijski broj pojedinog modela
+        """
 
         with open(self.modelJSON) as f:
 
@@ -225,18 +247,9 @@ class Writer:
 
             temp = self.findModel(data, id)
 
-            conf = []
-            conf.append(temp['classifier_type'])
-            conf.append(temp['image_type'])
-            conf.append(temp['lbp_radius'])
-            conf.append(temp['distances'])
-            conf.append(temp['step_size'])
-            conf.append(temp['cell_size'])
-            conf.append(temp['angles'])
-            conf.append(temp['num_of_neighbors'])
-            conf.append(temp['combine_distances'])
-            conf.append(temp['combine_angles'])
-            conf.append(temp['functions'])
-            conf.append(temp['mean'])
-            conf.append(temp['sigma'])
-            conf.append(temp['error'])
+            conf = [temp['classifier_type'], temp['image_type'], temp['lbp_radius'], temp['distances'],
+                    temp['step_size'], temp['cell_size'], temp['angles'], temp['num_of_neighbors'],
+                    temp['combine_distances'], temp['combine_angles'], temp['functions'], temp['mean'], temp['sigma'],
+                    temp['error']]
+
+        return conf
