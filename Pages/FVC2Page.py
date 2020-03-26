@@ -9,6 +9,9 @@ class FVC2Page(tk.Frame):
         self.numberOfModels = tk.IntVar()
         self.numberOfModels.set(1)
 
+        self.modelType = tk.StringVar()
+        self.modelType.set('gray')
+
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
 
@@ -32,20 +35,25 @@ class FVC2Page(tk.Frame):
         self.middleFrame = tk.Frame(self)
         self.middleFrame.grid(row=1)
 
-        leftModel = mp.ModelPage(self.middleFrame, controller)
+        leftModel = mp.ModelPage(self.middleFrame, self, controller)
         leftModel.grid(row=0, column=0, padx=10, pady=10)
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.grid(row=2, padx=10, pady=10)
 
     def showModelsPanel(self, controller):
+        """
+        Stvara se onoliko informacijskih panela koliko je izabrano
+
+        :param controller:
+        """
 
         numOfModels = self.numberOfModels.get()
         print(numOfModels)
 
         if numOfModels == 2:
 
-            rightModel = mp.ModelPage(self.middleFrame, controller)
+            rightModel = mp.ModelPage(self.middleFrame, self, controller)
             rightModel.grid(row=0, column=1, padx=10, pady=10)
         else:
 
@@ -54,5 +62,5 @@ class FVC2Page(tk.Frame):
             self.middleFrame = tk.Frame(self)
             self.middleFrame.grid(row=1)
 
-            leftModel = mp.ModelPage(self.middleFrame, controller)
+            leftModel = mp.ModelPage(self.middleFrame, self, controller)
             leftModel.grid(row=0, column=0, padx=10, pady=10)

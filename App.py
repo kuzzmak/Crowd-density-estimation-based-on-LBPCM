@@ -117,10 +117,9 @@ class App(tk.Tk):
         self.rType = tk.IntVar()
         # variajble za odabir vrste klasifikatora
         self.cType = tk.IntVar()
-        # koristi li se za klasifikaciju jedan ili dva modela
-        self.numOfModels = tk.IntVar()
-        # vrsta modela koji se gleda u izborniku modela
-        self.modelType = tk.StringVar()
+
+        self.grayModelsDirectory = r'data/models_v2/grayModels'
+        self.gradModelsdirectory = r'data/models_v2/gradModels'
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
