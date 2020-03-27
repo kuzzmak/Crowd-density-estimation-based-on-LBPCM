@@ -108,7 +108,6 @@ class LBPCM:
     def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
-        pictures = pictures[:100]
         self.featureVectors = []
         i = 0
 

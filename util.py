@@ -257,8 +257,9 @@ def classifyImage(filename, model, conf, console):
 
 def classify(tuple):
     """
-        Funkcija za klasifikaciju liste slika
-    :param subImage: lista slika koja se treba klasificirati
+    Funkcija za klasifikaciju liste slika
+
+    :param tuple
     :return: oznaka pripadnosti razredu slike
     """
     subImage = tuple[0]
@@ -270,7 +271,8 @@ def classify(tuple):
     return int(model.predict([fv])[0])
 
 def shortAngles(angles):
-    """ Funkcija za kraći zapis kutova kad ih treba prikazati u aplikaciji,
+    """
+    Funkcija za kraći zapis kutova kad ih treba prikazati u aplikaciji,
     ovdje se koristi zapis s dvije najznačajnije znamenke
 
     :param angles: lista kutova koje treba zaokružiti
@@ -285,7 +287,8 @@ def shortAngles(angles):
     return result
 
 def makeColors(dim):
-    """ Funkcija za stvaranje kvadrata u boji koji predstavljaju razine gustoce
+    """
+    Funkcija za stvaranje kvadrata u boji koji predstavljaju razine gustoce
     u prozoru za klasifikaciju slike.
     Sličice su spremljene u rgb formatu, međutim kod učitavanja se učitaju
     u bgr formatu
@@ -309,8 +312,8 @@ def makeColors(dim):
 
 def pxory(glcm, k):
     """
-        Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
-        pojedinih Haralickovih funkcija.
+    Funkcija za zbrajanje elemenata na dijagonali matrice, potebna u izračunu
+    pojedinih Haralickovih funkcija.
 
     :param glcm: matrica u kojoj se zbrajaju elementi
     :param k: dijagonala + 1 na kojoj se zbrajaju elementi

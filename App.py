@@ -8,17 +8,18 @@ from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
 import random
-import Haralick
 import LBPCM
 from math import radians
 from math import pi
 import re
 import threading
-import pickle
+import concurrent.futures
+from concurrent.futures import ThreadPoolExecutor
 import Writer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 import json
+from multiprocessing import cpu_count
 
 import Pages.InitializationPage as iP
 import Pages.GradientPage as gP
@@ -76,10 +77,6 @@ class App(tk.Tk):
         self.currPicPar = [[]]
         # rjecnik svih stranica
         self.frames = {}
-        # staza do foldera sa slikama za treniranje
-        self.trainingPath = ""
-        # staza do foldera sa slikama za testiranje
-        self.testPath = ""
         # trenutna slika
         self.currPicPath = ""
         # staza do slika za pretprocesiranje
@@ -126,7 +123,6 @@ class App(tk.Tk):
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
         # stvaranje gumba za svaku od 14 funkcija
-
         names = ["angular second moment",
                  "contrast",
                  "correlation",
@@ -164,22 +160,12 @@ class App(tk.Tk):
 
             frame.grid(row=0, sticky="nsew")
 
-        self.show_frame(sP.StartPage)
+        self.show_frame(fvcP.FeatureVectorCreationPage)
 
     def show_frame(self, cont):
         """funkcija za prikaz odredjenog frame-a"""
         frame = self.frames[cont]
         frame.tkraise()
-
-    def setTrainPath(self, path):
-        """funkcija za postavljanje staze za treniranje"""
-
-        self.trainingPath = path
-
-    def setTestPath(self, path):
-        """funkcija za postavljanje staze za testiranje"""
-
-        self.testPath = path
 
     def nextCell(self):
         """ funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu
@@ -470,43 +456,6 @@ class App(tk.Tk):
         self.frames[swP.SlidingWindowPage].labelLBPPic.configure(image=self.LBPimg)
         self.frames[swP.SlidingWindowPage].labelPic.configure(image=self.im)
 
-    def selectFolder(self, testOrTrain):
-        """ funkcija za odabir folera za treniranje ili testiranje
-        """
-
-        # odabran put
-        filename = filedialog.askdirectory()
-        if testOrTrain == "train":
-            # staza za treniranje
-            self.setTrainPath(filename)
-            # stvaranje polja slika za treniranje
-            self.trainPictures = [f for f in listdir(self.trainingPath)]
-            # postavljanje progressbara u frameu feature vector creation
-            self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(maximum=self.trainPictures.__len__())
-            # dohvat prve slike
-            self.currPicPath = filename + "/" + self.trainPictures[0]
-            image = cv.imread(self.currPicPath)
-            # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
-            self.picDims = util.makePicDims(image, self.stepSize,
-                                            self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-            self.updateSlidingWindowImage()
-            self.updateParameterFrame()
-
-            # omogucavanje gumba sliding window
-            self.frames[iP.InitializationPage].buttonSW.config(state="normal")
-
-            self.console.insert(tk.END, "[INFO] training path set: " + filename + "\n")
-            self.console.insert(tk.END, "[INFO] loaded " + str(self.trainPictures.__len__()) + " training pictures\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-        else:
-            self.setTestPath(filename)
-            self.testPictures = [f for f in listdir(self.testPath)]
-            self.console.insert(tk.END, "[INFO] test path set: " + filename + "\n")
-            self.console.insert(tk.END, "[INFO] loaded " + str(self.testPictures.__len__()) + " test pictures\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-
     def updateParameterFrame(self):
         """ funkcija za azuriranje parametara na stranici s LBP-om
         """
@@ -524,20 +473,20 @@ class App(tk.Tk):
         # izlucivanje dijela slike koji prikazuje celija
         croppedImage = lbp[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
 
-        # razred s haralickovim funkcijama
-        haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
-        # prikaz kontrasta
-        contrast = haralick.contrast()
-        self.frames[swP.SlidingWindowPage].labelContrastValue.configure(text=str(util.shortAngles(contrast)))
-        # prikaz energije
-        energy = haralick.energy()
-        self.frames[swP.SlidingWindowPage].labelEnergyValue.configure(text=str(util.shortAngles(energy)))
-        # prikaz homogenosti
-        homogeneity = haralick.homogeneity()
-        self.frames[swP.SlidingWindowPage].labelHomogeneityValue.configure(text=str(util.shortAngles(homogeneity)))
-        # prikaz entropije
-        entropy = haralick.entropy()
-        self.frames[swP.SlidingWindowPage].labelEntropyValue.configure(text=str(util.shortAngles(entropy)))
+        # # razred s haralickovim funkcijama
+        # haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
+        # # prikaz kontrasta
+        # contrast = haralick.contrast()
+        # self.frames[swP.SlidingWindowPage].labelContrastValue.configure(text=str(util.shortAngles(contrast)))
+        # # prikaz energije
+        # energy = haralick.energy()
+        # self.frames[swP.SlidingWindowPage].labelEnergyValue.configure(text=str(util.shortAngles(energy)))
+        # # prikaz homogenosti
+        # homogeneity = haralick.homogeneity()
+        # self.frames[swP.SlidingWindowPage].labelHomogeneityValue.configure(text=str(util.shortAngles(homogeneity)))
+        # # prikaz entropije
+        # entropy = haralick.entropy()
+        # self.frames[swP.SlidingWindowPage].labelEntropyValue.configure(text=str(util.shortAngles(entropy)))
 
         self.update()
 
@@ -694,37 +643,37 @@ class App(tk.Tk):
         """
 
         # data staza
-        if self.dataPath == "":
-            self.frames[fvcP.FeatureVectorCreationPage].labelDataPathValue.configure(text="NOT SET")
-        else:
-            self.frames[fvcP.FeatureVectorCreationPage].labelDataPathValue.configure(
-                text=self.dataPath + "  (" + str(self.dataPictures.__len__()) + ") pictures")
+        # if self.dataPath == "":
+        #     self.frames[fvcP.FeatureVectorCreationPage].labelDataPathValue.configure(text="NOT SET")
+        # else:
+        #     self.frames[fvcP.FeatureVectorCreationPage].labelDataPathValue.configure(
+        #         text=self.dataPath + "  (" + str(self.dataPictures.__len__()) + ") pictures")
+        #
+        # # training staza
+        # if self.trainingPath == "":
+        #     self.frames[fvcP.FeatureVectorCreationPage].labelTrainValue.configure(text="NOT SET")
+        # else:
+        #     self.frames[fvcP.FeatureVectorCreationPage].labelTrainValue.configure(
+        #         text=self.trainingPath + "  (" + str(self.trainPictures.__len__()) + ") pictures")
+        #
+        # # test staza
+        # if self.testPath == "":
+        #     self.frames[fvcP.FeatureVectorCreationPage].labelTestValue.configure(text="NOT SET")
+        # else:
+        #     self.frames[fvcP.FeatureVectorCreationPage].labelTestValue.configure(
+        #         text=self.testPath + "  (" + str(self.testPictures.__len__()) + ") pictures")
+        #
+        # # LBP radius
+        # self.frames[fvcP.FeatureVectorCreationPage].labelLBPRadiusValue.configure(text=self.radius)
 
-        # training staza
-        if self.trainingPath == "":
-            self.frames[fvcP.FeatureVectorCreationPage].labelTrainValue.configure(text="NOT SET")
-        else:
-            self.frames[fvcP.FeatureVectorCreationPage].labelTrainValue.configure(
-                text=self.trainingPath + "  (" + str(self.trainPictures.__len__()) + ") pictures")
-
-        # test staza
-        if self.testPath == "":
-            self.frames[fvcP.FeatureVectorCreationPage].labelTestValue.configure(text="NOT SET")
-        else:
-            self.frames[fvcP.FeatureVectorCreationPage].labelTestValue.configure(
-                text=self.testPath + "  (" + str(self.testPictures.__len__()) + ") pictures")
-
-        # LBP radius
-        self.frames[fvcP.FeatureVectorCreationPage].labelLBPRadiusValue.configure(text=self.radius)
-
-        # velicina celije
-        self.frames[fvcP.FeatureVectorCreationPage].labelCellSizeValue.configure(text=self.cellSize)
-
-        # kutevi za lpbcm
-        self.frames[fvcP.FeatureVectorCreationPage].labelAnglesValue.configure(text=str(util.shortAngles(self.angles)))
-
-        # velicina koraka celije
-        self.frames[fvcP.FeatureVectorCreationPage].labelStepSizeValue.configure(text=self.stepSize)
+        # # velicina celije
+        # self.frames[fvcP.FeatureVectorCreationPage].labelCellSizeValue.configure(text=self.cellSize)
+        #
+        # # kutevi za lpbcm
+        # self.frames[fvcP.FeatureVectorCreationPage].labelAnglesValue.configure(text=str(util.shortAngles(self.angles)))
+        #
+        # # velicina koraka celije
+        # self.frames[fvcP.FeatureVectorCreationPage].labelStepSizeValue.configure(text=self.stepSize)
 
         # labela za napredak
         self.frames[fvcP.FeatureVectorCreationPage].labelProgress.configure(text="0/" + str(self.processedDataPictures.__len__())
@@ -740,17 +689,13 @@ class App(tk.Tk):
                                           filetypes=(("text files", "*.txt"), ("all files", "*.*")))
 
         if len(file) == 0:
-            self.console.insert(tk.END, "[WARNING] you did not select file with labeled data\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+            self.consolePrint("[WARNING] you did not select file with labeled data")
         else:
             self.writer.loadAnnotedDataFromFile(file)
             self.labelDictionary = self.writer.labelDictionary
             self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
 
-            self.console.insert(tk.END, "[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+            self.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
 
     def consolePrint(self, message):
         self.console.insert(tk.END, message + "\n")
@@ -859,8 +804,8 @@ class App(tk.Tk):
             self.configurations.append(conf)
 
             # ažuriranje labele broja konfiguracija
-            self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/" + str(len(self.configurations))
-                                                                                + "   Configurations completed.")
+            self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(
+                text="0/" + str(len(self.configurations)) + "   Configurations completed.")
 
             self.console.insert(tk.END, "new configuration added\n")
             self.console.insert(tk.END, str(conf) + "\n")
@@ -904,8 +849,6 @@ class App(tk.Tk):
         conf.extend(mean.tolist())
         conf.extend(sigma.tolist())
 
-
-
         X_train = fv[:round(0.7 * fv.__len__())]
         X_test = fv[round(0.7 * fv.__len__()):]
 
@@ -916,11 +859,7 @@ class App(tk.Tk):
         Y_train = Y[:round(0.7 * fv.__len__())]
         Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
 
-        Y_train = Y_train[:100]
-        Y_test = Y_test[:100]
-
-        self.console.insert(tk.END, "[INFO] fitting started\n")
-        self.console.see(tk.END)
+        self.consolePrint("\t[INFO] fitting started")
 
         writer = Writer.Writer()
 
@@ -928,7 +867,7 @@ class App(tk.Tk):
             kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
             kneighbors.fit(X_train, Y_train)
             error = 1 - kneighbors.score(X_test, Y_test)
-            self.consolePrint("[INFO] error: " + str(error))
+            self.consolePrint("\t[INFO] error: " + str(error))
             conf.append(error)
             writer.saveModel(kneighbors, conf)
 
@@ -936,15 +875,11 @@ class App(tk.Tk):
             svm = SVC(gamma='auto')
             svm.fit(X_train, Y_train)
             error = 1 - svm.score(X_test, Y_test)
-            self.consolePrint("[INFO] error: " + str(error))
+            self.consolePrint("\t[INFO] error: " + str(error))
             conf.append(error)
             writer.saveModel(svm, conf)
 
-        # saveString = str(conf) + "--error: " + str(error)
-        #
-        # self.writer.saveDirectory = r"data/normalData"
-        # self.writer.saveResults(saveString)
-        # self.writer.saveModel(kneighbors, conf)
+        self.consolePrint("\t[INFO] fitting finished")
 
         self.consolePrint("[INFO] configuration completed")
 
@@ -952,10 +887,17 @@ class App(tk.Tk):
         """ Funkcija za pokretanje pojedine unesene konfiguracije
         :return:
         """
-        for conf in self.configurations:
+        # for conf in self.configurations:
+        #
+        #     # self.runConf(conf)
+        #     threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
 
-            # self.runConf(conf)
-            threading.Thread(target=self.runConf, args=(conf,), daemon=True).start()
+        # with concurrent.futures.ProcessPoolExecutor() as executor:
+        #     for _ in zip(self.configurations, executor.map(self.runConf, self.configurations)):
+        #         pass
+
+        with ThreadPoolExecutor(max_workers=cpu_count()) as executor:
+            executor.map(self.runConf, self.configurations)
 
     def showClassifiedImage(self):
 
@@ -975,28 +917,6 @@ class App(tk.Tk):
         # postavljanje slike u labelu
         self.frames[clP.ClassificationPage].labelPicture.configure(image=self.im)
 
-    def loadModel(self):
-
-        self.writer.loadModel()
-        conf = self.writer.getConfiguration()
-        self.console.insert(tk.END, "[INFO] configuration loaded\n")
-        self.console.insert(tk.END, str(conf) + "\n")
-        self.console.see(tk.END)
-
-        # omogucavanje gumba
-        self.frames[clP.ClassificationPage].buttonSelectPicture['state'] = "normal"
-        self.frames[clP.ClassificationPage].buttonSelectFolder['state'] = "normal"
-
-        # postavljanje parametera modela u frameu
-        self.frames[clP.ClassificationPage].labelLBPRadiusValue.configure(text=conf[0])
-        self.frames[clP.ClassificationPage].labelGLCMDIstance.configure(text=str(conf[1]))
-        self.frames[clP.ClassificationPage].labelStepSize.configure(text=conf[2])
-        self.frames[clP.ClassificationPage].labelCellSize.configure(text=str(conf[3]))
-        self.frames[clP.ClassificationPage].labelAnglesValue.configure(text=str(util.shortAngles(conf[4])))
-        self.frames[clP.ClassificationPage].numberOfNeighborsValue.configure(text=conf[5])
-        self.frames[clP.ClassificationPage].labelCombineDistancesValue.configure(text=conf[6])
-        self.frames[clP.ClassificationPage].labelCombineAnglesValue.configure(text=conf[7])
-
     def loadColors(self):
 
         self.c0c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/0.jpg")))
@@ -1013,8 +933,7 @@ class App(tk.Tk):
 
     def selectGradientPicture(self):
         """
-            Funkcija za izbor slike na kojoj se primjenjuje operator gradijenta
-        :return:
+        Funkcija za izbor slike na kojoj se primjenjuje operator gradijenta
         """
 
         filename = filedialog.askopenfilename(
@@ -1042,9 +961,7 @@ class App(tk.Tk):
             self.frames[gP.GradientPage].canvasd.draw()
 
         else:
-            self.console.insert(tk.END, "[WARNING] no image was selected\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+            self.consolePrint("[WARNING] no image was selected")
 
 
 if __name__ == "__main__":

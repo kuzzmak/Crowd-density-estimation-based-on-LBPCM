@@ -85,14 +85,14 @@ class FeatureVectorCreationPage(tk.Frame):
         progressDescription.grid(row=0, padx=10, pady=5)
 
         # progressbar za broj završenih vektora značajki
-        self.progressbarVector = Progressbar(frameProgress, orient=tk.HORIZONTAL, length=200, mode='determinate')
+        self.progressbarVector = Progressbar(frameProgress, orient=tk.HORIZONTAL, length=500, mode='determinate')
         self.progressbarVector.grid(row=1, column=0, padx=10, pady=5)
 
         self.labelProgress = tk.Label(frameProgress, text="")
         self.labelProgress.grid(row=1, column=1, padx=10, pady=5, sticky="w")
 
         # progressbar za broj završenih konfiguracija
-        self.progressbarConf = Progressbar(frameProgress, orient=tk.HORIZONTAL, length=200, mode='determinate')
+        self.progressbarConf = Progressbar(frameProgress, orient=tk.HORIZONTAL, length=500, mode='determinate')
         self.progressbarConf.grid(row=2, column=0, padx=10, pady=5)
 
         self.labelProgressConf = tk.Label(frameProgress, text="")

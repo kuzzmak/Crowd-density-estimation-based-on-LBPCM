@@ -1,6 +1,7 @@
 import tkinter as tk
 import FunctionDescriptions
 import Pages.FeatureVectorCreationPage as fvcP
+import threading
 
 class ConfigurationsPage(tk.Frame):
     """ razred za ucenje klasifikatora, nakon stvorenih vektora znacajki i oznacenih slika
@@ -166,7 +167,9 @@ class ConfigurationsPage(tk.Frame):
         buttonAdd.pack(side="left", padx=10, pady=10)
 
         buttonRunConfigurations = tk.Button(buttonFrame, text="Run configurations",
-                                            command=lambda: controller.runConfigurations())
+                                            command=lambda: threading.Thread(
+                                                target=controller.runConfigurations, daemon=True).start())
+
         buttonRunConfigurations.pack(side="left", padx=10, pady=10)
 
         buttonBack = tk.Button(buttonFrame, text="Back",
