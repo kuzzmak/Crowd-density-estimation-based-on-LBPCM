@@ -208,10 +208,10 @@ class ModelPage(tk.Frame):
         # print()
 
         if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
-            upperFrame.buttonClassify['state'] = 'normal'
+            upperFrame.buttonSelectPicture['state'] = 'normal'
 
         if upperFrame.numberOfModels.get() == 2 and upperFrame.modelPages[0].writer.model != [] and upperFrame.modelPages[1].writer.model != []:
-            upperFrame.buttonClassify['state'] = 'normal'
+            upperFrame.buttonSelectPicture['state'] = 'normal'
 
         im = Image.open(controller.configuration["checkMarkPath"])
         im = im.resize((20, 20), Image.ANTIALIAS)

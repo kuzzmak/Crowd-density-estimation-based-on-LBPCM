@@ -2,21 +2,19 @@ import tkinter as tk
 from PIL import ImageTk, Image
 import Pages.InitializationPage as iP
 import Pages.ModelPage as mp
+from tkinter import filedialog
 
 class FVC2Page(tk.Frame):
 
     def __init__(self, parent, controller):
 
-        self.numberOfModels = tk.IntVar()
-        self.numberOfModels.set(1)
-        self.modelPages = []
-
-        self.checkmark = r'data/model_icons/checkmark.jpg'
-        self.xmark = r'data/model_icons/xmark.jpg'
-
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
+
+        self.numberOfModels = tk.IntVar()
+        self.numberOfModels.set(1)
+        self.modelPages = []
 
         numOfModelsFrame = tk.Frame(self)
         numOfModelsFrame.grid(row=0, sticky="n")
@@ -46,8 +44,9 @@ class FVC2Page(tk.Frame):
         buttonFrame = tk.Frame(self)
         buttonFrame.grid(row=2, sticky="s", pady=10)
 
-        buttonPrintModels = tk.Button(buttonFrame, text="print", command=self.printModels)
-        buttonPrintModels.pack(side="left", padx=10)
+        self.buttonSelectPicture = tk.Button(buttonFrame, text="Select picture",
+                                             command=lambda: self.selectPicture(controller), state="disabled")
+        self.buttonSelectPicture.pack(side="left", padx=10, pady=10)
 
         self.buttonClassify = tk.Button(buttonFrame, text="Classify", state="disabled")
         self.buttonClassify.pack(side="left", padx=10, pady=10)
@@ -66,6 +65,7 @@ class FVC2Page(tk.Frame):
 
         try:
             self.buttonClassify['state'] = 'disabled'
+            self.buttonSelectPicture['state'] = 'disabled'
         except:
             pass
 
@@ -111,8 +111,23 @@ class FVC2Page(tk.Frame):
             mp.imageLabel.configure(image=mp.im)
             mp.imageLabelDescription.configure(text="model not loaded")
 
-    def printModels(self):
+    def selectPicture(self, controller):
+        """
+        Funkcija za izbor slike za klasifikaciju
+        """
 
-        for m in self.modelPages:
-            print(m.writer.model)
-        print()
+        # staza do odabrane slike preko izbornika
+        path = filedialog.askopenfilename(initialdir=r"/home/tonkec/PycharmProjects/"
+                                                     r"Crowd-density-estimation-based-on-LBPCM/"
+                                                     r"data/normalData/View_001",
+                                          title="Select picture you want to classify",
+                                          filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
+
+        if len(path) > 0:
+
+            self.pictureToClassify = path
+            # omogućavanje gumba za klasifikaciju
+            self.buttonClassify['state'] = 'normal'
+
+        else:
+            controller.consolePrint("[WARNING] you did not select any picture")
