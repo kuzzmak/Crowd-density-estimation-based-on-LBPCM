@@ -1,0 +1,8 @@
+{
+  "processedImagesPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData",
+  "checkMarkPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/model_icons/checkmark.jpg",
+  "xMarkPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/model_icons/xmark.jpg",
+
+  "grayModelsPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/models_v2/grayModels",
+  "gradModelsPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/models_v2/gradModels"
+}

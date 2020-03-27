@@ -17,15 +17,12 @@ class ModelPage(tk.Frame):
         self.modelType = tk.StringVar()
         self.modelType.set('gray')
 
-        self.checkmark = r'data/model_icons/checkmark.jpg'
-        self.xmark = r'data/model_icons/xmark.jpg'
-
         # dohvat svih .pkl imena
-        models = [x for x in listdir(controller.grayModelsDirectory) if x.endswith('.pkl')]
+        models = [x for x in listdir(controller.configuration["grayModelsPath"]) if x.endswith('.pkl')]
         # id-jevi modela sa sivim slikama
         self.grayModels = [int(x.split('.')[0]) for x in models]
 
-        models = [x for x in listdir(controller.gradModelsDirectory) if x.endswith('.pkl')]
+        models = [x for x in listdir(controller.configuration["gradModelsPath"]) if x.endswith('.pkl')]
         # id-jevi modela s gradijentnim slikama
         self.gradModels = [int(x.split('.')[0]) for x in models]
 
@@ -145,7 +142,7 @@ class ModelPage(tk.Frame):
         self.modelStatusFrame = tk.Frame(frameButtonPrevNext)
         self.modelStatusFrame.pack()
 
-        im = Image.open(self.xmark)
+        im = Image.open(controller.configuration["xMarkPath"])
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
@@ -197,16 +194,26 @@ class ModelPage(tk.Frame):
         modelType = self.modelType.get()
 
         if modelType == 'gray':
-            modelPath = controller.grayModelsDirectory + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
+            modelPath = controller.configuration["grayModelsPath"] + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
 
         else:
-            modelPath = controller.gradModelsDirectory + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
+            modelPath = controller.configuration["gradModelsPath"] + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
 
-        upperFrame.buttonClassify['state'] = 'normal'
+        # print("prvi")
+        # print(upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != [])
+        # print("drugi")
+        # print(upperFrame.numberOfModels.get() == 2 and upperFrame.modelPages[0].writer.model != [] and upperFrame.modelPages[1].writer.model != [])
+        # print()
 
-        im = Image.open(self.checkmark)
+        if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
+            upperFrame.buttonClassify['state'] = 'normal'
+
+        if upperFrame.numberOfModels.get() == 2 and upperFrame.modelPages[0].writer.model != [] and upperFrame.modelPages[1].writer.model != []:
+            upperFrame.buttonClassify['state'] = 'normal'
+
+        im = Image.open(controller.configuration["checkMarkPath"])
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 

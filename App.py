@@ -18,6 +18,7 @@ import pickle
 import Writer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+import json
 
 import Pages.InitializationPage as iP
 import Pages.GradientPage as gP
@@ -118,8 +119,9 @@ class App(tk.Tk):
         # variajble za odabir vrste klasifikatora
         self.cType = tk.IntVar()
 
-        self.grayModelsDirectory = r'data/models_v2/grayModels'
-        self.gradModelsDirectory = r'data/models_v2/gradModels'
+        with open("configuration.json") as json_file:
+
+            self.configuration = json.load(json_file)
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []

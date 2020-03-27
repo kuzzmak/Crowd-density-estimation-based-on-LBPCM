@@ -248,3 +248,7 @@
 #
 # conf = writer.loadConfFromJSON(3)
 # print(conf)
+
+a = [1]
+
+print(a != [])
