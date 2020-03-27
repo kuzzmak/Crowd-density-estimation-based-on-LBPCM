@@ -3,32 +3,37 @@ from os import listdir
 import Writer
 import util
 from sklearn.externals import joblib
+from PIL import ImageTk, Image
 
 class ModelPage(tk.Frame):
 
     def __init__(self, parent, upperFrame, controller):
+
+        tk.Frame.__init__(self, parent)
+        self.grid_columnconfigure(0, weight=1)
 
         self.currentGrayModel = 0
         self.currentGradModel = 0
         self.modelType = tk.StringVar()
         self.modelType.set('gray')
 
+        self.checkmark = r'data/model_icons/checkmark.jpg'
+        self.xmark = r'data/model_icons/xmark.jpg'
+
         # dohvat svih .pkl imena
         models = [x for x in listdir(controller.grayModelsDirectory) if x.endswith('.pkl')]
-        # dohvat svih id-ja modela
+        # id-jevi modela sa sivim slikama
         self.grayModels = [int(x.split('.')[0]) for x in models]
 
         models = [x for x in listdir(controller.gradModelsDirectory) if x.endswith('.pkl')]
-
+        # id-jevi modela s gradijentnim slikama
         self.gradModels = [int(x.split('.')[0]) for x in models]
 
+        # broj modela koji koristi sive ili gradijentne slike, koristi se kod brojača za trenutni prikazani model
         self.numberOfGrayModels = len(self.grayModels)
         self.numberOfGradModels = len(self.gradModels)
-
+        # razred za učitavanje modela i konfiguracije modela
         self.writer = Writer.Writer()
-
-        tk.Frame.__init__(self, parent)
-        self.grid_columnconfigure(0, weight=1)
 
         # lijevi panel sa selekcijom modela
         selectFrame1 = tk.Frame(self)
@@ -137,6 +142,19 @@ class ModelPage(tk.Frame):
         self.currentModelLabel = tk.Label(frameButtonPrevNext, text="")
         self.currentModelLabel.pack()
 
+        self.modelStatusFrame = tk.Frame(frameButtonPrevNext)
+        self.modelStatusFrame.pack()
+
+        im = Image.open(self.xmark)
+        im = im.resize((20, 20), Image.ANTIALIAS)
+        self.im = ImageTk.PhotoImage(im)
+
+        self.imageLabel = tk.Label(self.modelStatusFrame, image=self.im)
+        self.imageLabel.pack(side="left", padx=5, pady=5)
+
+        self.imageLabelDescription = tk.Label(self.modelStatusFrame, text="model not loaded")
+        self.imageLabelDescription.pack(side="left", padx=5, pady=5)
+
         buttonPrev = tk.Button(frameButtonPrevNext, text="Previous")
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
@@ -187,6 +205,13 @@ class ModelPage(tk.Frame):
             self.writer.model = joblib.load(modelPath)
 
         upperFrame.buttonClassify['state'] = 'normal'
+
+        im = Image.open(self.checkmark)
+        im = im.resize((20, 20), Image.ANTIALIAS)
+        self.im = ImageTk.PhotoImage(im)
+
+        self.imageLabel.configure(image=self.im)
+        self.imageLabelDescription.configure(text="model loaded")
 
     def showInfo(self, modelId):
         """
