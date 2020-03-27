@@ -8,12 +8,14 @@ class FVC2Page(tk.Frame):
 
         self.numberOfModels = tk.IntVar()
         self.numberOfModels.set(1)
+        self.modelPages = []
 
-        tk.Frame.__init__(self, parent)
+        tk.Frame.__init__(self, parent, bg="blue")
         self.grid_columnconfigure(0, weight=1)
+        self.grid_rowconfigure(0, weight=1)
 
         numOfModelsFrame = tk.Frame(self)
-        numOfModelsFrame.grid(row=0)
+        numOfModelsFrame.grid(row=0, sticky="n")
 
         numOfModelsLabel = tk.Label(numOfModelsFrame, text="Select number of models to be used for classification.")
         numOfModelsLabel.pack(pady=5)
@@ -30,13 +32,21 @@ class FVC2Page(tk.Frame):
         rTwo.pack(side="left", padx=10, pady=5)
 
         self.middleFrame = tk.Frame(self)
-        self.middleFrame.grid(row=1)
+        self.middleFrame.grid(row=1, sticky="n")
 
         leftModel = mp.ModelPage(self.middleFrame, self, controller)
-        leftModel.grid(row=0, column=0, padx=10, pady=10)
+        leftModel.grid(row=0, column=0, padx=10)
 
-        buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
-        buttonBack.grid(row=2, padx=10, pady=10)
+        self.modelPages.append(leftModel)
+
+        buttonFrame = tk.Frame(self)
+        buttonFrame.grid(row=2, sticky="s", pady=10)
+
+        self.buttonClassify = tk.Button(buttonFrame, text="Classify", state="disabled")
+        self.buttonClassify.pack(side="left", padx=10, pady=10)
+
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
+        buttonBack.pack(side="left", padx=10, pady=10)
 
     def showModelsPanel(self, controller):
         """
@@ -50,7 +60,8 @@ class FVC2Page(tk.Frame):
         if numOfModels == 2:
 
             rightModel = mp.ModelPage(self.middleFrame, self, controller)
-            rightModel.grid(row=0, column=1, padx=30, pady=10)
+            rightModel.grid(row=0, column=1, padx=30)
+            self.modelPages.append(rightModel)
         else:
 
             self.middleFrame.destroy()
@@ -59,4 +70,7 @@ class FVC2Page(tk.Frame):
             self.middleFrame.grid(row=1)
 
             leftModel = mp.ModelPage(self.middleFrame, self, controller)
-            leftModel.grid(row=0, column=0, padx=10, pady=10)
+            leftModel.grid(row=0, column=0, padx=30)
+
+            self.modelPages = []
+            self.modelPages.append(leftModel)

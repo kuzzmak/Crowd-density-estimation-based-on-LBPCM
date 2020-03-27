@@ -140,7 +140,8 @@ class ModelPage(tk.Frame):
         buttonPrev = tk.Button(frameButtonPrevNext, text="Previous")
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
-        buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", command=lambda: self.loadModel(controller))
+        buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", command=lambda: self.loadModel(
+            controller, upperFrame))
         buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get()))
@@ -167,10 +168,11 @@ class ModelPage(tk.Frame):
 
         self.showInfo(modelId)
 
-    def loadModel(self, controller):
+    def loadModel(self, controller, upperFrame):
         """
         Funkcija za učitavanje trenutno izabranog modela
 
+        :param upperFrame:
         :param controller: referenca do glavnog programa
         """
 
@@ -179,12 +181,12 @@ class ModelPage(tk.Frame):
         if modelType == 'gray':
             modelPath = controller.grayModelsDirectory + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
-            print(self.writer.model)
 
         else:
             modelPath = controller.gradModelsDirectory + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
-            print(self.writer.model)
+
+        upperFrame.buttonClassify['state'] = 'normal'
 
     def showInfo(self, modelId):
         """
@@ -209,9 +211,6 @@ class ModelPage(tk.Frame):
         error = self.writer.loadConfFromJSON(modelId)
 
         fun = []
-
-        print("conf")
-        print(modelId, classifierType, picType, functions, error)
 
         for f in functions:
             if f == 'angular second moment':
