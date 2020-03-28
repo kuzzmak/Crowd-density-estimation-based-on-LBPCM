@@ -12,13 +12,10 @@ import LBPCM
 from math import radians
 from math import pi
 import re
-import threading
-import concurrent.futures
 from concurrent.futures import ThreadPoolExecutor
 import Writer
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-import json
 from multiprocessing import cpu_count
 
 import Pages.InitializationPage as iP
@@ -109,10 +106,8 @@ class App(tk.Tk):
         self.rbAngles = tk.IntVar()
         # razred za spremanje rezultata i labela
         self.writer = Writer.Writer()
-        # varijabla za odabir vrste slika na kojima se primjenjuje LBP, na sivim ili gradijentnim slikama
-        self.rType = tk.IntVar()
-        # variajble za odabir vrste klasifikatora
-        self.cType = tk.IntVar()
+
+
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
@@ -480,103 +475,107 @@ class App(tk.Tk):
         self.update()
 
     def selectProcessedDataFolder(self):
-        """ funkcija za odabir folders s vec procesiranim slikama
-        """
-
-        directory = filedialog.askdirectory(initialdir=r"data/processedData")
-
-        # ako je izabran neki direktorij
-        if directory != "":
-
-            self.app.configuration['processedImagesPath'] = directory
-            self.processedDataPictures = [f for f in listdir(self.app.configuration['processedImagesPath'])]
-            self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
-            self.frames[iP.InitializationPage].buttonSW["state"] = "normal"
-            self.frames[iP.InitializationPage].buttonGradient["state"] = "normal"
-
-            self.currPicPath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0]
-            image = cv.imread(self.currPicPath)
-            # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
-            self.picDims = util.makePicDims(image, self.stepSize,
-                                            self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-            # self.updateSlidingWindowImage()
-            # self.updateParameterFrame()
-
-            # omogucavanje gumba za oznacavanje slika
-            self.frames[iP.InitializationPage].buttonDataAnnotation['state'] = "normal"
-
-            self.console.insert(tk.END, "[INFO] processed data folder path set: " + directory + "\n")
-            self.console.insert(tk.END,
-                                "[INFO] loaded " + str(self.processedDataPictures.__len__()) + " processed pictures\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-        else:
-            self.console.insert(tk.END, "[WARNING] you did not select folder\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+        pass
+    #     """ funkcija za odabir folders s vec procesiranim slikama
+    #     """
+    #
+    #     directory = filedialog.askdirectory(initialdir=r"data/processedData")
+    #
+    #     # ako je izabran neki direktorij
+    #     if directory != "":
+    #
+    #         self.app.configuration['processedImagesPath'] = directory
+    #         self.processedDataPictures = [f for f in listdir(self.app.configuration['processedImagesPath'])]
+    #         self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
+    #         self.frames[iP.InitializationPage].buttonSW["state"] = "normal"
+    #
+    #         self.currPicPath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0]
+    #         image = cv.imread(self.currPicPath)
+    #         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
+    #         self.picDims = util.makePicDims(image, self.stepSize,
+    #                                         self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
+    #         # self.updateSlidingWindowImage()
+    #         # self.updateParameterFrame()
+    #
+    #         # omogucavanje gumba za oznacavanje slika
+    #         self.frames[iP.InitializationPage].buttonDataAnnotation['state'] = "normal"
+    #
+    #         self.console.insert(tk.END, "[INFO] processed data folder path set: " + directory + "\n")
+    #         self.console.insert(tk.END,
+    #                             "[INFO] loaded " + str(self.processedDataPictures.__len__()) + " processed pictures\n")
+    #         self.console.insert(tk.END, "----------------------------------------\n")
+    #         self.console.see(tk.END)
+    #     else:
+    #         self.console.insert(tk.END, "[WARNING] you did not select folder\n")
+    #         self.console.insert(tk.END, "----------------------------------------\n")
+    #         self.console.see(tk.END)
 
     def updateDataAnnotationFrame(self):
-        """ funkcija za azuriranje stranice za oznacavanje slika
-        """
-
-        # staza do trenutne slike
-        imagePath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.dataAnnotationCounter]
-        image = cv.imread(imagePath)
-        self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
-        # postavljanje slike u labelu
-        self.frames[daP.DataAnnotationPage].labelPic.configure(image=self.im)
-        # postavljanje imena slike u labelu
-        self.frames[daP.DataAnnotationPage].labelImageName.configure(
-            text=self.processedDataPictures[self.dataAnnotationCounter])
-
-        self.frames[daP.DataAnnotationPage].labelAnnotedDataCounter.configure(
-            text=str(self.dataAnnotationCounter) + "/" + str(self.processedDataPictures.__len__()))
+        pass
+    #     """ funkcija za azuriranje stranice za oznacavanje slika
+    #     """
+    #
+    #     # staza do trenutne slike
+    #     imagePath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.dataAnnotationCounter]
+    #     image = cv.imread(imagePath)
+    #     self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+    #     # postavljanje slike u labelu
+    #     self.frames[daP.DataAnnotationPage].labelPic.configure(image=self.im)
+    #     # postavljanje imena slike u labelu
+    #     self.frames[daP.DataAnnotationPage].labelImageName.configure(
+    #         text=self.processedDataPictures[self.dataAnnotationCounter])
+    #
+    #     self.frames[daP.DataAnnotationPage].labelAnnotedDataCounter.configure(
+    #         text=str(self.dataAnnotationCounter) + "/" + str(self.processedDataPictures.__len__()))
 
     def prevPicAnnotation(self):
-        """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
-        """
-
-        if self.dataAnnotationCounter >= 1:
-            self.dataAnnotationCounter -= 1
-            self.updateDataAnnotationFrame()
-        else:
-            self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+        pass
+    #     """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
+    #     """
+    #
+    #     if self.dataAnnotationCounter >= 1:
+    #         self.dataAnnotationCounter -= 1
+    #         self.updateDataAnnotationFrame()
+    #     else:
+    #         self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
+    #         self.console.insert(tk.END, "----------------------------------------\n")
+    #         self.console.see(tk.END)
 
     def annotate(self, label):
-        """ funkcija za stvaranje oznake pojedine slke i spremanje u rjecnik i datoteku
-        """
-
-        # ime slike
-        picName = self.processedDataPictures[self.dataAnnotationCounter]
-        # dodijeljena labela
-        saveString = picName + ":" + label
-        self.labelDictionary[picName] = label
-
-        # ako smo dosli do zadnje onda se staje
-        if self.dataAnnotationCounter < self.processedDataPictures.__len__():
-            self.dataAnnotationCounter += 1
-            self.updateDataAnnotationFrame()
-            self.console.insert(tk.END, saveString + "\n")
-            self.console.see(tk.END)
-        else:
-            self.console.insert(tk.END, "[INFO] all pictures labeled\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+        pass
+    #     """ funkcija za stvaranje oznake pojedine slke i spremanje u rjecnik i datoteku
+    #     """
+    #
+    #     # ime slike
+    #     picName = self.processedDataPictures[self.dataAnnotationCounter]
+    #     # dodijeljena labela
+    #     saveString = picName + ":" + label
+    #     self.labelDictionary[picName] = label
+    #
+    #     # ako smo dosli do zadnje onda se staje
+    #     if self.dataAnnotationCounter < self.processedDataPictures.__len__():
+    #         self.dataAnnotationCounter += 1
+    #         self.updateDataAnnotationFrame()
+    #         self.console.insert(tk.END, saveString + "\n")
+    #         self.console.see(tk.END)
+    #     else:
+    #         self.console.insert(tk.END, "[INFO] all pictures labeled\n")
+    #         self.console.insert(tk.END, "----------------------------------------\n")
+    #         self.console.see(tk.END)
 
     def saveAnnotedData(self):
-        """ funkcija za spremanje rjecnika slika i oznaka
-        """
-
-        self.writer.saveDirectory = r"data/normalData"
-        self.writer.labelDictionary = self.labelDictionary
-        self.writer.writeAnnotedDataToFile()
-
-        self.console.insert(tk.END, "[INFO] labels and images saved to: " + self.writer.saveDirectory + "\n")
-        self.console.insert(tk.END, "[INFO] saved " + str(self.labelDictionary.__len__()) + " labeled images\n")
-        self.console.insert(tk.END, "----------------------------------------\n")
-        self.console.see(tk.END)
+        pass
+    #     """ funkcija za spremanje rjecnika slika i oznaka
+    #     """
+    #
+    #     self.writer.saveDirectory = r"data/normalData"
+    #     self.writer.labelDictionary = self.labelDictionary
+    #     self.writer.writeAnnotedDataToFile()
+    #
+    #     self.console.insert(tk.END, "[INFO] labels and images saved to: " + self.writer.saveDirectory + "\n")
+    #     self.console.insert(tk.END, "[INFO] saved " + str(self.labelDictionary.__len__()) + " labeled images\n")
+    #     self.console.insert(tk.END, "----------------------------------------\n")
+    #     self.console.see(tk.END)
 
     def seeOnPic(self):
         """ funkcija za prikaz slikovnih elemenata na slici ako su zadane dimenzije
@@ -673,115 +672,6 @@ class App(tk.Tk):
         self.console.insert(tk.END, message + "\n")
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
-
-    def addConf(self):
-        """
-            Funkcija za dohvaćanje parametara konfiguracije iz polja za unos sa stranice
-            ConfigurationsPage
-        :return:
-        """
-
-        parametersOK = True
-
-        # dohvat vrste slike nad kojom se provodi postupak LBP
-        picType = self.rType.get()
-        if picType == 0:
-            picType = "gray"
-        else:
-            picType = "grad"
-
-        classifierType = self.cType.get()
-        if classifierType == 0:
-            classifierType = "kNN"
-        else:
-            classifierType = "SVM"
-
-        # dohvat parametara za konfiguraciju
-        try:
-            radius = int(self.frames[coP.ConfigurationsPage].entryLBPRadius.get())
-            if radius < 1:
-                raise ValueError
-        except ValueError:
-            parametersOK = False
-            self.consolePrint("[ERROR] please check your input for radius")
-
-        try:
-            glcmDistance = [int(x) for x in self.frames[coP.ConfigurationsPage].entryGLCMDistance.get().split(",")]
-            for d in glcmDistance:
-                if d < 1:
-
-                    raise ValueError
-        except ValueError:
-            parametersOK = False
-            self.consolePrint("[ERROR] please check your input for glcm distance")
-
-        try:
-            stepSize = int(self.frames[coP.ConfigurationsPage].entryStepSize.get())
-        except ValueError:
-            parametersOK = False
-            self.consolePrint("[ERROR] please check your input for step size")
-
-        try:
-            cellSize = [int(x) for x in self.frames[coP.ConfigurationsPage].entryCellSize.get().split(",")]
-            if len(cellSize) != 2:
-                raise ValueError
-            for c in cellSize:
-                if c < 1:
-                    raise ValueError
-        except ValueError:
-            parametersOK = False
-            self.consolePrint("[ERROR] please check your input for cell size")
-
-        try:
-            angles = [radians(int(i)) for i in self.frames[coP.ConfigurationsPage].entryAngles.get().split(",")]
-        except ValueError:
-            parametersOK = False
-            self.consolePrint("[ERROR] please check your input for angles")
-
-        try:
-            numOfNeighbors = int(self.frames[coP.ConfigurationsPage].entryNumOfNeighbors.get())
-            if numOfNeighbors < 1:
-                raise ValueError
-        except ValueError:
-            parametersOK = False
-            self.consolePrint("[ERROR] please check your input for number of neighbors")
-
-        combineDistances = int(self.rbDistances.get())
-        combineAngles = int(self.rbAngles.get())
-
-        functions = []
-
-        for _, name, c in self.functionButtons:
-            if c.get():
-                functions.append(name)
-
-        if len(functions) == 0:
-            parametersOK = False
-            self.consolePrint("[INFO] please select one or more Haralick functions")
-
-        if parametersOK:
-            # pojedina konfiguracija
-            conf = [classifierType,
-                    picType,
-                    radius,
-                    glcmDistance,
-                    stepSize,
-                    cellSize,
-                    angles,
-                    numOfNeighbors,
-                    combineDistances,
-                    combineAngles,
-                    functions]
-
-            self.configurations.append(conf)
-
-            # ažuriranje labele broja konfiguracija
-            self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(
-                text="0/" + str(len(self.configurations)) + "   Configurations completed.")
-
-            self.console.insert(tk.END, "new configuration added\n")
-            self.console.insert(tk.END, str(conf) + "\n")
-            self.console.see(tk.END)
 
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
@@ -892,36 +782,6 @@ class App(tk.Tk):
         self.frames[clP.ClassificationPage].c3c.configure(image=self.c3c)
         self.frames[clP.ClassificationPage].c4c.configure(image=self.c4c)
 
-    def selectGradientPicture(self):
-        """
-        Funkcija za izbor slike na kojoj se primjenjuje operator gradijenta
-        """
 
-        filename = filedialog.askopenfilename(
-            initialdir=r"data/processedData",
-            title="Select picture",
-            filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
-
-        if len(filename) > 0:
-
-            img, sobel, sobelx, sobely = util.gradientImage(filename)
-            # postavljanje normalne slike
-            self.frames[gP.GradientPage].a.imshow(img, cmap='gray')
-            self.frames[gP.GradientPage].canvasa.draw()
-
-            # postavljanje sobel slike
-            self.frames[gP.GradientPage].b.imshow(sobel, cmap='gray')
-            self.frames[gP.GradientPage].canvasb.draw()
-
-            # postavljanje sobel_x slike
-            self.frames[gP.GradientPage].c.imshow(sobelx, cmap='gray')
-            self.frames[gP.GradientPage].canvasc.draw()
-
-            # postavljanje sobel_y slike
-            self.frames[gP.GradientPage].d.imshow(sobely, cmap='gray')
-            self.frames[gP.GradientPage].canvasd.draw()
-
-        else:
-            self.consolePrint("[WARNING] no image was selected")
 
 

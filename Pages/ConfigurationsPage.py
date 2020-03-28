@@ -11,6 +11,19 @@ class ConfigurationsPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
 
+        # varijabla koja sadrži vrijednost radiu gumba za biranje vrste slike nad kojom se izvodi LBP
+        self.rPicType = tk.StringVar()
+        # zadana početna vrijednost
+        self.rPicType.set('gray')
+        # varijabla za vrstu klasifikatora koji se koristi
+        self.rClassifierType = tk.StringVar()
+        self.rClassifierType.set('kNN')
+
+        self.rCombineAngles = tk.BooleanVar()
+        self.rCombineAngles.set(False)
+        self.rCombineDistances = tk.BooleanVar()
+        self.rCombineDistances.set(False)
+
         # opis framea
         descriptionLabel = tk.Label(self, text="Here you specify different configurations for running.\n")
         descriptionLabel.grid(row=0, padx=10, pady=10, columnspan=2)
@@ -42,22 +55,16 @@ class ConfigurationsPage(tk.Frame):
         classifierTypeDescription = tk.Label(classifierTypeFrame, text="Select classifier")
         classifierTypeDescription.pack(pady=5, padx=10)
 
-        # predpostavljena vrijednost varijable za odabir vrste slike na kojoj se prmjenjuje LBP
-        controller.rType.set(0)
-
-        rGray = tk.Radiobutton(picTypeFrame, text="Gray", variable=controller.rType, value=0)
+        rGray = tk.Radiobutton(picTypeFrame, text="Gray", variable=self.rPicType, value='gray')
         rGray.pack(side="left", padx=20, pady=5)
 
-        rGradient = tk.Radiobutton(picTypeFrame, text="Gradient", variable=controller.rType, value=1)
+        rGradient = tk.Radiobutton(picTypeFrame, text="Gradient", variable=self.rPicType, value='grad')
         rGradient.pack(side="right", padx=20, pady=5)
 
-        # pretpostavljena vrijednost za vrstu klasifikatora
-        controller.cType.set(0)
-
-        cKNN = tk.Radiobutton(classifierTypeFrame, text="kNN", variable=controller.cType, value=0)
+        cKNN = tk.Radiobutton(classifierTypeFrame, text="kNN", variable=self.rClassifierType, value='kNN')
         cKNN.pack(side="left", padx=20, pady=5)
 
-        cSVM = tk.Radiobutton(classifierTypeFrame, text="SVM", variable=controller.cType, value=1)
+        cSVM = tk.Radiobutton(classifierTypeFrame, text="SVM", variable=self.rClassifierType, value='SVM')
         cSVM.pack(side="left", padx=20, pady=5)
 
         functionsDescription = tk.Label(functionsFrame,
@@ -134,36 +141,32 @@ class ConfigurationsPage(tk.Frame):
         labelCombineDistances = tk.Label(classifierFrame, text="Combine multiple distances")
         labelCombineDistances.grid(row=1, column=0, padx=10, pady=10)
 
-        controller.rbDistances.set(0)
-
         frameRB1 = tk.Frame(classifierFrame)
         frameRB1.grid(row=1, column=1, padx=10)
 
-        r1Combine = tk.Radiobutton(frameRB1, text="Don't combine", variable=controller.rbDistances, value=0)
+        r1Combine = tk.Radiobutton(frameRB1, text="Don't combine", variable=self.rCombineDistances, value=False)
         r1Combine.pack(side="left")
 
-        r1Dont = tk.Radiobutton(frameRB1, text="Combine", variable=controller.rbDistances, value=1)
+        r1Dont = tk.Radiobutton(frameRB1, text="Combine", variable=self.rCombineDistances, value=True)
         r1Dont.pack(side="left")
 
         labelCombineAngles = tk.Label(classifierFrame, text="Combine multiple angles")
         labelCombineAngles.grid(row=2, column=0, padx=10, pady=10)
 
-        controller.rbAngles.set(0)
-
         frameRB2 = tk.Frame(classifierFrame)
         frameRB2.grid(row=2, column=1, padx=10)
 
-        r2Combine = tk.Radiobutton(frameRB2, text="Don't combine", variable=controller.rbAngles, value=0)
+        r2Combine = tk.Radiobutton(frameRB2, text="Don't combine", variable=self.rCombineAngles, value=False)
         r2Combine.pack(side="left")
 
-        r2Dont = tk.Radiobutton(frameRB2, text="Combine", variable=controller.rbAngles, value=1)
+        r2Dont = tk.Radiobutton(frameRB2, text="Combine", variable=self.rCombineAngles, value=True)
         r2Dont.pack(side="left")
 
         # frame s gumbima
         buttonFrame = tk.Frame(self)
         buttonFrame.grid(row=2, padx=10, pady=5, columnspan=2)
 
-        buttonAdd = tk.Button(buttonFrame, text="Add", command=lambda: controller.addConf())
+        buttonAdd = tk.Button(buttonFrame, text="Add", command=controller.app.addConf)
         buttonAdd.pack(side="left", padx=10, pady=10)
 
         buttonRunConfigurations = tk.Button(buttonFrame, text="Run configurations",

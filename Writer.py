@@ -66,54 +66,6 @@ class Writer:
 
             f.close()
 
-    # def saveModel(self, model, conf):
-    #
-    #     saveString = ""
-    #
-    #     radius = conf[0]
-    #     glcmDistance = conf[1]
-    #     stepSize = conf[2]
-    #     cellSize = conf[3]
-    #     angles = conf[4]
-    #     numOfNeighbors = conf[5]
-    #     combineDistances = conf[6]
-    #     combineAngles = conf[7]
-    #
-    #     saveString += str(radius)
-    #     saveString += "-"
-    #
-    #     for i in glcmDistance:
-    #         saveString += str(i)
-    #         saveString += ","
-    #     saveString = saveString[:-1]
-    #     saveString += "-"
-    #
-    #     saveString += str(stepSize)
-    #     saveString += "-"
-    #
-    #     for i in cellSize:
-    #         saveString += str(i)
-    #         saveString += ","
-    #     saveString = saveString[:-1]
-    #     saveString += "-"
-    #
-    #     for i in angles:
-    #         saveString += str(i)
-    #         saveString += ","
-    #     saveString = saveString[:-1]
-    #     saveString += "-"
-    #
-    #     saveString += str(numOfNeighbors)
-    #     saveString += "-"
-    #
-    #     saveString += str(combineDistances)
-    #     saveString += "-"
-    #
-    #     saveString += str(combineAngles)
-    #
-    #     filename = self.modelPath + saveString + ".pkl"
-    #     joblib.dump(model, filename, compress=9)
-
     def saveModel(self, model, conf):
         """
         Funkcija za spremanje modela i konfuguracije modela. Model se sprema
@@ -148,35 +100,6 @@ class Writer:
 
         self.modelString = file.split("/")[-1]
         self.model = joblib.load(file)
-
-    def getConfiguration(self):
-
-        conf = []
-
-        # uklanjanje .pkl
-        modelString = self.modelString[:-4]
-        # svaki parametar posebno
-        splitStrings = modelString.split("-")
-
-        radius = int(splitStrings[0])
-        glcmDistance = [int(x) for x in splitStrings[1].split(",")]
-        stepSize = int(splitStrings[2])
-        cellSize = [int(x) for x in splitStrings[3].split(",")]
-        angles = [float(x) for x in splitStrings[4].split(",")]
-        numOfNeighbors = int(splitStrings[5])
-        combineDistances = int(splitStrings[6])
-        combineAngles = int(splitStrings[7])
-
-        conf.append(radius)
-        conf.append(glcmDistance)
-        conf.append(stepSize)
-        conf.append(cellSize)
-        conf.append(angles)
-        conf.append(numOfNeighbors)
-        conf.append(combineDistances)
-        conf.append(combineAngles)
-
-        return conf
 
     def findModel(self, json_object, id):
         try:

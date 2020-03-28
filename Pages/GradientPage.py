@@ -1,7 +1,9 @@
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
+from tkinter import filedialog
 import Pages.InitializationPage as iP
+import util
 
 class GradientPage(tk.Frame):
 
@@ -93,8 +95,40 @@ class GradientPage(tk.Frame):
         buttonFrame.pack(padx=10, pady=5, fill="both", expand=1)
 
         buttonSelectPicture = tk.Button(buttonFrame, text="Select picture",
-                                        command=lambda: controller.selectGradientPicture())
+                                        command=lambda: self.selectGradientPicture(controller))
         buttonSelectPicture.pack(side="left", expand=1, padx=10, pady=10)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(side="left", expand=1, padx=10, pady=10)
+
+    def selectGradientPicture(self, controller):
+        """
+        Funkcija za izbor slike na kojoj se primjenjuje operator gradijenta
+        """
+
+        filename = filedialog.askopenfilename(
+            initialdir=controller.app.configuration['processedImagesPath'],
+            title="Select picture",
+            filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
+
+        if len(filename) > 0:
+
+            img, sobel, sobelx, sobely = util.gradientImage(filename)
+            # postavljanje normalne slike
+            self.a.imshow(img, cmap='gray')
+            self.canvasa.draw()
+
+            # postavljanje sobel slike
+            self.b.imshow(sobel, cmap='gray')
+            self.canvasb.draw()
+
+            # postavljanje sobel_x slike
+            self.c.imshow(sobelx, cmap='gray')
+            self.canvasc.draw()
+
+            # postavljanje sobel_y slike
+            self.d.imshow(sobely, cmap='gray')
+            self.canvasd.draw()
+
+        else:
+            controller.gui.consolePrint("[WARNING] no image was selected")

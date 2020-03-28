@@ -43,7 +43,7 @@ class DataAnnotationPage(tk.Frame):
         buttonPreviousPic = tk.Button(frameNav, text="Prev pic", command=controller.prevPicAnnotation)
         buttonPreviousPic.grid(row=0, column=0, padx=10, pady=10)
 
-        buttonSave = tk.Button(frameNav, text="Save", command=controller.saveAnnotedData)
+        buttonSave = tk.Button(frameNav, text="Save", command=controller.saveAnnotedData, state="disabled")
         buttonSave.grid(row=0, column=1, padx=10, pady=10)
 
         buttonBack = tk.Button(frameNav, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))

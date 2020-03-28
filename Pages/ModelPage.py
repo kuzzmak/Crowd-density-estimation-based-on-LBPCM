@@ -215,7 +215,9 @@ class ModelPage(tk.Frame):
         if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
             upperFrame.buttonSelectPicture['state'] = 'normal'
 
-        if upperFrame.numberOfModels.get() == 2 and upperFrame.modelPages[0].writer.model != [] and upperFrame.modelPages[1].writer.model != []:
+        if upperFrame.numberOfModels.get() == 2 \
+                and upperFrame.modelPages[0].writer.model != [] \
+                and upperFrame.modelPages[1].writer.model != []:
             upperFrame.buttonSelectPicture['state'] = 'normal'
 
         im = Image.open(controller.app.configuration["checkMarkPath"])

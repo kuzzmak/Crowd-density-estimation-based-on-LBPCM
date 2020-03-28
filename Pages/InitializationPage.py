@@ -71,7 +71,7 @@ class InitializationPage(tk.Frame):
                                   command=lambda: controller.show_frame(swP.SlidingWindowPage))
         self.buttonSW.pack(padx=10, pady=10, fill="x")
 
-        self.buttonGradient = tk.Button(parameterFrame, text="Gradient", state="disabled",
+        self.buttonGradient = tk.Button(parameterFrame, text="Gradient",
                                         command=lambda: controller.show_frame(gP.GradientPage))
         self.buttonGradient.pack(padx=10, pady=10, fill="x")
 
