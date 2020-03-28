@@ -106,7 +106,7 @@ class FeatureVectorCreationPage(tk.Frame):
                                             command=lambda: controller.show_frame(coP.ConfigurationsPage))
         buttonAddConfigurations.pack(side="left", padx=10, pady=5)
 
-        buttonLoadAnnotedData = tk.Button(buttonFrame, text="Load labels", command=controller.loadLabels)
+        buttonLoadAnnotedData = tk.Button(buttonFrame, text="Load labels", command=controller.app.loadLabels)
         buttonLoadAnnotedData.pack(side="left", padx=10, pady=5)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))

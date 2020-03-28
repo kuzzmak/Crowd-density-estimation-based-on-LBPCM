@@ -36,8 +36,10 @@ import Pages.FVC2Page as fvc2P
 
 class App(tk.Tk):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, app, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
+
+        self.app = app
 
         # frame koji sadrzi pojedinu stranicu
         container = tk.Frame(self)
@@ -73,16 +75,15 @@ class App(tk.Tk):
         # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
         self.lbpcm = LBPCM.LBPCM('grad', self.radius, self.stepSize, self.cellSize,
                                  self.angles, self.glcmDistance, ['f1', 'f2'])  # stvaranje lbpcm s defaultnim vrijednostima
+
         # trenutna slika na stranici za parametre
         self.currPicPar = [[]]
         # rjecnik svih stranica
         self.frames = {}
         # trenutna slika
         self.currPicPath = ""
-        # staza do slika za pretprocesiranje
-        self.dataPath = ""
-        # postotak ukupnih slika koje ce se iskoristiti za treniranje
-        self.trainingSetSize = 0.7
+
+
         # polje slika za pretprocesiranje
         self.dataPictures = []
         # polje lokacija celije koja se krece po slici
@@ -91,18 +92,15 @@ class App(tk.Tk):
         self.currCell = 0
         # brojac trenutne slike
         self.picCounter = 0
-        # polje imena slika za treniranje
-        self.trainPictures = []
-        # polje imena slika za testiranje
-        self.testPictures = []
+
         # brojac za slike kod oznacavanja
         self.dataAnnotationCounter = 0
-        # staza do procesiranih slika
-        self.pathToProcessedData = r"data/processedData"
+
         # lista imena procesiranih slika
         self.processedDataPictures = []
         # rjecnik s oznacenim slikama
         self.labelDictionary = {}
+
         # lista konfiguracija koje se trebaju izvesti
         self.configurations = []
         # vrijednost radio gumba combine distances
@@ -115,10 +113,6 @@ class App(tk.Tk):
         self.rType = tk.IntVar()
         # variajble za odabir vrste klasifikatora
         self.cType = tk.IntVar()
-
-        with open("configuration.json") as json_file:
-
-            self.configuration = json.load(json_file)
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
@@ -190,7 +184,7 @@ class App(tk.Tk):
         # ako ima jos slikovnih elemenata
         if self.picCounter < len(self.processedDataPictures):
             self.picCounter += 1
-            fileName = self.pathToProcessedData + "/" + self.processedDataPictures[self.picCounter]
+            fileName = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.picCounter]
             self.currPicPath = fileName
             self.updateSlidingWindowImage()
             self.updateParameterFrame()
@@ -209,7 +203,7 @@ class App(tk.Tk):
         if self.picCounter >= 1:
             self.picCounter -= 1
             # staza do sljedece slike
-            fileName = self.pathToProcessedData + "/" + self.processedDataPictures[self.picCounter]
+            fileName = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.picCounter]
             self.currPicPath = fileName
             # azuriranje slike
             self.updateSlidingWindowImage()
@@ -252,37 +246,37 @@ class App(tk.Tk):
             sto je pretvoren u nijanse sive
         """
 
-        if os.path.exists(self.pathToProcessedData):
-            util.clearDirectory(self.pathToProcessedData)
+        if os.path.exists(self.app.configuration['processedImagesPath']):
+            util.clearDirectory(self.app.configuration['processedImagesPath'])
         else:
-            os.mkdir(self.pathToProcessedData)
+            os.mkdir(self.app.configuration['processedImagesPath'])
 
         # popis svih slika izvorne velicine
-        onlyFiles = [f for f in listdir(self.dataPath)]
+        onlyFiles = [f for f in listdir(self.app.configuration['dataPath'])]
 
         # mijesanje slika
         random.shuffle(onlyFiles)
         # spremanje slika za treniranje
         for f in onlyFiles:
-            fileName = self.dataPath + "/" + f
+            fileName = self.app.configuration['dataPath'] + "/" + f
             # normalna slika
             im = cv.imread(fileName)
             # # slika u sivim tonovima
             im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
             # spremanje slike
-            util.saveImage(im_gray, self.pathToProcessedData, dim)
+            util.saveImage(im_gray, self.app.configuration['processedImagesPath'], dim)
 
             self.dataAnnotationCounter += 1
             self.frames[pP.PreprocessPage].progressbar.step()
             self.update()
 
-        self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
+        self.processedDataPictures = [f for f in listdir(self.app.configuration['processedImagesPath'])]
         # omogucavanje gumba za oznacavanje slika
         self.frames[iP.InitializationPage].buttonDataAnnotation["state"] = "normal"
         # progressbar u feature vector creation frameu
         self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
 
-        self.currPicPath = self.pathToProcessedData + "/" + self.processedDataPictures[0]
+        self.currPicPath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0]
         image = cv.imread(self.currPicPath)
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
         self.picDims = util.makePicDims(image, self.stepSize,
@@ -394,7 +388,7 @@ class App(tk.Tk):
         directory = filedialog.askdirectory()
 
         if directory != "":
-            self.dataPath = directory
+            self.app.configuration['dataPath'] = directory
             self.console.insert(tk.END, "[INFO] data folder set: " + directory + "\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
@@ -408,16 +402,16 @@ class App(tk.Tk):
             prilikom ucitavanja i procesiranja slika
         """
 
-        self.dataPictures = [f for f in listdir(self.dataPath)]
+        self.dataPictures = [f for f in listdir(self.app.configuration['dataPath'])]
         if not self.dataPictures:
-            self.console.insert(tk.END, "[WARNING] no pictures were found on: " + self.dataPath)
+            self.console.insert(tk.END, "[WARNING] no pictures were found on: " + self.app.configuration['dataPath'])
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
             # postavljanje progressbara na maksimalnu vrijednost velicine polje slika koje treba obraditi
             self.frames[pP.PreprocessPage].progressbar.configure(maximum=self.dataPictures.__len__())
             # staza do prve slike koja se postavlja u frameu radi prikaza kako dimenzije utjecu na slikovne elemente
-            path = self.dataPath + "/" + self.dataPictures[0]
+            path = self.app.configuration['dataPath'] + "/" + self.dataPictures[0]
             image = cv.imread(path)
 
             # ako je visina slike veca od 300 piksela, radi se skaliranje
@@ -447,11 +441,6 @@ class App(tk.Tk):
         self.LBPimg = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
         self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
 
-        # postavaljanje imena slike u odgovarajucu labelu
-        if not self.processedDataPictures:
-            self.frames[swP.SlidingWindowPage].labelPicName.configure(text=self.trainPictures[self.picCounter])
-        else:
-            self.frames[swP.SlidingWindowPage].labelPicName.configure(text=self.processedDataPictures[self.picCounter])
         # postavljanje slike
         self.frames[swP.SlidingWindowPage].labelLBPPic.configure(image=self.LBPimg)
         self.frames[swP.SlidingWindowPage].labelPic.configure(image=self.im)
@@ -499,13 +488,13 @@ class App(tk.Tk):
         # ako je izabran neki direktorij
         if directory != "":
 
-            self.pathToProcessedData = directory
-            self.processedDataPictures = [f for f in listdir(self.pathToProcessedData)]
+            self.app.configuration['processedImagesPath'] = directory
+            self.processedDataPictures = [f for f in listdir(self.app.configuration['processedImagesPath'])]
             self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
             self.frames[iP.InitializationPage].buttonSW["state"] = "normal"
             self.frames[iP.InitializationPage].buttonGradient["state"] = "normal"
 
-            self.currPicPath = self.pathToProcessedData + "/" + self.processedDataPictures[0]
+            self.currPicPath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0]
             image = cv.imread(self.currPicPath)
             # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
             self.picDims = util.makePicDims(image, self.stepSize,
@@ -531,7 +520,7 @@ class App(tk.Tk):
         """
 
         # staza do trenutne slike
-        imagePath = self.pathToProcessedData + "/" + self.processedDataPictures[self.dataAnnotationCounter]
+        imagePath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.dataAnnotationCounter]
         image = cv.imread(imagePath)
         self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
         # postavljanje slike u labelu
@@ -595,13 +584,13 @@ class App(tk.Tk):
         """
 
         # ako nije izabran folder prvo, nista se dalje ne izvodi
-        if self.dataPath == "":
+        if self.app.configuration['dataPath'] == "":
             self.console.insert(tk.END, "[WARNING] please select data folder" + "\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
             # slika na kojoj se prikazuju slikovni elementi
-            image = cv.imread(self.dataPath + "/" + self.dataPictures[0])
+            image = cv.imread(self.app.configuration['dataPath'] + "/" + self.dataPictures[0])
 
             # ako nisu upisane dimenzije slikovnog elementa
             if self.frames[pP.PreprocessPage].entryX.get() == "" or self.frames[pP.PreprocessPage].entryY.get() == "":
@@ -679,29 +668,6 @@ class App(tk.Tk):
         self.frames[fvcP.FeatureVectorCreationPage].labelProgress.configure(text="0/" + str(self.processedDataPictures.__len__())
                                                                         + "   Feature vectors completed.")
         self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/0   Configurations completed.")
-
-    def loadLabels(self):
-        """ funkcija za ucitavanje oznaka slika koje su vec procesirane
-        """
-
-        # file = filedialog.askopenfilename(initialdir=r"data/normalData",
-        #                                   title="Select labeled data file",
-        #                                   filetypes=(("text files", "*.txt"), ("all files", "*.*")))
-        #
-        # if len(file) == 0:
-        #     self.consolePrint("[WARNING] you did not select file with labeled data")
-        # else:
-        #     self.writer.loadAnnotedDataFromFile(file)
-        #     self.labelDictionary = self.writer.labelDictionary
-        #     self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
-        #
-        #     self.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
-
-        self.writer.loadAnnotedDataFromFile(self.configuration['labeledDataPath'])
-        self.labelDictionary = self.writer.labelDictionary
-        self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
-
-        self.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
 
     def consolePrint(self, message):
         self.console.insert(tk.END, message + "\n")
@@ -959,7 +925,3 @@ class App(tk.Tk):
             self.consolePrint("[WARNING] no image was selected")
 
 
-if __name__ == "__main__":
-    app = App()
-    # app.geometry("1100x600")
-    app.mainloop()

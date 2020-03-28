@@ -18,11 +18,11 @@ class ModelPage(tk.Frame):
         self.modelType.set('gray')
 
         # dohvat svih .pkl imena
-        models = [x for x in listdir(controller.configuration["grayModelsPath"]) if x.endswith('.pkl')]
+        models = [x for x in listdir(controller.app.configuration["grayModelsPath"]) if x.endswith('.pkl')]
         # id-jevi modela sa sivim slikama
         self.grayModels = [int(x.split('.')[0]) for x in models]
 
-        models = [x for x in listdir(controller.configuration["gradModelsPath"]) if x.endswith('.pkl')]
+        models = [x for x in listdir(controller.app.configuration["gradModelsPath"]) if x.endswith('.pkl')]
         # id-jevi modela s gradijentnim slikama
         self.gradModels = [int(x.split('.')[0]) for x in models]
 
@@ -142,7 +142,7 @@ class ModelPage(tk.Frame):
         self.modelStatusFrame = tk.Frame(frameButtonPrevNext)
         self.modelStatusFrame.pack()
 
-        im = Image.open(controller.configuration["xMarkPath"])
+        im = Image.open(controller.app.configuration["xMarkPath"])
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
@@ -205,11 +205,11 @@ class ModelPage(tk.Frame):
         modelType = self.modelType.get()
 
         if modelType == 'gray':
-            modelPath = controller.configuration["grayModelsPath"] + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
+            modelPath = controller.app.configuration["grayModelsPath"] + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
 
         else:
-            modelPath = controller.configuration["gradModelsPath"] + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
+            modelPath = controller.app.configuration["gradModelsPath"] + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
 
         if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
@@ -218,7 +218,7 @@ class ModelPage(tk.Frame):
         if upperFrame.numberOfModels.get() == 2 and upperFrame.modelPages[0].writer.model != [] and upperFrame.modelPages[1].writer.model != []:
             upperFrame.buttonSelectPicture['state'] = 'normal'
 
-        im = Image.open(controller.configuration["checkMarkPath"])
+        im = Image.open(controller.app.configuration["checkMarkPath"])
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
