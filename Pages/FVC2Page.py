@@ -26,11 +26,11 @@ class FVC2Page(tk.Frame):
         rButtonFrame.pack()
 
         rOne = tk.Radiobutton(rButtonFrame, text="One", variable=self.numberOfModels, value=1,
-                              command=lambda: [self.showModelsPanel(controller), self.showModelIcon()])
+                              command=lambda: [self.showModelsPanel(controller), self.showModelIcon(controller)])
         rOne.pack(side="left", padx=10, pady=5)
 
         rTwo = tk.Radiobutton(rButtonFrame, text="Two", variable=self.numberOfModels, value=2,
-                              command=lambda: [self.showModelsPanel(controller), self.showModelIcon()])
+                              command=lambda: [self.showModelsPanel(controller), self.showModelIcon(controller)])
         rTwo.pack(side="left", padx=10, pady=5)
 
         self.middleFrame = tk.Frame(self)
@@ -97,14 +97,14 @@ class FVC2Page(tk.Frame):
             self.modelPages = []
             self.modelPages.append(leftModel)
 
-    def showModelIcon(self):
+    def showModelIcon(self, controller):
         """
         Funkcija koja prikazuje ispravnu ikonu ako je model učitan ili nije
         """
 
         for mp in self.modelPages:
 
-            im = Image.open(self.xmark)
+            im = Image.open(controller.configuration['xMarkPath'])
             im = im.resize((20, 20), Image.ANTIALIAS)
             mp.im = ImageTk.PhotoImage(im)
 

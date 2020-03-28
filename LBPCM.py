@@ -6,11 +6,13 @@ import util
 import numpy as np
 import Haralick
 import tkinter as tk
+import Pages.FeatureVectorCreationPage as fvcP
 
 
 class LBPCM:
 
     def __init__(self, picType, radius, stepSize, windowSize, angles, glcmDistance, functions, combineDistances=0, combineAngles=0):
+
         # vrsta slike na kojoj se radi LBP
         self.picType = picType
         # udaljenost centralnog piksela
@@ -63,34 +65,6 @@ class LBPCM:
                 for t in temp:
                     featureVector.extend(list(t))
 
-            # if self.combineDistances:
-            #     energy = np.sum(energy, axis=0)
-            #     contrast = np.sum(contrast, axis=0)
-            #     homogeneity = np.sum(homogeneity, axis=0)
-            #     entropy = np.sum(entropy, axis=0)
-            #
-            # if self.combineAngles:
-            #     energy = np.sum(energy, axis=1)
-            #     contrast = np.sum(contrast, axis=1)
-            #     homogeneity = np.sum(homogeneity, axis=1)
-            #     entropy = np.sum(entropy, axis=1)
-            #
-            # if self.combineDistances == 0 and self.combineAngles == 0:
-            #
-            #     for i in energy:
-            #         featureVector.extend(i)
-            #     for i in contrast:
-            #         featureVector.extend(i)
-            #     for i in homogeneity:
-            #         featureVector.extend(i)
-            #     for i in entropy:
-            #         featureVector.extend(i)
-
-            # featureVector.extend(entropy)
-            # featureVector.extend(contrast)
-            # featureVector.extend(homogeneity)
-            # featureVector.extend(entropy)
-
         return featureVector
 
     def getGLCM(self, image):
@@ -105,15 +79,54 @@ class LBPCM:
         """
         return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256)
 
-    def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
+    # def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
+    #     # list svih slika u folderu
+    #     pictures = [f for f in listdir(self.app.configurations['pathToProcessedData'])]
+    #     self.featureVectors = []
+    #     i = 0
+    #
+    #     if not (console is None):
+    #         console.insert(tk.END, "[INFO] started feature vector creation\n")
+    #         console.see(tk.END)
+    #
+    #     for pic in pictures:
+    #         # staza do slike
+    #         fileName = pathToProcessedData + "/" + pic
+    #
+    #         image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
+    #
+    #         if self.picType == 'grad':
+    #             image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
+    #
+    #         self.featureVectors.append(self.getFeatureVector(image))
+    #         i += 1
+    #
+    #         if not(progressbar is None or labelProgress is None):
+    #             progressbar.step()
+    #             labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
+    #
+    #         if not (console is None):
+    #             console.insert(tk.END, "\t\t" + str(i) + "/" + str(pictures.__len__()) + "\n")
+    #             console.see(tk.END)
+    #
+    #     if not (console is None):
+    #         console.insert(tk.END, "[INFO] vector creation finished\n")
+    #         console.see(tk.END)
+
+    def calculateFeatureVectors(self, app, verbose=True):
+        # staza do foldera s već izrezanim slikama
+        pathToProcessedData = app.configuration['pathToProcessedData']
+
+        progressBar = app.frames[fvcP.FeatureVectorCreationPage].progressbarVector
+        labelProgress = app.frames[fvcP.FeatureVectorCreationPage].labelProgress
+
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
         self.featureVectors = []
         i = 0
 
-        if not (console is None):
-            console.insert(tk.END, "[INFO] started feature vector creation\n")
-            console.see(tk.END)
+        if verbose:
+            app.consolePrint("[INFO] started feature vector creation")
 
         for pic in pictures:
             # staza do slike
@@ -127,15 +140,11 @@ class LBPCM:
             self.featureVectors.append(self.getFeatureVector(image))
             i += 1
 
-            if not(progressbar is None or labelProgress is None):
-                progressbar.step()
-                labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
+            progressBar.step()
+            labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
 
-            if not (console is None):
-                console.insert(tk.END, str(i) + "/" + str(pictures.__len__()) + "\n")
-                console.see(tk.END)
+            if verbose:
+                app.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()))
 
-        if not (console is None):
-            console.insert(tk.END, "[INFO] vector creation finished\n")
-            console.see(tk.END)
-
+        if verbose:
+            app.consolePrint("[INFO] vector creation finished")

@@ -1,5 +1,8 @@
 {
   "processedImagesPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData",
+
+  "labeledDataPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/labeledData.txt",
+
   "checkMarkPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/model_icons/checkmark.jpg",
   "xMarkPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/model_icons/xmark.jpg",
 

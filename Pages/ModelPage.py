@@ -172,14 +172,25 @@ class ModelPage(tk.Frame):
         modelType = self.modelType.get()
 
         if modelType == 'gray':
-            self.currentModelLabel.configure(text="Current model: " + str(self.currentGrayModel + 1) +
-                                                  "/" + str(self.numberOfGrayModels))
-            modelId = self.grayModels[self.currentGrayModel]
+
+            if len(self.gradModels) > 0:
+                self.currentModelLabel.configure(text="Current model: " + str(self.currentGrayModel + 1) +
+                                                      "/" + str(self.numberOfGrayModels))
+                modelId = self.grayModels[self.currentGrayModel]
+            else:
+                # ako nema nikakvog modela sa sivim slikama
+                self.currentModelLabel.configure(text="Current model: 0/0")
+                modelId = -1
 
         else:
-            self.currentModelLabel.configure(text="Current model: " + str(self.currentGradModel + 1) +
-                                                  "/" + str(self.numberOfGradModels))
-            modelId = self.gradModels[self.currentGradModel]
+
+            if len(self.gradModels) > 0:
+                self.currentModelLabel.configure(text="Current model: " + str(self.currentGradModel + 1) +
+                                                      "/" + str(self.numberOfGradModels))
+                modelId = self.gradModels[self.currentGradModel]
+            else:
+                self.currentModelLabel.configure(text="Current model: 0/0")
+                modelId = -1
 
         self.showInfo(modelId)
 
@@ -201,12 +212,6 @@ class ModelPage(tk.Frame):
             modelPath = controller.configuration["gradModelsPath"] + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
 
-        # print("prvi")
-        # print(upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != [])
-        # print("drugi")
-        # print(upperFrame.numberOfModels.get() == 2 and upperFrame.modelPages[0].writer.model != [] and upperFrame.modelPages[1].writer.model != [])
-        # print()
-
         if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
             upperFrame.buttonSelectPicture['state'] = 'normal'
 
@@ -227,59 +232,75 @@ class ModelPage(tk.Frame):
         :param modelId: id modela čija se konfiguracija prikazuje
         """
 
-        classifierType, \
-        picType, \
-        lbpRadius, \
-        glcmDistances, \
-        stepSize, \
-        cellSize, \
-        angles, \
-        numberOfNeighbors, \
-        combineDistances, \
-        combineAngles, \
-        functions, \
-        mean, \
-        sigma, \
-        error = self.writer.loadConfFromJSON(modelId)
+        if modelId != -1:
+            classifierType, \
+            picType, \
+            lbpRadius, \
+            glcmDistances, \
+            stepSize, \
+            cellSize, \
+            angles, \
+            numberOfNeighbors, \
+            combineDistances, \
+            combineAngles, \
+            functions, \
+            mean, \
+            sigma, \
+            error = self.writer.loadConfFromJSON(modelId)
 
-        fun = []
+            fun = []
 
-        for f in functions:
-            if f == 'angular second moment':
-                fun.append('f1')
-            elif f == 'contrast':
-                fun.append('f2')
-            elif f == 'correlation':
-                fun.append('f3')
-            elif f == 'sum of squares: variance':
-                fun.append('f4')
-            elif f == 'inverse difference moment':
-                fun.append('f5')
-            elif f == 'sum average':
-                fun.append('f6')
-            elif f == 'sum variance':
-                fun.append('f7')
-            elif f == 'sum entropy':
-                fun.append('f8')
-            elif f == 'entropy':
-                fun.append('f9')
-            elif f == 'difference variance':
-                fun.append('f10')
-            elif f == 'difference entropy':
-                fun.append('f11')
+            for f in functions:
+                if f == 'angular second moment':
+                    fun.append('f1')
+                elif f == 'contrast':
+                    fun.append('f2')
+                elif f == 'correlation':
+                    fun.append('f3')
+                elif f == 'sum of squares: variance':
+                    fun.append('f4')
+                elif f == 'inverse difference moment':
+                    fun.append('f5')
+                elif f == 'sum average':
+                    fun.append('f6')
+                elif f == 'sum variance':
+                    fun.append('f7')
+                elif f == 'sum entropy':
+                    fun.append('f8')
+                elif f == 'entropy':
+                    fun.append('f9')
+                elif f == 'difference variance':
+                    fun.append('f10')
+                elif f == 'difference entropy':
+                    fun.append('f11')
 
-        self.classifierTypeLabelValue.configure(text=classifierType)
-        self.picTypeLabelValue.configure(text=picType)
-        self.radiusLabelValue.configure(text=lbpRadius)
-        self.glcmDistancesLabel.configure(text=glcmDistances)
-        self.stepSizeLabelValue.configure(text=stepSize)
-        self.cellSizeLabelValue.configure(text=cellSize)
-        self.anglesLabelValue.configure(text=util.shortAngles(angles))
-        self.numOfNeighborsLabelValue.configure(text=numberOfNeighbors)
-        self.combineDistancesLabelValue.configure(text=combineDistances)
-        self.combineAnglesLabelValue.configure(text=combineAngles)
-        self.functionsLabelValue.configure(text=fun)
-        self.errorLabelValue.configure(text=round(error, 2))
+            self.classifierTypeLabelValue.configure(text=classifierType)
+            self.picTypeLabelValue.configure(text=picType)
+            self.radiusLabelValue.configure(text=lbpRadius)
+            self.glcmDistancesLabel.configure(text=glcmDistances)
+            self.stepSizeLabelValue.configure(text=stepSize)
+            self.cellSizeLabelValue.configure(text=cellSize)
+            self.anglesLabelValue.configure(text=util.shortAngles(angles))
+            self.numOfNeighborsLabelValue.configure(text=numberOfNeighbors)
+            self.combineDistancesLabelValue.configure(text=combineDistances)
+            self.combineAnglesLabelValue.configure(text=combineAngles)
+            self.functionsLabelValue.configure(text=fun)
+            self.errorLabelValue.configure(text=round(error, 2))
+
+        else:
+            # slučaj kada nema niti jednog modela
+            self.classifierTypeLabelValue.configure(text="NO MODEL")
+            self.picTypeLabelValue.configure(text="NO MODEL")
+            self.radiusLabelValue.configure(text="NO MODEL")
+            self.glcmDistancesLabel.configure(text="NO MODEL")
+            self.stepSizeLabelValue.configure(text="NO MODEL")
+            self.cellSizeLabelValue.configure(text="NO MODEL")
+            self.anglesLabelValue.configure(text="NO MODEL")
+            self.numOfNeighborsLabelValue.configure(text="NO MODEL")
+            self.combineDistancesLabelValue.configure(text="NO MODEL")
+            self.combineAnglesLabelValue.configure(text="NO MODEL")
+            self.functionsLabelValue.configure(text="NO MODEL")
+            self.errorLabelValue.configure(text="NO MODEL")
 
     def nextModel(self, modelType):
         """
