@@ -171,7 +171,7 @@ class ConfigurationsPage(tk.Frame):
 
         buttonRunConfigurations = tk.Button(buttonFrame, text="Run configurations",
                                             command=lambda: threading.Thread(
-                                                target=controller.runConfigurations, daemon=True).start())
+                                                target=controller.app.runConfigurations, daemon=True).start())
 
         buttonRunConfigurations.pack(side="left", padx=10, pady=10)
 

@@ -1,12 +1,23 @@
 import json
+
+from math import radians
+
+from tkinter import filedialog
+from tkinter import IntVar, END
+
+import LBPCM
 import GUI
 import Writer
-from tkinter import filedialog
-from math import radians
-from tkinter import IntVar, END
+import util
 
 from Pages import ConfigurationsPage as coP
 from Pages import FeatureVectorCreationPage as fvcP
+
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+
+from multiprocessing import cpu_count
+from concurrent.futures import ThreadPoolExecutor
 
 class App:
 
@@ -145,6 +156,85 @@ class App:
             self.gui.console.insert(END, "new configuration added\n")
             self.gui.console.insert(END, str(conf) + "\n")
             self.gui.console.see(END)
+
+    def runConf(self, conf):
+        """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
+        """
+
+        classifierType, \
+        picType, \
+        radius, \
+        glcmDistance, \
+        stepSize, \
+        cellSize, \
+        angles, \
+        numOfNeighbors, \
+        combineDistances, \
+        combineAngles, \
+        functions = conf
+
+        lbpcm = LBPCM.LBPCM(picType,
+                            radius,
+                            stepSize,
+                            cellSize,
+                            angles,
+                            glcmDistance,
+                            functions,
+                            combineDistances,
+                            combineAngles)
+
+        lbpcm.calculateFeatureVectors(self)
+
+        fv = lbpcm.getFeatureVectors()
+
+        # normalizacija vektora
+        fv, mean, sigma = util.normalize(fv)
+        conf.extend(mean.tolist())
+        conf.extend(sigma.tolist())
+
+        trainRatio = self.configuration['trainingSetSize']
+
+        #TODO napraviti funkciju koja radi ovo ispod
+        X_train = fv[:round(trainRatio * fv.__len__())]
+        X_test = fv[round(trainRatio * fv.__len__()):]
+
+        Y = []
+        for i in self.labelDictionary.values():
+            Y.append(int(i))
+
+        Y_train = Y[:round(trainRatio * fv.__len__())]
+        Y_test = Y[round(trainRatio * fv.__len__()):fv.__len__()]
+
+        self.gui.consolePrint("\t[INFO] fitting started")
+
+        if classifierType == 'kNN':
+            kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
+            kneighbors.fit(X_train, Y_train)
+            error = 1 - kneighbors.score(X_test, Y_test)
+            self.gui.consolePrint("\t[INFO] error: " + str(error))
+            conf.append(error)
+            self.writer.saveModel(kneighbors, conf)
+
+        else:
+            svm = SVC(gamma='auto')
+            svm.fit(X_train, Y_train)
+            error = 1 - svm.score(X_test, Y_test)
+            self.gui.consolePrint("\t[INFO] error: " + str(error))
+            conf.append(error)
+            self.writer.saveModel(svm, conf)
+
+        self.gui.consolePrint("\t[INFO] fitting finished")
+
+        self.gui.consolePrint("[INFO] configuration completed")
+
+    def runConfigurations(self):
+        """ Funkcija za pokretanje pojedine unesene konfiguracije
+        :return:
+        """
+
+        with ThreadPoolExecutor(max_workers=cpu_count()) as executor:
+            executor.map(self.runConf, self.configurations)
+
 
 if __name__ == "__main__":
 

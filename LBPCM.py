@@ -79,54 +79,23 @@ class LBPCM:
         """
         return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256)
 
-    # def calculateFeatureVectors(self, pathToProcessedData, console, progressbar, labelProgress):
-    #     # list svih slika u folderu
-    #     pictures = [f for f in listdir(self.app.configurations['pathToProcessedData'])]
-    #     self.featureVectors = []
-    #     i = 0
-    #
-    #     if not (console is None):
-    #         console.insert(tk.END, "[INFO] started feature vector creation\n")
-    #         console.see(tk.END)
-    #
-    #     for pic in pictures:
-    #         # staza do slike
-    #         fileName = pathToProcessedData + "/" + pic
-    #
-    #         image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
-    #
-    #         if self.picType == 'grad':
-    #             image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
-    #
-    #         self.featureVectors.append(self.getFeatureVector(image))
-    #         i += 1
-    #
-    #         if not(progressbar is None or labelProgress is None):
-    #             progressbar.step()
-    #             labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
-    #
-    #         if not (console is None):
-    #             console.insert(tk.END, "\t\t" + str(i) + "/" + str(pictures.__len__()) + "\n")
-    #             console.see(tk.END)
-    #
-    #     if not (console is None):
-    #         console.insert(tk.END, "[INFO] vector creation finished\n")
-    #         console.see(tk.END)
-
     def calculateFeatureVectors(self, app, verbose=True):
         # staza do foldera s već izrezanim slikama
-        pathToProcessedData = app.configuration['pathToProcessedData']
+        pathToProcessedData = app.configuration['processedImagesPath']
 
-        progressBar = app.frames[fvcP.FeatureVectorCreationPage].progressbarVector
-        labelProgress = app.frames[fvcP.FeatureVectorCreationPage].labelProgress
+        progressBar = app.gui.frames[fvcP.FeatureVectorCreationPage].progressbarVector
+        labelProgress = app.gui.frames[fvcP.FeatureVectorCreationPage].labelProgress
 
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
+        # postavljanje maximalne vrijednosti progerssbara
+        progressBar.configure(maximum=len(pictures))
+
         self.featureVectors = []
         i = 0
 
         if verbose:
-            app.consolePrint("[INFO] started feature vector creation")
+            app.gui.consolePrint("[INFO] started feature vector creation")
 
         for pic in pictures:
             # staza do slike
@@ -144,7 +113,7 @@ class LBPCM:
             labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
 
             if verbose:
-                app.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()))
+                app.gui.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()))
 
         if verbose:
-            app.consolePrint("[INFO] vector creation finished")
+            app.gui.consolePrint("[INFO] vector creation finished")

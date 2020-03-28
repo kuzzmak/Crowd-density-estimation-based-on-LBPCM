@@ -69,12 +69,6 @@ class ParameterSettingPage(tk.Frame):
         # peti redak------------------------
         frame5 = tk.Frame(self)
         frame5.pack(pady=5)
-        # gumb za spremanje parametara LBP-a
-        buttonSave = tk.Button(frame5, text="Save", command=lambda: controller.saveParameters(entryRadius.get(),
-                                                                                              entryCellSize.get(),
-                                                                                              entryStepSize.get(),
-                                                                                              entryAngles.get()))
-        buttonSave.pack(padx=10, pady=5, side="left")
 
         buttonSelectPic = tk.Button(frame5, text="Select img", command=controller.selectImg)
         buttonSelectPic.pack(padx=10, pady=5, side="left")

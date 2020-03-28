@@ -13,9 +13,7 @@ class PreprocessPage(tk.Frame):
         frame1 = tk.Frame(self)
         frame1.pack()
 
-        buttonSelectFolder = tk.Button(frame1, text="Select data folder",
-                                       command=lambda: [controller.selectDataFolder(),
-                                                        controller.updatePics()])
+        buttonSelectFolder = tk.Button(frame1, text="Select data folder")
         buttonSelectFolder.pack(padx=10, pady=5)
 
         frame2 = tk.Frame(self)

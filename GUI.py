@@ -12,11 +12,7 @@ import LBPCM
 from math import radians
 from math import pi
 import re
-from concurrent.futures import ThreadPoolExecutor
 import Writer
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from multiprocessing import cpu_count
 
 import Pages.InitializationPage as iP
 import Pages.GradientPage as gP
@@ -95,19 +91,6 @@ class App(tk.Tk):
 
         # lista imena procesiranih slika
         self.processedDataPictures = []
-        # rjecnik s oznacenim slikama
-        self.labelDictionary = {}
-
-        # lista konfiguracija koje se trebaju izvesti
-        self.configurations = []
-        # vrijednost radio gumba combine distances
-        self.rbDistances = tk.IntVar()
-        # vrijednost radio gumba combine angles
-        self.rbAngles = tk.IntVar()
-        # razred za spremanje rezultata i labela
-        self.writer = Writer.Writer()
-
-
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
@@ -322,75 +305,6 @@ class App(tk.Tk):
         self.lbp = ImageTk.PhotoImage(image=Image.fromarray(lbp))
         # prikaz slike u odgovarajucoj labeli
         self.frames[psP.ParameterSettingPage].labelLBPPic.configure(image=self.lbp)
-
-    def saveParameters(self, radius, cellSize, stepSize, angles):
-        """funkcija za spremanje parametara u razerd"""
-
-        flag = True
-        try:
-            self.radius = int(radius)
-            self.lbpcm.setRadius(self.radius)
-        except ValueError:
-            self.console.insert(tk.END, "[ERROR] -- radius must be positive integer\n")
-            self.console.see(tk.END)
-            flag = False
-
-        # konverzija stringa npr. 64x64 u int [64, 64]
-        pattern = r"\b[0-9]{2}x[0-9]{2}\b"
-        if re.match(pattern, cellSize):
-            self.cellSize = [int(i) for i in cellSize.split("x")]
-            self.lbpcm.setWindowSize(self.cellSize)
-        else:
-            self.console.insert(tk.END, "[ERROR] -- invalid cellsize configuration\n")
-            self.console.see(tk.END)
-            flag = False
-
-        try:
-            self.stepSize = int(stepSize)
-            self.lbpcm.setStepSize(self.stepSize)
-        except ValueError:
-            self.console.insert(tk.END, "[ERROR] -- step must be positive integer\n")
-            self.console.see(tk.END)
-            flag = False
-
-        try:
-            self.angles = [radians(int(i)) for i in angles.split(",")]
-            self.lbpcm.setAngles(self.angles)
-            self.frames[swP.SlidingWindowPage].labelAnglesListValue.configure(text=str(self.angles))
-        except ValueError:
-            self.console.insert(tk.END, "[ERROR] -- angles must be positive integers, eg. 45,90\n")
-            self.console.see(tk.END)
-            flag = False
-
-        if flag is True:
-            self.console.insert(tk.END, "[INFO] -- parameters saved\n")
-            self.console.see(tk.END)
-
-        # azuriranje sliding window framea
-        image = cv.imread(self.currPicPath)
-        self.picDims = util.makePicDims(image, self.stepSize, self.cellSize)
-        self.currCell = 0
-        self.updateSlidingWindowImage()
-        self.updateParameterFrame()
-
-        self.console.insert(tk.END, "----------------------------------------\n")
-        self.console.see(tk.END)
-
-    def selectDataFolder(self):
-        """ funkcija za odabir foldera koji se koristi za preprocesiranje
-        """
-
-        directory = filedialog.askdirectory()
-
-        if directory != "":
-            self.app.configuration['dataPath'] = directory
-            self.console.insert(tk.END, "[INFO] data folder set: " + directory + "\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-        else:
-            self.console.insert(tk.END, "[WARNING] you did not select folder\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
 
     def updatePics(self):
         """ funkcija za azuriranje polja slika i maksimalne velicine progressbara
@@ -673,100 +587,23 @@ class App(tk.Tk):
         self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
-    def runConf(self, conf):
-        """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
-        """
-
-        classifierType, \
-        picType, \
-        radius, \
-        glcmDistance, \
-        stepSize, \
-        cellSize, \
-        angles, \
-        numOfNeighbors, \
-        combineDistances, \
-        combineAngles, \
-        functions = conf
-
-        lbpcm = LBPCM.LBPCM(picType,
-                            radius,
-                            stepSize,
-                            cellSize,
-                            angles,
-                            glcmDistance,
-                            functions,
-                            combineDistances,
-                            combineAngles)
-
-        lbpcm.calculateFeatureVectors(self)
-
-        fv = lbpcm.getFeatureVectors()
-
-        # normalizacija vektora
-        fv, mean, sigma = util.normalize(fv)
-        conf.extend(mean.tolist())
-        conf.extend(sigma.tolist())
-
-        X_train = fv[:round(0.7 * fv.__len__())]
-        X_test = fv[round(0.7 * fv.__len__()):]
-
-        Y = []
-        for i in self.labelDictionary.values():
-            Y.append(int(i))
-
-        Y_train = Y[:round(0.7 * fv.__len__())]
-        Y_test = Y[round(0.7 * fv.__len__()):fv.__len__()]
-
-        self.consolePrint("\t[INFO] fitting started")
-
-        writer = Writer.Writer()
-
-        if classifierType == 'kNN':
-            kneighbors = KNeighborsClassifier(n_neighbors=numOfNeighbors)
-            kneighbors.fit(X_train, Y_train)
-            error = 1 - kneighbors.score(X_test, Y_test)
-            self.consolePrint("\t[INFO] error: " + str(error))
-            conf.append(error)
-            writer.saveModel(kneighbors, conf)
-
-        else:
-            svm = SVC(gamma='auto')
-            svm.fit(X_train, Y_train)
-            error = 1 - svm.score(X_test, Y_test)
-            self.consolePrint("\t[INFO] error: " + str(error))
-            conf.append(error)
-            writer.saveModel(svm, conf)
-
-        self.consolePrint("\t[INFO] fitting finished")
-
-        self.consolePrint("[INFO] configuration completed")
-
-    def runConfigurations(self):
-        """ Funkcija za pokretanje pojedine unesene konfiguracije
-        :return:
-        """
-
-        with ThreadPoolExecutor(max_workers=cpu_count()) as executor:
-            executor.map(self.runConf, self.configurations)
-
     def showClassifiedImage(self):
 
         filename = filedialog.askopenfilename(initialdir=r"data/normalData/View_001",
                                           title="Select picture",
                                           filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
 
-        conf = self.writer.getConfiguration()
+        # conf = self.writer.getConfiguration()
 
         self.frames[clP.ClassificationPage].labelPictureName.configure(text=filename)
         self.im = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(cv.imread(filename), 60)))
         self.frames[clP.ClassificationPage].labelPicture.configure(image=self.im)
 
-        output = util.classifyImage(filename, self.writer.model, conf, self.console)
+        # output = util.classifyImage(filename, self.writer.model, conf, self.console)
 
-        self.im = ImageTk.PhotoImage(image=Image.fromarray(output))
-        # postavljanje slike u labelu
-        self.frames[clP.ClassificationPage].labelPicture.configure(image=self.im)
+        # self.im = ImageTk.PhotoImage(image=Image.fromarray(output))
+        # # postavljanje slike u labelu
+        # self.frames[clP.ClassificationPage].labelPicture.configure(image=self.im)
 
     def loadColors(self):
 
