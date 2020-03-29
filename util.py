@@ -298,7 +298,7 @@ def makeColors(dim):
     """
 
     # direktorij u koji su spremljeni kvadratići
-    dir = r"colors"
+    dir = r"icons/colors"
 
     # svaka gustoća mnoštva je određene boje
     colors = [(127, 255, 0), (255, 255, 0), (255, 165, 0), (255, 69, 0), (255, 0, 0)]

@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter.filedialog import askdirectory
+import json
 import Pages.InitializationPage as iP
 
 class ParameterSettingPage(tk.Frame):
@@ -23,7 +25,7 @@ class ParameterSettingPage(tk.Frame):
         dataPathLabel = tk.Label(leftFrame, text="data path:")
         dataPathLabel.grid(pady=10, row=0, sticky="e")
 
-        dataPathButton = tk.Button(rightFrame, text="Select folder")
+        dataPathButton = tk.Button(rightFrame, text="Select folder", command=lambda: self.selectFolder(controller, 'dataPath'))
         dataPathButton.grid(pady=5, row=0, sticky="e")
 
         normalDataPath = tk.Label(leftFrame, text="unprocessed data path:")
@@ -56,10 +58,15 @@ class ParameterSettingPage(tk.Frame):
         gradModelsPathButton = tk.Button(rightFrame, text="Select folder")
         gradModelsPathButton.grid(pady=5, row=5, sticky="w")
 
+        iconsPath = tk.Label(leftFrame, text="icons path:")
+        iconsPath.grid(pady=10, row=6, sticky="e")
+
+        iconsPathButton = tk.Button(rightFrame, text="Select folder")
+        iconsPathButton.grid(pady=5, row=6, sticky="w")
 
         # panel sa trenutnom konfiguracijom
         currentConfigurationFrame = tk.Frame(self)
-        currentConfigurationFrame.pack()
+        currentConfigurationFrame.pack(padx=10)
 
         currentConfigurationDescription = tk.Label(currentConfigurationFrame, text="Current configuration")
         currentConfigurationDescription.pack(pady=10)
@@ -73,109 +80,89 @@ class ParameterSettingPage(tk.Frame):
         labelCurrentDataPath = tk.Label(leftValuesFrame, text="data path: ")
         labelCurrentDataPath.grid(row=0, pady=3, sticky="e")
 
-        labelCurrentDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['dataPath'])
-        labelCurrentDataPathValue.grid(row=0, pady=3, sticky="w")
+        self.labelCurrentDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['dataPath'])
+        self.labelCurrentDataPathValue.grid(row=0, pady=3, sticky="w")
 
         labelCurrentNormalDataPath = tk.Label(leftValuesFrame, text="unprocessed data path: ")
         labelCurrentNormalDataPath.grid(row=1, pady=3, sticky="e")
 
-        labelCurrentNormalDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['unprocessedDataPath'])
-        labelCurrentNormalDataPathValue.grid(row=1, pady=3, sticky="w")
+        self.labelCurrentNormalDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['unprocessedDataPath'])
+        self.labelCurrentNormalDataPathValue.grid(row=1, pady=3, sticky="w")
 
         labelProcessedDataPath = tk.Label(leftValuesFrame, text="processed data path: ")
         labelProcessedDataPath.grid(row=2, pady=3, sticky="e")
 
-        labelProcessedDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['processedImagesPath'])
-        labelProcessedDataPathValue.grid(row=2, pady=3, sticky="w")
+        self.labelProcessedDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['processedImagesPath'])
+        self.labelProcessedDataPathValue.grid(row=2, pady=3, sticky="w")
 
         labelLabelDirectoryPath = tk.Label(leftValuesFrame, text="label data directory: ")
         labelLabelDirectoryPath.grid(row=3, pady=3, sticky="e")
 
-        labelLabelDirectoryPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['labeledDataDirectory'])
-        labelLabelDirectoryPathValue.grid(row=3, pady=3, sticky="w")
+        self.labelLabelDirectoryPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['labeledDataDirectory'])
+        self.labelLabelDirectoryPathValue.grid(row=3, pady=3, sticky="w")
 
         labelGrayModelsPath = tk.Label(leftValuesFrame, text="gray models path: ")
         labelGrayModelsPath.grid(row=4, pady=3, sticky="e")
 
-        labelGrayModelsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['grayModelsPath'])
-        labelGrayModelsPathValue.grid(row=4, pady=3, sticky="w")
+        self.labelGrayModelsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['grayModelsPath'])
+        self.labelGrayModelsPathValue.grid(row=4, pady=3, sticky="w")
 
         labelGradModelsPath = tk.Label(leftValuesFrame, text="grad models path: ")
         labelGradModelsPath.grid(row=5, pady=3, sticky="e")
 
-        labelGradModelsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['gradModelsPath'])
-        labelGradModelsPathValue.grid(row=5, pady=3, sticky="w")
+        self.labelGradModelsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['gradModelsPath'])
+        self.labelGradModelsPathValue.grid(row=5, pady=3, sticky="w")
 
+        labelIconsPath = tk.Label(leftValuesFrame, text="icons path: ")
+        labelIconsPath.grid(row=6, pady=3, sticky="e")
 
-
-
-
-
-        # # prvi redak---------------------------
-        # frame1 = tk.Frame(self)
-        # frame1.pack(pady=5)
-        #
-        # labelRadius = tk.Label(frame1, text="Specify LBP radius:")
-        # labelRadius.pack(side="left")
-        # # upis radijusa
-        # entryRadius = tk.Entry(frame1)
-        # entryRadius.pack(side="right")
-        #
-        # # drugi redak--------------------------
-        # frame2 = tk.Frame(self)
-        # frame2.pack()
-        #
-        # labelCellSize = tk.Label(frame2, text="Specify cell size, eg. \"64x64\".")
-        # labelCellSize.pack(side="left")
-        # # upis velicine celije za klizni prozor
-        # entryCellSize = tk.Entry(frame2)
-        # entryCellSize.pack(side="right")
-        #
-        # # treci redak--------------------------
-        # frame3 = tk.Frame(self)
-        # frame3.pack(pady=5)
-        #
-        # labelStepSize = tk.Label(frame3, text="Specify step size:")
-        # labelStepSize.pack(side="left")
-        # # upis velicine koraka
-        # entryStepSize = tk.Entry(frame3)
-        # entryStepSize.pack(side="right")
-        #
-        # frame31 = tk.Frame(self)
-        # frame31.pack()
-        #
-        # labelAngles = tk.Label(frame31,
-        #                        text="Specify angles(in degrees) for which you'd like to \ncalculate co-occurence matrix(separate them by comma, eg. 45,90,135): ")
-        # labelAngles.pack(side="left")
-        #
-        # entryAngles = tk.Entry(frame31)
-        # entryAngles.pack(side="right")
-        #
-        # labelRepresentation = tk.Label(self, text="Loaded image on the left and LBP on the right")
-        # labelRepresentation.pack()
-        #
-        # self.labelImageName = tk.Label(self, text="")
-        # self.labelImageName.pack()
-        #
-        # # cetvrti redak---------------------------
-        # frame4 = tk.Frame(self)
-        # frame4.pack(padx=10, pady=5)
-        #
-        # self.labelNormalPic = tk.Label(frame4, text="no pic\nselected")
-        # self.labelNormalPic.grid(row=0, column=0, padx=10, pady=10)
-        #
-        # self.labelLBPPic = tk.Label(frame4, text="select pic\nfirst")
-        # self.labelLBPPic.grid(row=0, column=1, padx=10, pady=10)
-        #
-        # # peti redak------------------------
-        # frame5 = tk.Frame(self)
-        # frame5.pack(pady=5)
-        #
-        # buttonSelectPic = tk.Button(frame5, text="Select img", command=controller.selectImg)
-        # buttonSelectPic.pack(padx=10, pady=5, side="left")
-        #
-        # self.buttonRefresh = tk.Button(frame5, text="Refresh", state="disabled", command=controller.refreshLBP)
-        # self.buttonRefresh.pack(padx=10, pady=5, side="left")
+        self.labelIconsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['iconsPath'])
+        self.labelIconsPathValue.grid(row=6, pady=3, sticky="w")
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(padx=10, pady=5, side="bottom")
+
+    def selectFolder(self, controller, settingName):
+        """
+        Funkcija za odabir foldera
+
+        :param controller: referenca do glavne aplikacije
+        :param settingName: parametar za koji se bira folder
+        """
+
+        folderName = askdirectory(title='Select Folder')
+
+        if len(folderName) > 0:
+
+            controller.app.configuration[settingName] = folderName
+
+            with open('configuration.json', 'w') as f:
+                json.dump(controller.app.configuration, f, indent=4)
+
+            self.refreshParameters(controller)
+
+        else:
+            controller.consolePrint("[WARNING] you did not select any folder")
+
+    def refreshParameters(self, controller, settingName):
+        """
+        Funkcija za osvježavanje parametara na parameter stranici
+
+        :param controller: referenca do glavne aplikacije
+        :param settingName: parametar koji se osvježava
+        """
+
+        if settingName == 'dataPath':
+            self.labelCurrentDataPathValue.configure(text=controller.app.configuration[settingName])
+        elif settingName == 'unprocessedDataPath':
+            self.labelCurrentNormalDataPathValue.configure(text=controller.app.configuration[settingName])
+        elif settingName == 'processedImagesPath':
+            self.labelProcessedDataPathValue.configure(text=controller.app.configuration[settingName])
+        elif settingName == 'labeledDataDirectory':
+            self.labelLabelDirectoryPathValue.configure(text=controller.app.configuration[settingName])
+        elif settingName == 'grayModelsPath':
+            self.labelGrayModelsPathValue.configure(text=controller.app.configuration[settingName])
+        elif settingName == 'gradModelsPath':
+            self.labelGradModelsPathValue.configure(text=controller.app.configuration[settingName])
+        elif settingName == 'iconsPath':
+            self.labelIconsPathValue.configure(text=controller.app.configuration[settingName])

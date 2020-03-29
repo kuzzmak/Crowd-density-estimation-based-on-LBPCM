@@ -8,11 +8,7 @@ from PIL import ImageTk, Image
 import util
 from skimage.feature import local_binary_pattern
 import random
-import LBPCM
-from math import radians
-from math import pi
-import re
-import Writer
+
 
 import Pages.InitializationPage as iP
 import Pages.GradientPage as gP
@@ -602,11 +598,11 @@ class App(tk.Tk):
 
     def loadColors(self):
 
-        self.c0c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/0.jpg")))
-        self.c1c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/1.jpg")))
-        self.c2c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/2.jpg")))
-        self.c3c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/3.jpg")))
-        self.c4c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("colors/4.jpg")))
+        self.c0c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/0.jpg")))
+        self.c1c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/1.jpg")))
+        self.c2c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/2.jpg")))
+        self.c3c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/3.jpg")))
+        self.c4c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/4.jpg")))
 
         self.frames[clP.ClassificationPage].c0c.configure(image=self.c0c)
         self.frames[clP.ClassificationPage].c1c.configure(image=self.c1c)
