@@ -119,7 +119,7 @@ class App(tk.Tk):
 
             frame.grid(row=0, sticky="nsew")
 
-        self.show_frame(fvcP.FeatureVectorCreationPage)
+        self.show_frame(psP.ParameterSettingPage)
 
     def show_frame(self, cont):
         """

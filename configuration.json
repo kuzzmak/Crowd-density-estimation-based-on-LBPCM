@@ -1,5 +1,6 @@
 {
-  "dataPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/View_001",
+  "dataPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData",
+  "unprocessedDataPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/View_001",
   "processedImagesPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData",
 
   "labeledDataDirectory": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/",
