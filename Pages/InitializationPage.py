@@ -67,7 +67,7 @@ class InitializationPage(tk.Frame):
                                      command=lambda: controller.show_frame(psP.ParameterSettingPage))
         buttonParameters.pack(padx=10, pady=10, fill="x")
 
-        self.buttonSW = tk.Button(parameterFrame, text="Sliding Window", state="disabled",
+        self.buttonSW = tk.Button(parameterFrame, text="Sliding Window",
                                   command=lambda: controller.show_frame(swP.SlidingWindowPage))
         self.buttonSW.pack(padx=10, pady=10, fill="x")
 

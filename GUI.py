@@ -78,7 +78,7 @@ class App(tk.Tk):
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
         # stvaranje gumba za svaku od 14 funkcija
-        names = ["angular second moment",
+        self.names = ["angular second moment",
                  "contrast",
                  "correlation",
                  "sum of squares: variance",
@@ -95,7 +95,7 @@ class App(tk.Tk):
 
         for c in range(14):
             name = "f" + str(c + 1)
-            self.functionButtons.append((name, names[c], tk.IntVar()))
+            self.functionButtons.append((name, self.names[c], tk.IntVar()))
 
         for F in (pP.PreprocessPage,
                   sP.StartPage,
@@ -115,7 +115,7 @@ class App(tk.Tk):
 
             frame.grid(row=0, sticky="nsew")
 
-        self.show_frame(psP.ParameterSettingPage)
+        self.show_frame(iP.InitializationPage)
 
     def show_frame(self, cont):
         """
