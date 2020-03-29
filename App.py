@@ -3,7 +3,7 @@ import json
 from math import radians
 
 from tkinter import filedialog
-from tkinter import IntVar, END
+from tkinter import END
 
 import LBPCM
 import GUI

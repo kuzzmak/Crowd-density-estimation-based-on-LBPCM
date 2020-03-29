@@ -104,7 +104,7 @@ class FVC2Page(tk.Frame):
 
         for mp in self.modelPages:
 
-            im = Image.open(controller.configuration['xMarkPath'])
+            im = Image.open(controller.app.configuration['xMarkPath'])
             im = im.resize((20, 20), Image.ANTIALIAS)
             mp.im = ImageTk.PhotoImage(im)
 

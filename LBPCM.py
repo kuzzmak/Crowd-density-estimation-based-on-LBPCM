@@ -5,13 +5,11 @@ from skimage.feature import greycomatrix
 import util
 import numpy as np
 import Haralick
-import tkinter as tk
 import Pages.FeatureVectorCreationPage as fvcP
-
 
 class LBPCM:
 
-    def __init__(self, picType, radius, stepSize, windowSize, angles, glcmDistance, functions, combineDistances=0, combineAngles=0):
+    def __init__(self, picType, radius, stepSize, windowSize, angles, glcmDistance, functions, combineDistances, combineAngles):
 
         # vrsta slike na kojoj se radi LBP
         self.picType = picType
@@ -80,6 +78,13 @@ class LBPCM:
         return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256)
 
     def calculateFeatureVectors(self, app, verbose=True):
+        """
+        Funkcija za izračunavanje vektora značajki slika koje su već procesirane
+
+        :param app: referenca do glavne aplikacije
+        :param verbose: ispis koraka ili ne
+        """
+
         # staza do foldera s već izrezanim slikama
         pathToProcessedData = app.configuration['processedImagesPath']
 
@@ -113,7 +118,7 @@ class LBPCM:
             labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
 
             if verbose:
-                app.gui.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()))
+                app.gui.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()), dots=False)
 
         if verbose:
             app.gui.consolePrint("[INFO] vector creation finished")

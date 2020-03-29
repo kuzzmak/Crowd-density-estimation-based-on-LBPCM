@@ -55,19 +55,6 @@ class App(tk.Tk):
         labelConsole = tk.Label(self, text="Console window")
         labelConsole.pack(side="bottom")
 
-        # radijus LBP-a
-        self.radius = 1
-        # velicina celije
-        self.cellSize = [64, 64]
-        # velicina koraka
-        self.stepSize = 32
-        # kutevi za glcm
-        self.angles = [pi / 4, pi / 2, pi - pi / 4]
-        # udaljenosti za koje se racuna glcm
-        self.glcmDistance = [1]
-        # razred za dohvat ko matrice lokalnih binarnih znacajki i izracun vektora znacajki
-        self.lbpcm = LBPCM.LBPCM('grad', self.radius, self.stepSize, self.cellSize,
-                                 self.angles, self.glcmDistance, ['f1', 'f2'])  # stvaranje lbpcm s defaultnim vrijednostima
 
         # trenutna slika na stranici za parametre
         self.currPicPar = [[]]
@@ -135,12 +122,16 @@ class App(tk.Tk):
         self.show_frame(fvcP.FeatureVectorCreationPage)
 
     def show_frame(self, cont):
-        """funkcija za prikaz odredjenog frame-a"""
+        """
+        Funkcija za prikaz određenog frame-a
+        """
+
         frame = self.frames[cont]
         frame.tkraise()
 
     def nextCell(self):
-        """ funkcija za pomicanje na sljedecu celiju u pojedinom slikovnom elementu
+        """
+        Funkcija za pomicanje na sljedeću ćeliju u pojedinom slikovnom elementu
         """
 
         # ako nismo stigli do kraja slikovnog elementa
@@ -149,12 +140,12 @@ class App(tk.Tk):
             self.updateSlidingWindowImage()
             self.updateParameterFrame()
         else:
-            self.console.insert(tk.END, "[WARNING] no more cells remaining\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+            self.consolePrint("[WARNING] no more cells remaining")
 
     def nextPic(self):
-        """funkcija za dohvat sljedece slike"""
+        """
+        Funkcija za dohvat sljedeće slike
+        """
         #TODO napraviti da funkcionira kad se prvo izabere training folder, sad samo radi kad se prvo izabere data folder
         # resetiranje brojaca celije
         self.currCell = 0
@@ -167,12 +158,12 @@ class App(tk.Tk):
             self.updateSlidingWindowImage()
             self.updateParameterFrame()
         else:
-            self.console.insert(tk.END, "[WARNING] no more pictures remaining\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+            self.consolePrint("[WARNING] no more pictures remaining")
 
     def prevPic(self):
-        """funkcija za dohvat prethodne slike"""
+        """
+        Funkcija za dohvat prethodne slike
+        """
 
         # resetriranje brojaca celije
         self.currCell = 0
@@ -187,23 +178,21 @@ class App(tk.Tk):
             self.updateSlidingWindowImage()
             self.updateParameterFrame()
         else:
-            self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+            self.consolePrint("[WARNING] no previous pictures remaining")
 
     def resetCell(self):
-        """ funkcija za resetiranje celije na sliding window stranici
+        """
+        Funkcija za resetiranje ćelije na sliding window stranici
         """
 
         self.currCell = 0
         self.updateSlidingWindowImage()
         self.updateParameterFrame()
-        self.console.insert(tk.END, "[INFO] cell has been reset\n")
-        self.console.insert(tk.END, "----------------------------------------\n")
-        self.console.see(tk.END)
+        self.consolePrint("[INFO] cell has been reset")
 
     def process(self):
-        """ funkcija za dohvat dimenzija slikovnih elemenata i stvaranje istih
+        """
+        Funkcija za dohvat dimenzija slikovnih elemenata i stvaranje istih
         """
         try:
             # dohvat x, y dimenzija
@@ -214,9 +203,7 @@ class App(tk.Tk):
             # stvaranje slikovnih elemenata
             self.makePictureElements(dim)
         except AttributeError:
-            self.console.insert(tk.END, "[ERROR] invalid dimensions")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
+            self.consolePrint("[ERROR] invalid dimensions")
 
     def makePictureElements(self, dim):
         """ funkcija za stvaranje slikovnih elemenata od slika koje se nalaze u data folderu,
@@ -334,42 +321,42 @@ class App(tk.Tk):
         """ funkcija za azuriranje slike i informacija na sliding window stranici
         """
 
-        # pocetna i zavrsna tocka trenutne celije
-        start_point, end_point = self.picDims[self.currCell]
-        # trenutna slika
-        image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
-        # lbp trenutne slike
-        lbp = self.lbpcm.getLBP(image)
-        # samo za prikaz pravokutnika u boji na slici koja je grayscale
-        lbp = cv.cvtColor(lbp.astype('uint8') * 255, cv.COLOR_GRAY2RGB)
-
-        # stvaranje kopije izvorne slike kako celija ne bi ostala u slici prilikom kretanja na sljedecu celiju
-        image_copy = cv.rectangle(np.copy(lbp), start_point, end_point, (255, 0, 0), 2)
-
-        # trenutno pamcenje slike da se ne izbrise
-        self.LBPimg = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
-        self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
-
-        # postavljanje slike
-        self.frames[swP.SlidingWindowPage].labelLBPPic.configure(image=self.LBPimg)
-        self.frames[swP.SlidingWindowPage].labelPic.configure(image=self.im)
+        # # pocetna i zavrsna tocka trenutne celije
+        # start_point, end_point = self.picDims[self.currCell]
+        # # trenutna slika
+        # image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
+        # # lbp trenutne slike
+        # lbp = self.lbpcm.getLBP(image)
+        # # samo za prikaz pravokutnika u boji na slici koja je grayscale
+        # lbp = cv.cvtColor(lbp.astype('uint8') * 255, cv.COLOR_GRAY2RGB)
+        #
+        # # stvaranje kopije izvorne slike kako celija ne bi ostala u slici prilikom kretanja na sljedecu celiju
+        # image_copy = cv.rectangle(np.copy(lbp), start_point, end_point, (255, 0, 0), 2)
+        #
+        # # trenutno pamcenje slike da se ne izbrise
+        # self.LBPimg = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+        # self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+        #
+        # # postavljanje slike
+        # self.frames[swP.SlidingWindowPage].labelLBPPic.configure(image=self.LBPimg)
+        # self.frames[swP.SlidingWindowPage].labelPic.configure(image=self.im)
 
     def updateParameterFrame(self):
         """ funkcija za azuriranje parametara na stranici s LBP-om
         """
 
-        self.frames[swP.SlidingWindowPage].labelCellNumberValue.configure(text=str(self.currCell))
-        self.frames[swP.SlidingWindowPage].labelAnglesListValue.configure(text=str(util.shortAngles(self.angles)))
-
-        # trenutna slika
-        image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
+        # self.frames[swP.SlidingWindowPage].labelCellNumberValue.configure(text=str(self.currCell))
+        # self.frames[swP.SlidingWindowPage].labelAnglesListValue.configure(text=str(util.shortAngles(self.angles)))
+        #
+        # # trenutna slika
+        # image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
 
         # lbp trenutne slike
-        lbp = self.lbpcm.getLBP(image)
-        # dohvacanje pozicija trenutne celije
-        picDims = self.picDims[self.currCell]
-        # izlucivanje dijela slike koji prikazuje celija
-        croppedImage = lbp[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
+        # lbp = self.lbpcm.getLBP(image)
+        # # dohvacanje pozicija trenutne celije
+        # picDims = self.picDims[self.currCell]
+        # # izlucivanje dijela slike koji prikazuje celija
+        # croppedImage = lbp[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
 
         # # razred s haralickovim funkcijama
         # haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
@@ -582,9 +569,17 @@ class App(tk.Tk):
                                                                         + "   Feature vectors completed.")
         self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/0   Configurations completed.")
 
-    def consolePrint(self, message):
+    def consolePrint(self, message, dots=True):
+        """
+        Funkcija za ispis poruke u konzolu
+
+        :param message: poruka za ispis
+        :param dots: ispisuju li se crtice za odvajanje poruka
+        """
+
         self.console.insert(tk.END, message + "\n")
-        self.console.insert(tk.END, "----------------------------------------\n")
+        if dots:
+            self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
 
     def showClassifiedImage(self):
