@@ -25,43 +25,50 @@ class ParameterSettingPage(tk.Frame):
         dataPathLabel = tk.Label(leftFrame, text="data path:")
         dataPathLabel.grid(pady=10, row=0, sticky="e")
 
-        dataPathButton = tk.Button(rightFrame, text="Select folder", command=lambda: self.selectFolder(controller, 'dataPath'))
+        dataPathButton = tk.Button(rightFrame, text="Select folder",
+                                   command=lambda: self.selectFolder(controller, 'dataPath'))
         dataPathButton.grid(pady=5, row=0, sticky="e")
 
         normalDataPath = tk.Label(leftFrame, text="unprocessed data path:")
         normalDataPath.grid(pady=10, row=1, sticky="e")
 
-        normalDataPathButton = tk.Button(rightFrame, text="Select folder")
+        normalDataPathButton = tk.Button(rightFrame, text="Select folder",
+                                         command=lambda: self.selectFolder(controller, 'unprocessedDataPath'))
         normalDataPathButton.grid(pady=5, row=1, sticky="w")
 
         processedDataPathLabel = tk.Label(leftFrame, text="processed data:")
         processedDataPathLabel.grid(pady=10, row=2, sticky="e")
 
-        processedDataPathButton = tk.Button(rightFrame, text="Select folder")
+        processedDataPathButton = tk.Button(rightFrame, text="Select folder",
+                                            command=lambda: self.selectFolder(controller, 'processedImagesPath'))
         processedDataPathButton.grid(pady=5, row=2, sticky="w")
 
         labeledDataDirectory = tk.Label(leftFrame, text="label directory path:")
         labeledDataDirectory.grid(pady=10, row=3, sticky="e")
 
-        labeledDataDirectoryButton = tk.Button(rightFrame, text="Select folder")
+        labeledDataDirectoryButton = tk.Button(rightFrame, text="Select folder",
+                                               command=lambda: self.selectFolder(controller, 'labeledDataDirectory'))
         labeledDataDirectoryButton.grid(pady=5, row=3, sticky="w")
 
         grayModelsPath = tk.Label(leftFrame, text="gray models path:")
         grayModelsPath.grid(pady=10, row=4, sticky="e")
 
-        grayModelsPathButton = tk.Button(rightFrame, text="Select folder")
+        grayModelsPathButton = tk.Button(rightFrame, text="Select folder",
+                                         command=lambda: self.selectFolder(controller, 'grayModelsPath'))
         grayModelsPathButton.grid(pady=5, row=4, sticky="w")
 
         gradModelsPath = tk.Label(leftFrame, text="gradient models path:")
         gradModelsPath.grid(pady=10, row=5, sticky="e")
 
-        gradModelsPathButton = tk.Button(rightFrame, text="Select folder")
+        gradModelsPathButton = tk.Button(rightFrame, text="Select folder",
+                                         command=lambda: self.selectFolder(controller, 'gradModelsPath'))
         gradModelsPathButton.grid(pady=5, row=5, sticky="w")
 
         iconsPath = tk.Label(leftFrame, text="icons path:")
         iconsPath.grid(pady=10, row=6, sticky="e")
 
-        iconsPathButton = tk.Button(rightFrame, text="Select folder")
+        iconsPathButton = tk.Button(rightFrame, text="Select folder",
+                                    command=lambda: self.selectFolder(controller, 'iconsPath'))
         iconsPathButton.grid(pady=5, row=6, sticky="w")
 
         # panel sa trenutnom konfiguracijom
