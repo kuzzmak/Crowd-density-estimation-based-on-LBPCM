@@ -64,8 +64,6 @@ class App(tk.Tk):
         self.dataPictures = []
         # polje lokacija celije koja se krece po slici
         self.picDims = []
-        # brojac trenutne celije
-        self.currCell = 0
         # brojac trenutne slike
         self.picCounter = 0
 
@@ -125,67 +123,6 @@ class App(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
 
-    def nextCell(self):
-        """
-        Funkcija za pomicanje na sljedeću ćeliju u pojedinom slikovnom elementu
-        """
-
-        # ako nismo stigli do kraja slikovnog elementa
-        if self.currCell < self.picDims.__len__() - 1:
-            self.currCell += 1
-            self.updateSlidingWindowImage()
-            self.updateParameterFrame()
-        else:
-            self.consolePrint("[WARNING] no more cells remaining")
-
-    def nextPic(self):
-        """
-        Funkcija za dohvat sljedeće slike
-        """
-        #TODO napraviti da funkcionira kad se prvo izabere training folder, sad samo radi kad se prvo izabere data folder
-        # resetiranje brojaca celije
-        self.currCell = 0
-
-        # ako ima jos slikovnih elemenata
-        if self.picCounter < len(self.processedDataPictures):
-            self.picCounter += 1
-            fileName = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.picCounter]
-            self.currPicPath = fileName
-            self.updateSlidingWindowImage()
-            self.updateParameterFrame()
-        else:
-            self.consolePrint("[WARNING] no more pictures remaining")
-
-    def prevPic(self):
-        """
-        Funkcija za dohvat prethodne slike
-        """
-
-        # resetriranje brojaca celije
-        self.currCell = 0
-
-        # ako ima jos slikovnih elemenata
-        if self.picCounter >= 1:
-            self.picCounter -= 1
-            # staza do sljedece slike
-            fileName = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.picCounter]
-            self.currPicPath = fileName
-            # azuriranje slike
-            self.updateSlidingWindowImage()
-            self.updateParameterFrame()
-        else:
-            self.consolePrint("[WARNING] no previous pictures remaining")
-
-    def resetCell(self):
-        """
-        Funkcija za resetiranje ćelije na sliding window stranici
-        """
-
-        self.currCell = 0
-        self.updateSlidingWindowImage()
-        self.updateParameterFrame()
-        self.consolePrint("[INFO] cell has been reset")
-
     def process(self):
         """
         Funkcija za dohvat dimenzija slikovnih elemenata i stvaranje istih
@@ -228,184 +165,16 @@ class App(tk.Tk):
             util.saveImage(im_gray, self.app.configuration['processedImagesPath'], dim)
 
             self.dataAnnotationCounter += 1
-            self.frames[pP.PreprocessPage].progressbar.step()
-            self.update()
 
         self.processedDataPictures = [f for f in listdir(self.app.configuration['processedImagesPath'])]
         # omogucavanje gumba za oznacavanje slika
         self.frames[iP.InitializationPage].buttonDataAnnotation["state"] = "normal"
-        # progressbar u feature vector creation frameu
-        self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
 
         self.currPicPath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0]
         image = cv.imread(self.currPicPath)
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
         self.picDims = util.makePicDims(image, self.stepSize,
                                         self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-        self.updateSlidingWindowImage()
-        self.updateParameterFrame()
-
-        # self.trainPictures = [f for f in listdir(self.trainingPath)]
-        # self.frames[iP.InitializationPage].buttonSW['state'] = "normal"
-
-    def selectImg(self):
-        """ funkcija za dohvat i prikaz odabrane slike na stranici parametersetting
-            i dodatno izracun LBP-a
-        """
-
-        try:
-            # staza do odabrane slike preko izbornika
-            path = filedialog.askopenfilename(initialdir=r"C:\Users\kuzmi\PycharmProjects\untitled",
-                                              title="Select file",
-                                              filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
-
-            # pamcenje slike radi moguconsti refresha prilikom promjene parametra
-            self.currPicPar = cv.imread(path, cv.IMREAD_GRAYSCALE)
-            # omogucavanje gumba refresh
-            self.frames[psP.ParameterSettingPage].buttonRefresh.config(state="normal")
-            self.im = ImageTk.PhotoImage(image=Image.fromarray(self.currPicPar))
-            # postavaljanje slike u frame parametersetting
-            self.frames[psP.ParameterSettingPage].labelNormalPic.configure(image=self.im)
-            # postavljanje imena ucitane slike
-            self.frames[psP.ParameterSettingPage].labelImageName.configure(text="image: " + path.split("/")[-1])
-            # izracun LBP-a
-            lbp = local_binary_pattern(self.currPicPar, self.radius * 8, self.radius)
-
-            self.lbp = ImageTk.PhotoImage(image=Image.fromarray(lbp))
-            # postavljanje lbp u labelu
-            self.frames[psP.ParameterSettingPage].labelLBPPic.configure(image=self.lbp)
-
-        except AttributeError:
-            pass
-
-    def refreshLBP(self):
-        """ funkcija za refresh LBP-a ako su se promjenili parametri na stranici parametersetting
-        """
-
-        # ponovni izracun LBP-a
-        lbp = local_binary_pattern(self.currPicPar, self.radius * 8, self.radius)
-        # konstrukcija slike iz polja
-        self.lbp = ImageTk.PhotoImage(image=Image.fromarray(lbp))
-        # prikaz slike u odgovarajucoj labeli
-        self.frames[psP.ParameterSettingPage].labelLBPPic.configure(image=self.lbp)
-
-    def updatePics(self):
-        """ funkcija za azuriranje polja slika i maksimalne velicine progressbara
-            prilikom ucitavanja i procesiranja slika
-        """
-
-        self.dataPictures = [f for f in listdir(self.app.configuration['dataPath'])]
-        if not self.dataPictures:
-            self.console.insert(tk.END, "[WARNING] no pictures were found on: " + self.app.configuration['dataPath'])
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-        else:
-            # postavljanje progressbara na maksimalnu vrijednost velicine polje slika koje treba obraditi
-            self.frames[pP.PreprocessPage].progressbar.configure(maximum=self.dataPictures.__len__())
-            # staza do prve slike koja se postavlja u frameu radi prikaza kako dimenzije utjecu na slikovne elemente
-            path = self.app.configuration['dataPath'] + "/" + self.dataPictures[0]
-            image = cv.imread(path)
-
-            # ako je visina slike veca od 300 piksela, radi se skaliranje
-            if image.shape[0] > 300:
-               image = util.resizePercent(image, 30)
-
-            self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
-            self.frames[pP.PreprocessPage].labelSeePicElements.configure(image=self.img)
-
-    def updateSlidingWindowImage(self):
-        """ funkcija za azuriranje slike i informacija na sliding window stranici
-        """
-
-        # # pocetna i zavrsna tocka trenutne celije
-        # start_point, end_point = self.picDims[self.currCell]
-        # # trenutna slika
-        # image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
-        # # lbp trenutne slike
-        # lbp = self.lbpcm.getLBP(image)
-        # # samo za prikaz pravokutnika u boji na slici koja je grayscale
-        # lbp = cv.cvtColor(lbp.astype('uint8') * 255, cv.COLOR_GRAY2RGB)
-        #
-        # # stvaranje kopije izvorne slike kako celija ne bi ostala u slici prilikom kretanja na sljedecu celiju
-        # image_copy = cv.rectangle(np.copy(lbp), start_point, end_point, (255, 0, 0), 2)
-        #
-        # # trenutno pamcenje slike da se ne izbrise
-        # self.LBPimg = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
-        # self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
-        #
-        # # postavljanje slike
-        # self.frames[swP.SlidingWindowPage].labelLBPPic.configure(image=self.LBPimg)
-        # self.frames[swP.SlidingWindowPage].labelPic.configure(image=self.im)
-
-    def updateParameterFrame(self):
-        """ funkcija za azuriranje parametara na stranici s LBP-om
-        """
-        pass
-        # self.frames[swP.SlidingWindowPage].labelCellNumberValue.configure(text=str(self.currCell))
-        # self.frames[swP.SlidingWindowPage].labelAnglesListValue.configure(text=str(util.shortAngles(self.angles)))
-        #
-        # trenutna slika
-        image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
-
-        # lbp trenutne slike
-        lbp = self.lbpcm.getLBP(image)
-        # dohvacanje pozicija trenutne celije
-        picDims = self.picDims[self.currCell]
-        # izlucivanje dijela slike koji prikazuje celija
-        croppedImage = lbp[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
-
-        # # razred s haralickovim funkcijama
-        # haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
-        # # prikaz kontrasta
-        # contrast = haralick.contrast()
-        # self.frames[swP.SlidingWindowPage].labelContrastValue.configure(text=str(util.shortAngles(contrast)))
-        # # prikaz energije
-        # energy = haralick.energy()
-        # self.frames[swP.SlidingWindowPage].labelEnergyValue.configure(text=str(util.shortAngles(energy)))
-        # # prikaz homogenosti
-        # homogeneity = haralick.homogeneity()
-        # self.frames[swP.SlidingWindowPage].labelHomogeneityValue.configure(text=str(util.shortAngles(homogeneity)))
-        # # prikaz entropije
-        # entropy = haralick.entropy()
-        # self.frames[swP.SlidingWindowPage].labelEntropyValue.configure(text=str(util.shortAngles(entropy)))
-
-        # self.update()
-
-    def selectProcessedDataFolder(self):
-        pass
-    #     """ funkcija za odabir folders s vec procesiranim slikama
-    #     """
-    #
-    #     directory = filedialog.askdirectory(initialdir=r"data/processedData")
-    #
-    #     # ako je izabran neki direktorij
-    #     if directory != "":
-    #
-    #         self.app.configuration['processedImagesPath'] = directory
-    #         self.processedDataPictures = [f for f in listdir(self.app.configuration['processedImagesPath'])]
-    #         self.frames[fvcP.FeatureVectorCreationPage].progressbarVector.configure(maximum=self.processedDataPictures.__len__())
-    #         self.frames[iP.InitializationPage].buttonSW["state"] = "normal"
-    #
-    #         self.currPicPath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0]
-    #         image = cv.imread(self.currPicPath)
-    #         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
-    #         self.picDims = util.makePicDims(image, self.stepSize,
-    #                                         self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-    #         # self.updateSlidingWindowImage()
-    #         # self.updateParameterFrame()
-    #
-    #         # omogucavanje gumba za oznacavanje slika
-    #         self.frames[iP.InitializationPage].buttonDataAnnotation['state'] = "normal"
-    #
-    #         self.console.insert(tk.END, "[INFO] processed data folder path set: " + directory + "\n")
-    #         self.console.insert(tk.END,
-    #                             "[INFO] loaded " + str(self.processedDataPictures.__len__()) + " processed pictures\n")
-    #         self.console.insert(tk.END, "----------------------------------------\n")
-    #         self.console.see(tk.END)
-    #     else:
-    #         self.console.insert(tk.END, "[WARNING] you did not select folder\n")
-    #         self.console.insert(tk.END, "----------------------------------------\n")
-    #         self.console.see(tk.END)
 
     def updateDataAnnotationFrame(self):
         pass
