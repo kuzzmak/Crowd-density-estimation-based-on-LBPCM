@@ -5,6 +5,7 @@ from PIL import ImageTk, Image
 import numpy as np
 import util
 from skimage.feature import local_binary_pattern
+from skimage.feature import greycomatrix
 import Pages.InitializationPage as iP
 
 class SlidingWindowPage(tk.Frame):
@@ -75,7 +76,8 @@ class SlidingWindowPage(tk.Frame):
         buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=lambda: self.nextCell(controller))
         buttonNextCell.pack(side="left", padx=5, pady=5)
 
-        buttonCalculate = tk.Button(buttonFrame, text="Calculate function(s)")
+        buttonCalculate = tk.Button(buttonFrame, text="Calculate function(s)",
+                                    command=lambda: self.calculateFunctions(controller))
         buttonCalculate.pack(side="left", padx=5, pady=5)
 
         # desni panel s gumbima za Haralickove funkcije
@@ -94,8 +96,6 @@ class SlidingWindowPage(tk.Frame):
 
     def updateImages(self):
 
-
-
         image = cv.imread(self.currentPicturePath, cv.IMREAD_GRAYSCALE)
 
         if self.rType.get() == 'gray':
@@ -103,6 +103,7 @@ class SlidingWindowPage(tk.Frame):
         else:
             sobel = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
             lbp = local_binary_pattern(sobel, 8, 1, method='default')
+            image = sobel
 
         start_point, end_point = self.picDims[self.currentCell]
 
@@ -169,76 +170,46 @@ class SlidingWindowPage(tk.Frame):
         else:
             controller.consolePrint("[ERROR] no more cells remaining")
 
-    def calculateFunctions(self):
+    def calculateFunctions(self, controller):
 
-        pass
+        controller.console.delete(1.0, tk.END)
+
+        functions = []
+
+        for _, name, c in controller.functionButtons:
+            if c.get():
+                functions.append(name)
+
+        picType = self.rType.get()
+        radius = 1
+        stepSize = 32
+        cellSize = [64, 64]
+        angles = [0, 1.57]
+        glcmDistances = [1]
+
+        image = cv.imread(self.currentPicturePath, cv.IMREAD_GRAYSCALE)
+
+        picDim = self.picDims[self.currentCell]
+        cellImage = image[picDim[0][0]:picDim[1][0], picDim[0][1]:picDim[1][1]]
+
+        if picType == 'grad':
+            sobel = cv.Sobel(cellImage, cv.CV_8U, 1, 1, ksize=3)
+            lbp = local_binary_pattern(sobel, 8, 1, method='default')
+        else:
+            lbp = local_binary_pattern(cellImage, 8, 1, method='default')
+
+        glcm = greycomatrix(lbp.astype(int), glcmDistances, angles, levels=256, normed=True)
+
+        for f in functions:
+
+            result = util.greycoprops(glcm, prop=f)
+
+            string = []
+            for t in result:
+                string.extend(list(t))
+
+            controller.consolePrint(f + ": " + str(string), dots=False)
 
 
-        # # labela za ime slike
-        # self.labelPicName = tk.Label(mainFrame, text="")
-        # self.labelPicName.pack()
-        # # labela za sliku
-        # self.labelPic = tk.Label(mainFrame, text="No picture\nloaded")
-        # self.labelPic.pack(padx=10, pady=10)
-        # # labela za lbp sliku
-        # self.labelLBPPic = tk.Label(mainFrame)
-        # self.labelLBPPic.pack(padx=10, pady=10)
-        #
-        # # gumbi--------------------------
-        # buttonFrame = tk.Frame(mainFrame)
-        # buttonFrame.pack(padx=20, pady=20, side="bottom", expand=True)
-        #
-        # buttonNextPicture = tk.Button(buttonFrame, text="Next pic", command=controller.nextPic)
-        # buttonNextPicture.grid(row=0, column=1, padx=5, pady=5)
-        #
-        # buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic", command=controller.prevPic)
-        # buttonPreviousPicture.grid(row=0, column=0, padx=5, pady=5)
-        #
-        # buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=controller.nextCell)
-        # buttonNextCell.grid(row=0, column=2, padx=5, pady=5)
-        #
-        # buttonReset = tk.Button(buttonFrame, text="Reset", command=controller.resetCell)
-        # buttonReset.grid(row=0, column=3, padx=5, pady=5)
-        #
-        # buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
-        # buttonBack.grid(row=0, column=4, padx=5, pady=5)
-        #
-        # # dio stranice s izracunatim vrijednostima haralickovih funkcija
-        # parameterFrame = tk.Frame(self)
-        # parameterFrame.grid(row=1, column=1, padx=20, pady=20)
-        #
-        # labelAnglesList = tk.Label(parameterFrame, text="Function values for angles(in rad): ")
-        # labelAnglesList.grid(row=0, column=0, padx=10, pady=10)
-        #
-        # self.labelAnglesListValue = tk.Label(parameterFrame, text="")
-        # self.labelAnglesListValue.grid(row=0, column=1, padx=10, pady=10)
-        #
-        # labelCellNumber = tk.Label(parameterFrame, text="Cell num. ")
-        # labelCellNumber.grid(row=1, column=0, padx=10, pady=10)
-        #
-        # self.labelCellNumberValue = tk.Label(parameterFrame, text="")
-        # self.labelCellNumberValue.grid(row=1, column=1, padx=10, pady=10)
-        #
-        # labelContrast = tk.Label(parameterFrame, text="Contrast: ")
-        # labelContrast.grid(row=2, column=0, padx=10, pady=10)
-        #
-        # self.labelContrastValue = tk.Label(parameterFrame, text="")
-        # self.labelContrastValue.grid(row=2, column=1, padx=10, pady=10)
-        #
-        # labelEnergy = tk.Label(parameterFrame, text="Energy: ")
-        # labelEnergy.grid(row=3, column=0, padx=10, pady=10)
-        #
-        # self.labelEnergyValue = tk.Label(parameterFrame, text="")
-        # self.labelEnergyValue.grid(row=3, column=1, padx=10, pady=10)
-        #
-        # labelHomogeneity = tk.Label(parameterFrame, text="Homogeneity: ")
-        # labelHomogeneity.grid(row=4, column=0, padx=10, pady=10)
-        #
-        # self.labelHomogeneityValue = tk.Label(parameterFrame, text="")
-        # self.labelHomogeneityValue.grid(row=4, column=1, padx=10, pady=10)
-        #
-        # labelEntropy = tk.Label(parameterFrame, text="Entropy: ")
-        # labelEntropy.grid(row=5, column=0, padx=10, pady=10)
-        #
-        # self.labelEntropyValue = tk.Label(parameterFrame, text="")
-        # self.labelEntropyValue.grid(row=5, column=1, padx=10, pady=10)
+
+

@@ -344,15 +344,15 @@ class App(tk.Tk):
         # self.frames[swP.SlidingWindowPage].labelCellNumberValue.configure(text=str(self.currCell))
         # self.frames[swP.SlidingWindowPage].labelAnglesListValue.configure(text=str(util.shortAngles(self.angles)))
         #
-        # # trenutna slika
-        # image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
+        # trenutna slika
+        image = cv.imread(self.currPicPath, cv.IMREAD_GRAYSCALE)
 
         # lbp trenutne slike
-        # lbp = self.lbpcm.getLBP(image)
-        # # dohvacanje pozicija trenutne celije
-        # picDims = self.picDims[self.currCell]
-        # # izlucivanje dijela slike koji prikazuje celija
-        # croppedImage = lbp[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
+        lbp = self.lbpcm.getLBP(image)
+        # dohvacanje pozicija trenutne celije
+        picDims = self.picDims[self.currCell]
+        # izlucivanje dijela slike koji prikazuje celija
+        croppedImage = lbp[picDims[0][0]:picDims[1][0], picDims[0][1]:picDims[1][1]]
 
         # # razred s haralickovim funkcijama
         # haralick = Haralick.HaralickFeatures(self.lbpcm.getGLCM(croppedImage))
