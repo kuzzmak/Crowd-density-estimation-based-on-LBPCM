@@ -9,5 +9,6 @@
     "xMarkPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/model_icons/xmark.jpg",
     "grayModelsPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/models_v2/grayModels",
     "gradModelsPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/models_v2/gradModels",
+    "blankImagePath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/blankImage.jpg",
     "trainingSetSize": 0.7
 }
