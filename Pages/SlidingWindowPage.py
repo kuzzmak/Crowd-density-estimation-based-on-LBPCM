@@ -44,7 +44,7 @@ class SlidingWindowPage(tk.Frame):
 
         # panel sa slikom i gumbima za sljedeću sliku i sljedeću ćeliju
         leftPanel = tk.Frame(middleFrame)
-        leftPanel.grid(row=0, column=0, sticky="n")
+        leftPanel.grid(row=0, column=0, padx=20, sticky="n")
 
         rPanel = tk.Frame(leftPanel)
         rPanel.pack(padx=10, pady=10)
@@ -76,18 +76,18 @@ class SlidingWindowPage(tk.Frame):
         buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=lambda: self.nextCell(controller))
         buttonNextCell.pack(side="left", padx=5, pady=5)
 
-        buttonCalculate = tk.Button(buttonFrame, text="Calculate function(s)",
-                                    command=lambda: self.calculateFunctions(controller))
-        buttonCalculate.pack(side="left", padx=5, pady=5)
-
         # desni panel s gumbima za Haralickove funkcije
         rightPanel = tk.Frame(middleFrame)
-        rightPanel.grid(row=0, column=1, sticky="e")
+        rightPanel.grid(row=0, column=1, padx=20, sticky="e")
 
         i = 1
         for name, fName, c in controller.functionButtons:
             tk.Checkbutton(rightPanel, text=name + " - " + fName, variable=c).grid(row=i, pady="2", sticky="w")
             i += 1
+
+        buttonCalculate = tk.Button(rightPanel, text="Calculate function(s)",
+                                    command=lambda: self.calculateFunctions(controller))
+        buttonCalculate.grid(row=15, padx=5, pady=2, sticky="w")
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(side="bottom", padx=5, pady=5)
@@ -171,6 +171,11 @@ class SlidingWindowPage(tk.Frame):
             controller.consolePrint("[ERROR] no more cells remaining")
 
     def calculateFunctions(self, controller):
+        """
+        Funkcija za izračun odabranih Haralickovih funkcija u desno panelu.
+
+        :param controller: referenca do glavnog programa
+        """
 
         controller.console.delete(1.0, tk.END)
 
