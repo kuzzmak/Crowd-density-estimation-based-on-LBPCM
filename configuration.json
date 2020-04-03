@@ -2,7 +2,7 @@
     "dataPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data",
     "unprocessedDataPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/View_001",
     "processedImagesPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData",
-    "labeledDataDirectory": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/",
+    "labeledDataDirectory": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData",
     "labeledDataPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/labeledData.txt",
     "iconsPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons",
     "checkMarkPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/model_icons/checkmark.jpg",

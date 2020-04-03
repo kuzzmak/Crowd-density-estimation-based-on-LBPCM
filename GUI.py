@@ -340,7 +340,7 @@ class App(tk.Tk):
     def updateParameterFrame(self):
         """ funkcija za azuriranje parametara na stranici s LBP-om
         """
-
+        pass
         # self.frames[swP.SlidingWindowPage].labelCellNumberValue.configure(text=str(self.currCell))
         # self.frames[swP.SlidingWindowPage].labelAnglesListValue.configure(text=str(util.shortAngles(self.angles)))
         #
@@ -369,7 +369,7 @@ class App(tk.Tk):
         # entropy = haralick.entropy()
         # self.frames[swP.SlidingWindowPage].labelEntropyValue.configure(text=str(util.shortAngles(entropy)))
 
-        self.update()
+        # self.update()
 
     def selectProcessedDataFolder(self):
         pass

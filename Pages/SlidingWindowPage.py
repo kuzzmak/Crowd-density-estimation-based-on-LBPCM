@@ -1,4 +1,10 @@
 import tkinter as tk
+from os import listdir
+import cv2 as cv
+from PIL import ImageTk, Image
+import numpy as np
+import util
+from skimage.feature import local_binary_pattern
 import Pages.InitializationPage as iP
 
 class SlidingWindowPage(tk.Frame):
@@ -11,6 +17,18 @@ class SlidingWindowPage(tk.Frame):
         tk.Frame.__init__(self, parent)
 
         self.functionButtons = []
+        # vrsta slike na kojoj se primjenjuje LBP
+        self.rType = tk.StringVar()
+
+        self.currentPicture = 0
+        self.currentCell = 0
+
+        self.processedImages = listdir(controller.app.configuration['processedImagesPath'])
+        # trenutno prikazana slika u frameu
+        self.currentPicturePath = controller.app.configuration['processedImagesPath'] + "/" + \
+                                  self.processedImages[self.currentPicture]
+        # koordinate na slici za putujuću ćeliju
+        self.picDims = util.makePicDims(cv.imread(self.currentPicturePath))
 
         for c in range(14):
             name = "f" + str(c + 1)
@@ -25,7 +43,18 @@ class SlidingWindowPage(tk.Frame):
 
         # panel sa slikom i gumbima za sljedeću sliku i sljedeću ćeliju
         leftPanel = tk.Frame(middleFrame)
-        leftPanel.pack(side="left")
+        leftPanel.grid(row=0, column=0, sticky="n")
+
+        rPanel = tk.Frame(leftPanel)
+        rPanel.pack(padx=10, pady=10)
+
+        rGray = tk.Radiobutton(rPanel, text="Gray", variable=self.rType, value='gray', command=self.updateImages)
+        rGray.pack(side="left", padx=10)
+
+        rGrad = tk.Radiobutton(rPanel, text="Gradient", variable=self.rType, value='grad', command=self.updateImages)
+        rGrad.pack(side="left", padx=10)
+
+        self.rType.set('gray')
 
         self.labelNormalImage = tk.Label(leftPanel, text="NO IMAGE\nLOADED")
         self.labelNormalImage.pack(padx=10, pady=10)
@@ -37,35 +66,113 @@ class SlidingWindowPage(tk.Frame):
         buttonFrame = tk.Frame(leftPanel)
         buttonFrame.pack(pady=5)
 
-        buttonNextPicture = tk.Button(buttonFrame, text="Next pic")
-        buttonNextPicture.pack(side="left", padx=5, pady=5)
-
-        buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic")
+        buttonPreviousPicture = tk.Button(buttonFrame, text="Prev pic", command=lambda: self.previousImage(controller))
         buttonPreviousPicture.pack(side="left", padx=5, pady=5)
 
-        buttonNextCell = tk.Button(buttonFrame, text="Next cell")
+        buttonNextPicture = tk.Button(buttonFrame, text="Next pic", command=lambda: self.nextImage(controller))
+        buttonNextPicture.pack(side="left", padx=5, pady=5)
+
+        buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=lambda: self.nextCell(controller))
         buttonNextCell.pack(side="left", padx=5, pady=5)
 
-
-
-
+        buttonCalculate = tk.Button(buttonFrame, text="Calculate function(s)")
+        buttonCalculate.pack(side="left", padx=5, pady=5)
 
         # desni panel s gumbima za Haralickove funkcije
         rightPanel = tk.Frame(middleFrame)
-        rightPanel.pack(side="left")
+        rightPanel.grid(row=0, column=1, sticky="e")
 
         i = 1
         for name, fName, c in controller.functionButtons:
             tk.Checkbutton(rightPanel, text=name + " - " + fName, variable=c).grid(row=i, pady="2", sticky="w")
             i += 1
 
-
-
-
-
-
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(side="bottom", padx=5, pady=5)
+
+        self.updateImages()
+
+    def updateImages(self):
+
+
+
+        image = cv.imread(self.currentPicturePath, cv.IMREAD_GRAYSCALE)
+
+        if self.rType.get() == 'gray':
+            lbp = local_binary_pattern(image, 8, 1, method='default')
+        else:
+            sobel = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
+            lbp = local_binary_pattern(sobel, 8, 1, method='default')
+
+        start_point, end_point = self.picDims[self.currentCell]
+
+        image = cv.cvtColor(image.astype('uint8'), cv.COLOR_GRAY2RGB)
+        lbp = cv.cvtColor(lbp.astype('uint8'), cv.COLOR_GRAY2RGB)
+
+        image_copy = cv.rectangle(np.copy(image), start_point, end_point, (255, 0, 0), 2)
+        image_copy_lbp = cv.rectangle(np.copy(lbp), start_point, end_point, (255, 0, 0), 2)
+
+        self.im = ImageTk.PhotoImage(image=Image.fromarray(image_copy))
+        self.lbp = ImageTk.PhotoImage(image=Image.fromarray(image_copy_lbp))
+
+        self.labelNormalImage.configure(image=self.im)
+        self.labelLBPImage.configure(image=self.lbp)
+
+    def nextImage(self, controller):
+        """
+        Funkcija za prelazak na sljedeću sliku.
+
+        :param controller: referenca na glavni program
+        """
+
+        if self.currentPicture < len(self.processedImages):
+
+            self.currentCell = 0
+            self.currentPicture += 1
+            self.currentPicturePath = controller.app.configuration['processedImagesPath'] + "/" + \
+                                      self.processedImages[self.currentPicture]
+
+            self.updateImages()
+        else:
+            controller.consolePrint("[ERROR] no remaining pictures")
+
+    def previousImage(self, controller):
+        """
+        Funkcija za prelazak na prethodnu sliku.
+
+        :param controller: referenca na glavni program
+        """
+
+        if self.currentPicture > 0:
+
+            self.currentCell = 0
+            self.currentPicture -= 1
+
+            self.currentPicturePath = controller.app.configuration['processedImagesPath'] + "/" + \
+                                      self.processedImages[self.currentPicture]
+
+            self.updateImages()
+        else:
+            controller.consolePrint("[ERROR] no previous pictures")
+
+    def nextCell(self, controller):
+        """
+        Funkcija za prelazak na sljedeću ćeliju na slici.
+
+        :param controller: referenca do glavnog programa
+        """
+
+        if self.currentCell < len(self.picDims) - 1:
+
+            self.currentCell += 1
+            self.updateImages()
+        else:
+            controller.consolePrint("[ERROR] no more cells remaining")
+
+    def calculateFunctions(self):
+
+        pass
+
 
         # # labela za ime slike
         # self.labelPicName = tk.Label(mainFrame, text="")

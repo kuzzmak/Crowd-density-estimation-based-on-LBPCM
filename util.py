@@ -77,7 +77,7 @@ def sliding_window(image, stepSize, windowSize):
             # yield the current window
             yield image[y:y + windowSize[1], x:x + windowSize[0]]
 
-def makePicDims(image, stepSize=32, windowSize=[64, 64]):
+def makePicDims(image, stepSize=None, windowSize=None):
 
     """funkcija koja sluzi za stvaranje prozora iz kojeg
     se tvori vektor znacajki
@@ -86,6 +86,12 @@ def makePicDims(image, stepSize=32, windowSize=[64, 64]):
     oznacavaju lijevi desni i desni donji kut celije koje se koristi
     za stvaranje vektora znacajki
     """
+
+    if windowSize is None:
+        windowSize = [64, 64]
+
+    if stepSize is None:
+        stepSize = 32
 
     dims = []
     for y in range(0, image.shape[0] - stepSize, stepSize):
