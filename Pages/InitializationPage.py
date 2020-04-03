@@ -8,6 +8,7 @@ import Pages.ParameterSettingPage as psP
 import Pages.PreprocessPage as pP
 import Pages.SlidingWindowPage as swP
 import Pages.FVC2Page as fvc2
+import Pages.CLP2 as clP2
 
 class InitializationPage(tk.Frame):
 
@@ -49,10 +50,6 @@ class InitializationPage(tk.Frame):
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
 
-        buttonSelectProcessedData = tk.Button(preprocessingFrame, text="Processed data",
-                                              command=controller.selectProcessedDataFolder)
-        buttonSelectProcessedData.pack(padx=5, pady=10, fill="x")
-
         self.buttonDataAnnotation = tk.Button(preprocessingFrame, text="Data Annotation", state="disabled",
                                               command=lambda: [controller.show_frame(daP.DataAnnotationPage),
                                                                controller.updateDataAnnotationFrame()])
@@ -81,8 +78,7 @@ class InitializationPage(tk.Frame):
         classificationDescription.pack(pady=10, padx=10)
 
         buttonFVC = tk.Button(classificationFrame, text="FVC",
-                              command=lambda: [controller.show_frame(fvcP.FeatureVectorCreationPage),
-                                               controller.showFVCinfo()])
+                              command=lambda: controller.show_frame(fvcP.FeatureVectorCreationPage))
         buttonFVC.pack(padx=10, pady=10, fill="x")
 
         buttonFVC2 = tk.Button(classificationFrame, text="FVC2",
@@ -93,6 +89,10 @@ class InitializationPage(tk.Frame):
                                          command=lambda: [controller.show_frame(clP.ClassificationPage),
                                                           controller.loadColors()])
         buttonClassification.pack(padx=10, pady=10, fill="x")
+
+        buttonCLP2 = tk.Button(classificationFrame, text="CLP2",
+                               command=lambda: controller.show_frame(clP2.CLP2))
+        buttonCLP2.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(sP.StartPage))
         buttonBack.pack(padx=10, pady=10, fill="x")

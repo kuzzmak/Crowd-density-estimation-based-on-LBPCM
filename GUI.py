@@ -21,6 +21,7 @@ import Pages.SlidingWindowPage as swP
 import Pages.DataAnnotationPage as daP
 import Pages.ClassificationPage as clP
 import Pages.FVC2Page as fvc2P
+import Pages.CLP2 as clp2
 
 
 class App(tk.Tk):
@@ -105,7 +106,8 @@ class App(tk.Tk):
                   coP.ConfigurationsPage,
                   clP.ClassificationPage,
                   gP.GradientPage,
-                  fvc2P.FVC2Page):
+                  fvc2P.FVC2Page,
+                  clp2.CLP2):
 
             frame = F(container, self)
 
@@ -291,48 +293,6 @@ class App(tk.Tk):
                 # postavljanje slike u labelu
                 self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
                 self.frames[pP.PreprocessPage].labelSeePicElements.configure(image=self.img)
-
-    def showFVCinfo(self):
-        """ funkcija za azuriranje informacija u frameu feature vector creation
-        """
-
-        # data staza
-        # if self.dataPath == "":
-        #     self.frames[fvcP.FeatureVectorCreationPage].labelDataPathValue.configure(text="NOT SET")
-        # else:
-        #     self.frames[fvcP.FeatureVectorCreationPage].labelDataPathValue.configure(
-        #         text=self.dataPath + "  (" + str(self.dataPictures.__len__()) + ") pictures")
-        #
-        # # training staza
-        # if self.trainingPath == "":
-        #     self.frames[fvcP.FeatureVectorCreationPage].labelTrainValue.configure(text="NOT SET")
-        # else:
-        #     self.frames[fvcP.FeatureVectorCreationPage].labelTrainValue.configure(
-        #         text=self.trainingPath + "  (" + str(self.trainPictures.__len__()) + ") pictures")
-        #
-        # # test staza
-        # if self.testPath == "":
-        #     self.frames[fvcP.FeatureVectorCreationPage].labelTestValue.configure(text="NOT SET")
-        # else:
-        #     self.frames[fvcP.FeatureVectorCreationPage].labelTestValue.configure(
-        #         text=self.testPath + "  (" + str(self.testPictures.__len__()) + ") pictures")
-        #
-        # # LBP radius
-        # self.frames[fvcP.FeatureVectorCreationPage].labelLBPRadiusValue.configure(text=self.radius)
-
-        # # velicina celije
-        # self.frames[fvcP.FeatureVectorCreationPage].labelCellSizeValue.configure(text=self.cellSize)
-        #
-        # # kutevi za lpbcm
-        # self.frames[fvcP.FeatureVectorCreationPage].labelAnglesValue.configure(text=str(util.shortAngles(self.angles)))
-        #
-        # # velicina koraka celije
-        # self.frames[fvcP.FeatureVectorCreationPage].labelStepSizeValue.configure(text=self.stepSize)
-
-        # labela za napredak
-        self.frames[fvcP.FeatureVectorCreationPage].labelProgress.configure(text="0/" + str(self.processedDataPictures.__len__())
-                                                                        + "   Feature vectors completed.")
-        self.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(text="0/0   Configurations completed.")
 
     def consolePrint(self, message, dots=True):
         """
