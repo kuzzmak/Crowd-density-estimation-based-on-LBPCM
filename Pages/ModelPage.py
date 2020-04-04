@@ -7,7 +7,7 @@ from PIL import ImageTk, Image
 
 class ModelPage(tk.Frame):
 
-    def __init__(self, parent, upperFrame, controller, modelId):
+    def __init__(self, parent, upperFrame, controller):
 
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
@@ -29,8 +29,6 @@ class ModelPage(tk.Frame):
         # broj modela koji koristi sive ili gradijentne slike, koristi se kod brojača za trenutni prikazani model
         self.numberOfGrayModels = len(self.grayModels)
         self.numberOfGradModels = len(self.gradModels)
-        # razred za učitavanje modela i konfiguracije modela
-        self.writer = Writer.Writer()
 
         # lijevi panel sa selekcijom modela
         selectFrame1 = tk.Frame(self)
@@ -156,7 +154,7 @@ class ModelPage(tk.Frame):
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", command=lambda: self.loadModel(
-            controller, upperFrame, modelId))
+            controller, upperFrame))
         buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get()))
@@ -194,7 +192,7 @@ class ModelPage(tk.Frame):
 
         self.showInfo(modelId)
 
-    def loadModel(self, controller, upperFrame, modelId):
+    def loadModel(self, controller, upperFrame):
         """
         Funkcija za učitavanje trenutno izabranog modela
 
@@ -202,27 +200,39 @@ class ModelPage(tk.Frame):
         :param controller: referenca do glavnog programa
         """
 
+        if upperFrame.numberOfModels.get() == 2:
+            if upperFrame.numberOfModelsLoaded % 2 == 0:
+                controller.app.writers = []
+            upperFrame.numberOfModelsLoaded += 1
+        else:
+            controller.app.writers = []
+
         modelType = self.modelType.get()
 
         if modelType == 'gray':
             modelPath = controller.app.configuration["grayModelsPath"] + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
             # spremanje učitanog modela
-            self.writer.model = joblib.load(modelPath)
-
-            modelId.set(self.grayModels[self.currentGrayModel])
+            writer = Writer.Writer()
+            writer.model = joblib.load(modelPath)
+            writer.modelConfiguration = writer.loadConfFromJSON(self.grayModels[self.currentGrayModel])
+            controller.app.writers.append(writer)
 
         else:
             modelPath = controller.app.configuration["gradModelsPath"] + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
-            self.writer.model = joblib.load(modelPath)
-            modelId.set(self.gradModels[self.currentGradModel])
+            writer = Writer.Writer()
+            writer.model = joblib.load(modelPath)
+            writer.modelConfiguration = writer.loadConfFromJSON(self.gradModels[self.currentGradModel])
+            controller.app.writers.append(writer)
 
-        if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
-            upperFrame.buttonSelectPicture['state'] = 'normal'
+        # if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
+        #     upperFrame.buttonSelectPicture['state'] = 'normal'
+        #
+        # if upperFrame.numberOfModels.get() == 2 \
+        #         and upperFrame.modelPages[0].writer.model != [] \
+        #         and upperFrame.modelPages[1].writer.model != []:
+        #     upperFrame.buttonSelectPicture['state'] = 'normal'
 
-        if upperFrame.numberOfModels.get() == 2 \
-                and upperFrame.modelPages[0].writer.model != [] \
-                and upperFrame.modelPages[1].writer.model != []:
-            upperFrame.buttonSelectPicture['state'] = 'normal'
+        upperFrame.buttonSelectPicture['state'] = 'normal'
 
         im = Image.open(controller.app.configuration["checkMarkPath"])
         im = im.resize((20, 20), Image.ANTIALIAS)
@@ -230,18 +240,6 @@ class ModelPage(tk.Frame):
 
         self.imageLabel.configure(image=self.im)
         self.imageLabelDescription.configure(text="model loaded")
-
-        # dodavanje modela u glavnu aplikaciju
-        controller.app.selectedModels = []
-        for p in upperFrame.modelPages:
-            if p.writer.model:
-                controller.app.selectedModels.append(p.writer.model)
-
-        if controller.firstModelId.get() != -1:
-            print(controller.firstModelId.get())
-        if controller.secondModelId.get() != -1:
-            print(controller.secondModelId.get())
-        print()
 
     def showInfo(self, modelId):
         """
@@ -251,6 +249,9 @@ class ModelPage(tk.Frame):
         """
 
         if modelId != -1:
+
+            writer = Writer.Writer()
+
             classifierType, \
             picType, \
             lbpRadius, \
@@ -264,7 +265,7 @@ class ModelPage(tk.Frame):
             functions, \
             mean, \
             sigma, \
-            error = self.writer.loadConfFromJSON(modelId)
+            error = writer.loadConfFromJSON(modelId)
 
             fun = []
 
