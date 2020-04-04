@@ -6,7 +6,6 @@ import cv2 as cv
 import numpy as np
 from PIL import ImageTk, Image
 import util
-from skimage.feature import local_binary_pattern
 import random
 
 
@@ -73,11 +72,6 @@ class App(tk.Tk):
 
         # lista imena procesiranih slika
         self.processedDataPictures = []
-
-        self.firstModelId = tk.IntVar()
-        self.firstModelId.set(-1)
-        self.secondModelId = tk.IntVar()
-        self.secondModelId.set(-1)
 
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
