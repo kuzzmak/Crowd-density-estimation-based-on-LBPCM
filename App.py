@@ -3,7 +3,7 @@ import json
 from math import radians
 
 from tkinter import filedialog
-from tkinter import END
+import tkinter as tk
 
 import LBPCM
 import GUI
@@ -31,6 +31,13 @@ class App:
         self.labelDictionary = {}
         # lista konfiguracija za učenje modela
         self.configurations = []
+
+        # konfiguracije izabranih modela za klasifikaciju
+        self.selectedConfigurations = []
+        # izabrani modeli za klasifikaciju
+        self.selectedModels = []
+
+
 
         with open("configuration.json") as json_file:
 
@@ -153,9 +160,9 @@ class App:
             self.gui.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(
                 text="0/" + str(len(self.configurations)) + "   Configurations completed.")
 
-            self.gui.console.insert(END, "new configuration added\n")
-            self.gui.console.insert(END, str(conf) + "\n")
-            self.gui.console.see(END)
+            self.gui.console.insert(tk.END, "new configuration added\n")
+            self.gui.console.insert(tk.END, str(conf) + "\n")
+            self.gui.console.see(tk.END)
 
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara

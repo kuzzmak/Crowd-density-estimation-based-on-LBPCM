@@ -2,6 +2,7 @@ import tkinter as tk
 from PIL import ImageTk, Image
 import Pages.InitializationPage as iP
 import Pages.ModelPage as mp
+from Pages import CLP2 as clP2
 from tkinter import filedialog
 
 class FVC2Page(tk.Frame):
@@ -36,7 +37,7 @@ class FVC2Page(tk.Frame):
         self.middleFrame = tk.Frame(self)
         self.middleFrame.grid(row=1, sticky="n")
 
-        leftModel = mp.ModelPage(self.middleFrame, self, controller)
+        leftModel = mp.ModelPage(self.middleFrame, self, controller, controller.firstModelId)
         leftModel.grid(row=0, column=0, padx=10)
 
         self.modelPages.append(leftModel)
@@ -48,7 +49,9 @@ class FVC2Page(tk.Frame):
                                              command=lambda: self.selectPicture(controller), state="disabled")
         self.buttonSelectPicture.pack(side="left", padx=10, pady=10)
 
-        self.buttonClassify = tk.Button(buttonFrame, text="Classify", state="disabled")
+        self.buttonClassify = tk.Button(buttonFrame, text="Classify", state="disabled",
+                                        command=lambda: [controller.show_frame(clP2.CLP2),
+                                                         clP2.CLP2.updateClassificationFrame(controller.frames[clP2.CLP2], controller)])
         self.buttonClassify.pack(side="left", padx=10, pady=10)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
@@ -63,6 +66,9 @@ class FVC2Page(tk.Frame):
 
         numOfModels = self.numberOfModels.get()
 
+        controller.firstModelId.set(-1)
+        controller.secondModelId.set(-1)
+
         try:
             self.buttonClassify['state'] = 'disabled'
             self.buttonSelectPicture['state'] = 'disabled'
@@ -71,7 +77,7 @@ class FVC2Page(tk.Frame):
 
         if numOfModels == 2:
 
-            rightModel = mp.ModelPage(self.middleFrame, self, controller)
+            rightModel = mp.ModelPage(self.middleFrame, self, controller, controller.secondModelId)
             rightModel.grid(row=0, column=1, padx=30)
 
             # micanje modela lijevog dijela stranice
@@ -91,11 +97,12 @@ class FVC2Page(tk.Frame):
             self.middleFrame = tk.Frame(self)
             self.middleFrame.grid(row=1)
 
-            leftModel = mp.ModelPage(self.middleFrame, self, controller)
+            leftModel = mp.ModelPage(self.middleFrame, self, controller, controller.fristModelId)
             leftModel.grid(row=0, column=0, padx=30)
 
             self.modelPages = []
             self.modelPages.append(leftModel)
+
 
     def showModelIcon(self, controller):
         """
@@ -131,3 +138,4 @@ class FVC2Page(tk.Frame):
 
         else:
             controller.consolePrint("[WARNING] you did not select any picture")
+

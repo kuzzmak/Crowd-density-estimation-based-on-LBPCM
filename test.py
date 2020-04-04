@@ -274,23 +274,27 @@
 #         pass
 
 
-from concurrent.futures import ThreadPoolExecutor
-from concurrent.futures import as_completed
-values = [2,3,4,5]
-res = []
+# from concurrent.futures import ThreadPoolExecutor
+# from concurrent.futures import as_completed
+# values = [2,3,4,5]
+# res = []
+#
+# import multiprocessing
+#
+# multiprocessing.cpu_count()
+#
+# def square(n):
+#    res.append(n * n)
+#
+# def main():
+#    with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
+#       executor.map(square, values)
+#
+#
+# if __name__ == '__main__':
+#    main()
+#    print(res)
 
-import multiprocessing
-
-multiprocessing.cpu_count()
-
-def square(n):
-   res.append(n * n)
-
-def main():
-   with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
-      executor.map(square, values)
-
-
-if __name__ == '__main__':
-   main()
-   print(res)
+a = [2, 1]
+a.pop(0)
+print(a)
