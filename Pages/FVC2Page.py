@@ -17,6 +17,8 @@ class FVC2Page(tk.Frame):
         self.numberOfModels.set(1)
         self.modelPages = []
 
+        self.numberOfModelsLoaded = 0
+
         numOfModelsFrame = tk.Frame(self)
         numOfModelsFrame.grid(row=0, sticky="n")
 
@@ -37,7 +39,7 @@ class FVC2Page(tk.Frame):
         self.middleFrame = tk.Frame(self)
         self.middleFrame.grid(row=1, sticky="n")
 
-        leftModel = mp.ModelPage(self.middleFrame, self, controller, controller.firstModelId)
+        leftModel = mp.ModelPage(self.middleFrame, self, controller)
         leftModel.grid(row=0, column=0, padx=10)
 
         self.modelPages.append(leftModel)
@@ -65,9 +67,7 @@ class FVC2Page(tk.Frame):
         """
 
         numOfModels = self.numberOfModels.get()
-
-        controller.firstModelId.set(-1)
-        controller.secondModelId.set(-1)
+        self.numberOfModelsLoaded = 0
 
         try:
             self.buttonClassify['state'] = 'disabled'
@@ -77,11 +77,8 @@ class FVC2Page(tk.Frame):
 
         if numOfModels == 2:
 
-            rightModel = mp.ModelPage(self.middleFrame, self, controller, controller.secondModelId)
+            rightModel = mp.ModelPage(self.middleFrame, self, controller)
             rightModel.grid(row=0, column=1, padx=30)
-
-            # micanje modela lijevog dijela stranice
-            self.modelPages[0].writer.model = []
 
             # ako je ponovno kliknutno na dva modela
             if len(self.modelPages) == 2:
@@ -97,12 +94,11 @@ class FVC2Page(tk.Frame):
             self.middleFrame = tk.Frame(self)
             self.middleFrame.grid(row=1)
 
-            leftModel = mp.ModelPage(self.middleFrame, self, controller, controller.fristModelId)
+            leftModel = mp.ModelPage(self.middleFrame, self, controller)
             leftModel.grid(row=0, column=0, padx=30)
 
             self.modelPages = []
             self.modelPages.append(leftModel)
-
 
     def showModelIcon(self, controller):
         """
@@ -124,15 +120,13 @@ class FVC2Page(tk.Frame):
         """
 
         # staza do odabrane slike preko izbornika
-        path = filedialog.askopenfilename(initialdir=r"/home/tonkec/PycharmProjects/"
-                                                     r"Crowd-density-estimation-based-on-LBPCM/"
-                                                     r"data/normalData/View_001",
+        path = filedialog.askopenfilename(initialdir=controller.app.configuration['unprocessedDataPath'],
                                           title="Select picture you want to classify",
                                           filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
 
         if len(path) > 0:
 
-            self.pictureToClassify = path
+            controller.app.pictureToClassify = path
             # omogućavanje gumba za klasifikaciju
             self.buttonClassify['state'] = 'normal'
 
