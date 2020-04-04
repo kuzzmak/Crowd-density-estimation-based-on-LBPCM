@@ -1,8 +1,4 @@
 import tkinter as tk
-import cv2 as cv
-from PIL import Image, ImageTk
-
-import util
 from Pages import FVC2Page as fvcP2
 from Pages import PictureClassificationFrame as pcp
 
@@ -46,5 +42,10 @@ class CLP2(tk.Frame):
 
             self.pcpFrames = [_pcp]
 
-        for m in controller.app.selectedModels:
-            print(m)
+        # prikaz vrste modela, vrste slike i greške svakog modela na stranici s klasifikacijom
+        i = 0
+        for p in self.pcpFrames:
+            conf = controller.app.writers[i].modelConfiguration
+            modelString = conf[0] + " - " + conf[1] + " - " + str(round(conf[13], 2)) + "%"
+            p.labelModelName.configure(text=modelString)
+            i += 1
