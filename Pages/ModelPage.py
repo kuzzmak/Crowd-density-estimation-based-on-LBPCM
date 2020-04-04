@@ -7,7 +7,7 @@ from PIL import ImageTk, Image
 
 class ModelPage(tk.Frame):
 
-    def __init__(self, parent, upperFrame, controller):
+    def __init__(self, parent, upperFrame, controller, modelId):
 
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
@@ -156,7 +156,7 @@ class ModelPage(tk.Frame):
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", command=lambda: self.loadModel(
-            controller, upperFrame))
+            controller, upperFrame, modelId))
         buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get()))
@@ -194,7 +194,7 @@ class ModelPage(tk.Frame):
 
         self.showInfo(modelId)
 
-    def loadModel(self, controller, upperFrame):
+    def loadModel(self, controller, upperFrame, modelId):
         """
         Funkcija za učitavanje trenutno izabranog modela
 
@@ -206,11 +206,15 @@ class ModelPage(tk.Frame):
 
         if modelType == 'gray':
             modelPath = controller.app.configuration["grayModelsPath"] + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
+            # spremanje učitanog modela
             self.writer.model = joblib.load(modelPath)
+
+            modelId.set(self.grayModels[self.currentGrayModel])
 
         else:
             modelPath = controller.app.configuration["gradModelsPath"] + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
             self.writer.model = joblib.load(modelPath)
+            modelId.set(self.gradModels[self.currentGradModel])
 
         if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
             upperFrame.buttonSelectPicture['state'] = 'normal'
@@ -226,6 +230,18 @@ class ModelPage(tk.Frame):
 
         self.imageLabel.configure(image=self.im)
         self.imageLabelDescription.configure(text="model loaded")
+
+        # dodavanje modela u glavnu aplikaciju
+        controller.app.selectedModels = []
+        for p in upperFrame.modelPages:
+            if p.writer.model:
+                controller.app.selectedModels.append(p.writer.model)
+
+        if controller.firstModelId.get() != -1:
+            print(controller.firstModelId.get())
+        if controller.secondModelId.get() != -1:
+            print(controller.secondModelId.get())
+        print()
 
     def showInfo(self, modelId):
         """
