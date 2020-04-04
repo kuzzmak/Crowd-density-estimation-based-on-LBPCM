@@ -5,6 +5,13 @@ from math import radians
 from tkinter import filedialog
 import tkinter as tk
 
+import cv2 as cv
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+
+from multiprocessing import cpu_count
+from concurrent.futures import ThreadPoolExecutor
+
 import LBPCM
 import GUI
 import Writer
@@ -12,12 +19,6 @@ import util
 
 from Pages import ConfigurationsPage as coP
 from Pages import FeatureVectorCreationPage as fvcP
-
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-
-from multiprocessing import cpu_count
-from concurrent.futures import ThreadPoolExecutor
 
 class App:
 
@@ -32,12 +33,8 @@ class App:
         # lista konfiguracija za učenje modela
         self.configurations = []
 
-        # konfiguracije izabranih modela za klasifikaciju
-        self.selectedConfigurations = []
-        # izabrani modeli za klasifikaciju
-        self.selectedModels = []
-
-
+        self.pictureToClassify = ""
+        self.writers = []
 
         with open("configuration.json") as json_file:
 
@@ -241,6 +238,12 @@ class App:
 
         with ThreadPoolExecutor(max_workers=cpu_count()) as executor:
             executor.map(self.runConf, self.configurations)
+
+    def classify(self):
+
+        image = cv.imread(self.pictureToClassify, cv.IMREAD_GRAYSCALE)
+        pass
+
 
 
 if __name__ == "__main__":
