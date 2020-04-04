@@ -74,6 +74,11 @@ class App(tk.Tk):
         # lista imena procesiranih slika
         self.processedDataPictures = []
 
+        self.firstModelId = tk.IntVar()
+        self.firstModelId.set(-1)
+        self.secondModelId = tk.IntVar()
+        self.secondModelId.set(-1)
+
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
         # stvaranje gumba za svaku od 14 funkcija
