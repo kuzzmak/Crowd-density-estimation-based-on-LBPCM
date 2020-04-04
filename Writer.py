@@ -6,6 +6,8 @@ import json
 
 class Writer:
 
+    #TODO da se prilikom učitavanja modela odmah učita konfiguracija pa se preko gettera dohvati
+
     def __init__(self, saveDirectory=""):
 
         self.labelDictionary = {}
@@ -14,6 +16,7 @@ class Writer:
         self.gradModelsPath = r"data/models_v2/gradModels"
         self.modelJSON = r'data/models_v2/models.json'
         self.model = []
+        self.modelConfiguration = []
         self.modelString = ""
 
     def writeAnnotedDataToFile(self):
