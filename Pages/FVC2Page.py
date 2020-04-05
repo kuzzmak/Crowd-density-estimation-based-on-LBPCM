@@ -53,8 +53,7 @@ class FVC2Page(tk.Frame):
 
         self.buttonClassify = tk.Button(buttonFrame, text="Classify", state="disabled",
                                         command=lambda: [controller.show_frame(clP2.CLP2),
-                                                         clP2.CLP2.updateClassificationFrame(controller.frames[clP2.CLP2], controller),
-                                                         controller.app.classify()])
+                                                         clP2.CLP2.updateClassificationFrame(controller.frames[clP2.CLP2], controller)])
         self.buttonClassify.pack(side="left", padx=10, pady=10)
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
