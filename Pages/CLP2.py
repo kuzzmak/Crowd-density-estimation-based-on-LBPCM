@@ -31,6 +31,7 @@ class CLP2(tk.Frame):
 
     def updateClassificationFrame(self, controller):
 
+        #TODO popraviti ovo ispod
         if controller.frames[fvcP2.FVC2Page].numberOfModels.get() == 2:
 
             if len(self.pcpFrames) == 2:
@@ -58,6 +59,7 @@ class CLP2(tk.Frame):
         i = 0
         for p in self.pcpFrames:
             conf = controller.app.writers[i].modelConfiguration
+            # naziv koji se pojavljuje iznad slike koja se klasificira
             modelString = conf[0] + " - " + conf[1] + " - " + str(round(conf[13], 2)) + "%"
             p.labelModelName.configure(text=modelString)
             p.labelImage.configure(image=self.im)
