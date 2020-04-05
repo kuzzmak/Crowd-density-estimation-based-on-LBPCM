@@ -150,7 +150,7 @@ class ModelPage(tk.Frame):
         self.imageLabelDescription = tk.Label(self.modelStatusFrame, text="model not loaded")
         self.imageLabelDescription.pack(side="left", padx=5, pady=5)
 
-        buttonPrev = tk.Button(frameButtonPrevNext, text="Previous")
+        buttonPrev = tk.Button(frameButtonPrevNext, text="Previous", command=lambda: self.previousModel(self.modelType.get()))
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", command=lambda: self.loadModel(
@@ -348,3 +348,24 @@ class ModelPage(tk.Frame):
             else:
                 self.currentGradModel = next
                 self.loadModelInfo()
+
+    def previousModel(self, modelType):
+        """
+        Funkcija za prikaz prethodnog modela.
+
+        :param modelType: vrsta modela koji se trenutno prikazuje
+        """
+        if modelType == 'gray':
+
+            previous = self.currentGrayModel - 1
+            if previous < 0:
+                previous = self.numberOfGrayModels - 1
+            self.currentGrayModel = previous
+            self.loadModelInfo()
+        else:
+
+            previous = self.currentGradModel - 1
+            if previous < 0:
+                previous = self.numberOfGradModels - 1
+            self.currentGradModel = previous
+            self.loadModelInfo()
