@@ -1,13 +1,16 @@
 import json
+from distutils.command.config import config
 
 from math import radians
 
 from tkinter import filedialog
 import tkinter as tk
+from PIL import ImageTk, Image
 
 import cv2 as cv
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+import numpy as np
 
 from multiprocessing import cpu_count
 from concurrent.futures import ThreadPoolExecutor
@@ -19,6 +22,7 @@ import util
 
 from Pages import ConfigurationsPage as coP
 from Pages import FeatureVectorCreationPage as fvcP
+from Pages import CLP2 as clP2
 
 class App:
 
@@ -241,9 +245,18 @@ class App:
 
     def classify(self):
 
-        image = cv.imread(self.pictureToClassify, cv.IMREAD_GRAYSCALE)
-        pass
+        i = 0
+        # za pamćenje slika da se ne izbrišu it memorije
+        self.im = [0, 0]
 
+        for writer in self.writers:
+
+            output = util.classifyImage(self.pictureToClassify, writer.model, writer.modelConfiguration)
+
+            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(output))
+
+            self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
+            i += 1
 
 
 if __name__ == "__main__":

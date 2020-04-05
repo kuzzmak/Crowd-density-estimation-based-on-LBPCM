@@ -158,7 +158,7 @@ def calculateError(model, X_test, Y_test):
 
     return counter / predictions.__len__()
 
-def classifyImage(filename, model, conf, console):
+def classifyImage(filename, model, configuration, console=None):
     """ Funkcija za klasifikaciju slike, odnosno svrstavanje svakog bloka slike
     u neki od razreda gustoće mnoštva. Svaka slika se sastoji od 16 blokova
     veličine (192, 144) piksela. Iz svakog bloka se stvori vektor značajki koji
@@ -170,7 +170,7 @@ def classifyImage(filename, model, conf, console):
     :param conf: konfiguracija prema kojoj se tvori vektor značajki svakog bloka
     :param console: konzola za ispis poruka
     :return: vraća se slika na kojoj je svaki blok u određenoj boji, ovisno o
-    razredu gustoće kojem pripada
+             razredu gustoće kojem pripada
     """
 
     # slika na koju se "stavljaju" kvadrati u boji, ovisno o razredu gustoće
@@ -181,14 +181,25 @@ def classifyImage(filename, model, conf, console):
     output = image.copy()
 
     # dohvat parametara za lbpcm
-    radius = conf[0]
-    glcmDistance = conf[1]
-    stepSize = conf[2]
-    cellSize = conf[3]
-    angles = conf[4]
-    numOfNeighbors = conf[5]
-    combineDistances = conf[6]
-    lbpcm = LBPCM.LBPCM(radius, stepSize, cellSize, angles, glcmDistance, combineDistances)
+    picType = configuration[1]
+    radius = configuration[2]
+    stepSize = configuration[4]
+    cellSize = configuration[5]
+    angles = configuration[6]
+    glcmdistances = configuration[3]
+    functions = configuration[10]
+    combineAngles = configuration[9]
+    combineDistances = configuration[8]
+
+    lbpcm = LBPCM.LBPCM(picType,
+                        radius,
+                        stepSize,
+                        cellSize,
+                        angles,
+                        glcmdistances,
+                        functions,
+                        combineDistances,
+                        combineAngles)
 
     # lista labela koje odgovaraju pojedinom bloku na slici
     labels = []
@@ -250,8 +261,9 @@ def classifyImage(filename, model, conf, console):
                 cv.rectangle(overlay, start_point, end_point, (255, 0, 0), -1)
 
             i += 1
-            console.insert(tk.END, "[INFO] " + str(i) + "/16 sub images processed\n")
-            console.see(tk.END)
+            if console is not None:
+                console.insert(tk.END, "[INFO] " + str(i) + "/16 sub images processed\n")
+                console.see(tk.END)
 
     # intenzitet boje kojoj je svaki blok obojan
     alpha = 0.5
@@ -265,7 +277,7 @@ def classify(tuple):
     """
     Funkcija za klasifikaciju liste slika
 
-    :param tuple
+    :param tuple (podslika, razred LBPCM, model)
     :return: oznaka pripadnosti razredu slike
     """
     subImage = tuple[0]
