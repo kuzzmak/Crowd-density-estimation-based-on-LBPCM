@@ -269,7 +269,7 @@ def classifyImage(filename, model, configuration, console=None):
     alpha = 0.5
     cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
     # reskaliranje slike koja se prikazuje u aplikaciji
-    output = resizePercent(output, 60)
+    output = resizePercent(output, 40)
 
     return output
 
