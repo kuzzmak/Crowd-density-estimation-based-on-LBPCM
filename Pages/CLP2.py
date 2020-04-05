@@ -14,8 +14,47 @@ class CLP2(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
 
+        # polje PictureClassificationFramea
         self.pcpFrames = []
 
+        description = tk.Label(self, text="Here you can see classified image.")
+        description.pack(side="top", padx=10, pady=20)
+
+        colorFrame = tk.Frame(self)
+        colorFrame.pack(side="top")
+
+        self.c0c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c0cPath'])))
+        self.c1c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c1cPath'])))
+        self.c2c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c2cPath'])))
+        self.c3c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c3cPath'])))
+        self.c4c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c4cPath'])))
+
+        c0c = tk.Label(colorFrame, image=self.c0c)
+        c0c.pack(side="left", padx=5)
+        c0cLabel = tk.Label(colorFrame, text="No flow")
+        c0cLabel.pack(side="left", padx=5)
+
+        c1c = tk.Label(colorFrame, image=self.c1c)
+        c1c.pack(side="left", padx=5)
+        c1cLabel = tk.Label(colorFrame, text="Free flow")
+        c1cLabel.pack(side="left", padx=5)
+
+        c2c = tk.Label(colorFrame, image=self.c2c)
+        c2c.pack(side="left", padx=5)
+        c2cLabel = tk.Label(colorFrame, text="Restricted flow")
+        c2cLabel.pack(side="left", padx=5)
+
+        c3c = tk.Label(colorFrame, image=self.c3c)
+        c3c.pack(side="left", padx=5)
+        c3cLabel = tk.Label(colorFrame, text="Dense flow")
+        c3cLabel.pack(side="left", padx=5)
+
+        c4c = tk.Label(colorFrame, image=self.c4c)
+        c4c.pack(side="left", padx=5)
+        c4cLabel = tk.Label(colorFrame, text="Jammed flow")
+        c4cLabel.pack(side="left", padx=5)
+
+        # frame s panelima koji sadrže slike za klasifikaciju
         self.middleFrame = tk.Frame(self)
         self.middleFrame.pack(padx=10, pady=10)
 
@@ -23,34 +62,40 @@ class CLP2(tk.Frame):
         _pcp.pack(side="left", padx=10, pady=10)
         self.pcpFrames.append(_pcp)
 
-        buttonStartClassification = tk.Button(self, text="Start classification", command=lambda: controller.app.classify())
-        buttonStartClassification.pack(padx=10, pady=10)
-
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(fvcP2.FVC2Page))
         buttonBack.pack(side="bottom", padx=5, pady=5)
 
-    def updateClassificationFrame(self, controller):
+        buttonStartClassification = tk.Button(self, text="Start classification", command=lambda: controller.app.classify())
+        buttonStartClassification.pack(side="bottom", padx=10, pady=10)
 
-        #TODO popraviti ovo ispod
+    def updateClassificationFrame(self, controller):
+        """
+        Funkcija za ažuriranje panela sa slikama za klasifikaciju. Pojave se jedna ili dvije
+        odabrane slike za klasifikaciju koje se zatim pritiskom na gumb "start classification"
+        klasificiraju po razredima gustoće.
+
+        :param controller: referenca do glavnog prozora
+        """
+
+        self.pcpFrames = []
+
+        self.middleFrame.destroy()
+        self.middleFrame = tk.Frame(self)
+        self.middleFrame.pack(padx=10, pady=10)
+
+        _pcp1 = pcp.PictureClassificationPanel(self.middleFrame, controller)
+        _pcp1.pack(side="left", padx=10, pady=10)
+
         if controller.frames[fvcP2.FVC2Page].numberOfModels.get() == 2:
 
-            if len(self.pcpFrames) == 2:
-                pass
-            else:
-                _pcp = pcp.PictureClassificationPanel(self.middleFrame, controller)
-                _pcp.pack(side="left", padx=10, pady=10)
-                self.pcpFrames.append(_pcp)
-        else:
+            _pcp2 = pcp.PictureClassificationPanel(self.middleFrame, controller)
+            _pcp2.pack(side="left", padx=10, pady=10)
 
-            self.middleFrame.destroy()
-            self.middleFrame = tk.Frame(self)
-            self.middleFrame.pack(padx=10, pady=10)
+            self.pcpFrames.append(_pcp2)
 
-            _pcp = pcp.PictureClassificationPanel(self.middleFrame, controller)
-            _pcp.pack(side="left", padx=10, pady=10)
+        self.pcpFrames.append(_pcp1)
 
-            self.pcpFrames = [_pcp]
-
+        # odabrana slika, postavlja se u oba panela u middleframe
         image = cv.imread(controller.app.pictureToClassify)
         image = util.resizePercent(image, 40)
         self.im = ImageTk.PhotoImage(image=Image.fromarray(image))

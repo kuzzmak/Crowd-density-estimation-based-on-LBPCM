@@ -10,5 +10,10 @@
     "grayModelsPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/models_v2/grayModels",
     "gradModelsPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/models_v2/gradModels",
     "blankImagePath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/blankImage.jpg",
+    "c0cPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/colors/0.jpg",
+    "c1cPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/colors/1.jpg",
+    "c2cPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/colors/2.jpg",
+    "c3cPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/colors/3.jpg",
+    "c4cPath": "/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/icons/colors/4.jpg",
     "trainingSetSize": 0.7
 }
