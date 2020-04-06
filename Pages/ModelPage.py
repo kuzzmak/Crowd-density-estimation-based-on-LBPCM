@@ -153,9 +153,9 @@ class ModelPage(tk.Frame):
         buttonPrev = tk.Button(frameButtonPrevNext, text="Previous", command=lambda: self.previousModel(self.modelType.get()))
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
-        buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", command=lambda: self.loadModel(
+        self.buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", state="disabled", command=lambda: self.loadModel(
             controller, upperFrame))
-        buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
+        self.buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get()))
         buttonNext.pack(side="left", padx=10, pady=5, fill="x")
@@ -175,10 +175,12 @@ class ModelPage(tk.Frame):
                 self.currentModelLabel.configure(text="Current model: " + str(self.currentGrayModel + 1) +
                                                       "/" + str(self.numberOfGrayModels))
                 modelId = self.grayModels[self.currentGrayModel]
+                self.buttonLoadModel['state'] = 'normal'
             else:
                 # ako nema nikakvog modela sa sivim slikama
                 self.currentModelLabel.configure(text="Current model: 0/0")
                 modelId = -1
+                self.buttonLoadModel['state'] = 'disabled'
 
         else:
 
@@ -186,9 +188,11 @@ class ModelPage(tk.Frame):
                 self.currentModelLabel.configure(text="Current model: " + str(self.currentGradModel + 1) +
                                                       "/" + str(self.numberOfGradModels))
                 modelId = self.gradModels[self.currentGradModel]
+                self.buttonLoadModel['state'] = 'normal'
             else:
                 self.currentModelLabel.configure(text="Current model: 0/0")
                 modelId = -1
+                self.buttonLoadModel['state'] = 'disabled'
 
         self.showInfo(modelId)
 
@@ -223,6 +227,8 @@ class ModelPage(tk.Frame):
             writer.model = joblib.load(modelPath)
             writer.modelConfiguration = writer.loadConfFromJSON(self.gradModels[self.currentGradModel])
             controller.app.writers.append(writer)
+
+        #TODO napraviri da se pojavi gumb za sliku tek kad se ucitaju oba modela ako su izabrana
 
         # if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
         #     upperFrame.buttonSelectPicture['state'] = 'normal'
@@ -329,18 +335,18 @@ class ModelPage(tk.Frame):
         """
 
         if modelType == 'gray':
-
-            next = self.currentGrayModel + 1
-            if next >= self.numberOfGrayModels:
-                next %= self.numberOfGrayModels
-            self.currentGrayModel = next
+            if len(self.grayModels) > 0:
+                next = self.currentGrayModel + 1
+                if next >= self.numberOfGrayModels:
+                    next %= self.numberOfGrayModels
+                self.currentGrayModel = next
 
         else:
-
-            next = self.currentGradModel + 1
-            if next >= self.numberOfGradModels:
-                next %= self.numberOfGradModels
-            self.currentGradModel = next
+            if len(self.gradModels) > 0:
+                next = self.currentGradModel + 1
+                if next >= self.numberOfGradModels:
+                    next %= self.numberOfGradModels
+                self.currentGradModel = next
 
         self.loadModelInfo()
 
@@ -351,16 +357,16 @@ class ModelPage(tk.Frame):
         :param modelType: vrsta modela koji se trenutno prikazuje
         """
         if modelType == 'gray':
-
-            previous = self.currentGrayModel - 1
-            if previous < 0:
-                previous = self.numberOfGrayModels - 1
-            self.currentGrayModel = previous
+            if len(self.grayModels) > 0:
+                previous = self.currentGrayModel - 1
+                if previous < 0:
+                    previous = self.numberOfGrayModels - 1
+                self.currentGrayModel = previous
         else:
-
-            previous = self.currentGradModel - 1
-            if previous < 0:
-                previous = self.numberOfGradModels - 1
-            self.currentGradModel = previous
+            if len(self.gradModels) > 0:
+                previous = self.currentGradModel - 1
+                if previous < 0:
+                    previous = self.numberOfGradModels - 1
+                self.currentGradModel = previous
 
         self.loadModelInfo()
