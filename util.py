@@ -1,7 +1,6 @@
 import os
 import cv2 as cv
 import shutil
-from scipy import stats
 import numpy as np
 import LBPCM
 import tkinter as tk

@@ -50,14 +50,10 @@ class App(tk.Tk):
         labelConsole = tk.Label(self, text="Console window")
         labelConsole.pack(side="bottom")
 
-
         # trenutna slika na stranici za parametre
         self.currPicPar = [[]]
         # rjecnik svih stranica
         self.frames = {}
-        # trenutna slika
-        self.currPicPath = ""
-
 
         # polje slika za pretprocesiranje
         self.dataPictures = []
@@ -169,8 +165,7 @@ class App(tk.Tk):
         # omogucavanje gumba za oznacavanje slika
         self.frames[iP.InitializationPage].buttonDataAnnotation["state"] = "normal"
 
-        self.currPicPath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0]
-        image = cv.imread(self.currPicPath)
+        image = cv.imread(self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0])
         # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
         self.picDims = util.makePicDims(image, self.stepSize,
                                         self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
@@ -303,21 +298,3 @@ class App(tk.Tk):
         if dots:
             self.console.insert(tk.END, "----------------------------------------\n")
         self.console.see(tk.END)
-
-    def showClassifiedImage(self):
-
-        filename = filedialog.askopenfilename(initialdir=r"data/normalData/View_001",
-                                          title="Select picture",
-                                          filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
-
-        # conf = self.writer.getConfiguration()
-
-
-        # output = util.classifyImage(filename, self.writer.model, conf, self.console)
-
-        # self.im = ImageTk.PhotoImage(image=Image.fromarray(output))
-        # # postavljanje slike u labelu
-        # self.frames[clP.ClassificationPage].labelPicture.configure(image=self.im)
-
-
-

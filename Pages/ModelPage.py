@@ -171,7 +171,7 @@ class ModelPage(tk.Frame):
 
         if modelType == 'gray':
 
-            if len(self.gradModels) > 0:
+            if len(self.grayModels) > 0:
                 self.currentModelLabel.configure(text="Current model: " + str(self.currentGrayModel + 1) +
                                                       "/" + str(self.numberOfGrayModels))
                 modelId = self.grayModels[self.currentGrayModel]

@@ -273,28 +273,35 @@
 #     for _ in zip(numbers, executor.map(fact, numbers)):
 #         pass
 
+import hf
+import cv2 as cv
+from skimage.feature import greycomatrix
+import Haralick
 
-# from concurrent.futures import ThreadPoolExecutor
-# from concurrent.futures import as_completed
-# values = [2,3,4,5]
-# res = []
-#
-# import multiprocessing
-#
-# multiprocessing.cpu_count()
-#
-# def square(n):
-#    res.append(n * n)
-#
-# def main():
-#    with ThreadPoolExecutor(max_workers = multiprocessing.cpu_count()) as executor:
-#       executor.map(square, values)
-#
-#
-# if __name__ == '__main__':
-#    main()
-#    print(res)
+import LBPCM
 
-a = [2, 1]
-a.pop(0)
-print(a)
+lbpcm = LBPCM.LBPCM('grad',
+                            1,
+                            32,
+                            [64, 64],
+                            [0],
+                            [1],
+                            ['angular second moment', 'contrast', 'inverse difference moment', 'entropy'],
+                            0,
+                            0)
+
+imagePath = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/View_001/frame_0009.jpg'
+
+image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+
+import old
+
+lbpcmold = old.LBPCM(1, 32, [64, 64], [0], [1])
+
+fvold = lbpcmold.getFeatureVector(image)
+fvnew = lbpcm.getFeatureVector(image)
+
+
+print(fvold)
+print(fvnew)
+
