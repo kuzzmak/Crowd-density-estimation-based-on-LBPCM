@@ -18,7 +18,6 @@ import Pages.PreprocessPage as pP
 import Pages.ParameterSettingPage as psP
 import Pages.SlidingWindowPage as swP
 import Pages.DataAnnotationPage as daP
-import Pages.ClassificationPage as clP
 import Pages.FVC2Page as fvc2P
 import Pages.CLP2 as clp2
 
@@ -103,7 +102,6 @@ class App(tk.Tk):
                   daP.DataAnnotationPage,
                   fvcP.FeatureVectorCreationPage,
                   coP.ConfigurationsPage,
-                  clP.ClassificationPage,
                   gP.GradientPage,
                   fvc2P.FVC2Page,
                   clp2.CLP2):
@@ -314,30 +312,12 @@ class App(tk.Tk):
 
         # conf = self.writer.getConfiguration()
 
-        self.frames[clP.ClassificationPage].labelPictureName.configure(text=filename)
-        self.im = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(cv.imread(filename), 60)))
-        self.frames[clP.ClassificationPage].labelPicture.configure(image=self.im)
 
         # output = util.classifyImage(filename, self.writer.model, conf, self.console)
 
         # self.im = ImageTk.PhotoImage(image=Image.fromarray(output))
         # # postavljanje slike u labelu
         # self.frames[clP.ClassificationPage].labelPicture.configure(image=self.im)
-
-    def loadColors(self):
-
-        self.c0c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/0.jpg")))
-        self.c1c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/1.jpg")))
-        self.c2c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/2.jpg")))
-        self.c3c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/3.jpg")))
-        self.c4c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread("icons/colors/4.jpg")))
-
-        self.frames[clP.ClassificationPage].c0c.configure(image=self.c0c)
-        self.frames[clP.ClassificationPage].c1c.configure(image=self.c1c)
-        self.frames[clP.ClassificationPage].c2c.configure(image=self.c2c)
-        self.frames[clP.ClassificationPage].c3c.configure(image=self.c3c)
-        self.frames[clP.ClassificationPage].c4c.configure(image=self.c4c)
-
 
 
 

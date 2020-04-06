@@ -138,7 +138,7 @@ class ModelPage(tk.Frame):
         self.currentModelLabel.pack()
 
         self.modelStatusFrame = tk.Frame(frameButtonPrevNext)
-        self.modelStatusFrame.pack()
+        self.modelStatusFrame.pack(pady=20)
 
         im = Image.open(controller.app.configuration["xMarkPath"])
         im = im.resize((20, 20), Image.ANTIALIAS)

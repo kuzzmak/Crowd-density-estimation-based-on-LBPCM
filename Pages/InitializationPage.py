@@ -1,7 +1,6 @@
 import tkinter as tk
 import Pages.GradientPage as gP
 import Pages.StartPage as sP
-import Pages.ClassificationPage as clP
 import Pages.FeatureVectorCreationPage as fvcP
 import Pages.DataAnnotationPage as daP
 import Pages.ParameterSettingPage as psP
@@ -77,22 +76,13 @@ class InitializationPage(tk.Frame):
         classificationDescription = tk.Label(classificationFrame, text="Classification")
         classificationDescription.pack(pady=10, padx=10)
 
-        buttonFVC = tk.Button(classificationFrame, text="FVC",
+        featureVectorCreation = tk.Button(classificationFrame, text="Feature Vector Creation",
                               command=lambda: controller.show_frame(fvcP.FeatureVectorCreationPage))
-        buttonFVC.pack(padx=10, pady=10, fill="x")
+        featureVectorCreation.pack(padx=10, pady=10, fill="x")
 
-        buttonFVC2 = tk.Button(classificationFrame, text="FVC2",
+        classification = tk.Button(classificationFrame, text="Classification",
                               command=lambda: controller.show_frame(fvc2.FVC2Page))
-        buttonFVC2.pack(padx=10, pady=10, fill="x")
-
-        buttonClassification = tk.Button(classificationFrame, text="Classification",
-                                         command=lambda: [controller.show_frame(clP.ClassificationPage),
-                                                          controller.loadColors()])
-        buttonClassification.pack(padx=10, pady=10, fill="x")
-
-        buttonCLP2 = tk.Button(classificationFrame, text="CLP2",
-                               command=lambda: controller.show_frame(clP2.CLP2))
-        buttonCLP2.pack(padx=10, pady=10, fill="x")
+        classification.pack(padx=10, pady=10, fill="x")
 
         buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(sP.StartPage))
         buttonBack.pack(padx=10, pady=10, fill="x")

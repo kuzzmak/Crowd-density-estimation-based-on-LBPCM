@@ -15,6 +15,7 @@ class PictureClassificationPanel(tk.Frame):
 
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
+
         # labela iznad modela gdje piše vrsta modela, vrsta slike i greška klasifikacije
         self.labelModelName = tk.Label(self, text="SVM - gray - 0.8%")
         self.labelModelName.pack(padx=10, pady=10)
@@ -25,3 +26,4 @@ class PictureClassificationPanel(tk.Frame):
         self.blank = ImageTk.PhotoImage(image=Image.fromarray(blank))
         self.labelImage = tk.Label(self, image=self.blank)
         self.labelImage.pack(padx=10, pady=10)
+
