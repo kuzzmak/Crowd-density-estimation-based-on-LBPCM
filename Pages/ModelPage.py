@@ -333,21 +333,16 @@ class ModelPage(tk.Frame):
             next = self.currentGrayModel + 1
             if next >= self.numberOfGrayModels:
                 next %= self.numberOfGrayModels
-                self.currentGrayModel = next
-                self.loadModelInfo()
-            else:
-                self.currentGrayModel = next
-                self.loadModelInfo()
+            self.currentGrayModel = next
+
         else:
 
             next = self.currentGradModel + 1
             if next >= self.numberOfGradModels:
                 next %= self.numberOfGradModels
-                self.currentGradModel = next
-                self.loadModelInfo()
-            else:
-                self.currentGradModel = next
-                self.loadModelInfo()
+            self.currentGradModel = next
+
+        self.loadModelInfo()
 
     def previousModel(self, modelType):
         """
@@ -361,11 +356,11 @@ class ModelPage(tk.Frame):
             if previous < 0:
                 previous = self.numberOfGrayModels - 1
             self.currentGrayModel = previous
-            self.loadModelInfo()
         else:
 
             previous = self.currentGradModel - 1
             if previous < 0:
                 previous = self.numberOfGradModels - 1
             self.currentGradModel = previous
-            self.loadModelInfo()
+
+        self.loadModelInfo()
