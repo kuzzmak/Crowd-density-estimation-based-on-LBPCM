@@ -93,6 +93,8 @@ class LBPCM:
 
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
+        # labele su dodijeljene slikama po abecednom poretku
+        pictures = sorted(pictures)
         # postavljanje maximalne vrijednosti progerssbara
         progressBar.configure(maximum=len(pictures))
 

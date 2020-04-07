@@ -273,35 +273,44 @@
 #     for _ in zip(numbers, executor.map(fact, numbers)):
 #         pass
 
-import hf
-import cv2 as cv
-from skimage.feature import greycomatrix
-import Haralick
+# import hf
+# import cv2 as cv
+# from skimage.feature import greycomatrix
+# import Haralick
+#
+# import LBPCM
+#
+# lbpcm = LBPCM.LBPCM('grad',
+#                             1,
+#                             32,
+#                             [64, 64],
+#                             [0],
+#                             [1],
+#                             ['angular second moment', 'contrast', 'inverse difference moment', 'entropy'],
+#                             0,
+#                             0)
+#
+# imagePath = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/View_001/frame_0009.jpg'
+#
+# image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+#
+# import old
+#
+# lbpcmold = old.LBPCM(1, 32, [64, 64], [0], [1])
+#
+# fvold = lbpcmold.getFeatureVector(image)
+# fvnew = lbpcm.getFeatureVector(image)
+#
+#
+# print(fvold)
+# print(fvnew)
 
-import LBPCM
+from os import listdir
 
-lbpcm = LBPCM.LBPCM('grad',
-                            1,
-                            32,
-                            [64, 64],
-                            [0],
-                            [1],
-                            ['angular second moment', 'contrast', 'inverse difference moment', 'entropy'],
-                            0,
-                            0)
+pathToProcessedData = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData'
 
-imagePath = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/View_001/frame_0009.jpg'
+pictures = [f for f in listdir(pathToProcessedData)]
 
-image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+pictures = sorted(pictures)
 
-import old
-
-lbpcmold = old.LBPCM(1, 32, [64, 64], [0], [1])
-
-fvold = lbpcmold.getFeatureVector(image)
-fvnew = lbpcm.getFeatureVector(image)
-
-
-print(fvold)
-print(fvnew)
-
+print(pictures)
