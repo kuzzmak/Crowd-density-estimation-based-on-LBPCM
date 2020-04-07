@@ -6,7 +6,7 @@ import numpy as np
 import util
 from skimage.feature import local_binary_pattern
 from skimage.feature import greycomatrix
-import Pages.InitializationPage as iP
+from Pages import InitializationPage as iP
 
 class SlidingWindowPage(tk.Frame):
     """

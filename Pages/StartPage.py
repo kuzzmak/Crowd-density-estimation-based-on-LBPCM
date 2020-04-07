@@ -1,5 +1,5 @@
 import tkinter as tk
-import Pages.InitializationPage as iP
+from Pages import InitializationPage as iP
 
 class StartPage(tk.Frame):
 

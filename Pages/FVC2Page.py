@@ -1,6 +1,6 @@
 import tkinter as tk
 from PIL import ImageTk, Image
-import Pages.InitializationPage as iP
+from Pages import InitializationPage as iP
 import Pages.ModelPage as mp
 from Pages import CLP2 as clP2
 from tkinter import filedialog

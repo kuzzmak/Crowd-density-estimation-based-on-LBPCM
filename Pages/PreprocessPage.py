@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter.ttk import Progressbar
-import Pages.InitializationPage as iP
+from Pages import InitializationPage as iP
 
 class PreprocessPage(tk.Frame):
 

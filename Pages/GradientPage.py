@@ -2,7 +2,7 @@ import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from tkinter import filedialog
-import Pages.InitializationPage as iP
+from Pages import InitializationPage as iP
 import util
 
 class GradientPage(tk.Frame):

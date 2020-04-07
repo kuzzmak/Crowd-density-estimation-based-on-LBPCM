@@ -1,6 +1,6 @@
 import tkinter as tk
 import FunctionDescriptions
-import Pages.FeatureVectorCreationPage as fvcP
+from Pages import FeatureVectorCreationPage as fvcP
 import threading
 
 class ConfigurationsPage(tk.Frame):

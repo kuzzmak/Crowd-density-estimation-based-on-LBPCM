@@ -279,13 +279,19 @@ def classify(tuple):
     :param tuple (podslika, razred LBPCM, model)
     :return: oznaka pripadnosti razredu slike
     """
+
+    #TODO napraviti da se oduzme srednja vrijednost i podijeli s varijancom
+
     subImage = tuple[0]
     lbpcm = tuple[1]
     model = tuple[2]
 
     fv = lbpcm.getFeatureVector(subImage)
 
-    return int(model.predict([fv])[0])
+    label = model.predict([fv])[0]
+    print(label)
+
+    return int(label)
 
 def shortAngles(angles):
     """

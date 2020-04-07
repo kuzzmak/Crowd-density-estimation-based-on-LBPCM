@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter.ttk import Progressbar
-import Pages.ConfigurationsPage as coP
-import Pages.InitializationPage as iP
+from Pages import ConfigurationsPage as coP
+from Pages import InitializationPage as iP
 
 class FeatureVectorCreationPage(tk.Frame):
     """ razred za stvaranje vektora znacajki

@@ -5,7 +5,7 @@ from skimage.feature import greycomatrix
 import util
 import numpy as np
 import Haralick
-import Pages.FeatureVectorCreationPage as fvcP
+from Pages import FeatureVectorCreationPage as fvcP
 
 class LBPCM:
 
