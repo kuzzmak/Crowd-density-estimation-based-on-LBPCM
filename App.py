@@ -258,6 +258,21 @@ class App:
             self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
             i += 1
 
+    def loadConfiguration(self):
+
+        dataDirectory = '_data\\'
+
+        modelDrectory = dataDirectory + r'data\models'
+
+        pass
+
+
+    def makeDirectories(self):
+
+
+
+
+        pass
 
 if __name__ == "__main__":
 

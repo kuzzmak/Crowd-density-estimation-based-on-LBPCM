@@ -42,17 +42,24 @@ class LBPCM:
     def getFeatureVectors(self):
         return np.array(self.featureVectors)
 
-    def getFeatureVector(self, img):
+    def getFeatureVector(self, img, imageType):
         """
         Funkcija za stvaranje vektora značajki predane slike img
 
         :param img: slika čiji vektor značajki treba izračunati
+        :param imageType vrsta slike nad kojom se izvodi LBP
         :return: vektor značajki predane slike
         """
 
         featureVector = []
         # stvaranje vektora znacajki za svaku celiju slikovnog elementa
-        for im in util.sliding_window(self.getLBP(img), self.stepSize, self.windowSize):
+
+        if imageType == 'grad':
+            img = cv.Sobel(img, cv.CV_8U, 1, 1, ksize=3)
+
+        lbp = self.getLBP(img)
+
+        for im in util.sliding_window(lbp, self.stepSize, self.windowSize):
 
             glcm = self.getGLCM(im)
 
@@ -110,10 +117,7 @@ class LBPCM:
 
             image = cv.imread(fileName, cv.IMREAD_GRAYSCALE)
 
-            if self.picType == 'grad':
-                image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
-
-            self.featureVectors.append(self.getFeatureVector(image))
+            self.featureVectors.append(self.getFeatureVector(image, self.picType))
             i += 1
 
             progressBar.step()

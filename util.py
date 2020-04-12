@@ -274,20 +274,18 @@ def classify(tuple):
     :return: oznaka pripadnosti razredu slike
     """
 
-    #TODO napraviti da se oduzme srednja vrijednost i podijeli s varijancom
-
     subImage = tuple[0]
     lbpcm = tuple[1]
     model = tuple[2]
     # normalizacija
     mean = np.array(tuple[3][11])
     sigma = np.array(tuple[3][12])
+    picType = tuple[3][1]
 
-    fv = lbpcm.getFeatureVector(subImage)
+    fv = lbpcm.getFeatureVector(subImage, picType)
     fv -= mean
     fv /= sigma
     label = model.predict([fv])[0]
-    print(label)
 
     return int(label)
 
