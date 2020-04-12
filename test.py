@@ -274,26 +274,49 @@
 #         pass
 
 # import hf
-# import cv2 as cv
+import cv2 as cv
+from skimage.feature import local_binary_pattern
 # from skimage.feature import greycomatrix
 # import Haralick
 #
 # import LBPCM
-#
-# lbpcm = LBPCM.LBPCM('grad',
+# #
+# lbpcmGRAD = LBPCM.LBPCM('grad',
 #                             1,
 #                             32,
 #                             [64, 64],
 #                             [0],
 #                             [1],
-#                             ['angular second moment', 'contrast', 'inverse difference moment', 'entropy'],
+#                             ['angular second moment'],
 #                             0,
 #                             0)
 #
-# imagePath = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/normalData/View_001/frame_0009.jpg'
-#
-# image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
-#
+# lbpcmGRAY = LBPCM.LBPCM('gray',
+#                             1,
+#                             32,
+#                             [64, 64],
+#                             [0],
+#                             [1],
+#                             ['angular second moment'],
+#                             0,
+#                             0)
+
+imagePath = r'data/processedData/117.jpg'
+
+image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+
+picType = 'grad'
+
+if picType == 'grad':
+    image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
+
+# cv.imshow("im", image)
+# cv.waitKey(0)
+
+lbp = local_binary_pattern(image, 8, 1, method='default')
+
+print(lbp)
+
 # import old
 #
 # lbpcmold = old.LBPCM(1, 32, [64, 64], [0], [1])
@@ -305,12 +328,12 @@
 # print(fvold)
 # print(fvnew)
 
-from os import listdir
-
-pathToProcessedData = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData'
-
-pictures = [f for f in listdir(pathToProcessedData)]
-
-pictures = sorted(pictures)
-
-print(pictures)
+# from os import listdir
+#
+# pathToProcessedData = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData'
+#
+# pictures = [f for f in listdir(pathToProcessedData)]
+#
+# pictures = sorted(pictures)
+#
+# print(pictures)

@@ -5,6 +5,7 @@ import numpy as np
 import LBPCM
 import tkinter as tk
 import concurrent.futures
+import copy
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7
@@ -166,7 +167,7 @@ def classifyImage(filename, model, configuration, console=None):
 
     :param filename: staza do slike koju želimo klasificirati
     :param model: objekt klasifikatora koji radi klasifikaciju svakog bloka slike
-    :param conf: konfiguracija prema kojoj se tvori vektor značajki svakog bloka
+    :param configuration: konfiguracija prema kojoj se tvori vektor značajki svakog bloka
     :param console: konzola za ispis poruka
     :return: vraća se slika na kojoj je svaki blok u određenoj boji, ovisno o
              razredu gustoće kojem pripada
@@ -224,7 +225,7 @@ def classifyImage(filename, model, configuration, console=None):
     for y in range(stepY):
         for x in range(stepX):
             subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
-            image_lbpcm_model.append((subImage, lbpcm, model))
+            image_lbpcm_model.append((subImage, copy.deepcopy(lbpcm), copy.deepcopy(model), configuration))
 
     # pokretanje onoliko novih procesa koliko računalo procesora ima
     with concurrent.futures.ProcessPoolExecutor() as executor:
@@ -239,13 +240,6 @@ def classifyImage(filename, model, configuration, console=None):
             # početna i završna točka trenutnog bloka na slici
             start_point = (x * x_size, y * y_size)
             end_point = ((x + 1) * x_size, (y + 1) * y_size)
-
-            # # trenutni blok slike za koji se stvara vektor značajki
-            # subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
-            # # vektor značajki trenutnog bloka
-            # subImageFv = lbpcm.getFeatureVector(subImage)
-            # # dodavanje labele u listu labela za koja je dobivena klasifikatorom
-            # labels.append(int(model.predict([subImageFv])[0]))
 
             # bojanje trenutnoh bloka slike ovisno o labeli koju je dobivena
             if labels[i] == 0:
@@ -285,9 +279,13 @@ def classify(tuple):
     subImage = tuple[0]
     lbpcm = tuple[1]
     model = tuple[2]
+    # normalizacija
+    mean = np.array(tuple[3][11])
+    sigma = np.array(tuple[3][12])
 
     fv = lbpcm.getFeatureVector(subImage)
-
+    fv -= mean
+    fv /= sigma
     label = model.predict([fv])[0]
     print(label)
 
