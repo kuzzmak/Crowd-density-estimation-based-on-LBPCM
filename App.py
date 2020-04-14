@@ -1,5 +1,4 @@
 import json
-from distutils.command.config import config
 
 from math import radians
 
@@ -7,13 +6,12 @@ from tkinter import filedialog
 import tkinter as tk
 from PIL import ImageTk, Image
 
-import cv2 as cv
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-import numpy as np
 
 from multiprocessing import cpu_count
 from concurrent.futures import ThreadPoolExecutor
+import os
 
 import LBPCM
 import GUI
@@ -40,9 +38,20 @@ class App:
         self.pictureToClassify = ""
         self.writers = []
 
-        with open("configuration.json") as json_file:
+        if os.path.isfile("configuration.json"):
+            with open("configuration.json") as json_file:
+                self.configuration = json.load(json_file)
 
-            self.configuration = json.load(json_file)
+        else:
+            util.makeConfigurationFile()
+
+            with open("configuration.json") as json_file:
+                self.configuration = json.load(json_file)
+
+            for _, value in self.configuration.items():
+                os.makedirs(value, exist_ok=True)
+
+            util.copyFiles()
 
         self.gui = GUI.App(self)
 
@@ -51,18 +60,18 @@ class App:
         Funkcija za učitavanje oznaka slika koje su već procesirane
         """
 
-        file = filedialog.askopenfilename(initialdir=self.configuration['labeledDataDirectory'],
-                                          title="Select labeled data file",
-                                          filetypes=(("text files", "*.txt"), ("all files", "*.*")))
-
-        if len(file) == 0:
-            self.gui.consolePrint("[WARNING] you did not select file with labeled data")
-        else:
-            self.writer.loadAnnotedDataFromFile(file)
-            self.labelDictionary = self.writer.labelDictionary
-            # self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
-
-            self.gui.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
+        # file = filedialog.askopenfilename(initialdir=self.configuration['labeledDataDirectory'],
+        #                                   title="Select labeled data2 file",
+        #                                   filetypes=(("text files", "*.txt"), ("all files", "*.*")))
+        #
+        # if len(file) == 0:
+        #     self.gui.consolePrint("[WARNING] you did not select file with labeled data2")
+        # else:
+        self.writer.loadAnnotedDataFromFile(self.configuration['modelsDirectory'] + '/' + 'labeledData.txt')
+            # self.labelDictionary = self.writer.labelDictionary
+            # # self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
+            #
+            # self.gui.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
 
     def addConf(self):
         """
@@ -236,14 +245,17 @@ class App:
         self.gui.consolePrint("[INFO] configuration completed")
 
     def runConfigurations(self):
-        """ Funkcija za pokretanje pojedine unesene konfiguracije
-        :return:
+        """
+        Funkcija za pokretanje pojedine unesene konfiguracije.
         """
 
         with ThreadPoolExecutor(max_workers=cpu_count()) as executor:
             executor.map(self.runConf, self.configurations)
 
     def classify(self):
+        """
+        Metoda za klasifikaciju izabrane slike.
+        """
 
         i = 0
         # za pamćenje slika da se ne izbrišu it memorije
@@ -258,21 +270,6 @@ class App:
             self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
             i += 1
 
-    def loadConfiguration(self):
-
-        dataDirectory = '_data\\'
-
-        modelDrectory = dataDirectory + r'data\models'
-
-        pass
-
-
-    def makeDirectories(self):
-
-
-
-
-        pass
 
 if __name__ == "__main__":
 
