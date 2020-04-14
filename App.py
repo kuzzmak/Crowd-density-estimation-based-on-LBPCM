@@ -60,18 +60,10 @@ class App:
         Funkcija za učitavanje oznaka slika koje su već procesirane
         """
 
-        # file = filedialog.askopenfilename(initialdir=self.configuration['labeledDataDirectory'],
-        #                                   title="Select labeled data2 file",
-        #                                   filetypes=(("text files", "*.txt"), ("all files", "*.*")))
-        #
-        # if len(file) == 0:
-        #     self.gui.consolePrint("[WARNING] you did not select file with labeled data2")
-        # else:
         self.writer.loadAnnotedDataFromFile(self.configuration['modelsDirectory'] + '/' + 'labeledData.txt')
-            # self.labelDictionary = self.writer.labelDictionary
-            # # self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
-            #
-            # self.gui.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
+        self.labelDictionary = self.writer.labelDictionary
+        self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
+        self.gui.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
 
     def addConf(self):
         """
@@ -230,7 +222,7 @@ class App:
             error = 1 - kneighbors.score(X_test, Y_test)
             self.gui.consolePrint("\t[INFO] error: " + str(error))
             conf.append(error)
-            self.writer.saveModel(kneighbors, conf)
+            self.writer.saveModel(kneighbors, conf, self)
 
         else:
             svm = SVC(gamma='auto')
@@ -238,7 +230,7 @@ class App:
             error = 1 - svm.score(X_test, Y_test)
             self.gui.consolePrint("\t[INFO] error: " + str(error))
             conf.append(error)
-            self.writer.saveModel(svm, conf)
+            self.writer.saveModel(svm, conf, self)
 
         self.gui.consolePrint("\t[INFO] fitting finished")
 

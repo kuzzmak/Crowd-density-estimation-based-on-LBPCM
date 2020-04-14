@@ -1,32 +1,20 @@
-import os
 from sklearn.externals import joblib
-from tkinter import filedialog
 import json
-
 
 class Writer:
 
-    #TODO da se prilikom učitavanja modela odmah učita konfiguracija pa se preko gettera dohvati
-
-    def __init__(self, saveDirectory=""):
+    def __init__(self):
 
         self.labelDictionary = {}
-        self.saveDirectory = saveDirectory
-        self.grayModelsPath = r"data/models_v2/grayModels"
-        self.gradModelsPath = r"data/models_v2/gradModels"
-        self.modelJSON = r'data/models_v2/models.json'
         self.model = []
         self.modelConfiguration = []
-        self.modelString = ""
 
-    def writeAnnotedDataToFile(self):
-        """ Funkcija za spremanje oznacenih slika u datoteku self.pathToLabels
+    def writeAnnotedDataToFile(self, controller):
+        """
+        Funkcija za spremanje oznacenih slika u datoteku self.pathToLabels
         """
 
-        if not os.path.isdir(self.saveDirectory):
-            os.mkdir(self.saveDirectory)
-
-        filename = self.saveDirectory + "/" + "labeledData.txt"
+        filename = controller.configuration['modelsDirectory'] + "/" + "labeledData.txt"
 
         f = open(filename, "w")
 
@@ -51,25 +39,7 @@ class Writer:
                     keyVal = i.split(":")
                     self.labelDictionary[keyVal[0]] = keyVal[1]
 
-    def saveResults(self, saveString):
-
-        filename = self.saveDirectory + "/" + "results.txt"
-
-        if os.path.isfile(filename):
-
-            f = open(filename, "a")
-
-            f.write(saveString + "\n")
-
-            f.close()
-        else:
-            f = open(filename, "w")
-
-            f.write(saveString + "\n")
-
-            f.close()
-
-    def saveModel(self, model, conf):
+    def saveModel(self, model, conf, controller):
         """
         Funkcija za spremanje modela i konfuguracije modela. Model se sprema
         kao objekt u pkl obliku, a konfiguracija se dodaje u json datoteku
@@ -77,44 +47,46 @@ class Writer:
 
         :param model: model koji se sprema
         :param conf: konfiguracija koja se sprema
+        :param controller referenca do glavnog programa
         """
 
-        with open(self.modelJSON) as f:
+        with open(controller.configuration['modelsDirectory'] + '/models.json') as f:
             data = json.load(f)
 
         # sljedeći indeks modela, za jedan više od postojećih modela
         nextIndex = len(data['models']) + 1
 
         if conf[1] == 'gray':
-            saveString = self.grayModelsPath + "/" + str(nextIndex) + ".pkl"
+            saveString = controller.configuration['grayModelsDirectory'] + "/" + str(nextIndex) + ".pkl"
         else:
-            saveString = self.gradModelsPath + "/" + str(nextIndex) + ".pkl"
+            saveString = controller.configuration['gradModelsDirectory'] + "/" + str(nextIndex) + ".pkl"
 
         # spremanje modela
         joblib.dump(model, saveString, compress=9)
         # spremanje konfiguracije
-        self.appendToJSON(conf)
-
-    def loadModel(self):
-
-        file = filedialog.askopenfilename(initialdir=r"data/models",
-                                          title="Select model",
-                                          filetypes=(("pickel files", "*.pkl"), ("all files", "*.*")))
-
-        self.modelString = file.split("/")[-1]
-        self.model = joblib.load(file)
+        self.appendToJSON(conf, controller)
 
     def findModel(self, json_object, id):
+        """
+        Funkcija za pronalazak konfiguracije modela prema njegovom id-ju.
+
+        :param json_object: json objekt u kojem su zapisane konfiguracije modela
+        :param id: id modela čija se konfiguracije traži
+        :return: konfiguracija traženog modela
+        """
+
         try:
             return [obj for obj in json_object["models"] if obj['id'] == id][0]
         except IndexError:
             print("Json file empty or there is no model with given index: " + str(id))
 
-    def appendToJSON(self, conf):
+    @staticmethod
+    def appendToJSON(conf, controller):
         """
         Funkcija za spremanje konfiguracije modela u json file
 
         :param conf: konfiguracija koju treba spremiti
+        :param controller referenca fo glavnog programa
         """
         classifierType, \
         picType, \
@@ -131,7 +103,7 @@ class Writer:
         sigma,\
         error = conf
 
-        with open(self.modelJSON) as json_file:
+        with open(controller.configuration['modelsDirectory'] + '/models.json') as json_file:
 
             data = json.load(json_file)
 
@@ -157,17 +129,18 @@ class Writer:
 
             temp.append(y)
 
-        with open(self.modelJSON, 'w') as f:
+        with open(controller.configuration['modelsDirectory'] + '/models.json', 'w') as f:
             json.dump(data, f, indent=4)
 
-    def loadConfFromJSON(self, id):
+    def loadConfFromJSON(self, id, controller):
         """
         Funkcija koja služi za učitavanje parametara modela prema njegvom id-u
 
         :param id: identifikacijski broj pojedinog modela
+        :param controller referenca do glavnog programa
         """
 
-        with open(self.modelJSON) as f:
+        with open(controller.configuration['modelsDirectory'] + '/models.json') as f:
 
             data = json.load(f)
 
