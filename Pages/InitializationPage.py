@@ -43,7 +43,7 @@ class InitializationPage(tk.Frame):
         preprocessingDescription = tk.Label(preprocessingFrame, text="Preprocessing")
         preprocessingDescription.pack(padx=10, pady=10)
 
-        buttonPreprocess = tk.Button(preprocessingFrame, text="Preprocess data",
+        buttonPreprocess = tk.Button(preprocessingFrame, text="Preprocess data2",
                                      command=lambda: controller.show_frame(pP.PreprocessPage))
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")

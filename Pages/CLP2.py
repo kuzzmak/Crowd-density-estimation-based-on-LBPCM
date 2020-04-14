@@ -23,11 +23,16 @@ class CLP2(tk.Frame):
         colorFrame = tk.Frame(self)
         colorFrame.pack(side="top")
 
-        self.c0c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c0cPath'])))
-        self.c1c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c1cPath'])))
-        self.c2c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c2cPath'])))
-        self.c3c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c3cPath'])))
-        self.c4c = ImageTk.PhotoImage(image=Image.fromarray(cv.imread(controller.app.configuration['c4cPath'])))
+        self.c0c = ImageTk.PhotoImage(image=Image.fromarray(
+            cv.imread(controller.app.configuration['iconsDirectory'] + '/0.jpg')))
+        self.c1c = ImageTk.PhotoImage(image=Image.fromarray(
+            cv.imread(controller.app.configuration['iconsDirectory'] + '/1.jpg')))
+        self.c2c = ImageTk.PhotoImage(image=Image.fromarray(
+            cv.imread(controller.app.configuration['iconsDirectory'] + '/2.jpg')))
+        self.c3c = ImageTk.PhotoImage(image=Image.fromarray(
+            cv.imread(controller.app.configuration['iconsDirectory'] + '/3.jpg')))
+        self.c4c = ImageTk.PhotoImage(image=Image.fromarray
+        (cv.imread(controller.app.configuration['iconsDirectory'] + '/4.jpg')))
 
         c0c = tk.Label(colorFrame, image=self.c0c)
         c0c.pack(side="left", padx=5)
@@ -65,7 +70,8 @@ class CLP2(tk.Frame):
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(fvcP2.FVC2Page))
         buttonBack.pack(side="bottom", padx=5, pady=5)
 
-        buttonStartClassification = tk.Button(self, text="Start classification", command=lambda: controller.app.classify())
+        buttonStartClassification = tk.Button(self, text="Start classification",
+                                              command=lambda: controller.app.classify())
         buttonStartClassification.pack(side="bottom", padx=10, pady=10)
 
     def updateClassificationFrame(self, controller):

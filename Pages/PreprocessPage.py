@@ -7,13 +7,13 @@ class PreprocessPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        labelDescription = tk.Label(self, text="Here you can specify parameters needed for data preprocessing")
+        labelDescription = tk.Label(self, text="Here you can specify parameters needed for data2 preprocessing")
         labelDescription.pack(padx=10, pady=10)
 
         frame1 = tk.Frame(self)
         frame1.pack()
 
-        buttonSelectFolder = tk.Button(frame1, text="Select data folder")
+        buttonSelectFolder = tk.Button(frame1, text="Select data2 folder")
         buttonSelectFolder.pack(padx=10, pady=5)
 
         frame2 = tk.Frame(self)
@@ -47,7 +47,7 @@ class PreprocessPage(tk.Frame):
         buttonSeePicElements = tk.Button(frame3, text="See on pic", command=controller.seeOnPic)
         buttonSeePicElements.pack(side="left", padx=10, pady=10)
 
-        self.labelSeePicElements = tk.Label(self, text="No picture\nloaded.\nSelect data\nfolder first.")
+        self.labelSeePicElements = tk.Label(self, text="No picture\nloaded.\nSelect data2\nfolder first.")
         self.labelSeePicElements.pack(padx=10, pady=10)
 
         # frame s gumbom i progressbar-----------------------------------------

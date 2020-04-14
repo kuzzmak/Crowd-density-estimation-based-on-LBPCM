@@ -21,7 +21,7 @@ class PictureClassificationPanel(tk.Frame):
         self.labelModelName.pack(padx=10, pady=10)
 
         # bijela pozadina slike kad još nije ništa učitano
-        blank = cv.imread(controller.app.configuration['blankImagePath'])
+        blank = cv.imread(controller.app.configuration['iconsDirectory'] + '/blankImage.jpg')
         blank = util.resizePercent(blank, 40)
         self.blank = ImageTk.PhotoImage(image=Image.fromarray(blank))
         self.labelImage = tk.Label(self, image=self.blank)

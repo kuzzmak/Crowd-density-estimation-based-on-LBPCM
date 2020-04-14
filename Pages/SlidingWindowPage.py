@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import filedialog
 from os import listdir
 import cv2 as cv
 from PIL import ImageTk, Image
@@ -24,12 +25,15 @@ class SlidingWindowPage(tk.Frame):
         self.currentPicture = 0
         self.currentCell = 0
 
-        self.processedImages = listdir(controller.app.configuration['processedImagesPath'])
-        # trenutno prikazana slika u frameu
-        self.currentPicturePath = controller.app.configuration['processedImagesPath'] + "/" + \
-                                  self.processedImages[self.currentPicture]
-        # koordinate na slici za putujuću ćeliju
-        self.picDims = util.makePicDims(cv.imread(self.currentPicturePath))
+        self.currentPicturePath = ""
+
+        self.processedImages = listdir(controller.app.configuration['processedDataDirectory'])
+        if len(self.processedImages) > 0:
+            # trenutno prikazana slika u frameu
+            self.currentPicturePath = controller.app.configuration['processedDataDirectory'] + "/" + \
+                                      self.processedImages[self.currentPicture]
+            # koordinate na slici za putujuću ćeliju
+            self.picDims = util.makePicDims(cv.imread(self.currentPicturePath))
 
         for c in range(14):
             name = "f" + str(c + 1)
@@ -76,6 +80,9 @@ class SlidingWindowPage(tk.Frame):
         buttonNextCell = tk.Button(buttonFrame, text="Next cell", command=lambda: self.nextCell(controller))
         buttonNextCell.pack(side="left", padx=5, pady=5)
 
+        buttonSelectImage = tk.Button(leftPanel, text="Select image", command=lambda: self.selectImage(controller))
+        buttonSelectImage.pack(pady=5)
+
         # desni panel s gumbima za Haralickove funkcije
         rightPanel = tk.Frame(middleFrame)
         rightPanel.grid(row=0, column=1, padx=20, sticky="e")
@@ -92,7 +99,8 @@ class SlidingWindowPage(tk.Frame):
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(side="bottom", padx=5, pady=5)
 
-        self.updateImages()
+        if len(self.processedImages) > 0:
+            self.updateImages()
 
     def updateImages(self):
 
@@ -130,7 +138,7 @@ class SlidingWindowPage(tk.Frame):
 
             self.currentCell = 0
             self.currentPicture += 1
-            self.currentPicturePath = controller.app.configuration['processedImagesPath'] + "/" + \
+            self.currentPicturePath = controller.app.configuration['processedDataDirectory'] + "/" + \
                                       self.processedImages[self.currentPicture]
 
             self.updateImages()
@@ -149,7 +157,7 @@ class SlidingWindowPage(tk.Frame):
             self.currentCell = 0
             self.currentPicture -= 1
 
-            self.currentPicturePath = controller.app.configuration['processedImagesPath'] + "/" + \
+            self.currentPicturePath = controller.app.configuration['processedDataDirectory'] + "/" + \
                                       self.processedImages[self.currentPicture]
 
             self.updateImages()
@@ -178,6 +186,10 @@ class SlidingWindowPage(tk.Frame):
         """
 
         controller.console.delete(1.0, tk.END)
+
+        if self.currentPicturePath == "":
+            controller.consolePrint("[ERROR] no picture selected")
+            return
 
         functions = []
 
@@ -215,6 +227,21 @@ class SlidingWindowPage(tk.Frame):
 
             controller.consolePrint(f + ": " + str(string), dots=False)
 
+    def selectImage(self, controller):
+        """
+        Funkcija za odabir slike u slidingWidow frame-u
 
+        :param controller: referenca do glavnog programa
+        """
 
+        path = filedialog.askopenfilename(initialdir=controller.app.configuration['processedDataDirectory'],
+                                          title="Select picture",
+                                          filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
 
+        if len(path) < 0:
+            controller.consolePrint("[WARNING] you did not select any picture")
+        else:
+
+            self.currentPicturePath = path
+            self.picDims = util.makePicDims(cv.imread(self.currentPicturePath))
+            self.updateImages()

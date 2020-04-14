@@ -18,11 +18,11 @@ class ModelPage(tk.Frame):
         self.modelType.set('gray')
 
         # dohvat svih .pkl imena
-        models = [x for x in listdir(controller.app.configuration["grayModelsPath"]) if x.endswith('.pkl')]
+        models = [x for x in listdir(controller.app.configuration["grayModelsDirectory"]) if x.endswith('.pkl')]
         # id-jevi modela sa sivim slikama
         self.grayModels = [int(x.split('.')[0]) for x in models]
 
-        models = [x for x in listdir(controller.app.configuration["gradModelsPath"]) if x.endswith('.pkl')]
+        models = [x for x in listdir(controller.app.configuration["gradModelsDirectory"]) if x.endswith('.pkl')]
         # id-jevi modela s gradijentnim slikama
         self.gradModels = [int(x.split('.')[0]) for x in models]
 
@@ -140,7 +140,7 @@ class ModelPage(tk.Frame):
         self.modelStatusFrame = tk.Frame(frameButtonPrevNext)
         self.modelStatusFrame.pack(pady=20)
 
-        im = Image.open(controller.app.configuration["xMarkPath"])
+        im = Image.open(controller.app.configuration["iconsDirectory"] + '/xmark.jpg')
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
@@ -150,11 +150,12 @@ class ModelPage(tk.Frame):
         self.imageLabelDescription = tk.Label(self.modelStatusFrame, text="model not loaded")
         self.imageLabelDescription.pack(side="left", padx=5, pady=5)
 
-        buttonPrev = tk.Button(frameButtonPrevNext, text="Previous", command=lambda: self.previousModel(self.modelType.get()))
+        buttonPrev = tk.Button(frameButtonPrevNext, text="Previous",
+                               command=lambda: self.previousModel(self.modelType.get()))
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
-        self.buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", state="disabled", command=lambda: self.loadModel(
-            controller, upperFrame))
+        self.buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", state="disabled",
+                                         command=lambda: self.loadModel(controller, upperFrame))
         self.buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
 
         buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get()))
@@ -214,7 +215,8 @@ class ModelPage(tk.Frame):
         modelType = self.modelType.get()
 
         if modelType == 'gray':
-            modelPath = controller.app.configuration["grayModelsPath"] + "/" + str(self.grayModels[self.currentGrayModel]) + ".pkl"
+            modelPath = controller.app.configuration["grayModelsDirectory"] + "/" + \
+                        str(self.grayModels[self.currentGrayModel]) + ".pkl"
             # spremanje učitanog modela
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
@@ -222,7 +224,8 @@ class ModelPage(tk.Frame):
             controller.app.writers.append(writer)
 
         else:
-            modelPath = controller.app.configuration["gradModelsPath"] + "/" + str(self.gradModels[self.currentGradModel]) + ".pkl"
+            modelPath = controller.app.configuration["gradModelsDirectory"] + "/" + \
+                        str(self.gradModels[self.currentGradModel]) + ".pkl"
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
             writer.modelConfiguration = writer.loadConfFromJSON(self.gradModels[self.currentGradModel])
@@ -240,7 +243,7 @@ class ModelPage(tk.Frame):
 
         upperFrame.buttonSelectPicture['state'] = 'normal'
 
-        im = Image.open(controller.app.configuration["checkMarkPath"])
+        im = Image.open(controller.app.configuration['iconsDirectory'] + '\checkmark.jpg')
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
