@@ -26,49 +26,42 @@ class ParameterSettingPage(tk.Frame):
         dataPathLabel.grid(pady=10, row=0, sticky="e")
 
         dataPathButton = tk.Button(rightFrame, text="Select folder",
-                                   command=lambda: self.selectFolder(controller, 'dataPath'))
+                                   command=lambda: self.selectFolder(controller, 'dataDirectory'))
         dataPathButton.grid(pady=5, row=0, sticky="e")
 
-        normalDataPath = tk.Label(leftFrame, text="unprocessed data path:")
+        normalDataPath = tk.Label(leftFrame, text="raw data path:")
         normalDataPath.grid(pady=10, row=1, sticky="e")
 
         normalDataPathButton = tk.Button(rightFrame, text="Select folder",
-                                         command=lambda: self.selectFolder(controller, 'unprocessedDataPath'))
+                                         command=lambda: self.selectFolder(controller, 'rawDataDirectory'))
         normalDataPathButton.grid(pady=5, row=1, sticky="w")
 
         processedDataPathLabel = tk.Label(leftFrame, text="processed data:")
         processedDataPathLabel.grid(pady=10, row=2, sticky="e")
 
         processedDataPathButton = tk.Button(rightFrame, text="Select folder",
-                                            command=lambda: self.selectFolder(controller, 'processedImagesPath'))
+                                            command=lambda: self.selectFolder(controller, 'processedDataDirectory'))
         processedDataPathButton.grid(pady=5, row=2, sticky="w")
-
-        labeledDataDirectory = tk.Label(leftFrame, text="label directory path:")
-        labeledDataDirectory.grid(pady=10, row=3, sticky="e")
-
-        labeledDataDirectoryButton = tk.Button(rightFrame, text="Select folder",
-                                               command=lambda: self.selectFolder(controller, 'labeledDataDirectory'))
-        labeledDataDirectoryButton.grid(pady=5, row=3, sticky="w")
 
         grayModelsPath = tk.Label(leftFrame, text="gray models path:")
         grayModelsPath.grid(pady=10, row=4, sticky="e")
 
         grayModelsPathButton = tk.Button(rightFrame, text="Select folder",
-                                         command=lambda: self.selectFolder(controller, 'grayModelsPath'))
+                                         command=lambda: self.selectFolder(controller, 'grayModelsDirectory'))
         grayModelsPathButton.grid(pady=5, row=4, sticky="w")
 
         gradModelsPath = tk.Label(leftFrame, text="gradient models path:")
         gradModelsPath.grid(pady=10, row=5, sticky="e")
 
         gradModelsPathButton = tk.Button(rightFrame, text="Select folder",
-                                         command=lambda: self.selectFolder(controller, 'gradModelsPath'))
+                                         command=lambda: self.selectFolder(controller, 'gradModelsDirectory'))
         gradModelsPathButton.grid(pady=5, row=5, sticky="w")
 
         iconsPath = tk.Label(leftFrame, text="icons path:")
         iconsPath.grid(pady=10, row=6, sticky="e")
 
         iconsPathButton = tk.Button(rightFrame, text="Select folder",
-                                    command=lambda: self.selectFolder(controller, 'iconsPath'))
+                                    command=lambda: self.selectFolder(controller, 'iconsDirectory'))
         iconsPathButton.grid(pady=5, row=6, sticky="w")
 
         # panel sa trenutnom konfiguracijom
@@ -87,43 +80,41 @@ class ParameterSettingPage(tk.Frame):
         labelCurrentDataPath = tk.Label(leftValuesFrame, text="data path: ")
         labelCurrentDataPath.grid(row=0, pady=3, sticky="e")
 
-        self.labelCurrentDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['dataPath'])
+        self.labelCurrentDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['dataDirectory'])
         self.labelCurrentDataPathValue.grid(row=0, pady=3, sticky="w")
 
-        labelCurrentNormalDataPath = tk.Label(leftValuesFrame, text="unprocessed data path: ")
+        labelCurrentNormalDataPath = tk.Label(leftValuesFrame, text="raw data path: ")
         labelCurrentNormalDataPath.grid(row=1, pady=3, sticky="e")
 
-        self.labelCurrentNormalDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['unprocessedDataPath'])
+        self.labelCurrentNormalDataPathValue = tk.Label(rightValuesFrame,
+                                                        text=controller.app.configuration['rawDataDirectory'])
         self.labelCurrentNormalDataPathValue.grid(row=1, pady=3, sticky="w")
 
         labelProcessedDataPath = tk.Label(leftValuesFrame, text="processed data path: ")
         labelProcessedDataPath.grid(row=2, pady=3, sticky="e")
 
-        self.labelProcessedDataPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['processedImagesPath'])
+        self.labelProcessedDataPathValue = tk.Label(rightValuesFrame,
+                                                    text=controller.app.configuration['processedDataDirectory'])
         self.labelProcessedDataPathValue.grid(row=2, pady=3, sticky="w")
-
-        labelLabelDirectoryPath = tk.Label(leftValuesFrame, text="label data directory: ")
-        labelLabelDirectoryPath.grid(row=3, pady=3, sticky="e")
-
-        self.labelLabelDirectoryPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['labeledDataDirectory'])
-        self.labelLabelDirectoryPathValue.grid(row=3, pady=3, sticky="w")
 
         labelGrayModelsPath = tk.Label(leftValuesFrame, text="gray models path: ")
         labelGrayModelsPath.grid(row=4, pady=3, sticky="e")
 
-        self.labelGrayModelsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['grayModelsPath'])
+        self.labelGrayModelsPathValue = tk.Label(rightValuesFrame,
+                                                 text=controller.app.configuration['grayModelsDirectory'])
         self.labelGrayModelsPathValue.grid(row=4, pady=3, sticky="w")
 
         labelGradModelsPath = tk.Label(leftValuesFrame, text="grad models path: ")
         labelGradModelsPath.grid(row=5, pady=3, sticky="e")
 
-        self.labelGradModelsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['gradModelsPath'])
+        self.labelGradModelsPathValue = tk.Label(rightValuesFrame,
+                                                 text=controller.app.configuration['gradModelsDirectory'])
         self.labelGradModelsPathValue.grid(row=5, pady=3, sticky="w")
 
         labelIconsPath = tk.Label(leftValuesFrame, text="icons path: ")
         labelIconsPath.grid(row=6, pady=3, sticky="e")
 
-        self.labelIconsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['iconsPath'])
+        self.labelIconsPathValue = tk.Label(rightValuesFrame, text=controller.app.configuration['iconsDirectory'])
         self.labelIconsPathValue.grid(row=6, pady=3, sticky="w")
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
@@ -159,17 +150,15 @@ class ParameterSettingPage(tk.Frame):
         :param settingName: parametar koji se osvježava
         """
 
-        if settingName == 'dataPath':
+        if settingName == 'dataDirectory':
             self.labelCurrentDataPathValue.configure(text=controller.app.configuration[settingName])
-        elif settingName == 'unprocessedDataPath':
+        elif settingName == 'unprocessedDataDirectory':
             self.labelCurrentNormalDataPathValue.configure(text=controller.app.configuration[settingName])
-        elif settingName == 'processedImagesPath':
+        elif settingName == 'processedImagesDirectory':
             self.labelProcessedDataPathValue.configure(text=controller.app.configuration[settingName])
-        elif settingName == 'labeledDataDirectory':
-            self.labelLabelDirectoryPathValue.configure(text=controller.app.configuration[settingName])
-        elif settingName == 'grayModelsPath':
+        elif settingName == 'grayModelsDirectory':
             self.labelGrayModelsPathValue.configure(text=controller.app.configuration[settingName])
-        elif settingName == 'gradModelsPath':
+        elif settingName == 'gradModelsDirectory':
             self.labelGradModelsPathValue.configure(text=controller.app.configuration[settingName])
-        elif settingName == 'iconsPath':
+        elif settingName == 'iconsDirectory':
             self.labelIconsPathValue.configure(text=controller.app.configuration[settingName])

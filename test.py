@@ -243,8 +243,8 @@
 #
 # writer = Writer.Writer()
 # import json
-# with open("data/models_v2/models.json") as f:
-#     data = json.load(f)
+# with open("data2/models_v2/models.json") as f:
+#     data2 = json.load(f)
 #
 # conf = writer.loadConfFromJSON(3)
 # print(conf)
@@ -301,7 +301,7 @@ from skimage.feature import local_binary_pattern
 #                             0,
 #                             0)
 
-imagePath = r'data/processedData/117.jpg'
+imagePath = r'data2/processedData/117.jpg'
 
 image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
 
@@ -330,7 +330,7 @@ print(lbp)
 
 # from os import listdir
 #
-# pathToProcessedData = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data/processedData'
+# pathToProcessedData = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data2/processedData'
 #
 # pictures = [f for f in listdir(pathToProcessedData)]
 #

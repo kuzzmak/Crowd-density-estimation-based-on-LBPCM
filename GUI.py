@@ -134,7 +134,7 @@ class App(tk.Tk):
             self.consolePrint("[ERROR] invalid dimensions")
 
     def makePictureElements(self, dim):
-        """ funkcija za stvaranje slikovnih elemenata od slika koje se nalaze u data folderu,
+        """ funkcija za stvaranje slikovnih elemenata od slika koje se nalaze u data2 folderu,
             svaki slikovni element je velicine dim i sprema se u processeddata folder nakon
             sto je pretvoren u nijanse sive
         """
@@ -228,7 +228,7 @@ class App(tk.Tk):
     #     """ funkcija za spremanje rjecnika slika i oznaka
     #     """
     #
-    #     self.writer.saveDirectory = r"data/normalData"
+    #     self.writer.saveDirectory = r"data2/normalData"
     #     self.writer.labelDictionary = self.labelDictionary
     #     self.writer.writeAnnotedDataToFile()
     #
@@ -244,7 +244,7 @@ class App(tk.Tk):
 
         # ako nije izabran folder prvo, nista se dalje ne izvodi
         if self.app.configuration['dataPath'] == "":
-            self.console.insert(tk.END, "[WARNING] please select data folder" + "\n")
+            self.console.insert(tk.END, "[WARNING] please select data2 folder" + "\n")
             self.console.insert(tk.END, "----------------------------------------\n")
             self.console.see(tk.END)
         else:
