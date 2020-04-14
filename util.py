@@ -6,6 +6,7 @@ import LBPCM
 import tkinter as tk
 import concurrent.futures
 import copy
+import json
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7
@@ -470,3 +471,49 @@ def gradientImage(imagePath):
     sobel = cv.Sobel(img, cv.CV_8U, 1, 1, ksize=3)
 
     return img, sobel, sobelx, sobely
+
+def makeConfigurationFile():
+    """
+    Funkcija za stvaranje konfiguracijske datoteke u kojoj
+    su zapisani podatci potrebni za normalno funkcioniranje
+    aplikacije
+    """
+
+    fileName = 'configuration.json'
+
+    data = {
+        'dataDirectory': r'__data',
+        'rawDataDirectory': r'__data/rawData',
+        'processedDataDirectory': r'__data/processedData',
+        'modelsDirectory': r'__data/models',
+        'grayModelsDirectory': r'__data/models/grayModels',
+        'gradModelsDirectory': r'__data/models/gradModels',
+        'iconsDirectory': r'__data/icons',
+    }
+
+    with open(fileName, 'w') as f:
+        json.dump(data, f, indent=4)
+
+def copyFiles():
+    """
+    Funkcija za kopiranje potrebnih resursa za normalni
+    rad aplikacije iz foldera koji dolazi s aplikacijom
+    """
+
+    with open('configuration.json') as f:
+        configuration = json.load(f)
+
+    mainDir = "_data"
+
+    # kopiranje labela
+    shutil.copy(mainDir + '/' + 'labeledData.txt', configuration['modelsDirectory'])
+
+    # kopiranje izvornih slika
+    for file in os.listdir(mainDir + '/' + 'rawData'):
+        fileName = mainDir + '/' + 'rawData' + '/' + file
+        shutil.copy(fileName, configuration['rawDataDirectory'])
+
+    # kopiranje ikona aplikacije
+    for file in os.listdir(mainDir + '/' + 'icons'):
+        fileName = mainDir + '/' + 'icons' + '/' + file
+        shutil.copy(fileName, configuration['iconsDirectory'])
