@@ -107,14 +107,17 @@ class HaralickFeatures:
         f1 -> angular second moment +
         f2 -> contrast +
         f3 -> correlation +
-        f4 -> sum of squares: variance
+        f4 -> sum of squares: variance +
         f5 -> inverse difference moment +
         f6 -> sum average +
         f7 -> sum variance +
         f8 -> sum entropy +
         f9 -> entropy +
-        f10 -> difference variance
+        f10 -> difference variance +
         f11 -> difference entropy +
+        f12 -> imoc1 +
+        f13 -> imoc2 +
+        f14 -> maximal correlation coefficient
 
         :param prop: funkcija koju je potrebno izračunati
         :return: vrijednost funkcije koja se izračunava
@@ -128,13 +131,18 @@ class HaralickFeatures:
             weights = 1. / (1. + (I - J) ** 2)
         elif prop == 'correlation':
             weights = I * J
+        elif prop == 'sum of squares: variance':
+            weights = I
         elif prop in ['angular second moment',
                       'entropy',
                       'sum average',
                       'sum variance',
                       'sum entropy',
                       'difference variance',
-                      'difference entropy']:
+                      'difference entropy',
+                      'imoc1',
+                      'imoc2',
+                      'maximal correlation coefficient']:
             pass
         else:
             raise ValueError('%s is an invalid property' % prop)
@@ -187,7 +195,13 @@ class HaralickFeatures:
             results = -_sum
 
         elif prop == 'difference variance':
-            pass
+
+            variance = np.zeros((self.num_dist, self.num_angle))
+
+            for i in range(self.num_level):
+                variance += np.power(self.pxminy(i), 2) / self.num_level
+
+            results = variance
 
         elif prop == 'difference entropy':
             _sum = np.zeros((self.num_dist, self.num_angle))
@@ -196,7 +210,7 @@ class HaralickFeatures:
                 _sum += temp * np.log(temp + 1e-12)
             results = -_sum
 
-        elif prop == 'imc1' or prop == 'imc2': # information measures of correlation
+        elif prop == 'imoc1' or prop == 'imoc2': # information measures of correlation
             p_x = np.apply_over_axes(np.sum, self.glcm, axes=1)
             p_y = np.apply_over_axes(np.sum, self.glcm, axes=0)
             HXY = self.greycoprops(prop='entropy')
@@ -206,10 +220,16 @@ class HaralickFeatures:
             HX = -np.sum(p_x * np.log(p_x + 1e-12), axis=(0, 1))
             HY = -np.sum(p_y * np.log(p_y + 1e-12), axis=(0, 1))
 
-            if prop == 'imc1':
+            if prop == 'imoc1':
                 results = (HXY - HXY1) / np.maximum(HX, HY)
             else:
                 results = np.sqrt(1 - np.exp(-2 * (HXY2 - HXY)))
+
+        elif prop == 'sum of squares: variance':
+
+            mean = np.apply_over_axes(np.mean, self.glcm, axes=(0, 1))
+            weights = weights.reshape((self.num_level, 1, 1, 1))
+            results = np.apply_over_axes(np.sum, np.power(weights - mean, 2) * self.glcm, axes=(0, 1))
 
         elif prop in ['contrast', 'inverse difference moment']:
             weights = weights.reshape((self.num_level, self.num_level, 1, 1))
