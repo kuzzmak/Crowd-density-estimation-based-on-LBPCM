@@ -5,6 +5,8 @@ from tkinter import filedialog
 from Pages import InitializationPage as iP
 import util
 
+figSize = (3, 2)
+
 class GradientPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -48,7 +50,7 @@ class GradientPage(tk.Frame):
         sobelYImageLabel.pack(padx=10, pady=10)
 
         # prikaz normalne slike
-        figa = Figure(figsize=(2, 1), dpi=100)
+        figa = Figure(figsize=figSize, dpi=100)
         self.a = figa.add_subplot(111)
         self.a.set_yticks([])
         self.a.set_xticks([])
@@ -59,7 +61,7 @@ class GradientPage(tk.Frame):
         self.canvasa.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobel slike
-        figb = Figure(figsize=(2, 1), dpi=100)
+        figb = Figure(figsize=figSize, dpi=100)
         self.b = figb.add_subplot(111)
         self.b.set_yticks([])
         self.b.set_xticks([])
@@ -70,7 +72,7 @@ class GradientPage(tk.Frame):
         self.canvasb.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobelx slike
-        figc = Figure(figsize=(2, 1), dpi=100)
+        figc = Figure(figsize=figSize, dpi=100)
         self.c = figc.add_subplot(111)
         self.c.set_yticks([])
         self.c.set_xticks([])
@@ -81,7 +83,7 @@ class GradientPage(tk.Frame):
         self.canvasc.get_tk_widget().pack(side="top", fill="both", expand=1)
 
         # prikaz sobely slike
-        figd = Figure(figsize=(2, 1), dpi=100)
+        figd = Figure(figsize=figSize, dpi=100)
         self.d = figd.add_subplot(111)
         self.d.set_yticks([])
         self.d.set_xticks([])
@@ -107,7 +109,7 @@ class GradientPage(tk.Frame):
         """
 
         filename = filedialog.askopenfilename(
-            initialdir=controller.app.configuration['processedImagesPath'],
+            initialdir=controller.app.configuration['processedDataDirectory'],
             title="Select picture",
             filetypes=(("jpg files", "*.jpg"), ("all files", "*.*")))
 
@@ -131,4 +133,4 @@ class GradientPage(tk.Frame):
             self.canvasd.draw()
 
         else:
-            controller.gui.consolePrint("[WARNING] no image was selected")
+            controller.consolePrint("[WARNING] no image was selected")
