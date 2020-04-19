@@ -132,10 +132,10 @@ class SlidingWindowPage(tk.Frame):
         self.entryDistances.pack(side="left", padx=5)
         self.entryDistances.insert(0, 1)
 
+        self.radius = 1
+
         if len(self.processedImages) > 0:
             self.updateImages()
-
-        self.radius = 1
 
     def updateImages(self):
 

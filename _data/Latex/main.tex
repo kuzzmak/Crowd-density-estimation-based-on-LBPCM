@@ -1,0 +1,141 @@
+\documentclass[8pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{nccmath}
+
+\geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=10mm,
+ top=10mm,
+ }
+
+
+\begin{document}
+
+Notation \\
+
+\quad\(p(i,j)\) - \((i,j)\)th entry in a normalized gray-tone spatial-dependence matrix, = \(P(i,j)/R\) \\
+
+\quad\(p_x(i)\) - \(i\)th entry in the marginal-probability matrix obtained by summing the rows of \(p(i,j)\), =\(\sum_{j=1}^{N_g}p(i,j)\) \\
+
+\quad\(N_g\) - number of distinct gray levels in  the quantized image
+
+\begin{fleqn}
+\begin{align}
+   \quad\quad\;\; p_y(j) = \sum_{i=1}^{N_g}p(i,j) 
+\end{align}
+\end{fleqn}
+
+\begin{fleqn}
+\begin{align}
+   \quad\quad\;\; p_{x+y}(k) = \sum_{i=1}^{N_g}\sum_{j=1}^{N_g}p(i,j), \quad k=2,3,...,2N_g; \quad i+j=k
+\end{align}
+\end{fleqn}
+
+\begin{fleqn}
+\begin{align}
+   \quad\quad\;\; p_{x-y}(k) = \sum_{i=1}^{N_g}\sum_{j=1}^{N_g}p(i,j), \quad k=0,1,...,N_g-1; \quad |i-j|=k
+\end{align}
+\end{fleqn}
+
+
+
+
+
+
+\begin{multicols}{2}
+[
+\section{Textural features}
+]
+
+1) Angular second moment
+\[
+f_1 = \sum_{i}\sum_{j}p(i,j)^2
+\]
+
+2) Contrast: 
+\[
+f_2 = \sum_{n=0}^{N_g-1}n^2 \left( \sum_{i=1}^{N_g}\sum_{j=1}^{N_g}p(i,j) \right)
+\]
+
+3) Correlation:
+\[
+f_3 = \frac{\sum_i\sum_j\left(ij\right)p(i,j) - \mu_x\mu_y}{\sigma_x\sigma_y}
+\]
+
+4) Sum of squares: variance: 
+\[
+f_4 = \sum_i\sum_j(i-\mu)^2p(i,j)
+\]
+
+5) Inverse difference moment:
+\[
+f_5 = \sum_i\sum_j \frac{1}{1+(i-j)^2}p(i,j)
+\]
+
+6) Sum of average:
+\[
+f_6 = \sum_{i=2}^{2N_g}ip_{x+y}(i)
+\]
+
+7) Sum variance: 
+\[
+f_7 = \sum_{i=2}^{2N_g}(i-f_8)^2p_{x+y}(i)
+\]
+
+Sum entropy: 
+\[
+f_8 = -\sum_{i=2}^{2N_g}p_{x+y}(i)\log(p_{x+y}(i))
+\]
+
+9) Entropy:
+\[
+f_9 = -\sum_i\sum_j p(i,j)\log(p(i,j))
+\]
+
+10) Difference variance:
+\[
+f_{10} = variance of p_{x-y}
+\]
+
+11) Difference entropy: 
+\[
+f_{11} = -\sum_{i=0}^{N_g-1}p_{x-y}(i)\log(p_{x-y}(i)) 
+\]
+
+12), 13) Information measures of correlation:
+\[
+f_{12} = \frac{HXY - HXY1}{max\{HX,HY\}}
+\]
+
+\[
+f_{13} = \sqrt{(1-\exp{-2(HXY2 - HXY)}}
+\]
+
+\[
+HX = -\sum_i\sum_j p(i,j)\log(p(i,j))
+\]
+
+\[
+HXY1 = -\sum_i\sum_j p(i,j)\log(p_x(i)p_y(y))
+\]
+
+\[
+HXY2 = -\sum_i\sum_j p_x(i)p_y(y) \log(p_x(i)p_y(y))
+\]
+
+Maximal correlation coefficient:
+\[
+f_{14} = \sqrt{Second \; largest \; eigenvalue \; of \; Q}
+\]
+
+\[
+Q(i,j) = \sum_k \frac{p(i,k)p(j,k)}{p_x(i)p_y(k)}
+\]
+
+\end{multicols}
+
+\end{document}

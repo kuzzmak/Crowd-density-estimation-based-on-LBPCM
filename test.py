@@ -276,7 +276,7 @@
 # import hf
 import cv2 as cv
 from skimage.feature import local_binary_pattern
-# from skimage.feature import greycomatrix
+from skimage.feature import greycomatrix
 # import Haralick
 #
 # import LBPCM
@@ -301,21 +301,35 @@ from skimage.feature import local_binary_pattern
 #                             0,
 #                             0)
 
-imagePath = r'data2/processedData/117.jpg'
+# import Haralick
+# import numpy as np
+# imagePath = r'data2/processedData/117.jpg'
+#
+# # image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+#
+# image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
+#
+# glcm = greycomatrix(image.astype(int), [1, 2], [0], levels=4)
+# print('glcm')
+# print(glcm[:, :, 0, 0])
+#
+# haralick = Haralick.HaralickFeatures(glcm, normalize=False)
+#
+# prop = haralick.greycoprops(prop='sum of squares: variance')
+# print('prop')
+# print(prop)
 
-image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
-
-picType = 'grad'
-
-if picType == 'grad':
-    image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
-
-# cv.imshow("im", image)
-# cv.waitKey(0)
-
-lbp = local_binary_pattern(image, 8, 1, method='default')
-
-print(lbp)
+# picType = 'grad'
+#
+# if picType == 'grad':
+#     image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
+#
+# # cv.imshow("im", image)
+# # cv.waitKey(0)
+#
+# lbp = local_binary_pattern(image, 8, 1, method='default')
+#
+# print(lbp)
 
 # import old
 #
@@ -337,3 +351,29 @@ print(lbp)
 # pictures = sorted(pictures)
 #
 # print(pictures)
+
+# import numpy as np
+# a = np.array([[[[1, 2, 3], [3, 3, 3], [1, 0, 6]], [[1, 2, 3], [3, 3, 3], [1, 0, 6]]], [[[1, 2, 3], [3, 3, 3], [1, 0, 6]], [[1, 2, 3], [3, 3, 3], [1, 0, 6]]]])
+# mean = np.apply_over_axes(np.mean, a, axes=(2, 3))
+# # print(mean)
+#
+# I, J = np.ogrid[0:4, 0:4]
+#
+# print(np.power(I - mean, 2))
+
+import cv2 as cv
+
+import imageio
+
+
+imagePath = r'data2/processedData/2982.jpg'
+img = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+
+sobelx = cv.Sobel(img, -1, 1, 0, ksize=3)
+sobely = cv.Sobel(img, -1, 0, 1, ksize=3)
+
+sobel = cv.Sobel(img, cv.CV_8U, 1, 1, ksize=3)
+
+cv.imwrite("sobelx.jpg", sobelx)
+cv.imwrite("sobely.jpg", sobely)
+cv.imwrite("sobel.jpg", sobel)

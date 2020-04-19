@@ -2,7 +2,6 @@ import json
 
 from math import radians
 
-from tkinter import filedialog
 import tkinter as tk
 from PIL import ImageTk, Image
 

@@ -339,13 +339,13 @@ def makeConfigurationFile():
     fileName = 'configuration.json'
 
     data = {
-        'dataDirectory': r'__data',
-        'rawDataDirectory': r'__data/rawData',
-        'processedDataDirectory': r'__data/processedData',
-        'modelsDirectory': r'__data/models',
-        'grayModelsDirectory': r'__data/models/grayModels',
-        'gradModelsDirectory': r'__data/models/gradModels',
-        'iconsDirectory': r'__data/icons',
+        'dataDirectory': r'data',
+        'rawDataDirectory': r'data/rawData',
+        'processedDataDirectory': r'data/processedData',
+        'modelsDirectory': r'data/models',
+        'grayModelsDirectory': r'data/models/grayModels',
+        'gradModelsDirectory': r'data/models/gradModels',
+        'iconsDirectory': r'data/icons',
     }
 
     with open(fileName, 'w') as f:
@@ -369,6 +369,11 @@ def copyFiles():
     for file in os.listdir(mainDir + '/' + 'rawData'):
         fileName = mainDir + '/' + 'rawData' + '/' + file
         shutil.copy(fileName, configuration['rawDataDirectory'])
+
+    # kopiranje procesiranih slika
+    for file in os.listdir(mainDir + '/' + 'processedData'):
+        fileName = mainDir + '/' + 'processedData' + '/' + file
+        shutil.copy(fileName, configuration['processedDataDirectory'])
 
     # kopiranje ikona aplikacije
     for file in os.listdir(mainDir + '/' + 'icons'):
