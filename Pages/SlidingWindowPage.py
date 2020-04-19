@@ -8,6 +8,7 @@ import util
 from skimage.feature import local_binary_pattern
 from skimage.feature import greycomatrix
 from Pages import InitializationPage as iP
+import Haralick
 
 class SlidingWindowPage(tk.Frame):
     """
@@ -99,18 +100,52 @@ class SlidingWindowPage(tk.Frame):
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(side="bottom", padx=5, pady=5)
 
+        # frame s unosom parametara
+        parameterFrame = tk.Frame(self)
+        parameterFrame.pack(padx=10, pady=10, side="bottom")
+
+        labelStepSize = tk.Label(parameterFrame, text="Step size:")
+        labelStepSize.pack(side="left", padx=5)
+
+        self.entryStepSize = tk.Entry(parameterFrame, width=5)
+        self.entryStepSize.pack(side="left", padx=5)
+        self.entryStepSize.insert(0, 32)
+
+        labelCellSize = tk.Label(parameterFrame, text="Cell size:")
+        labelCellSize.pack(side="left", padx=5)
+
+        self.entryCellSize = tk.Entry(parameterFrame, width=5)
+        self.entryCellSize.pack(side="left", padx=5)
+        self.entryCellSize.insert(0, "64x64")
+
+        labelAngles = tk.Label(parameterFrame, text="Angles:")
+        labelAngles.pack(side="left", padx=5)
+
+        self.entryAngles = tk.Entry(parameterFrame, width=10)
+        self.entryAngles.pack(side="left", padx=5)
+        self.entryAngles.insert(0, 0)
+
+        labelDistances = tk.Label(parameterFrame, text="Distances:")
+        labelDistances.pack(side="left", padx=5)
+
+        self.entryDistances = tk.Entry(parameterFrame, width=5)
+        self.entryDistances.pack(side="left", padx=5)
+        self.entryDistances.insert(0, 1)
+
         if len(self.processedImages) > 0:
             self.updateImages()
+
+        self.radius = 1
 
     def updateImages(self):
 
         image = cv.imread(self.currentPicturePath, cv.IMREAD_GRAYSCALE)
 
         if self.rType.get() == 'gray':
-            lbp = local_binary_pattern(image, 8, 1, method='default')
+            lbp = local_binary_pattern(image, 8 * self.radius, self.radius, method='default')
         else:
             sobel = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
-            lbp = local_binary_pattern(sobel, 8, 1, method='default')
+            lbp = local_binary_pattern(sobel, 8 * self.radius, self.radius, method='default')
             image = sobel
 
         start_point, end_point = self.picDims[self.currentCell]
@@ -191,35 +226,36 @@ class SlidingWindowPage(tk.Frame):
             controller.consolePrint("[ERROR] no picture selected")
             return
 
+        self.picType = self.rType.get()
+        self.stepSize = int(self.entryStepSize.get())
+        self.cellSize = [int(x) for x in self.entryCellSize.get().split('x')]
+        self.angles = [int(x) for x in self.entryAngles.get().split(',')]
+        self.glcmDistances = [int(x) for x in self.entryDistances.get().split(',')]
+
         functions = []
 
         for _, name, c in controller.functionButtons:
             if c.get():
                 functions.append(name)
 
-        picType = self.rType.get()
-        radius = 1
-        stepSize = 32
-        cellSize = [64, 64]
-        angles = [0, 1.57]
-        glcmDistances = [1]
-
         image = cv.imread(self.currentPicturePath, cv.IMREAD_GRAYSCALE)
 
         picDim = self.picDims[self.currentCell]
         cellImage = image[picDim[0][0]:picDim[1][0], picDim[0][1]:picDim[1][1]]
 
-        if picType == 'grad':
+        if self.picType == 'grad':
             sobel = cv.Sobel(cellImage, cv.CV_8U, 1, 1, ksize=3)
-            lbp = local_binary_pattern(sobel, 8, 1, method='default')
+            lbp = local_binary_pattern(sobel, 8 * self.radius, self.radius, method='default')
         else:
-            lbp = local_binary_pattern(cellImage, 8, 1, method='default')
+            lbp = local_binary_pattern(cellImage, 8 * self.radius, self.radius, method='default')
 
-        glcm = greycomatrix(lbp.astype(int), glcmDistances, angles, levels=256, normed=True)
+        glcm = greycomatrix(lbp.astype(int), self.glcmDistances, self.angles, levels=256, normed=True)
+
+        hf = Haralick.HaralickFeatures(glcm)
 
         for f in functions:
 
-            result = util.greycoprops(glcm, prop=f)
+            result = hf.greycoprops(prop=f)
 
             string = []
             for t in result:
