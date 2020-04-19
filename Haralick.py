@@ -221,7 +221,7 @@ class HaralickFeatures:
             HY = -np.sum(p_y * np.log(p_y + 1e-12), axis=(0, 1))
 
             if prop == 'imoc1':
-                results = (HXY - HXY1) / np.maximum(HX, HY)
+                results = (HXY - HXY1) / np.maximum(HX, HY)[0, 0]
             else:
                 results = np.sqrt(1 - np.exp(-2 * (HXY2 - HXY)))
 
@@ -229,7 +229,7 @@ class HaralickFeatures:
 
             mean = np.apply_over_axes(np.mean, self.glcm, axes=(0, 1))
             weights = weights.reshape((self.num_level, 1, 1, 1))
-            results = np.apply_over_axes(np.sum, np.power(weights - mean, 2) * self.glcm, axes=(0, 1))
+            results = np.apply_over_axes(np.sum, np.power(weights - mean, 2) * self.glcm, axes=(0, 1))[0, 0]
 
         elif prop in ['contrast', 'inverse difference moment']:
             weights = weights.reshape((self.num_level, self.num_level, 1, 1))
