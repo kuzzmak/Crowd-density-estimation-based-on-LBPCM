@@ -107,7 +107,7 @@ class FVC2Page(tk.Frame):
 
         for mp in self.modelPages:
 
-            im = Image.open(controller.app.configuration['xMarkPath'])
+            im = Image.open(controller.app.configuration['iconsDirectory'] + '\\xmark.jpg')
             im = im.resize((20, 20), Image.ANTIALIAS)
             mp.im = ImageTk.PhotoImage(im)
 
@@ -120,7 +120,7 @@ class FVC2Page(tk.Frame):
         """
 
         # staza do odabrane slike preko izbornika
-        path = filedialog.askopenfilename(initialdir=controller.app.configuration['unprocessedDataPath'],
+        path = filedialog.askopenfilename(initialdir=controller.app.configuration['rawDataDirectory'],
                                           title="Select picture you want to classify",
                                           filetypes=(("jpeg files", "*.jpg"), ("all files", "*.*")))
 

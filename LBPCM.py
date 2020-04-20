@@ -93,7 +93,7 @@ class LBPCM:
         """
 
         # staza do foldera s već izrezanim slikama
-        pathToProcessedData = app.configuration['processedImagesPath']
+        pathToProcessedData = app.configuration['processedDataDirectory']
 
         progressBar = app.gui.frames[fvcP.FeatureVectorCreationPage].progressbarVector
         labelProgress = app.gui.frames[fvcP.FeatureVectorCreationPage].labelProgress

@@ -42,11 +42,11 @@ class ModelPage(tk.Frame):
         frameRadioGrayGrad.pack()
 
         rGray = tk.Radiobutton(frameRadioGrayGrad, text="Gray", variable=self.modelType, value='gray',
-                               command=lambda: self.loadModelInfo())
+                               command=lambda: self.loadModelInfo(controller))
         rGray.pack(side="left", padx=10)
 
         rGrad = tk.Radiobutton(frameRadioGrayGrad, text="Grad", variable=self.modelType, value='grad',
-                               command=lambda: self.loadModelInfo())
+                               command=lambda: self.loadModelInfo(controller))
         rGrad.pack(side="left", padx=10)
 
         # frame s parametrima pojedinog modela
@@ -151,19 +151,20 @@ class ModelPage(tk.Frame):
         self.imageLabelDescription.pack(side="left", padx=5, pady=5)
 
         buttonPrev = tk.Button(frameButtonPrevNext, text="Previous",
-                               command=lambda: self.previousModel(self.modelType.get()))
+                               command=lambda: self.previousModel(self.modelType.get(), controller))
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
         self.buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", state="disabled",
                                          command=lambda: self.loadModel(controller, upperFrame))
         self.buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
 
-        buttonNext = tk.Button(frameButtonPrevNext, text="Next", command=lambda: self.nextModel(self.modelType.get()))
+        buttonNext = tk.Button(frameButtonPrevNext, text="Next",
+                               command=lambda: self.nextModel(self.modelType.get(), controller))
         buttonNext.pack(side="left", padx=10, pady=5, fill="x")
 
-        self.loadModelInfo()
+        self.loadModelInfo(controller)
 
-    def loadModelInfo(self):
+    def loadModelInfo(self, controller):
         """
         Funkcija za učitavanje i prikazivanje konfiguracije dostupnih modela
         """
@@ -195,7 +196,7 @@ class ModelPage(tk.Frame):
                 modelId = -1
                 self.buttonLoadModel['state'] = 'disabled'
 
-        self.showInfo(modelId)
+        self.showInfo(modelId, controller)
 
     def loadModel(self, controller, upperFrame):
         """
@@ -220,7 +221,7 @@ class ModelPage(tk.Frame):
             # spremanje učitanog modela
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
-            writer.modelConfiguration = writer.loadConfFromJSON(self.grayModels[self.currentGrayModel])
+            writer.modelConfiguration = writer.loadConfFromJSON(self.grayModels[self.currentGrayModel], controller)
             controller.app.writers.append(writer)
 
         else:
@@ -228,7 +229,7 @@ class ModelPage(tk.Frame):
                         str(self.gradModels[self.currentGradModel]) + ".pkl"
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
-            writer.modelConfiguration = writer.loadConfFromJSON(self.gradModels[self.currentGradModel])
+            writer.modelConfiguration = writer.loadConfFromJSON(self.gradModels[self.currentGradModel], controller)
             controller.app.writers.append(writer)
 
         #TODO napraviri da se pojavi gumb za sliku tek kad se ucitaju oba modela ako su izabrana
@@ -250,11 +251,12 @@ class ModelPage(tk.Frame):
         self.imageLabel.configure(image=self.im)
         self.imageLabelDescription.configure(text="model loaded")
 
-    def showInfo(self, modelId):
+    def showInfo(self, modelId, controller):
         """
         Ova funkcija prikazuje detalje konfiguracije modela kojem je id modelId
 
         :param modelId: id modela čija se konfiguracija prikazuje
+        :param controller referenca do glavnog programa
         """
 
         if modelId != -1:
@@ -274,7 +276,7 @@ class ModelPage(tk.Frame):
             functions, \
             mean, \
             sigma, \
-            error = writer.loadConfFromJSON(modelId)
+            error = writer.loadConfFromJSON(modelId, controller)
 
             fun = []
 
@@ -330,11 +332,12 @@ class ModelPage(tk.Frame):
             self.functionsLabelValue.configure(text="NO MODEL")
             self.errorLabelValue.configure(text="NO MODEL")
 
-    def nextModel(self, modelType):
+    def nextModel(self, modelType, controller):
         """
         Služi za prkikaz konfiguracije sljedećeg modela tipa modelType
 
         :param modelType: vrsta modela
+        :param controller referenca do glavnog programa
         """
 
         if modelType == 'gray':
@@ -351,13 +354,14 @@ class ModelPage(tk.Frame):
                     next %= self.numberOfGradModels
                 self.currentGradModel = next
 
-        self.loadModelInfo()
+        self.loadModelInfo(controller)
 
-    def previousModel(self, modelType):
+    def previousModel(self, modelType, controller):
         """
         Funkcija za prikaz prethodnog modela.
 
         :param modelType: vrsta modela koji se trenutno prikazuje
+        :param controller referenca do glavnog programa
         """
         if modelType == 'gray':
             if len(self.grayModels) > 0:
@@ -372,4 +376,4 @@ class ModelPage(tk.Frame):
                     previous = self.numberOfGradModels - 1
                 self.currentGradModel = previous
 
-        self.loadModelInfo()
+        self.loadModelInfo(controller)

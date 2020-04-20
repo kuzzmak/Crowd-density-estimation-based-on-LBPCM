@@ -200,7 +200,7 @@ class App:
         conf.extend(mean.tolist())
         conf.extend(sigma.tolist())
 
-        trainRatio = self.configuration['trainingSetSize']
+        trainRatio = 0.7
 
         #TODO napraviti funkciju koja radi ovo ispod
         X_train = fv[:round(trainRatio * fv.__len__())]
