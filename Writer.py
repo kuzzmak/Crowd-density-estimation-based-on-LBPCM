@@ -140,7 +140,7 @@ class Writer:
         :param controller referenca do glavnog programa
         """
 
-        with open(controller.configuration['modelsDirectory'] + '/models.json') as f:
+        with open(controller.app.configuration['modelsDirectory'] + '/models.json') as f:
 
             data = json.load(f)
 
