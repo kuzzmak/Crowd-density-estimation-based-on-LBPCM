@@ -2,6 +2,7 @@ import tkinter as tk
 
 import cv2 as cv
 from PIL import ImageTk, Image
+import os
 
 import util
 from Pages import FVC2Page as fvcP2
@@ -17,22 +18,23 @@ class CLP2(tk.Frame):
         # polje PictureClassificationFramea
         self.pcpFrames = []
 
-        description = tk.Label(self, text="Here you can see classified image.")
+        description = tk.Label(self, text="This page displays classified image on top and"
+                                          "result of both classifiers on the bottom.")
         description.pack(side="top", padx=10, pady=20)
 
         colorFrame = tk.Frame(self)
         colorFrame.pack(side="top")
 
         self.c0c = ImageTk.PhotoImage(image=Image.fromarray(
-            cv.imread(controller.app.configuration['iconsDirectory'] + '/0.jpg')))
+            cv.imread(os.path.join(controller.app.configuration['iconsDirectory'], '0.jpg'))))
         self.c1c = ImageTk.PhotoImage(image=Image.fromarray(
-            cv.imread(controller.app.configuration['iconsDirectory'] + '/1.jpg')))
+            cv.imread(os.path.join(controller.app.configuration['iconsDirectory'], '1.jpg'))))
         self.c2c = ImageTk.PhotoImage(image=Image.fromarray(
-            cv.imread(controller.app.configuration['iconsDirectory'] + '/2.jpg')))
+            cv.imread(os.path.join(controller.app.configuration['iconsDirectory'], '2.jpg'))))
         self.c3c = ImageTk.PhotoImage(image=Image.fromarray(
-            cv.imread(controller.app.configuration['iconsDirectory'] + '/3.jpg')))
-        self.c4c = ImageTk.PhotoImage(image=Image.fromarray
-        (cv.imread(controller.app.configuration['iconsDirectory'] + '/4.jpg')))
+            cv.imread(os.path.join(controller.app.configuration['iconsDirectory'], '3.jpg'))))
+        self.c4c = ImageTk.PhotoImage(image=Image.fromarray(
+            cv.imread(os.path.join(controller.app.configuration['iconsDirectory'], '4.jpg'))))
 
         c0c = tk.Label(colorFrame, image=self.c0c)
         c0c.pack(side="left", padx=5)
@@ -58,6 +60,23 @@ class CLP2(tk.Frame):
         c4c.pack(side="left", padx=5)
         c4cLabel = tk.Label(colorFrame, text="Jammed flow")
         c4cLabel.pack(side="left", padx=5)
+
+        resultFrame = tk.Frame(self)
+        resultFrame.pack(side='top', padx=10, pady=10)
+
+        labelResultDescription = tk.Label(resultFrame, text="Result of classification")
+        labelResultDescription.pack(pady=5)
+
+        self.blank = ImageTk.PhotoImage(image=Image.fromarray(
+                                            util.resizePercent(
+                                                cv.imread(
+                                                    os.path.join(
+                                                        controller.app.configuration['iconsDirectory'], 'blankImage.jpg')),
+                                                30)))
+
+        # slika rezultata kombinacije dvaju klasifikatora
+        self.resultImage = tk.Label(resultFrame, image=self.blank)
+        self.resultImage.pack()
 
         # frame s panelima koji sadrže slike za klasifikaciju
         self.middleFrame = tk.Frame(self)
@@ -103,8 +122,10 @@ class CLP2(tk.Frame):
 
         # odabrana slika, postavlja se u oba panela u middleframe
         image = cv.imread(controller.app.pictureToClassify)
-        image = util.resizePercent(image, 40)
-        self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
+
+        self.im = [ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(image, 20))),
+                   ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(image, 20))),
+                   ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(image, 30)))]
 
         # prikaz vrste modela, vrste slike i greške svakog modela na stranici s klasifikacijom
         i = 0
@@ -113,5 +134,8 @@ class CLP2(tk.Frame):
             # naziv koji se pojavljuje iznad slike koja se klasificira
             modelString = conf[0] + " - " + conf[1] + " - " + str(round(conf[13], 2)) + "%"
             p.labelModelName.configure(text=modelString)
-            p.labelImage.configure(image=self.im)
+            p.labelImage.configure(image=self.im[i])
             i += 1
+
+        # postavljanje slike rezultat klasifikacije da ne bi bila prazna
+        self.resultImage.configure(image=self.im[i])
