@@ -374,11 +374,10 @@ def makeColors(dim):
     u bgr formatu
 
     :param dim: dimenzija pojedinog kvadratića
-    :return:
     """
 
     # direktorij u koji su spremljeni kvadratići
-    dir = r"icons/colors"
+    dir = os.path.join('_data', 'icons')
 
     # svaka gustoća mnoštva je određene boje
     colors = [(127, 255, 0), (255, 255, 0), (255, 165, 0), (255, 69, 0), (255, 0, 0)]
@@ -416,43 +415,17 @@ def makeConfigurationFile():
     fileName = 'configuration.json'
 
     data = {
-        'dataDirectory': r'data',
-        'rawDataDirectory': r'data/rawData',
-        'processedDataDirectory': r'data/processedData',
-        'modelsDirectory': r'data/models',
-        'grayModelsDirectory': r'data/models/grayModels',
-        'gradModelsDirectory': r'data/models/gradModels',
-        'iconsDirectory': r'data/icons',
+        'dataDirectory': r'_data',
+        'rawDataDirectory': os.path.join('_data', 'rawData'),
+        'processedDataDirectory': os.path.join('_data', 'processedData'),
+        'modelsDirectory': os.path.join('_data', 'models'),
+        'grayModelsDirectory': os.path.join('_data', 'models', 'grayModels'),
+        'gradModelsDirectory': os.path.join('_data', 'models', 'gradModels'),
+        'iconsDirectory': os.path.join('_data', 'icons'),
+        'labeledData': os.path.join('_data', 'labeledData.txt'),
+        'functionInformation': os.path.join('data', 'Latex', 'main.pdf')
     }
 
     with open(fileName, 'w') as f:
         json.dump(data, f, indent=4)
 
-def copyFiles():
-    """
-    Funkcija za kopiranje potrebnih resursa za normalni
-    rad aplikacije iz foldera koji dolazi s aplikacijom
-    """
-
-    with open('configuration.json') as f:
-        configuration = json.load(f)
-
-    mainDir = "_data"
-
-    # kopiranje labela
-    shutil.copy(mainDir + '/' + 'labeledData.txt', configuration['modelsDirectory'])
-
-    # kopiranje izvornih slika
-    for file in os.listdir(mainDir + '/' + 'rawData'):
-        fileName = mainDir + '/' + 'rawData' + '/' + file
-        shutil.copy(fileName, configuration['rawDataDirectory'])
-
-    # kopiranje procesiranih slika
-    for file in os.listdir(mainDir + '/' + 'processedData'):
-        fileName = mainDir + '/' + 'processedData' + '/' + file
-        shutil.copy(fileName, configuration['processedDataDirectory'])
-
-    # kopiranje ikona aplikacije
-    for file in os.listdir(mainDir + '/' + 'icons'):
-        fileName = mainDir + '/' + 'icons' + '/' + file
-        shutil.copy(fileName, configuration['iconsDirectory'])
