@@ -13,6 +13,39 @@ ratio = 0.7
 # brojac za slikovne elemente
 picCounter = 0
 
+dim = (192, 144)
+# zeljena sirina slikovnog elementa
+x_size = dim[0]
+# zeljena visina slikovnog elementa
+y_size = dim[1]
+# sirina slike
+imageX = 0
+# visina slike
+imageY = 0
+# cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
+stepX = imageX // x_size
+# koraci u y smjeru
+stepY = imageY // y_size
+
+class Container:
+
+    def __init__(self, image, model, configuration, multiple):
+        self.image = image
+        self.model = model
+        self.configuration = configuration
+        self.multiple = multiple
+
+    def getImage(self):
+        return self.image
+
+    def getModel(self):
+        return self.model
+
+    def getConfiguration(self):
+        return self.configuration
+
+    def getMultiple(self):
+        return self.multiple
 
 def saveImage(im, path, dim):
     """ Funkcija za spremanje slikovnih elemenata iz izvorne slike
@@ -142,7 +175,7 @@ def calculateError(model, X_test, Y_test):
 
     return counter / predictions.__len__()
 
-def classifyImage(filename, model, configuration, console=None):
+def classifyImage(filename, model, configuration, multiple=False):
     """ Funkcija za klasifikaciju slike, odnosno svrstavanje svakog bloka slike
     u neki od razreda gustoće mnoštva. Svaka slika se sastoji od 16 blokova
     veličine (192, 144) piksela. Iz svakog bloka se stvori vektor značajki koji
@@ -152,7 +185,7 @@ def classifyImage(filename, model, configuration, console=None):
     :param filename: staza do slike koju želimo klasificirati
     :param model: objekt klasifikatora koji radi klasifikaciju svakog bloka slike
     :param configuration: konfiguracija prema kojoj se tvori vektor značajki svakog bloka
-    :param console: konzola za ispis poruka
+    :param multiple: koristi li se kompozitni model
     :return: vraća se slika na kojoj je svaki blok u određenoj boji, ovisno o
              razredu gustoće kojem pripada
     """
@@ -161,8 +194,40 @@ def classifyImage(filename, model, configuration, console=None):
     image = cv.imread(filename)
     # ista slika iznad samo u sivoj inačici, služi za stvaranje vektora značajki
     image_gray = cv.imread(filename, cv.IMREAD_GRAYSCALE)
-    overlay = image.copy()
-    output = image.copy()
+
+    # sirina slike
+    global imageX
+    imageX = image.shape[1]
+    # visina slike
+    global imageY
+    imageY = image.shape[0]
+    global stepX
+    stepX = imageX // x_size
+    # koraci u y smjeru
+    global stepY
+    stepY = imageY // y_size
+
+    # lista labela koje odgovaraju pojedinom bloku na slici
+    labels = []
+
+    # tuple podslike, lbpcm i modela
+    container = []
+
+    # stvaranje podslika i stavljanje u listu radi lakšeg dohvata svake pojedine podslike
+    for y in range(stepY):
+        for x in range(stepX):
+            subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
+            container.append(Container(subImage, copy.deepcopy(model), configuration, multiple))
+
+    # pokretanje onoliko novih procesa koliko računalo procesora ima
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        for container, label in zip(container, executor.map(classify, container)):
+            # izlaz je labela pripadnosti pojedine podslike nekom od razreda gustoće
+            labels.append(label)
+
+    return showLabeledImage(labels, image)
+
+def getLBPCM(configuration):
 
     # dohvat parametara za lbpcm
     picType = configuration[1]
@@ -185,37 +250,12 @@ def classifyImage(filename, model, configuration, console=None):
                         combineDistances,
                         combineAngles)
 
-    # lista labela koje odgovaraju pojedinom bloku na slici
-    labels = []
+    return lbpcm
 
-    dim = (192, 144)
-    # zeljena sirina slikovnog elementa
-    x_size = dim[0]
-    # zeljena visina slikovnog elementa
-    y_size = dim[1]
-    # sirina slike
-    imageX = image.shape[1]
-    # visina slike
-    imageY = image.shape[0]
-    # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
-    stepX = imageX // x_size
-    # koraci u y smjeru
-    stepY = imageY // y_size
+def showLabeledImage(labels, image):
 
-    # tuple podslike, lbpcm i modela
-    image_lbpcm_model = []
-
-    # stvaranje podslika i stavljanje u listu radi lakšeg dohvata svake pojedine podslike
-    for y in range(stepY):
-        for x in range(stepX):
-            subImage = image_gray[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
-            image_lbpcm_model.append((subImage, copy.deepcopy(lbpcm), copy.deepcopy(model), configuration))
-
-    # pokretanje onoliko novih procesa koliko računalo procesora ima
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        for subImage, label in zip(image_lbpcm_model, executor.map(classify, image_lbpcm_model)):
-            # izlaz je labela pripadnosti pojedine podslike nekom od razreda gustoće
-            labels.append(label)
+    overlay = image.copy()
+    output = image.copy()
 
     i = 0
     for y in range(stepY):
@@ -238,9 +278,6 @@ def classifyImage(filename, model, configuration, console=None):
                 cv.rectangle(overlay, start_point, end_point, (255, 0, 0), -1)
 
             i += 1
-            if console is not None:
-                console.insert(tk.END, "[INFO] " + str(i) + "/16 sub images processed\n")
-                console.see(tk.END)
 
     # intenzitet boje kojoj je svaki blok obojan
     alpha = 0.5
@@ -250,26 +287,55 @@ def classifyImage(filename, model, configuration, console=None):
 
     return output
 
-def classify(tuple):
+def classify(container):
     """
     Funkcija za klasifikaciju liste slika
 
-    :param tuple (podslika, razred LBPCM, model)
+    :param container spremnik podataka potrebnih za klasifikaciju
     :return: oznaka pripadnosti razredu slike
     """
 
-    subImage = tuple[0]
-    lbpcm = tuple[1]
-    model = tuple[2]
-    # normalizacija
-    mean = np.array(tuple[3][11])
-    sigma = np.array(tuple[3][12])
-    picType = tuple[3][1]
+    configuration = container.getConfiguration()
+    subImage = container.getImage()
+    model = container.getModel()
+    multiple = container.getMultiple()
+    picType = configuration[1]
 
-    fv = lbpcm.getFeatureVector(subImage, picType)
-    fv -= mean
-    fv /= sigma
-    label = model.predict([fv])[0]
+    if not multiple:
+        lbpcm = getLBPCM(configuration)
+        # normalizacija
+        mean = np.array(configuration[11])
+        sigma = np.array(configuration[12])
+
+        fv = lbpcm.getFeatureVector(subImage, picType)
+        fv -= mean
+        fv /= sigma
+        label = model.predict([fv])[0]
+
+    else:
+        lbpcm0 = getLBPCM(configuration[0])
+        lbpcm1 = getLBPCM(configuration[1])
+
+        fv0 = lbpcm0.getFeatureVector(subImage, picType)
+        fv1 = lbpcm1.getFeatureVector(subImage, picType)
+
+        mean0 = np.array(configuration[0][11])
+        sigma0 = np.array(configuration[0][12])
+
+        mean1 = np.array(configuration[1][11])
+        sigma1 = np.array(configuration[1][12])
+
+        fv0 -= mean0
+        fv0 /= sigma0
+
+        fv1 -= mean1
+        fv1 /= sigma1
+
+        labels = [0, 1, 2, 3, 4]
+        X = np.array([[fv0, fv1]])
+
+        model.fit(X, labels)
+        label = model.predict(X)
 
     return int(label)
 
