@@ -4,6 +4,7 @@ from Pages import InitializationPage as iP
 import Pages.ModelPage as mp
 from Pages import CLP2 as clP2
 from tkinter import filedialog
+import os
 
 class FVC2Page(tk.Frame):
 
@@ -107,7 +108,7 @@ class FVC2Page(tk.Frame):
 
         for mp in self.modelPages:
 
-            im = Image.open(controller.app.configuration['iconsDirectory'] + '\\xmark.jpg')
+            im = Image.open(os.path.join(controller.app.configuration['iconsDirectory'], 'xmark.jpg'))
             im = im.resize((20, 20), Image.ANTIALIAS)
             mp.im = ImageTk.PhotoImage(im)
 
