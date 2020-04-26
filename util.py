@@ -228,6 +228,12 @@ def classifyImage(filename, model, configuration, multiple=False):
     return showLabeledImage(labels, image)
 
 def getLBPCM(configuration):
+    """
+    Funkcija za stvaranje LBPCM objekta iz predane konfiguracije
+
+    :param configuration: konfiguracija iz koje se stvara LBPCM
+    :return: objekt LBPCM
+    """
 
     # dohvat parametara za lbpcm
     picType = configuration[1]
@@ -253,7 +259,14 @@ def getLBPCM(configuration):
     return lbpcm
 
 def showLabeledImage(labels, image):
+    """
+    Funkcija za prikaz klasificirane slike
 
+    :param labels: labele klasificiranih podslika
+    :param image: slika koja se boja u ovisnosi o labeli koja je
+    dodijeljena pojedinoj podslici
+    :return: obojana slika
+    """
     overlay = image.copy()
     output = image.copy()
 
@@ -282,8 +295,6 @@ def showLabeledImage(labels, image):
     # intenzitet boje kojoj je svaki blok obojan
     alpha = 0.5
     cv.addWeighted(overlay, alpha, output, 1 - alpha, 0, output)
-    # reskaliranje slike koja se prikazuje u aplikaciji
-    output = resizePercent(output, 40)
 
     return output
 
