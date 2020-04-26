@@ -51,11 +51,6 @@ class App:
             with open("configuration.json") as json_file:
                 self.configuration = json.load(json_file)
 
-            for _, value in self.configuration.items():
-                os.makedirs(value, exist_ok=True)
-
-            util.copyFiles()
-
         self.gui = GUI.App(self)
 
     def loadLabels(self):
@@ -260,7 +255,7 @@ class App:
 
             output = util.classifyImage(self.pictureToClassify, writer.model, writer.modelConfiguration)
 
-            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(output))
+            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 20)))
 
             self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
             i += 1
@@ -292,7 +287,7 @@ class App:
                                          self.writers[1].modelConfiguration],
                                         True)
 
-            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(output))
+            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 30)))
 
             self.gui.frames[clP2.CLP2].resultImage.configure(image=self.im[i])
 
