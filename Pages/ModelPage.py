@@ -2,6 +2,8 @@ import tkinter as tk
 from os import listdir
 import Writer
 import util
+
+import os
 from sklearn.externals import joblib
 from PIL import ImageTk, Image
 
@@ -140,7 +142,7 @@ class ModelPage(tk.Frame):
         self.modelStatusFrame = tk.Frame(frameButtonPrevNext)
         self.modelStatusFrame.pack(pady=20)
 
-        im = Image.open(controller.app.configuration["iconsDirectory"] + '/xmark.jpg')
+        im = Image.open(os.path.join(controller.app.configuration["iconsDirectory"], 'xmark.jpg'))
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
@@ -216,8 +218,9 @@ class ModelPage(tk.Frame):
         modelType = self.modelType.get()
 
         if modelType == 'gray':
-            modelPath = controller.app.configuration["grayModelsDirectory"] + "/" + \
-                        str(self.grayModels[self.currentGrayModel]) + ".pkl"
+            modelPath = os.path.join(
+                controller.app.configuration["grayModelsDirectory"],
+                str(self.grayModels[self.currentGrayModel])) + ".pkl"
             # spremanje učitanog modela
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
@@ -225,8 +228,9 @@ class ModelPage(tk.Frame):
             controller.app.writers.append(writer)
 
         else:
-            modelPath = controller.app.configuration["gradModelsDirectory"] + "/" + \
-                        str(self.gradModels[self.currentGradModel]) + ".pkl"
+            modelPath = os.path.join(
+                controller.app.configuration["gradModelsDirectory"],
+                str(self.gradModels[self.currentGradModel])) + ".pkl"
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
             writer.modelConfiguration = writer.loadConfFromJSON(self.gradModels[self.currentGradModel], controller)
@@ -244,7 +248,9 @@ class ModelPage(tk.Frame):
 
         upperFrame.buttonSelectPicture['state'] = 'normal'
 
-        im = Image.open(controller.app.configuration['iconsDirectory'] + '\checkmark.jpg')
+        im = Image.open(os.path.join(
+            controller.app.configuration['iconsDirectory'],
+            'checkmark.jpg'))
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
@@ -303,6 +309,12 @@ class ModelPage(tk.Frame):
                     fun.append('f10')
                 elif f == 'difference entropy':
                     fun.append('f11')
+                elif f == 'imoc1':
+                    fun.append('f12')
+                elif f == 'imoc2':
+                    fun.append('f13')
+                else:
+                    fun.append('f14+')
 
             self.classifierTypeLabelValue.configure(text=classifierType)
             self.picTypeLabelValue.configure(text=picType)
