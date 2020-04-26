@@ -1,12 +1,16 @@
 import json
 
 from math import radians
+import numpy as np
 
 import tkinter as tk
 from PIL import ImageTk, Image
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
+from sklearn.pipeline import make_pipeline
+from mlxtend.feature_selection import ColumnSelector
+from mlxtend.classifier import EnsembleVoteClassifier
 
 from multiprocessing import cpu_count
 from concurrent.futures import ThreadPoolExecutor
@@ -224,7 +228,7 @@ class App:
             self.writer.saveModel(kneighbors, conf, self)
 
         else:
-            svm = SVC(gamma='auto')
+            svm = SVC()
             svm.fit(X_train, Y_train)
             error = 1 - svm.score(X_test, Y_test)
             self.gui.consolePrint("\t[INFO] error: " + str(error))
@@ -249,8 +253,8 @@ class App:
         """
 
         i = 0
-        # za pamćenje slika da se ne izbrišu it memorije
-        self.im = [0, 0]
+        # za pamćenje slika da se ne izbrišu iz memorije
+        self.im = [0, 0, 0]
 
         for writer in self.writers:
 
@@ -261,10 +265,40 @@ class App:
             self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
             i += 1
 
+        # ako se koriste dva modela za klasifikaciju
+        if len(self.writers) > 1:
+
+            pipe1 = make_pipeline(ColumnSelector(cols=0), self.writers[0].model)
+            pipe2 = make_pipeline(ColumnSelector(cols=1), self.writers[1].model)
+            # točnosti svakog klasifikatora
+            acc1 = 1 - self.writers[0].modelConfiguration[13]
+            acc2 = 1 - self.writers[1].modelConfiguration[13]
+            # utezi kojima se množe pojedine vjerojatnosti klasifikatora
+            w1 = np.log(acc1 / (1 - acc1))
+            w2 = np.log(acc2 / (1 - acc2))
+
+            w1w2 = w1 + w2
+            w1 /= w1w2
+            w2 /= w1w2
+
+            eclf = EnsembleVoteClassifier(clfs=[pipe1, pipe2],
+                                          voting='hard',
+                                          weights=[w1, w2],
+                                          refit=False)
+
+            output = util.classifyImage(self.pictureToClassify,
+                                        eclf,
+                                        [self.writers[0].modelConfiguration,
+                                         self.writers[1].modelConfiguration],
+                                        True)
+
+            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(output))
+
+            self.gui.frames[clP2.CLP2].resultImage.configure(image=self.im[i])
+
 
 if __name__ == "__main__":
 
     app = App()
-
     app.gui.mainloop()
 
