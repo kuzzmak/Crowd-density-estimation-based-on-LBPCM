@@ -1,5 +1,11 @@
 import tkinter as tk
 from tkinter.ttk import Progressbar
+import cv2 as cv
+import os
+import numpy as np
+import random
+from PIL import Image, ImageTk
+import util
 from Pages import InitializationPage as iP
 
 class PreprocessPage(tk.Frame):
@@ -7,58 +13,123 @@ class PreprocessPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
-        labelDescription = tk.Label(self, text="Here you can specify parameters needed for data2 preprocessing")
+        labelDescription = tk.Label(self, text="Here you can specify parameters needed for data preprocessing")
         labelDescription.pack(padx=10, pady=10)
 
-        frame1 = tk.Frame(self)
-        frame1.pack()
-
-        buttonSelectFolder = tk.Button(frame1, text="Select data2 folder")
+        buttonSelectFolder = tk.Button(self, text="Select data folder")
         buttonSelectFolder.pack(padx=10, pady=5)
 
-        frame2 = tk.Frame(self)
-        frame2.pack()
+        middleFrame = tk.Frame(self)
+        middleFrame.pack()
 
-        labelRatio = tk.Label(frame2, text="training set size, eg. \"0.7\"")
-        labelRatio.pack(padx=10, pady=5, side="left")
+        leftFrame = tk.Frame(middleFrame)
+        leftFrame.pack(side="left", padx=5, pady=10)
 
-        self.entryRatio = tk.Entry(frame2)
-        self.entryRatio.pack(side="right")
+        rightFrame = tk.Frame(middleFrame)
+        rightFrame.pack(side="left")
 
-        labelDimDescription = tk.Label(self, text="Specify size of a picture element")
-        labelDimDescription.pack(padx=10, pady=10)
+        labelDimX = tk.Label(leftFrame, text="Picture element size x: ")
+        labelDimX.grid(row=0, pady=10, sticky="e")
 
-        # frame s unosom dimenzija slikovnih elemenata-------------------------
-        frame3 = tk.Frame(self)
-        frame3.pack()
+        labelDimY = tk.Label(leftFrame, text="Picture element size y: ")
+        labelDimY.grid(row=1, pady=10, sticky="e")
 
-        labelDimensionX = tk.Label(frame3, text="X:")
-        labelDimensionX.pack(side="left", padx=10, pady=5)
+        self.entryX = tk.Entry(rightFrame)
+        self.entryX.grid(row=0, pady=6)
+        self.entryX.insert(0, 192)
 
-        self.entryX = tk.Entry(frame3)
-        self.entryX.pack(side="left")
+        self.entryY = tk.Entry(rightFrame)
+        self.entryY.grid(row=1, pady=6)
+        self.entryY.insert(0, 144)
 
-        labelDimensionY = tk.Label(frame3, text="Y:")
-        labelDimensionY.pack(side="left", padx=10, pady=5)
+        self.dim = (192, 144)
 
-        self.entryY = tk.Entry(frame3)
-        self.entryY.pack(side="left")
+        buttonSeePicElements = tk.Button(self, text="See on pic", command=lambda: self.seeOnPic(controller))
+        buttonSeePicElements.pack(padx=10, pady=10)
 
-        buttonSeePicElements = tk.Button(frame3, text="See on pic", command=controller.seeOnPic)
-        buttonSeePicElements.pack(side="left", padx=10, pady=10)
-
-        self.labelSeePicElements = tk.Label(self, text="No picture\nloaded.\nSelect data2\nfolder first.")
+        self.labelSeePicElements = tk.Label(self)
         self.labelSeePicElements.pack(padx=10, pady=10)
 
-        # frame s gumbom i progressbar-----------------------------------------
-        frame4 = tk.Frame(self)
-        frame4.pack()
 
-        buttonProcess = tk.Button(frame4, text="Preprocess", command=controller.process)
-        buttonProcess.pack(side="left", padx=10, pady=10)
-
-        self.progressbar = Progressbar(frame4, orient=tk.HORIZONTAL, length=200, mode='determinate')
-        self.progressbar.pack(side="left", padx=10, pady=10)
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
-        buttonBack.pack(padx=10, pady=10)
+        buttonBack.pack(side="bottom", padx=10, pady=10)
+
+    def seeOnPic(self, controller):
+        """ funkcija za prikaz slikovnih elemenata na slici ako su zadane dimenzije
+            slikovnih elemenata
+        """
+
+        # ako nije izabran folder prvo, nista se dalje ne izvodi
+        if controller.app.configuration['rawDataDirectory'] == "":
+            controller.consolePrint("[WARNING] please select data folder")
+        else:
+            data = os.listdir(controller.app.configuration['rawDataDirectory'])
+            # slika na kojoj se prikazuju slikovni elementi
+            image = cv.imread(os.path.join(controller.app.configuration['rawDataDirectory'], data[0]))
+
+            # ako nisu upisane dimenzije slikovnog elementa
+            if self.entryX.get() == "" or self.entryY.get() == "":
+                controller.consolePrint("[WARNING] you haven't specifeid dimensions of a picture element")
+            else:
+                # zeljena sirina slikovnog elementa
+                x_size = int(self.entryX.get())
+                # zeljena visina slikovnog elementa
+                y_size = int(self.entryY.get())
+                # sirina slike
+                imageX = np.shape(image)[1]
+                # visina slike
+                imageY = np.shape(image)[0]
+                # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
+                stepX = imageX // x_size
+                # koraci u y smjeru
+                stepY = imageY // y_size
+
+                self.dim = (x_size, y_size)
+
+                # stvaranje crta u horizontalnom smjeru
+                for x in range(stepX + 1):
+                    cv.line(image, (x * x_size, 0), (x * x_size, imageY), (255, 0, 0), 2)
+
+                # stvaranje crta u vertikalnom smjeru
+                for y in range(stepY + 1):
+                    cv.line(image, (0, y * y_size), (imageX, y * y_size), (255, 0, 0), 2)
+
+                # ako je potrebno promijeniti velicinu slike
+                if image.shape[0] > 300:
+                    image = util.resizePercent(image, 30)
+
+                # postavljanje slike u labelu
+                self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
+                self.labelSeePicElements.configure(image=self.img)
+
+            buttonProcess = tk.Button(self, text="Process", command=lambda: self.process(controller))
+            buttonProcess.pack(padx=10, pady=10)
+
+    def process(self, controller):
+        """ funkcija za stvaranje slikovnih elemenata od slika koje se nalaze u data2 folderu,
+            svaki slikovni element je velicine dim i sprema se u processeddata folder nakon
+            sto je pretvoren u nijanse sive
+        """
+
+        dataDir = controller.app.configuration['rawDataDirectory']
+
+        data = os.listdir(dataDir)
+
+        progressbar = Progressbar(self, orient=tk.HORIZONTAL, length=200, mode='determinate', maximum=len(data))
+        progressbar.pack(side="left", padx=10, pady=10)
+
+        # mijesanje slika
+        random.shuffle(data)
+        # spremanje slika za treniranje
+        for f in data:
+            fileName = os.path.join(dataDir, f)
+            # normalna slika
+            im = cv.imread(fileName)
+            # # slika u sivim tonovima
+            im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
+            # spremanje slike
+            util.saveImage(im_gray, controller.configuration['processedImagesPath'], self.dim)
+            progressbar.step()
+
+        progressbar['value'] = 0
