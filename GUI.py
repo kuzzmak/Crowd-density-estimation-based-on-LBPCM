@@ -1,13 +1,4 @@
 import tkinter as tk
-from tkinter import filedialog
-from os import listdir
-import os
-import cv2 as cv
-import numpy as np
-from PIL import ImageTk, Image
-import util
-import random
-
 
 import Pages.InitializationPage as iP
 import Pages.GradientPage as gP
@@ -20,7 +11,6 @@ import Pages.SlidingWindowPage as swP
 import Pages.DataAnnotationPage as daP
 import Pages.FVC2Page as fvc2P
 import Pages.CLP2 as clp2
-
 
 class App(tk.Tk):
 
@@ -118,58 +108,6 @@ class App(tk.Tk):
         frame = self.frames[cont]
         frame.tkraise()
 
-    def process(self):
-        """
-        Funkcija za dohvat dimenzija slikovnih elemenata i stvaranje istih
-        """
-        try:
-            # dohvat x, y dimenzija
-            x = int(self.frames[pP.PreprocessPage].entryX.get())
-            y = int(self.frames[pP.PreprocessPage].entryY.get())
-            # dimenzija svakog slikovnog elementa
-            dim = (x, y)
-            # stvaranje slikovnih elemenata
-            self.makePictureElements(dim)
-        except AttributeError:
-            self.consolePrint("[ERROR] invalid dimensions")
-
-    def makePictureElements(self, dim):
-        """ funkcija za stvaranje slikovnih elemenata od slika koje se nalaze u data2 folderu,
-            svaki slikovni element je velicine dim i sprema se u processeddata folder nakon
-            sto je pretvoren u nijanse sive
-        """
-
-        if os.path.exists(self.app.configuration['processedImagesPath']):
-            util.clearDirectory(self.app.configuration['processedImagesPath'])
-        else:
-            os.mkdir(self.app.configuration['processedImagesPath'])
-
-        # popis svih slika izvorne velicine
-        onlyFiles = [f for f in listdir(self.app.configuration['dataPath'])]
-
-        # mijesanje slika
-        random.shuffle(onlyFiles)
-        # spremanje slika za treniranje
-        for f in onlyFiles:
-            fileName = self.app.configuration['dataPath'] + "/" + f
-            # normalna slika
-            im = cv.imread(fileName)
-            # # slika u sivim tonovima
-            im_gray = cv.cvtColor(im, cv.COLOR_BGR2GRAY)
-            # spremanje slike
-            util.saveImage(im_gray, self.app.configuration['processedImagesPath'], dim)
-
-            self.dataAnnotationCounter += 1
-
-        self.processedDataPictures = [f for f in listdir(self.app.configuration['processedImagesPath'])]
-        # omogucavanje gumba za oznacavanje slika
-        self.frames[iP.InitializationPage].buttonDataAnnotation["state"] = "normal"
-
-        image = cv.imread(self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[0])
-        # stvaranje koordinata putujuce celije kod tehnike kliznog prozora
-        self.picDims = util.makePicDims(image, self.stepSize,
-                                        self.cellSize)  # FIXME zamijeniti ovaj kurac sa manualnim unosom dimenzije slike
-
     def updateDataAnnotationFrame(self):
         pass
     #     """ funkcija za azuriranje stranice za oznacavanje slika
@@ -236,55 +174,6 @@ class App(tk.Tk):
     #     self.console.insert(tk.END, "[INFO] saved " + str(self.labelDictionary.__len__()) + " labeled images\n")
     #     self.console.insert(tk.END, "----------------------------------------\n")
     #     self.console.see(tk.END)
-
-    def seeOnPic(self):
-        """ funkcija za prikaz slikovnih elemenata na slici ako su zadane dimenzije
-            slikovnih elemenata
-        """
-
-        # ako nije izabran folder prvo, nista se dalje ne izvodi
-        if self.app.configuration['dataPath'] == "":
-            self.console.insert(tk.END, "[WARNING] please select data2 folder" + "\n")
-            self.console.insert(tk.END, "----------------------------------------\n")
-            self.console.see(tk.END)
-        else:
-            # slika na kojoj se prikazuju slikovni elementi
-            image = cv.imread(self.app.configuration['dataPath'] + "/" + self.dataPictures[0])
-
-            # ako nisu upisane dimenzije slikovnog elementa
-            if self.frames[pP.PreprocessPage].entryX.get() == "" or self.frames[pP.PreprocessPage].entryY.get() == "":
-                self.console.insert(tk.END, "[WARNING] you haven't specifeid dimensions of a picture element" + "\n")
-                self.console.insert(tk.END, "----------------------------------------\n")
-                self.console.see(tk.END)
-            else:
-                # zeljena sirina slikovnog elementa
-                x_size = int(self.frames[pP.PreprocessPage].entryX.get())
-                # zeljena visina slikovnog elementa
-                y_size = int(self.frames[pP.PreprocessPage].entryY.get())
-                # sirina slike
-                imageX = np.shape(image)[1]
-                # visina slike
-                imageY = np.shape(image)[0]
-                # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
-                stepX = imageX // x_size
-                # koraci u y smjeru
-                stepY = imageY // y_size
-
-                # stvaranje crta u horizontalnom smjeru
-                for x in range(stepX + 1):
-                    cv.line(image, (x * x_size, 0), (x * x_size, imageY), (255, 0, 0), 2)
-
-                # stvaranje crta u vertikalnom smjeru
-                for y in range(stepY + 1):
-                    cv.line(image, (0, y * y_size), (imageX, y * y_size), (255, 0, 0), 2)
-
-                # ako je potrebno promijeniti velicinu slike
-                if image.shape[0] > 300:
-                    image = util.resizePercent(image, 30)
-
-                # postavljanje slike u labelu
-                self.img = ImageTk.PhotoImage(image=Image.fromarray(image))
-                self.frames[pP.PreprocessPage].labelSeePicElements.configure(image=self.img)
 
     def consolePrint(self, message, dots=True):
         """
