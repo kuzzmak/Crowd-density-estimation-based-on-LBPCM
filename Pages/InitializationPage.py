@@ -15,13 +15,6 @@ class InitializationPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.grid_columnconfigure(0, weight=1)
 
-        # dio s opisom stranice, najgornji dio stranice
-        descriptionFrame = tk.Frame(self)
-        descriptionFrame.pack(padx=10, pady=10)
-
-        description = tk.Label(descriptionFrame, text="Here you select training and testing folder.")
-        description.pack()
-
         # dio s gumbima, srednji dio
         middleFrame = tk.Frame(self)
         middleFrame.pack(padx=10, pady=10, fill="both", expand=1)
@@ -43,7 +36,7 @@ class InitializationPage(tk.Frame):
         preprocessingDescription = tk.Label(preprocessingFrame, text="Preprocessing")
         preprocessingDescription.pack(padx=10, pady=10)
 
-        buttonPreprocess = tk.Button(preprocessingFrame, text="Preprocess data2",
+        buttonPreprocess = tk.Button(preprocessingFrame, text="Preprocess data",
                                      command=lambda: controller.show_frame(pP.PreprocessPage))
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
