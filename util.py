@@ -1,9 +1,7 @@
 import os
 import cv2 as cv
-import shutil
 import numpy as np
 import LBPCM
-import tkinter as tk
 import concurrent.futures
 import copy
 import json
@@ -150,31 +148,6 @@ def normalize(vectors):
 
     return vectors, sums, sigma
 
-def calculateError(model, X_test, Y_test):
-    """ Funkcija za računanje greške na testnom setu blokova
-
-    :param model: klasifikator koji se ocjenjuje
-    :param X_test: vektori značajki testnih blokova
-    :param Y_test: prave oznake testnih blokova
-    :return: postotak točno klasificiranih blokova
-    """
-
-    # labele dobivene klasificiranjem
-    predictions = []
-
-    for x in X_test:
-        predictions.append(int(model.predict([x])[0]))
-
-    counter = 0
-
-    # ako se prave labele poklapaju s izračunatim onda povečamo brojač
-    # točno klasificiranih blokova
-    for i in range(predictions.__len__()):
-        if predictions[i] == Y_test[i]:
-            counter += 1
-
-    return counter / predictions.__len__()
-
 def classifyImage(filename, model, configuration, multiple=False):
     """ Funkcija za klasifikaciju slike, odnosno svrstavanje svakog bloka slike
     u neki od razreda gustoće mnoštva. Svaka slika se sastoji od 16 blokova
@@ -269,6 +242,18 @@ def showLabeledImage(labels, image):
     """
     overlay = image.copy()
     output = image.copy()
+
+    # sirina slike
+    global imageX
+    imageX = image.shape[1]
+    # visina slike
+    global imageY
+    imageY = image.shape[0]
+    global stepX
+    stepX = imageX // x_size
+    # koraci u y smjeru
+    global stepY
+    stepY = imageY // y_size
 
     i = 0
     for y in range(stepY):
