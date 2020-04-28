@@ -1,16 +1,13 @@
 import json
 
 from math import radians
-import numpy as np
 
 import tkinter as tk
 from PIL import ImageTk, Image
+import cv2 as cv
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
-from sklearn.pipeline import make_pipeline
-from mlxtend.feature_selection import ColumnSelector
-from mlxtend.classifier import EnsembleVoteClassifier
 
 from multiprocessing import cpu_count
 from concurrent.futures import ThreadPoolExecutor
@@ -20,6 +17,7 @@ import LBPCM
 import GUI
 import Writer
 import util
+import VotingClassifier
 
 from Pages import ConfigurationsPage as coP
 from Pages import FeatureVectorCreationPage as fvcP
@@ -247,51 +245,31 @@ class App:
         Metoda za klasifikaciju izabrane slike.
         """
 
-        i = 0
-        # za pamćenje slika da se ne izbrišu iz memorije
-        self.im = [0, 0, 0]
+        models = [x.model for x in self.writers]
+        configurations = [x.modelConfiguration for x in self.writers]
 
-        for writer in self.writers:
-
-            output = util.classifyImage(self.pictureToClassify, writer.model, writer.modelConfiguration)
-
-            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 20)))
-
-            self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
-            i += 1
+        # for writer in self.writers:
+        #
+        #     output = util.classifyImage(self.pictureToClassify, writer.model, writer.modelConfiguration)
+        #
+        #     self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 20)))
+        #
+        #     self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
+        #     i += 1
 
         # ako se koriste dva modela za klasifikaciju
-        if len(self.writers) > 1:
+        # if len(self.writers) > 1:
 
-            predict_proba1 = self.writers[0].model
+        vc = VotingClassifier.VotingClassifier(models, configurations)
 
-            pipe1 = make_pipeline(ColumnSelector(cols=0), self.writers[0].model)
-            pipe2 = make_pipeline(ColumnSelector(cols=1), self.writers[1].model)
-            # točnosti svakog klasifikatora
-            acc1 = 1 - self.writers[0].modelConfiguration[13]
-            acc2 = 1 - self.writers[1].modelConfiguration[13]
-            # utezi kojima se množe pojedine vjerojatnosti klasifikatora
-            w1 = np.log(acc1 / (1 - acc1))
-            w2 = np.log(acc2 / (1 - acc2))
+        image = cv.imread(self.pictureToClassify)
 
-            w1w2 = w1 + w2
-            w1 /= w1w2
-            w2 /= w1w2
+        labels = vc.clasify(cv.cvtColor(image, cv.COLOR_BGR2GRAY))
+        output = util.showLabeledImage(labels, image)
 
-            eclf = EnsembleVoteClassifier(clfs=[pipe1, pipe2],
-                                          voting='hard',
-                                          weights=[w1, w2],
-                                          refit=False)
+        self.im = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 30)))
 
-            output = util.classifyImage(self.pictureToClassify,
-                                        eclf,
-                                        [self.writers[0].modelConfiguration,
-                                         self.writers[1].modelConfiguration],
-                                        True)
-
-            self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 30)))
-
-            self.gui.frames[clP2.CLP2].resultImage.configure(image=self.im[i])
+        self.gui.frames[clP2.CLP2].resultImage.configure(image=self.im)
 
 
 if __name__ == "__main__":
