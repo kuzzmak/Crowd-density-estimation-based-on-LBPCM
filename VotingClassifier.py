@@ -40,8 +40,10 @@ class VotingClassifier:
         predict_proba = []
         i = 0
         for cl in self.classifiers:
-            predict_proba.append(cl.predict_proba(fv[i]))
+            predict_proba.append(cl.predict_proba([fv[i]])[0])
             i += 1
         predict_proba = np.array(predict_proba)
+
         probs = np.apply_over_axes(np.sum, weights * predict_proba, axes=0)
-        print(np.argmax(probs))
+
+        return np.argmax(probs)
