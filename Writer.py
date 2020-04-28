@@ -1,4 +1,5 @@
 from sklearn.externals import joblib
+import os
 import json
 
 class Writer:
@@ -14,7 +15,7 @@ class Writer:
         Funkcija za spremanje oznacenih slika u datoteku self.pathToLabels
         """
 
-        filename = controller.configuration['modelsDirectory'] + "/" + "labeledData.txt"
+        filename = os.path.join(controller.configuration['modelsDirectory'], "labeledData.txt")
 
         f = open(filename, "w")
 
@@ -50,16 +51,16 @@ class Writer:
         :param controller referenca do glavnog programa
         """
 
-        with open(controller.configuration['modelsDirectory'] + '/models.json') as f:
+        with open(os.path.join(controller.configuration['modelsDirectory'], 'models.json')) as f:
             data = json.load(f)
 
         # sljedeći indeks modela, za jedan više od postojećih modela
         nextIndex = len(data['models']) + 1
 
         if conf[1] == 'gray':
-            saveString = controller.configuration['grayModelsDirectory'] + "/" + str(nextIndex) + ".pkl"
+            saveString = os.path.join(controller.configuration['grayModelsDirectory'], str(nextIndex)) + ".pkl"
         else:
-            saveString = controller.configuration['gradModelsDirectory'] + "/" + str(nextIndex) + ".pkl"
+            saveString = os.path.join(controller.configuration['gradModelsDirectory'], str(nextIndex)) + ".pkl"
 
         # spremanje modela
         joblib.dump(model, saveString, compress=9)
@@ -103,7 +104,7 @@ class Writer:
         sigma,\
         error = conf
 
-        with open(controller.configuration['modelsDirectory'] + '/models.json') as json_file:
+        with open(os.path.join(controller.configuration['modelsDirectory'], 'models.json')) as json_file:
 
             data = json.load(json_file)
 
@@ -129,7 +130,7 @@ class Writer:
 
             temp.append(y)
 
-        with open(controller.configuration['modelsDirectory'] + '/models.json', 'w') as f:
+        with open(os.path.join(controller.configuration['modelsDirectory'], 'models.json'), 'w') as f:
             json.dump(data, f, indent=4)
 
     def loadConfFromJSON(self, id, controller):
@@ -140,7 +141,7 @@ class Writer:
         :param controller referenca do glavnog programa
         """
 
-        with open(controller.app.configuration['modelsDirectory'] + '/models.json') as f:
+        with open(os.path.join(controller.app.configuration['modelsDirectory'], 'models.json')) as f:
 
             data = json.load(f)
 
