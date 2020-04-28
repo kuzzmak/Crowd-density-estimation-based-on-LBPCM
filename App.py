@@ -223,7 +223,7 @@ class App:
             self.writer.saveModel(kneighbors, conf, self)
 
         else:
-            svm = SVC()
+            svm = SVC(probability=True)
             svm.fit(X_train, Y_train)
             error = 1 - svm.score(X_test, Y_test)
             self.gui.consolePrint("\t[INFO] error: " + str(error))
@@ -262,6 +262,8 @@ class App:
 
         # ako se koriste dva modela za klasifikaciju
         if len(self.writers) > 1:
+
+            predict_proba1 = self.writers[0].model
 
             pipe1 = make_pipeline(ColumnSelector(cols=0), self.writers[0].model)
             pipe2 = make_pipeline(ColumnSelector(cols=1), self.writers[1].model)

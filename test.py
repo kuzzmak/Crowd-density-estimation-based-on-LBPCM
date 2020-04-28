@@ -263,117 +263,93 @@
 #
 #     print(fac)
 #     return fac
-#
-# import concurrent.futures
-#
-#
-# numbers = [[10, 1], [20, 1], [30,1], [40,3], [1, 50], [60,3], [70, 1], [80, 4]]
-#
-# with concurrent.futures.ProcessPoolExecutor() as executor:
-#     for _ in zip(numbers, executor.map(fact, numbers)):
-#         pass
-
-# import hf
-import cv2 as cv
-from skimage.feature import local_binary_pattern
-from skimage.feature import greycomatrix
-# import Haralick
-#
-# import LBPCM
-# #
-# lbpcmGRAD = LBPCM.LBPCM('grad',
-#                             1,
-#                             32,
-#                             [64, 64],
-#                             [0],
-#                             [1],
-#                             ['angular second moment'],
-#                             0,
-#                             0)
-#
-# lbpcmGRAY = LBPCM.LBPCM('gray',
-#                             1,
-#                             32,
-#                             [64, 64],
-#                             [0],
-#                             [1],
-#                             ['angular second moment'],
-#                             0,
-#                             0)
-
-# import Haralick
-# import numpy as np
-# imagePath = r'data2/processedData/117.jpg'
-#
-# # image = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
-#
-# image = np.array([[0, 0, 1, 1], [0, 0, 1, 1], [0, 2, 2, 2], [2, 2, 3, 3]])
-#
-# glcm = greycomatrix(image.astype(int), [1, 2], [0], levels=4)
-# print('glcm')
-# print(glcm[:, :, 0, 0])
-#
-# haralick = Haralick.HaralickFeatures(glcm, normalize=False)
-#
-# prop = haralick.greycoprops(prop='sum of squares: variance')
-# print('prop')
-# print(prop)
-
-# picType = 'grad'
-#
-# if picType == 'grad':
-#     image = cv.Sobel(image, cv.CV_8U, 1, 1, ksize=3)
-#
-# # cv.imshow("im", image)
-# # cv.waitKey(0)
-#
-# lbp = local_binary_pattern(image, 8, 1, method='default')
-#
-# print(lbp)
-
-# import old
-#
-# lbpcmold = old.LBPCM(1, 32, [64, 64], [0], [1])
-#
-# fvold = lbpcmold.getFeatureVector(image)
-# fvnew = lbpcm.getFeatureVector(image)
-#
-#
-# print(fvold)
-# print(fvnew)
-
-# from os import listdir
-#
-# pathToProcessedData = r'/home/tonkec/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/data2/processedData'
-#
-# pictures = [f for f in listdir(pathToProcessedData)]
-#
-# pictures = sorted(pictures)
-#
-# print(pictures)
-
-# import numpy as np
-# a = np.array([[[[1, 2, 3], [3, 3, 3], [1, 0, 6]], [[1, 2, 3], [3, 3, 3], [1, 0, 6]]], [[[1, 2, 3], [3, 3, 3], [1, 0, 6]], [[1, 2, 3], [3, 3, 3], [1, 0, 6]]]])
-# mean = np.apply_over_axes(np.mean, a, axes=(2, 3))
-# # print(mean)
-#
-# I, J = np.ogrid[0:4, 0:4]
-#
-# print(np.power(I - mean, 2))
 
 import cv2 as cv
+import joblib
+import Writer
+import App
+import util
+import numpy as np
 
-import imageio
+app = App.App()
 
+writer = Writer.Writer()
 
-imagePath = r'data2/processedData/2982.jpg'
-img = cv.imread(imagePath, cv.IMREAD_GRAYSCALE)
+image = cv.imread('data/processedData/292.jpg', cv.IMREAD_GRAYSCALE)
 
-sobelx = cv.Sobel(img, -1, 1, 0, ksize=3)
-sobely = cv.Sobel(img, -1, 0, 1, ksize=3)
+knn_gray_conf = writer.loadConfFromJSON(30, app.gui)
+svm_grad_conf = writer.loadConfFromJSON(29, app.gui)
+svm_gray_conf = writer.loadConfFromJSON(28, app.gui)
+knn_grad_conf = writer.loadConfFromJSON(27, app.gui)
 
-sobel = cv.Sobel(img, cv.CV_8U, 1, 1, ksize=3)
+lbpcm_knn_gray = util.getLBPCM(knn_gray_conf)
+lbpcm_svm_grad = util.getLBPCM(svm_grad_conf)
+lbpcm_svm_gray = util.getLBPCM(svm_gray_conf)
+lbpcm_knn_grad = util.getLBPCM(knn_grad_conf)
 
-cv.imwrite("sobelx.jpg", sobelx)
-cv.imwrite("sobely.jpg", sobely)
-cv.imwrite("sobel.jpg", sobel)
+fv_knn_gray = lbpcm_knn_gray.getFeatureVector(image, 'gray')
+mean = np.array(knn_gray_conf[11])
+sigma = np.array(knn_gray_conf[12])
+fv_knn_gray -= mean
+fv_knn_gray /= sigma
+
+fv_svm_grad = lbpcm_svm_grad.getFeatureVector(image, 'grad')
+mean = np.array(svm_grad_conf[11])
+sigma = np.array(svm_grad_conf[12])
+fv_svm_grad -= mean
+fv_svm_grad /= sigma
+
+fv_svm_gray = lbpcm_svm_gray.getFeatureVector(image, 'gray')
+mean = np.array(svm_gray_conf[11])
+sigma = np.array(svm_gray_conf[12])
+fv_svm_gray -= mean
+fv_svm_gray /= sigma
+
+fv_knn_grad = lbpcm_knn_grad.getFeatureVector(image, 'grad')
+mean = np.array(knn_grad_conf[11])
+sigma = np.array(knn_grad_conf[12])
+fv_knn_grad -= mean
+fv_knn_grad /= sigma
+
+model_knn_gray = joblib.load('data/models/grayModels/30.pkl')
+model_svm_grad = joblib.load('data/models/gradModels/29.pkl')
+model_svm_gray = joblib.load('data/models/grayModels/28.pkl')
+model_knn_grad = joblib.load('data/models/gradModels/27.pkl')
+
+predict_proba_knn_gray = model_knn_gray.predict_proba([fv_knn_gray])[0]
+predict_proba_svm_grad = model_svm_grad.predict_proba([fv_svm_grad])[0]
+predict_proba_svm_gray = model_svm_gray.predict_proba([fv_svm_gray])[0]
+predict_proba_knn_grad = model_knn_grad.predict_proba([fv_knn_grad])[0]
+
+knn_gray_acc = 1 - knn_gray_conf[13]
+svm_grad_acc = 1 - svm_grad_conf[13]
+svm_gray_acc = 1 - svm_gray_conf[13]
+knn_grad_acc = 1 - knn_grad_conf[13]
+
+w_knn_gray = np.log(knn_gray_acc / (1 - knn_gray_acc))
+w_svm_grad = np.log(svm_grad_acc / (1 - svm_grad_acc))
+w_svm_gray = np.log(svm_gray_acc / (1 - svm_gray_acc))
+w_knn_grad = np.log(knn_grad_acc / (1 - knn_grad_acc))
+
+w1w1 = w_knn_gray + w_svm_grad
+
+w_knn_gray /= w1w1
+w_svm_grad /= w1w1
+
+w = np.array([[w_knn_gray], [w_svm_grad]])
+
+probabilities = np.array([predict_proba_knn_gray, predict_proba_svm_grad])
+
+print('w_k')
+print(w_knn_gray)
+print('w_s')
+print(w_svm_grad)
+print()
+print(predict_proba_knn_gray)
+print(predict_proba_svm_grad)
+print('Final probabilities')
+probs = np.apply_over_axes(np.sum, w * probabilities, axes=0)
+print(probs)
+print(np.sum(probs))
+print(np.argmax(probs))
+
