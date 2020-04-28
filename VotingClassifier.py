@@ -1,49 +1,107 @@
 import numpy as np
 import util
-
+import concurrent.futures
 
 class VotingClassifier:
+    """
+    Razred koji spaja više klasifikatora u jedan te
+    donosi odluku na temelju kombinacije svih klasifikatora
+    gdje je utjecaj svakog određen težinom koja ovisi o
+    točnosti klasifikatora.
+    """
 
     def __init__(self, classifiers, configurations):
         self.classifiers = classifiers
         self.configurations = configurations
 
-    def predictSubImage(self, subImage):
+    def getProbAndAccuracy(self, subImage, model, configuration):
+        """
+        Metoda za dobivanje vjerojatnosti klasifikacije pojedinih razreda
+        svakog klasifikatora i težina kojima se pojedine vjerojatnosti
+        množe
 
-        fv = []
-        mean = []
-        sigma = []
-        classifier_acc = []
+        :param subImage: podslika za koju se stvaraju vjerojatnosti
+        :param model: klasifikator koji se koristi za klasifikaciju
+        :param configuration: konfiguracija pojedinog klasifikatora
+        :return: polje vjerojatnosti i težina
+        """
 
-        for c in self.configurations:
+        lbpcm = util.getLBPCM(configuration)
 
-            lbpcm = util.getLBPCM(c)
-            fv.append(lbpcm.getFeatureVector(subImage, c[1]))
-            mean.append(c[11])
-            sigma.append(c[12])
-            classifier_acc.append(1 - c[13])
-
-        fv = np.array(fv)
-        mean = np.array(mean)
-        sigma = np.array(sigma)
-
+        # normalizacija
+        fv = lbpcm.getFeatureVector(subImage, configuration[1])
+        mean = np.array(configuration[11])
+        sigma = np.array(configuration[12])
         fv -= mean
         fv /= sigma
 
-        weights = []
-        for acc in classifier_acc:
-            weights.append(np.log(acc / (1 - acc)))
+        # vjerojatnosti klasifikacije po razredima
+        predict_proba = model.predict_proba([fv])[0]
+        # točnost klasifikacije
+        acc = 1 - configuration[13]
+        # težina za svaki klasifikator
+        weight = np.log(acc / (1 - acc))
 
+        return [predict_proba, weight]
+
+    def clasify(self, image):
+        """
+        Metoda za klasifikaciju pojedine slike
+
+        :param image: slika koja se klasificira
+        :return: lista labela razreda pojedine podslike
+        """
+
+        dim = (192, 144)
+        # zeljena sirina slikovnog elementa
+        x_size = dim[0]
+        # zeljena visina slikovnog elementa
+        y_size = dim[1]
+        # sirina slike
+        imageX = image.shape[1]
+        # visina slike
+        imageY = image.shape[0]
+        # cjelobrojni broj koraka u x smjeru(koliko je moguce napraviti slikovnih elemenata sa sirinom x_size)
+        stepX = imageX // x_size
+        # koraci u y smjeru
+        stepY = imageY // y_size
+
+        labels = []
+
+        subImages = []
+        for y in range(stepY):
+            for x in range(stepX):
+                subImages.append(image[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size])
+
+        with concurrent.futures.ProcessPoolExecutor() as executor:
+            for subImage, label in zip(subImages, executor.map(self.classifySubImage, subImages)):
+                labels.append(label)
+
+        return labels
+
+    def classifySubImage(self, subImage):
+        """
+        Metoda za klasifikaciju pojedine podslike
+
+        :param subImage: podslika koja se klasificira
+        :return: labela podslike
+        """
+        predictions_weights = []
+
+        for i in range(len(self.configurations)):
+            predictions_weights.append(
+                self.getProbAndAccuracy(
+                    subImage,
+                    self.classifiers[i],
+                    self.configurations[i]))
+
+        predictions_weights = np.array(predictions_weights)
+
+        weights = predictions_weights[:, 1]
         weights /= np.sum(weights)
-        weights = np.reshape(weights, (len(weights), -1))
 
-        predict_proba = []
-        i = 0
-        for cl in self.classifiers:
-            predict_proba.append(cl.predict_proba([fv[i]])[0])
-            i += 1
-        predict_proba = np.array(predict_proba)
+        predictions = predictions_weights[:, 0]
 
-        probs = np.apply_over_axes(np.sum, weights * predict_proba, axes=0)
+        probs = np.apply_over_axes(np.sum, weights * predictions, axes=0)
 
         return np.argmax(probs)
