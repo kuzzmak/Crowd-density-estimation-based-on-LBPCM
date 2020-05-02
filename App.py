@@ -56,10 +56,11 @@ class App:
         Funkcija za učitavanje oznaka slika koje su već procesirane
         """
 
-        self.writer.loadAnnotedDataFromFile(self.configuration['modelsDirectory'] + '/' + 'labeledData.txt')
+        self.writer.loadAnnotedDataFromFile(self.configuration['labeledData'])
         self.labelDictionary = self.writer.labelDictionary
         self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
         self.gui.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
+        self.gui.frames[fvcP.FeatureVectorCreationPage].labelLabelsLoadedColor.configure(text="LOADED", fg="green")
 
     def addConf(self):
         """
@@ -87,7 +88,6 @@ class App:
             glcmDistance = [int(x) for x in self.gui.frames[coP.ConfigurationsPage].entryGLCMDistance.get().split(",")]
             for d in glcmDistance:
                 if d < 1:
-
                     raise ValueError
         except ValueError:
             parametersOK = False
@@ -153,10 +153,6 @@ class App:
                     functions]
 
             self.configurations.append(conf)
-
-            # ažuriranje labele broja konfiguracija
-            self.gui.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(
-                text="0/" + str(len(self.configurations)) + "   Configurations completed.")
 
             self.gui.console.insert(tk.END, "new configuration added\n")
             self.gui.console.insert(tk.END, str(conf) + "\n")
@@ -275,5 +271,6 @@ class App:
 if __name__ == "__main__":
 
     app = App()
+    app.gui.title("Crowd density estimation based on LBPCM")
     app.gui.mainloop()
 
