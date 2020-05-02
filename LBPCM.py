@@ -84,26 +84,26 @@ class LBPCM:
         """
         return greycomatrix(image.astype(int), self.glcmDistance, self.angles, levels=256)
 
-    def calculateFeatureVectors(self, app, verbose=True):
+    def calculateFeatureVectors(self, app, verbose=True, progressBar=None, progressLabel=None):
         """
         Funkcija za izračunavanje vektora značajki slika koje su već procesirane
 
         :param app: referenca do glavne aplikacije
         :param verbose: ispis koraka ili ne
+        :param progressBar progrss bar pojedine konfiguracije
+        :param progressLabel labela za broj odrađenih vektora značajki
         """
 
         # staza do foldera s već izrezanim slikama
         pathToProcessedData = app.configuration['processedDataDirectory']
-
-        progressBar = app.gui.frames[fvcP.FeatureVectorCreationPage].progressbarVector
-        labelProgress = app.gui.frames[fvcP.FeatureVectorCreationPage].labelProgress
 
         # list svih slika u folderu
         pictures = [f for f in listdir(pathToProcessedData)]
         # labele su dodijeljene slikama po abecednom poretku
         pictures = sorted(pictures)
         # postavljanje maximalne vrijednosti progerssbara
-        progressBar.configure(maximum=len(pictures))
+        if not(progressBar is None):
+            progressBar.configure(maximum=len(pictures))
 
         self.featureVectors = []
         i = 0
@@ -120,11 +120,13 @@ class LBPCM:
             self.featureVectors.append(self.getFeatureVector(image, self.picType))
             i += 1
 
-            progressBar.step()
-            labelProgress.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
+            if not(progressBar is None):
+                progressBar.step()
+            if not(progressLabel is None):
+                progressLabel.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
 
-            if verbose:
-                app.gui.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()), dots=False)
+            # if verbose:
+            #     app.gui.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()), dots=False)
 
         if verbose:
             app.gui.consolePrint("[INFO] vector creation finished")
