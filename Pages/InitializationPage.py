@@ -41,9 +41,9 @@ class InitializationPage(tk.Frame):
 
         buttonPreprocess.pack(padx=5, pady=10, fill="x")
 
-        self.buttonDataAnnotation = tk.Button(preprocessingFrame, text="Data Annotation", state="disabled",
+        self.buttonDataAnnotation = tk.Button(preprocessingFrame, text="Data Annotation",
                                               command=lambda: [controller.show_frame(daP.DataAnnotationPage),
-                                                               controller.updateDataAnnotationFrame()])
+                                                               controller.frames[daP.DataAnnotationPage].updateDataAnnotationFrame(controller)])
 
         self.buttonDataAnnotation.pack(padx=10, pady=10, fill="x")
 
