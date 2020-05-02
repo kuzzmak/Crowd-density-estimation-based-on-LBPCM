@@ -3,6 +3,7 @@ import json
 from math import radians
 
 import tkinter as tk
+from tkinter.ttk import Progressbar
 from PIL import ImageTk, Image
 import cv2 as cv
 
@@ -38,6 +39,8 @@ class App:
 
         self.pictureToClassify = ""
         self.writers = []
+
+        self.confNumber = 0
 
         if os.path.isfile("configuration.json"):
             with open("configuration.json") as json_file:
@@ -158,6 +161,23 @@ class App:
             self.gui.console.insert(tk.END, str(conf) + "\n")
             self.gui.console.see(tk.END)
 
+        frame = tk.Frame(self.gui.frames[fvcP.FeatureVectorCreationPage].middleFrame)
+        frame.pack(pady=10)
+
+        progressBar = Progressbar(frame, orient=tk.HORIZONTAL, length=400, mode='determinate')
+        progressBar.pack(side="left", padx=10)
+
+        numOfPictures = len(os.listdir(self.configuration['processedDataDirectory']))
+
+        progressLabel = tk.Label(frame, text="0/" + str(numOfPictures) + "   Feature vectors completed.")
+        progressLabel.pack(side="left")
+
+        self.gui.frames[fvcP.FeatureVectorCreationPage].progressBars.append(progressBar)
+        self.gui.frames[fvcP.FeatureVectorCreationPage].progressLabels.append(progressLabel)
+
+        conf.append(self.confNumber)
+        self.confNumber += 1
+
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
         """
@@ -172,7 +192,8 @@ class App:
         numOfNeighbors, \
         combineDistances, \
         combineAngles, \
-        functions = conf
+        functions, \
+        confNumber = conf
 
         lbpcm = LBPCM.LBPCM(picType,
                             radius,
@@ -184,10 +205,14 @@ class App:
                             combineDistances,
                             combineAngles)
 
-        lbpcm.calculateFeatureVectors(self)
+        lbpcm.calculateFeatureVectors(self,
+                                      verbose=True,
+                                      progressBar=self.gui.frames[fvcP.FeatureVectorCreationPage].progressBars[confNumber],
+                                      progressLabel=self.gui.frames[fvcP.FeatureVectorCreationPage].progressLabels[confNumber])
 
         fv = lbpcm.getFeatureVectors()
 
+        conf = conf[:len(conf) - 1]
         # normalizacija vektora
         fv, mean, sigma = util.normalize(fv)
         conf.extend(mean.tolist())
