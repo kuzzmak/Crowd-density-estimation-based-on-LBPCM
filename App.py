@@ -161,22 +161,22 @@ class App:
             self.gui.console.insert(tk.END, str(conf) + "\n")
             self.gui.console.see(tk.END)
 
-        frame = tk.Frame(self.gui.frames[fvcP.FeatureVectorCreationPage].middleFrame)
-        frame.pack(pady=10)
+            frame = tk.Frame(self.gui.frames[fvcP.FeatureVectorCreationPage].middleFrame)
+            frame.pack(pady=10)
 
-        progressBar = Progressbar(frame, orient=tk.HORIZONTAL, length=400, mode='determinate')
-        progressBar.pack(side="left", padx=10)
+            progressBar = Progressbar(frame, orient=tk.HORIZONTAL, length=400, mode='determinate')
+            progressBar.pack(side="left", padx=10)
 
-        numOfPictures = len(os.listdir(self.configuration['processedDataDirectory']))
+            numOfPictures = len(os.listdir(self.configuration['processedDataDirectory']))
 
-        progressLabel = tk.Label(frame, text="0/" + str(numOfPictures) + "   Feature vectors completed.")
-        progressLabel.pack(side="left")
+            progressLabel = tk.Label(frame, text="0/" + str(numOfPictures) + "   Feature vectors completed.")
+            progressLabel.pack(side="left")
 
-        self.gui.frames[fvcP.FeatureVectorCreationPage].progressBars.append(progressBar)
-        self.gui.frames[fvcP.FeatureVectorCreationPage].progressLabels.append(progressLabel)
+            self.gui.frames[fvcP.FeatureVectorCreationPage].progressBars.append(progressBar)
+            self.gui.frames[fvcP.FeatureVectorCreationPage].progressLabels.append(progressLabel)
 
-        conf.append(self.confNumber)
-        self.confNumber += 1
+            conf.append(self.confNumber)
+            self.confNumber += 1
 
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
