@@ -61,8 +61,11 @@ class CLP2(tk.Frame):
         c4cLabel = tk.Label(colorFrame, text="Jammed flow")
         c4cLabel.pack(side="left", padx=5)
 
-        resultFrame = tk.Frame(self)
-        resultFrame.pack(side='top', padx=10, pady=10)
+        self.middleFrame = tk.Frame(self)
+        self.middleFrame.pack(padx=10, pady=10)
+
+        resultFrame = tk.Frame(self.middleFrame)
+        resultFrame.pack(side="left", padx=30, pady=10)
 
         labelResultDescription = tk.Label(resultFrame, text="Result of classification")
         labelResultDescription.pack(pady=5)
@@ -72,19 +75,26 @@ class CLP2(tk.Frame):
                                                 cv.imread(
                                                     os.path.join(
                                                         controller.app.configuration['iconsDirectory'], 'blankImage.jpg')),
-                                                30)))
+                                                50)))
 
         # slika rezultata kombinacije dvaju klasifikatora
         self.resultImage = tk.Label(resultFrame, image=self.blank)
-        self.resultImage.pack()
+        self.resultImage.pack(pady=20)
+
+        self.labelPeopleCount = tk.Label(resultFrame, text="Estimated people count = [0, 0]")
+        self.labelPeopleCount.pack(pady=5)
 
         # frame s panelima koji sadrže slike za klasifikaciju
-        self.middleFrame = tk.Frame(self)
-        self.middleFrame.pack(padx=10, pady=10)
+        self.twoFrame = tk.Frame(self.middleFrame)
+        self.twoFrame.pack(side="left", padx=10, pady=10)
 
-        _pcp = pcp.PictureClassificationPanel(self.middleFrame, controller)
-        _pcp.pack(side="left", padx=10, pady=10)
+        _pcp = pcp.PictureClassificationPanel(self.twoFrame, controller)
+        _pcp.pack(padx=10)
         self.pcpFrames.append(_pcp)
+
+        classifyAll = tk.Checkbutton(self.twoFrame, text="Only voting classifier",
+                                     variable=controller.onlyVotingClassifier)
+        classifyAll.pack(side="bottom", pady=10)
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(fvcP2.FVC2Page))
         buttonBack.pack(side="bottom", padx=5, pady=5)
@@ -104,17 +114,21 @@ class CLP2(tk.Frame):
 
         self.pcpFrames = []
 
-        self.middleFrame.destroy()
-        self.middleFrame = tk.Frame(self)
-        self.middleFrame.pack(padx=10, pady=10)
+        self.twoFrame.destroy()
+        self.twoFrame = tk.Frame(self.middleFrame)
+        self.twoFrame.pack(padx=10, pady=10)
 
-        _pcp1 = pcp.PictureClassificationPanel(self.middleFrame, controller)
-        _pcp1.pack(side="left", padx=10, pady=10)
+        _pcp1 = pcp.PictureClassificationPanel(self.twoFrame, controller)
+        _pcp1.pack(padx=10)
+
+        classifyAll = tk.Checkbutton(self.twoFrame, text="Only voting classifier",
+                                     variable=controller.onlyVotingClassifier)
+        classifyAll.pack(side="bottom", pady=10)
 
         if controller.frames[fvcP2.FVC2Page].numberOfModels.get() == 2:
 
-            _pcp2 = pcp.PictureClassificationPanel(self.middleFrame, controller)
-            _pcp2.pack(side="left", padx=10, pady=10)
+            _pcp2 = pcp.PictureClassificationPanel(self.twoFrame, controller)
+            _pcp2.pack(padx=10)
 
             self.pcpFrames.append(_pcp2)
 
@@ -125,7 +139,7 @@ class CLP2(tk.Frame):
 
         self.im = [ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(image, 20))),
                    ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(image, 20))),
-                   ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(image, 30)))]
+                   ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(image, 50)))]
 
         # prikaz vrste modela, vrste slike i greške svakog modela na stranici s klasifikacijom
         i = 0

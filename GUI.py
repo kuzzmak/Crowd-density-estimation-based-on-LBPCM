@@ -58,6 +58,9 @@ class App(tk.Tk):
         # lista imena procesiranih slika
         self.processedDataPictures = []
 
+        self.onlyVotingClassifier = tk.IntVar()
+        self.onlyVotingClassifier.set(1)
+
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
         # stvaranje gumba za svaku od 14 funkcija
