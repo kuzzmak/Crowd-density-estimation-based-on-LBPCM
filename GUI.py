@@ -58,6 +58,9 @@ class App(tk.Tk):
         # lista imena procesiranih slika
         self.processedDataPictures = []
 
+        self.onlyVotingClassifier = tk.IntVar()
+        self.onlyVotingClassifier.set(1)
+
         # check gumbi za funkcije koje sačinjavaju vektore značajki
         self.functionButtons = []
         # stvaranje gumba za svaku od 14 funkcija
@@ -98,7 +101,7 @@ class App(tk.Tk):
 
             frame.grid(row=0, sticky="nsew")
 
-        self.show_frame(iP.InitializationPage)
+        self.show_frame(sP.StartPage)
 
     def show_frame(self, cont):
         """
@@ -107,73 +110,6 @@ class App(tk.Tk):
 
         frame = self.frames[cont]
         frame.tkraise()
-
-    def updateDataAnnotationFrame(self):
-        pass
-    #     """ funkcija za azuriranje stranice za oznacavanje slika
-    #     """
-    #
-    #     # staza do trenutne slike
-    #     imagePath = self.app.configuration['processedImagesPath'] + "/" + self.processedDataPictures[self.dataAnnotationCounter]
-    #     image = cv.imread(imagePath)
-    #     self.im = ImageTk.PhotoImage(image=Image.fromarray(image))
-    #     # postavljanje slike u labelu
-    #     self.frames[daP.DataAnnotationPage].labelPic.configure(image=self.im)
-    #     # postavljanje imena slike u labelu
-    #     self.frames[daP.DataAnnotationPage].labelImageName.configure(
-    #         text=self.processedDataPictures[self.dataAnnotationCounter])
-    #
-    #     self.frames[daP.DataAnnotationPage].labelAnnotedDataCounter.configure(
-    #         text=str(self.dataAnnotationCounter) + "/" + str(self.processedDataPictures.__len__()))
-
-    def prevPicAnnotation(self):
-        pass
-    #     """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
-    #     """
-    #
-    #     if self.dataAnnotationCounter >= 1:
-    #         self.dataAnnotationCounter -= 1
-    #         self.updateDataAnnotationFrame()
-    #     else:
-    #         self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
-    #         self.console.insert(tk.END, "----------------------------------------\n")
-    #         self.console.see(tk.END)
-
-    def annotate(self, label):
-        pass
-    #     """ funkcija za stvaranje oznake pojedine slke i spremanje u rjecnik i datoteku
-    #     """
-    #
-    #     # ime slike
-    #     picName = self.processedDataPictures[self.dataAnnotationCounter]
-    #     # dodijeljena labela
-    #     saveString = picName + ":" + label
-    #     self.labelDictionary[picName] = label
-    #
-    #     # ako smo dosli do zadnje onda se staje
-    #     if self.dataAnnotationCounter < self.processedDataPictures.__len__():
-    #         self.dataAnnotationCounter += 1
-    #         self.updateDataAnnotationFrame()
-    #         self.console.insert(tk.END, saveString + "\n")
-    #         self.console.see(tk.END)
-    #     else:
-    #         self.console.insert(tk.END, "[INFO] all pictures labeled\n")
-    #         self.console.insert(tk.END, "----------------------------------------\n")
-    #         self.console.see(tk.END)
-
-    def saveAnnotedData(self):
-        pass
-    #     """ funkcija za spremanje rjecnika slika i oznaka
-    #     """
-    #
-    #     self.writer.saveDirectory = r"data2/normalData"
-    #     self.writer.labelDictionary = self.labelDictionary
-    #     self.writer.writeAnnotedDataToFile()
-    #
-    #     self.console.insert(tk.END, "[INFO] labels and images saved to: " + self.writer.saveDirectory + "\n")
-    #     self.console.insert(tk.END, "[INFO] saved " + str(self.labelDictionary.__len__()) + " labeled images\n")
-    #     self.console.insert(tk.END, "----------------------------------------\n")
-    #     self.console.see(tk.END)
 
     def consolePrint(self, message, dots=True):
         """

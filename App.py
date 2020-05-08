@@ -3,6 +3,7 @@ import json
 from math import radians
 
 import tkinter as tk
+from tkinter.ttk import Progressbar
 from PIL import ImageTk, Image
 import cv2 as cv
 
@@ -39,6 +40,10 @@ class App:
         self.pictureToClassify = ""
         self.writers = []
 
+        self.confNumber = 0
+
+
+
         if os.path.isfile("configuration.json"):
             with open("configuration.json") as json_file:
                 self.configuration = json.load(json_file)
@@ -56,10 +61,11 @@ class App:
         Funkcija za učitavanje oznaka slika koje su već procesirane
         """
 
-        self.writer.loadAnnotedDataFromFile(self.configuration['modelsDirectory'] + '/' + 'labeledData.txt')
+        self.writer.loadAnnotedDataFromFile(self.configuration['labeledData'])
         self.labelDictionary = self.writer.labelDictionary
         self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
         self.gui.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
+        self.gui.frames[fvcP.FeatureVectorCreationPage].labelLabelsLoadedColor.configure(text="LOADED", fg="green")
 
     def addConf(self):
         """
@@ -87,7 +93,6 @@ class App:
             glcmDistance = [int(x) for x in self.gui.frames[coP.ConfigurationsPage].entryGLCMDistance.get().split(",")]
             for d in glcmDistance:
                 if d < 1:
-
                     raise ValueError
         except ValueError:
             parametersOK = False
@@ -154,13 +159,26 @@ class App:
 
             self.configurations.append(conf)
 
-            # ažuriranje labele broja konfiguracija
-            self.gui.frames[fvcP.FeatureVectorCreationPage].labelProgressConf.configure(
-                text="0/" + str(len(self.configurations)) + "   Configurations completed.")
-
             self.gui.console.insert(tk.END, "new configuration added\n")
             self.gui.console.insert(tk.END, str(conf) + "\n")
             self.gui.console.see(tk.END)
+
+            frame = tk.Frame(self.gui.frames[fvcP.FeatureVectorCreationPage].twoFrame)
+            frame.pack(pady=10)
+
+            progressBar = Progressbar(frame, orient=tk.HORIZONTAL, length=400, mode='determinate')
+            progressBar.pack(side="left", padx=10)
+
+            numOfPictures = len(os.listdir(self.configuration['processedDataDirectory']))
+
+            progressLabel = tk.Label(frame, text="0/" + str(numOfPictures) + "   Feature vectors completed.")
+            progressLabel.pack(side="left")
+
+            self.gui.frames[fvcP.FeatureVectorCreationPage].progressBars.append(progressBar)
+            self.gui.frames[fvcP.FeatureVectorCreationPage].progressLabels.append(progressLabel)
+
+            conf.append(self.confNumber)
+            self.confNumber += 1
 
     def runConf(self, conf):
         """ Funkcija koja napravi vektore znacajki i klasifikator za pojedinu konfuguraciju parametara
@@ -176,7 +194,8 @@ class App:
         numOfNeighbors, \
         combineDistances, \
         combineAngles, \
-        functions = conf
+        functions, \
+        confNumber = conf
 
         lbpcm = LBPCM.LBPCM(picType,
                             radius,
@@ -188,10 +207,14 @@ class App:
                             combineDistances,
                             combineAngles)
 
-        lbpcm.calculateFeatureVectors(self)
+        lbpcm.calculateFeatureVectors(self,
+                                      verbose=True,
+                                      progressBar=self.gui.frames[fvcP.FeatureVectorCreationPage].progressBars[confNumber],
+                                      progressLabel=self.gui.frames[fvcP.FeatureVectorCreationPage].progressLabels[confNumber])
 
         fv = lbpcm.getFeatureVectors()
 
+        conf = conf[:len(conf) - 1]
         # normalizacija vektora
         fv, mean, sigma = util.normalize(fv)
         conf.extend(mean.tolist())
@@ -248,17 +271,18 @@ class App:
         models = [x.model for x in self.writers]
         configurations = [x.modelConfiguration for x in self.writers]
 
-        # for writer in self.writers:
-        #
-        #     output = util.classifyImage(self.pictureToClassify, writer.model, writer.modelConfiguration)
-        #
-        #     self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 20)))
-        #
-        #     self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
-        #     i += 1
+        if self.gui.onlyVotingClassifier.get() == 0:
+            i = 0
+            self.im = [0, 0]
 
-        # ako se koriste dva modela za klasifikaciju
-        # if len(self.writers) > 1:
+            for model in models:
+
+                output = util.classifyImage(self.pictureToClassify, model, configurations[i])
+
+                self.im[i] = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 20)))
+
+                self.gui.frames[clP2.CLP2].pcpFrames[i].labelImage.configure(image=self.im[i])
+                i += 1
 
         vc = VotingClassifier.VotingClassifier(models, configurations)
 
@@ -267,13 +291,16 @@ class App:
         labels = vc.clasify(cv.cvtColor(image, cv.COLOR_BGR2GRAY))
         output = util.showLabeledImage(labels, image)
 
-        self.im = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 30)))
+        self.img = ImageTk.PhotoImage(image=Image.fromarray(util.resizePercent(output, 50)))
 
-        self.gui.frames[clP2.CLP2].resultImage.configure(image=self.im)
+        self.gui.frames[clP2.CLP2].resultImage.configure(image=self.img)
+        self.gui.frames[clP2.CLP2].labelPeopleCount.configure(text="Estimated people count = " +
+                                                                   str(util.getPeopleCount(labels)))
 
 
 if __name__ == "__main__":
 
     app = App()
+    app.gui.title("Crowd density estimation based on LBPCM")
     app.gui.mainloop()
 

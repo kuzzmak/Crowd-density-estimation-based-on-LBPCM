@@ -180,8 +180,8 @@ class ConfigurationsPage(tk.Frame):
         buttonBack.pack(side="left", padx=10, pady=10)
 
         self.entryLBPRadius.insert(tk.END, "1")
-        self.entryGLCMDistance.insert(tk.END, "1,2")
+        self.entryGLCMDistance.insert(tk.END, "1")
         self.entryStepSize.insert(tk.END, "32")
         self.entryCellSize.insert(tk.END, "64,64")
-        self.entryAngles.insert(tk.END, "0,45,90")
+        self.entryAngles.insert(tk.END, "0")
         self.entryNumOfNeighbors.insert(tk.END, "1")
