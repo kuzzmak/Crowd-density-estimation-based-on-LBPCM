@@ -279,13 +279,13 @@ image = cv.imread('data/processedData/292.jpg', cv.IMREAD_GRAYSCALE)
 
 knn_gray_conf = writer.loadConfFromJSON(30, app.gui)
 svm_grad_conf = writer.loadConfFromJSON(29, app.gui)
-svm_gray_conf = writer.loadConfFromJSON(28, app.gui)
-knn_grad_conf = writer.loadConfFromJSON(27, app.gui)
+# svm_gray_conf = writer.loadConfFromJSON(28, app.gui)
+# knn_grad_conf = writer.loadConfFromJSON(27, app.gui)
 
 lbpcm_knn_gray = util.getLBPCM(knn_gray_conf)
 lbpcm_svm_grad = util.getLBPCM(svm_grad_conf)
-lbpcm_svm_gray = util.getLBPCM(svm_gray_conf)
-lbpcm_knn_grad = util.getLBPCM(knn_grad_conf)
+# lbpcm_svm_gray = util.getLBPCM(svm_gray_conf)
+# lbpcm_knn_grad = util.getLBPCM(knn_grad_conf)
 
 fv_knn_gray = lbpcm_knn_gray.getFeatureVector(image, 'gray')
 mean = np.array(knn_gray_conf[11])
@@ -299,57 +299,60 @@ sigma = np.array(svm_grad_conf[12])
 fv_svm_grad -= mean
 fv_svm_grad /= sigma
 
-fv_svm_gray = lbpcm_svm_gray.getFeatureVector(image, 'gray')
-mean = np.array(svm_gray_conf[11])
-sigma = np.array(svm_gray_conf[12])
-fv_svm_gray -= mean
-fv_svm_gray /= sigma
+# fv_svm_gray = lbpcm_svm_gray.getFeatureVector(image, 'gray')
+# mean = np.array(svm_gray_conf[11])
+# sigma = np.array(svm_gray_conf[12])
+# fv_svm_gray -= mean
+# fv_svm_gray /= sigma
 
-fv_knn_grad = lbpcm_knn_grad.getFeatureVector(image, 'grad')
-mean = np.array(knn_grad_conf[11])
-sigma = np.array(knn_grad_conf[12])
-fv_knn_grad -= mean
-fv_knn_grad /= sigma
+# fv_knn_grad = lbpcm_knn_grad.getFeatureVector(image, 'grad')
+# mean = np.array(knn_grad_conf[11])
+# sigma = np.array(knn_grad_conf[12])
+# fv_knn_grad -= mean
+# fv_knn_grad /= sigma
 
 model_knn_gray = joblib.load('data/models/grayModels/30.pkl')
 model_svm_grad = joblib.load('data/models/gradModels/29.pkl')
-model_svm_gray = joblib.load('data/models/grayModels/28.pkl')
-model_knn_grad = joblib.load('data/models/gradModels/27.pkl')
+# model_svm_gray = joblib.load('data/models/grayModels/28.pkl')
+# model_knn_grad = joblib.load('data/models/gradModels/27.pkl')
 
-predict_proba_knn_gray = model_knn_gray.predict_proba([fv_knn_gray])[0]
-predict_proba_svm_grad = model_svm_grad.predict_proba([fv_svm_grad])[0]
-predict_proba_svm_gray = model_svm_gray.predict_proba([fv_svm_gray])[0]
-predict_proba_knn_grad = model_knn_grad.predict_proba([fv_knn_grad])[0]
+# predict_proba_knn_gray = model_knn_gray.predict_proba([fv_knn_gray])[0]
+# predict_proba_svm_grad = model_svm_grad.predict_proba([fv_svm_grad])[0]
+# predict_proba_svm_gray = model_svm_gray.predict_proba([fv_svm_gray])[0]
+# predict_proba_knn_grad = model_knn_grad.predict_proba([fv_knn_grad])[0]
+#
+# knn_gray_acc = 1 - knn_gray_conf[13]
+# svm_grad_acc = 1 - svm_grad_conf[13]
+# svm_gray_acc = 1 - svm_gray_conf[13]
+# knn_grad_acc = 1 - knn_grad_conf[13]
+#
+# w_knn_gray = np.log(knn_gray_acc / (1 - knn_gray_acc))
+# w_svm_grad = np.log(svm_grad_acc / (1 - svm_grad_acc))
+# w_svm_gray = np.log(svm_gray_acc / (1 - svm_gray_acc))
+# w_knn_grad = np.log(knn_grad_acc / (1 - knn_grad_acc))
+#
+# w1w1 = w_knn_gray + w_svm_grad
+#
+# w_knn_gray /= w1w1
+# w_svm_grad /= w1w1
+#
+# w = np.array([[w_knn_gray], [w_svm_grad]])
+#
+# probabilities = np.array([predict_proba_knn_gray, predict_proba_svm_grad])
+#
+# print('w_k')
+# print(w_knn_gray)
+# print('w_s')
+# print(w_svm_grad)
+# print()
+# print(predict_proba_knn_gray)
+# print(predict_proba_svm_grad)
+# print('Final probabilities')
+# probs = np.apply_over_axes(np.sum, w * probabilities, axes=0)
+# print(probs)
+# print(np.sum(probs))
+# print(np.argmax(probs))
 
-knn_gray_acc = 1 - knn_gray_conf[13]
-svm_grad_acc = 1 - svm_grad_conf[13]
-svm_gray_acc = 1 - svm_gray_conf[13]
-knn_grad_acc = 1 - knn_grad_conf[13]
-
-w_knn_gray = np.log(knn_gray_acc / (1 - knn_gray_acc))
-w_svm_grad = np.log(svm_grad_acc / (1 - svm_grad_acc))
-w_svm_gray = np.log(svm_gray_acc / (1 - svm_gray_acc))
-w_knn_grad = np.log(knn_grad_acc / (1 - knn_grad_acc))
-
-w1w1 = w_knn_gray + w_svm_grad
-
-w_knn_gray /= w1w1
-w_svm_grad /= w1w1
-
-w = np.array([[w_knn_gray], [w_svm_grad]])
-
-probabilities = np.array([predict_proba_knn_gray, predict_proba_svm_grad])
-
-print('w_k')
-print(w_knn_gray)
-print('w_s')
-print(w_svm_grad)
-print()
-print(predict_proba_knn_gray)
-print(predict_proba_svm_grad)
-print('Final probabilities')
-probs = np.apply_over_axes(np.sum, w * probabilities, axes=0)
-print(probs)
-print(np.sum(probs))
-print(np.argmax(probs))
-
+import VotingClassifier
+vc = VotingClassifier.VotingClassifier([model_knn_gray, model_svm_grad], [knn_gray_conf, svm_grad_conf])
+vc.predictSubImage(image)
