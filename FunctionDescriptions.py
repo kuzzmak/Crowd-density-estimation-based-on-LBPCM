@@ -24,7 +24,7 @@ class FD:
         canvas = Canvas(notationFrame, bd=0, xscrollcommand=xscrollbar.set, yscrollcommand=yscrollbar.set)
         canvas.grid(row=0, column=0, sticky=N + S + E + W)
 
-        image = cv.imread(r"/home/tonkec/Desktop/main-page-001.jpg")
+        image = cv.imread("_data/Latex/main.jpg")
 
         image = util.resizePercent(image, 40)
 
