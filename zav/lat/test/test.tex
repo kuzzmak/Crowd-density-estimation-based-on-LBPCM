@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage{array}[2003/12/17]
+\usepackage{calc}
+\newlength\celldim \newlength\fontheight \newlength\extraheight
+\newcounter{sqcolumns}
+\newcolumntype{S}{ @{}
+>{\centering \rule[-0.5\extraheight]{0pt}{\fontheight + \extraheight}}
+p{\celldim} @{} }
+\newcolumntype{Z}{ @{} >{\centering} p{\celldim} @{} }
+\newenvironment{squarecells}[1]
+{\setlength\celldim{2em}%
+\settoheight\fontheight{A}%
+\setlength\extraheight{\celldim - \fontheight}%
+\setcounter{sqcolumns}{#1 - 1}%
+\begin{tabular}{|S|*{\value{sqcolumns}}{Z|}}\hline}
+% squarecells tabular goes here
+{\end{tabular}}
+\newcommand\nl{\tabularnewline\hline}
+\begin{document}
+\Huge
+\begin{squarecells}{4}
+16 & 3 & 2 & 13 \nl
+5 & 10 & 11 & 8 \nl
+9 & 6 & 7 & 12 \nl
+4 & 15 & 14 & 1 \nl
+\end{squarecells}
+\end{document}

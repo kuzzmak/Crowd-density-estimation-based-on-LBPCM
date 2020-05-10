@@ -4,6 +4,8 @@ from os import listdir
 import cv2 as cv
 from PIL import ImageTk, Image
 import numpy as np
+
+import FunctionDescriptions
 import util
 from skimage.feature import local_binary_pattern
 from skimage.feature import greycomatrix
@@ -96,6 +98,10 @@ class SlidingWindowPage(tk.Frame):
         buttonCalculate = tk.Button(rightPanel, text="Calculate function(s)",
                                     command=lambda: self.calculateFunctions(controller))
         buttonCalculate.grid(row=15, padx=5, pady=2, sticky="w")
+
+        buttonFunctionDefinitions = tk.Button(rightPanel, text="Function definitions",
+                                              command=lambda: FunctionDescriptions.FD(self))
+        buttonFunctionDefinitions.grid(row=16, padx=5, pady=2, sticky="w")
 
         buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
         buttonBack.pack(side="bottom", padx=5, pady=5)

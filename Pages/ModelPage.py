@@ -266,7 +266,7 @@ class ModelPage(tk.Frame):
         """
 
         if modelId != -1:
-
+            controller.consolePrint("modelId: " + str(modelId))
             writer = Writer.Writer()
 
             classifierType, \
@@ -327,7 +327,7 @@ class ModelPage(tk.Frame):
             self.combineDistancesLabelValue.configure(text=combineDistances)
             self.combineAnglesLabelValue.configure(text=combineAngles)
             self.functionsLabelValue.configure(text=fun)
-            self.errorLabelValue.configure(text=round(error, 2))
+            self.errorLabelValue.configure(text=round(error, 4))
 
         else:
             # slučaj kada nema niti jednog modela

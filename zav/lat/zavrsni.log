@@ -1,0 +1,987 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.16)  10 MAY 2020 15:43
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**zavrsni.tex
+(./zavrsni.tex
+LaTeX2e <2020-02-02> patch level 5
+L3 programming layer <2020-02-25> (./fer.cls
+Document Class: fer 
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2019/12/20 v1.4l Standard LaTeX document class
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
+)
+\c@part=\count167
+\c@chapter=\count168
+\c@section=\count169
+\c@subsection=\count170
+\c@subsubsection=\count171
+\c@paragraph=\count172
+\c@subparagraph=\count173
+\c@figure=\count174
+\c@table=\count175
+\abovecaptionskip=\skip47
+\belowcaptionskip=\skip48
+\bibindent=\dimen134
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks15
+)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/iftex/ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/iftex/iftex.sty
+Package: iftex 2019/11/07 v1.0c TeX engine tests
+))
+\Gm@cnth=\count176
+\Gm@cntv=\count177
+\c@Gm@tempcnt=\count178
+\Gm@bindingoffset=\dimen135
+\Gm@wd@mp=\dimen136
+\Gm@odd@mp=\dimen137
+\Gm@even@mp=\dimen138
+\Gm@layoutwidth=\dimen139
+\Gm@layoutheight=\dimen140
+\Gm@layouthoffset=\dimen141
+\Gm@layoutvoffset=\dimen142
+\Gm@dimlist=\toks16
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/inputenc.sty
+Package: inputenc 2018/08/11 v1.3c Input encoding file
+\inpenc@prehook=\toks17
+\inpenc@posthook=\toks18
+)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/babel.sty
+Package: babel 2020/02/28 3.41 The Babel package
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/switch.def
+File: switch.def 2020/02/28 3.41 Babel switching mechanism
+)
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel-croatian/croatian.ldf
+Language: croatian 2014/03/31 v1.3m Croatian support from the babel system
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/babel.def
+File: babel.def 2020/02/28 3.41 Babel common definitions
+\babel@savecnt=\count179
+\U@D=\dimen143
+
+(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/txtbabel.def)
+\bbl@readstream=\read2
+\bbl@dirlevel=\count180
+)))
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/fontenc.sty
+Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 105.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/pdftex.def
+File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen144
+\Gin@req@width=\dimen145
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks19
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+))
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2020/01/20 v2.17e AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks20
+\ex@=\dimen146
+))
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen147
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count181
+LaTeX Info: Redefining \frac on input line 227.
+\uproot@=\count182
+\leftroot@=\count183
+LaTeX Info: Redefining \overline on input line 389.
+\classnum@=\count184
+\DOTSCASE@=\count185
+LaTeX Info: Redefining \ldots on input line 486.
+LaTeX Info: Redefining \dots on input line 489.
+LaTeX Info: Redefining \cdots on input line 610.
+\Mathstrutbox@=\box45
+\strutbox@=\box46
+\big@size=\dimen148
+LaTeX Font Info:    Redeclaring font encoding OML on input line 733.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 734.
+\macc@depth=\count186
+\c@MaxMatrixCols=\count187
+\dotsspace@=\muskip16
+\c@parentequation=\count188
+\dspbrk@lvl=\count189
+\tag@help=\toks21
+\row@=\count190
+\column@=\count191
+\maxfields@=\count192
+\andhelp@=\toks22
+\eqnshift@=\dimen149
+\alignsep@=\dimen150
+\tagshift@=\dimen151
+\tagwidth@=\dimen152
+\totwidth@=\dimen153
+\lineht@=\dimen154
+\@envbody=\toks23
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks24
+LaTeX Info: Redefining \[ on input line 2859.
+LaTeX Info: Redefining \] on input line 2860.
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/fixltx2e.sty
+Package: fixltx2e 2016/12/29 v2.1a fixes to LaTeX (obsolete)
+Applying: [2015/01/01] Old fixltx2e package on input line 46.
+
+
+Package fixltx2e Warning: fixltx2e is not required with releases after 2015
+(fixltx2e)                All fixes are now in the LaTeX kernel.
+(fixltx2e)                See the latexrelease package for details.
+
+Already applied: [0000/00/00] Old fixltx2e package on input line 53.
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2020/01/03 v3.4h Customizing captions (AR)
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
+\captionmargin=\dimen155
+\captionmargin@=\dimen156
+\captionwidth=\dimen157
+\caption@tempdima=\dimen158
+\caption@indent=\dimen159
+\caption@parindent=\dimen160
+\caption@hangindent=\dimen161
+Package caption Info: Standard document class detected.
+)
+\c@caption@flags=\count193
+\c@continuedfloat=\count194
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip17
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/enumitem/enumitem.sty
+Package: enumitem 2019/06/20 v3.9 Customized lists
+\labelindent=\skip52
+\enit@outerparindent=\dimen162
+\enit@toks=\toks25
+\enit@inbox=\box47
+\enit@count@id=\count195
+\enitdp@description=\count196
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/tocbibind/tocbibind.sty
+Package: tocbibind 2010/10/13 v1.5k extra ToC listings
+Package tocbibind Info: The document has chapter divisions on input line 50.
+
+
+Package tocbibind Note: Using chapter style headings, unless overridden.
+
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip53
+\bibsep=\skip54
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count197
+)
+\listindentation=\dimen163
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
+\heavyrulewidth=\dimen164
+\lightrulewidth=\dimen165
+\cmidrulewidth=\dimen166
+\belowrulesep=\dimen167
+\belowbottomsep=\dimen168
+\aboverulesep=\dimen169
+\abovetopsep=\dimen170
+\cmidrulesep=\dimen171
+\cmidrulekern=\dimen172
+\defaultaddspace=\dimen173
+\@cmidla=\count198
+\@cmidlb=\count199
+\@aboverulesep=\dimen174
+\@belowrulesep=\dimen175
+\@thisruleclass=\count266
+\@lastruleclass=\count267
+\@thisrulewidth=\dimen176
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/multicol.sty
+Package: multicol 2019/12/09 v1.8y multicolumn formatting (FMi)
+\c@tracingmulticols=\count268
+\mult@box=\box48
+\multicol@leftmargin=\dimen177
+\c@unbalance=\count269
+\c@collectmore=\count270
+\doublecol@number=\count271
+\multicoltolerance=\count272
+\multicolpretolerance=\count273
+\full@width=\dimen178
+\page@free=\dimen179
+\premulticols=\dimen180
+\postmulticols=\dimen181
+\multicolsep=\skip55
+\multicolbaselineskip=\skip56
+\partial@page=\box49
+\last@line=\box50
+\maxbalancingoverflow=\dimen182
+\mult@rightbox=\box51
+\mult@grightbox=\box52
+\mult@gfirstbox=\box53
+\mult@firstbox=\box54
+\@tempa=\box55
+\@tempa=\box56
+\@tempa=\box57
+\@tempa=\box58
+\@tempa=\box59
+\@tempa=\box60
+\@tempa=\box61
+\@tempa=\box62
+\@tempa=\box63
+\@tempa=\box64
+\@tempa=\box65
+\@tempa=\box66
+\@tempa=\box67
+\@tempa=\box68
+\@tempa=\box69
+\@tempa=\box70
+\@tempa=\box71
+\@tempa=\box72
+\@tempa=\box73
+\@tempa=\box74
+\@tempa=\box75
+\@tempa=\box76
+\@tempa=\box77
+\@tempa=\box78
+\@tempa=\box79
+\@tempa=\box80
+\@tempa=\box81
+\@tempa=\box82
+\@tempa=\box83
+\@tempa=\box84
+\@tempa=\box85
+\@tempa=\box86
+\@tempa=\box87
+\@tempa=\box88
+\@tempa=\box89
+\@tempa=\box90
+\@tempa=\box91
+\c@minrows=\count274
+\c@columnbadness=\count275
+\c@finalcolumnbadness=\count276
+\last@try=\dimen183
+\multicolovershoot=\dimen184
+\multicolundershoot=\dimen185
+\mult@nat@firstbox=\box92
+\colbreak@box=\box93
+\mc@col@check@num=\count277
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/array.sty
+Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
+\col@sep=\dimen186
+\ar@mcellbox=\box94
+\extrarowheight=\dimen187
+\NC@list=\toks26
+\extratabsurround=\skip57
+\backup@length=\skip58
+\ar@cellbox=\box95
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
+\TX@col@width=\dimen188
+\TX@old@table=\dimen189
+\TX@old@col=\dimen190
+\TX@target=\dimen191
+\TX@delta=\dimen192
+\TX@cols=\count278
+\TX@ftn=\toks27
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count279
+\calc@Bcount=\count280
+\calc@Adimen=\dimen193
+\calc@Bdimen=\dimen194
+\calc@Askip=\skip59
+\calc@Bskip=\skip60
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count281
+\calc@Cskip=\skip61
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2020/01/22 v1.3d Sub-captions (AR)
+\c@subfigure=\count282
+\c@subtable=\count283
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.sty
+Package: csquotes 2019-12-06 v5.2j context-sensitive quotations (JAW)
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count284
+)
+\csq@reset=\count285
+\csq@gtype=\count286
+\csq@glevel=\count287
+\csq@qlevel=\count288
+\csq@maxlvl=\count289
+\csq@tshold=\count290
+\csq@ltx@everypar=\toks28
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.def
+File: csquotes.def 2019-12-06 v5.2j csquotes generic definitions (JAW)
+)
+Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
+Package csquotes Info: ... configuration file loaded successfully.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.cfg
+File: csquotes.cfg 
+))
+(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
+\LTleft=\skip62
+\LTright=\skip63
+\LTpre=\skip64
+\LTpost=\skip65
+\LTchunksize=\count291
+\LTcapwidth=\dimen195
+\LT@head=\box96
+\LT@firsthead=\box97
+\LT@foot=\box98
+\LT@lastfoot=\box99
+\LT@cols=\count292
+\LT@rows=\count293
+\c@LT@tables=\count294
+\c@LT@chunks=\count295
+\LT@p@ftn=\toks29
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/changepage/changepage.sty
+Package: changepage 2009/10/20 v1.0c check page and change page layout
+\c@cp@cntr=\count296
+\cp@tempcnt=\count297
+)
+Package csquotes Info: Checking for multilingual support...
+Package csquotes Info: ... found 'babel' package.
+Package csquotes Info: Adjusting default style.
+Package csquotes Info: Redefining alias 'default' -> 'croatian'.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
+File: l3backend-pdfmode.def 2020-02-23 L3 backend support: PDF mode
+\l__kernel_color_stack_int=\count298
+\l__pdf_internal_box=\box100
+)
+(./zavrsni.aux)
+\openout1 = `zavrsni.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 20
+.
+ (/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1ptm.fd
+File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: a4paper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(99.58464pt, 412.56497pt, 85.35826pt)
+* v-part:(T,H,B)=(85.35826pt, 674.33032pt, 85.35826pt)
+* \paperwidth=597.50787pt
+* \paperheight=845.04684pt
+* \textwidth=412.56497pt
+* \textheight=674.33032pt
+* \oddsidemargin=27.31465pt
+* \evensidemargin=27.31465pt
+* \topmargin=-23.91173pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=12.0pt
+* \footskip=30.0pt
+* \marginparwidth=44.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.8pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count299
+\scratchdimen=\dimen196
+\scratchbox=\box101
+\nofMPsegments=\count300
+\nofMParguments=\count301
+\everyMPshowfont=\toks30
+\MPscratchCnt=\count302
+\MPscratchDim=\dimen197
+\MPnumerator=\count303
+\makeMPintoPDFobject=\count304
+\everyMPtoPDFconversion=\toks31
+) (/usr/local/texlive/2019/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
+85.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: longtable package is loaded.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2018/08/26 v1.4a longtable captions (AR)
+)
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 31
+.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1phv.fd
+File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 20.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 23.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 26.
+
+
+LaTeX Warning: Font shape declaration has incorrect series value `mc'.
+               It should not contain an `m'! Please correct it.
+               Found on input line 46.
+
+)
+LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
+
+ (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
+
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 34
+.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+) [1] [3]
+(./zavrsni.toc [4
+
+])
+\tf@toc=\write3
+\openout3 = `zavrsni.toc'.
+
+ [5]
+Poglavlje 1.
+[1
+
+]
+Poglavlje 2.
+[2
+
+]
+<img/jKxBPc.png, id=40, 179.16937pt x 178.41656pt>
+File: img/jKxBPc.png Graphic file (type png)
+<use img/jKxBPc.png>
+Package pdftex.def Info: img/jKxBPc.png  used on input line 128.
+(pdftex.def)             Requested size: 89.58446pt x 89.20805pt.
+
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 146--146
+ []|\T1/ptm/m/n/12 130| 
+ []
+
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 136--149
+[]$[]$ 
+ []
+
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 150--163
+[]$[]$ 
+ []
+
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 180--193
+[]$[]$ 
+ []
+
+
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 204--204
+ []|\T1/ptm/m/n/12 171| 
+ []
+
+
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 204--204
+ []|\T1/ptm/m/n/12 190| 
+ []
+
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 194--207
+[]$[]$ 
+ []
+
+[3 <./img/jKxBPc.png>]
+<img/1.jpg, id=46, 48.18pt x 48.18pt>
+File: img/1.jpg Graphic file (type jpg)
+<use img/1.jpg>
+Package pdftex.def Info: img/1.jpg  used on input line 225.
+(pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
+<img/2.jpg, id=47, 48.18pt x 48.18pt>
+File: img/2.jpg Graphic file (type jpg)
+<use img/2.jpg>
+Package pdftex.def Info: img/2.jpg  used on input line 229.
+(pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
+<img/3.jpg, id=48, 48.18pt x 48.18pt>
+File: img/3.jpg Graphic file (type jpg)
+<use img/3.jpg>
+Package pdftex.def Info: img/3.jpg  used on input line 233.
+(pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
+<img/4.jpg, id=49, 48.18pt x 48.18pt>
+File: img/4.jpg Graphic file (type jpg)
+<use img/4.jpg>
+Package pdftex.def Info: img/4.jpg  used on input line 237.
+(pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
+ [4 <./img/1.jpg> <./img/2.jpg> <./img/3.jpg> <./img/4.jpg>]
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 283--298
+[]$[]$ 
+ []
+
+[5]
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 322--342
+[]$[]$ 
+ []
+
+[6]
+<img/krivo.png, id=59, 324.21124pt x 186.6975pt>
+File: img/krivo.png Graphic file (type png)
+<use img/krivo.png>
+Package pdftex.def Info: img/krivo.png  used on input line 421.
+(pdftex.def)             Requested size: 161.0266pt x 92.72748pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 418--424
+[]$[]$ 
+ []
+
+[7 <./img/krivo.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 439--440
+
+ []
+
+<img/klas.png, id=63, 500.87125pt x 254.9525pt>
+File: img/klas.png Graphic file (type png)
+<use img/klas.png>
+Package pdftex.def Info: img/klas.png  used on input line 447.
+(pdftex.def)             Requested size: 330.05322pt x 168.0085pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 444--450
+[]$[]$ 
+ []
+
+[8 <./img/klas.png>]
+<img/linearniklasifikator.png, id=68, 484.81125pt x 349.305pt>
+File: img/linearniklasifikator.png Graphic file (type png)
+<use img/linearniklasifikator.png>
+Package pdftex.def Info: img/linearniklasifikator.png  used on input line 483.
+(pdftex.def)             Requested size: 242.40503pt x 174.65207pt.
+<img/slika10.png, id=69, 550.055pt x 377.41pt>
+File: img/slika10.png Graphic file (type png)
+<use img/slika10.png>
+Package pdftex.def Info: img/slika10.png  used on input line 506.
+(pdftex.def)             Requested size: 275.02682pt x 188.70453pt.
+ [9 <./img/linearniklasifikator.png>] [10 <./img/slika10.png>]
+<img/neseparabilni.png, id=76, 258.9675pt x 238.8925pt>
+File: img/neseparabilni.png Graphic file (type png)
+<use img/neseparabilni.png>
+Package pdftex.def Info: img/neseparabilni.png  used on input line 593.
+(pdftex.def)             Requested size: 161.0266pt x 148.54922pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 590--596
+[]$[]$ 
+ []
+
+<img/3d.png, id=77, 401.5pt x 314.17375pt>
+File: img/3d.png Graphic file (type png)
+<use img/3d.png>
+Package pdftex.def Info: img/3d.png  used on input line 600.
+(pdftex.def)             Requested size: 161.0266pt x 126.00763pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 597--603
+[]$[]$ 
+ []
+
+
+Overfull \vbox (6.84654pt too high) has occurred while \output is active []
+
+
+Overfull \vbox (3.55026pt too high) has occurred while \output is active []
+
+
+[11 <./img/neseparabilni.png> <./img/3d.png>] [12]
+<img/Gradient2.png, id=87, 1284.8pt x 640.3925pt>
+File: img/Gradient2.png Graphic file (type png)
+<use img/Gradient2.png>
+Package pdftex.def Info: img/Gradient2.png  used on input line 652.
+(pdftex.def)             Requested size: 330.05322pt x 164.50471pt.
+ [13 <./img/Gradient2.png>]
+<img/2982.jpg, id=92, 192.72pt x 144.54pt>
+File: img/2982.jpg Graphic file (type jpg)
+<use img/2982.jpg>
+Package pdftex.def Info: img/2982.jpg  used on input line 713.
+(pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 711--716
+[]$[]$ 
+ []
+
+<img/sobel.jpg, id=93, 192.72pt x 144.54pt>
+File: img/sobel.jpg Graphic file (type jpg)
+<use img/sobel.jpg>
+Package pdftex.def Info: img/sobel.jpg  used on input line 719.
+(pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 717--722
+[]$[]$ 
+ []
+
+<img/sobely.jpg, id=94, 192.72pt x 144.54pt>
+File: img/sobely.jpg Graphic file (type jpg)
+<use img/sobely.jpg>
+Package pdftex.def Info: img/sobely.jpg  used on input line 725.
+(pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 723--728
+[]$[]$ 
+ []
+
+<img/sobelx.jpg, id=95, 192.72pt x 144.54pt>
+File: img/sobelx.jpg Graphic file (type jpg)
+<use img/sobelx.jpg>
+Package pdftex.def Info: img/sobelx.jpg  used on input line 731.
+(pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 729--734
+[]$[]$ 
+ []
+
+[14 <./img/2982.jpg> <./img/sobel.jpg> <./img/sobely.jpg> <./img/sobelx.jpg>]
+[15]
+Poglavlje 3.
+<img/noflow.jpg, id=103, 144.54pt x 108.405pt>
+File: img/noflow.jpg Graphic file (type jpg)
+<use img/noflow.jpg>
+Package pdftex.def Info: img/noflow.jpg  used on input line 769.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+<img/freeflow.jpg, id=104, 144.54pt x 108.405pt>
+File: img/freeflow.jpg Graphic file (type jpg)
+<use img/freeflow.jpg>
+Package pdftex.def Info: img/freeflow.jpg  used on input line 774.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+<img/restrictedflow.jpg, id=105, 144.54pt x 108.405pt>
+File: img/restrictedflow.jpg Graphic file (type jpg)
+<use img/restrictedflow.jpg>
+Package pdftex.def Info: img/restrictedflow.jpg  used on input line 779.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+<img/denseflow.jpg, id=106, 144.54pt x 108.405pt>
+File: img/denseflow.jpg Graphic file (type jpg)
+<use img/denseflow.jpg>
+Package pdftex.def Info: img/denseflow.jpg  used on input line 784.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+<img/jammedflow.jpg, id=107, 144.54pt x 108.405pt>
+File: img/jammedflow.jpg Graphic file (type jpg)
+<use img/jammedflow.jpg>
+Package pdftex.def Info: img/jammedflow.jpg  used on input line 789.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+[16
+
+ <./img/noflow.jpg> <./img/freeflow.jpg> <./img/restrictedflow.jpg> <./img/dens
+eflow.jpg> <./img/jammedflow.jpg>] [17]
+Poglavlje 4.
+<img/startpage.png, id=114, 780.9175pt x 770.88pt>
+File: img/startpage.png Graphic file (type png)
+<use img/startpage.png>
+Package pdftex.def Info: img/startpage.png  used on input line 861.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+[18
+
+ <./img/startpage.png>]
+<img/mainscreen.png, id=119, 780.9175pt x 770.88pt>
+File: img/mainscreen.png Graphic file (type png)
+<use img/mainscreen.png>
+Package pdftex.def Info: img/mainscreen.png  used on input line 875.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+ [19 <./img/mainscreen.png>]
+<img/preprocessdata.png, id=124, 780.9175pt x 770.88pt>
+File: img/preprocessdata.png Graphic file (type png)
+<use img/preprocessdata.png>
+Package pdftex.def Info: img/preprocessdata.png  used on input line 921.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+ [20 <./img/preprocessdata.png>]
+<img/seeonpic.png, id=130, 780.9175pt x 770.88pt>
+File: img/seeonpic.png Graphic file (type png)
+<use img/seeonpic.png>
+Package pdftex.def Info: img/seeonpic.png  used on input line 935.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+ [21 <./img/seeonpic.png>]
+<img/splitted.png, id=135, 869.2475pt x 299.1175pt>
+File: img/splitted.png Graphic file (type png)
+<use img/splitted.png>
+Package pdftex.def Info: img/splitted.png  used on input line 953.
+(pdftex.def)             Requested size: 347.69284pt x 119.64487pt.
+<img/dataannotation.png, id=136, 780.9175pt x 770.88pt>
+File: img/dataannotation.png Graphic file (type png)
+<use img/dataannotation.png>
+Package pdftex.def Info: img/dataannotation.png  used on input line 966.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+ [22 <./img/splitted.png> <./img/dataannotation.png>] [23]
+<img/fvc1.png, id=144, 780.9175pt x 770.88pt>
+File: img/fvc1.png Graphic file (type png)
+<use img/fvc1.png>
+Package pdftex.def Info: img/fvc1.png  used on input line 1022.
+(pdftex.def)             Requested size: 273.32521pt x 269.81204pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1020--1025
+[]$[]$ 
+ []
+
+<img/fvc2.png, id=145, 780.9175pt x 770.88pt>
+File: img/fvc2.png Graphic file (type png)
+<use img/fvc2.png>
+Package pdftex.def Info: img/fvc2.png  used on input line 1030.
+(pdftex.def)             Requested size: 273.32521pt x 269.81204pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1028--1033
+[]$[]$ 
+ []
+
+[24 <./img/fvc1.png> <./img/fvc2.png>]
+Overfull \hbox (3.77676pt too wide) in paragraph at lines 1051--1093
+[][] 
+ []
+
+<img/fvc3.png, id=151, 780.9175pt x 770.88pt>
+File: img/fvc3.png Graphic file (type png)
+<use img/fvc3.png>
+Package pdftex.def Info: img/fvc3.png  used on input line 1137.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1135--1140
+[]$[]$ 
+ []
+
+[25] [26]
+<img/cl1.png, id=159, 780.9175pt x 770.88pt>
+File: img/cl1.png Graphic file (type png)
+<use img/cl1.png>
+Package pdftex.def Info: img/cl1.png  used on input line 1152.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1150--1155
+[]$[]$ 
+ []
+
+[27 <./img/fvc3.png>] [28 <./img/cl1.png>]
+<img/cl2.png, id=168, 780.9175pt x 770.88pt>
+File: img/cl2.png Graphic file (type png)
+<use img/cl2.png>
+Package pdftex.def Info: img/cl2.png  used on input line 1194.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1192--1197
+[]$[]$ 
+ []
+
+<img/cl3.png, id=169, 780.9175pt x 770.88pt>
+File: img/cl3.png Graphic file (type png)
+<use img/cl3.png>
+Package pdftex.def Info: img/cl3.png  used on input line 1223.
+(pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1221--1226
+[]$[]$ 
+ []
+
+[29 <./img/cl2.png>]
+<img/cl5.png, id=174, 780.9175pt x 770.88pt>
+File: img/cl5.png Graphic file (type png)
+<use img/cl5.png>
+Package pdftex.def Info: img/cl5.png  used on input line 1231.
+(pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1229--1235
+[]$[]$ 
+ []
+
+[30 <./img/cl3.png> <./img/cl5.png>] [31]
+Poglavlje 5.
+<img/sw1.png, id=183, 780.9175pt x 770.88pt>
+File: img/sw1.png Graphic file (type png)
+<use img/sw1.png>
+Package pdftex.def Info: img/sw1.png  used on input line 1278.
+(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1276--1281
+[]$[]$ 
+ []
+
+[32
+
+ <./img/sw1.png>] [33] [34] [35]
+Poglavlje 6.
+[36
+
+]
+Poglavlje 7.
+[37
+
+]
+Poglavlje 8.
+(./zavrsni.bbl [38
+
+]) [39
+
+] (./zavrsni.lof
+Overfull \hbox (0.63914pt too wide) in paragraph at lines 18--18
+ [][] []\T1/ptm/m/n/12 Prikaz smjera gra-di-jenta pla-vim stre-li-cama, tam-nij
+a boja oz-na-£ava ve¢e 
+ []
+
+[40
+
+]
+Overfull \hbox (3.60315pt too wide) in paragraph at lines 38--38
+ [][] []\T1/ptm/m/n/12 Prikaz kla-si-fi-ci-rane slike i pro-cjene broja ljudi n
+a te-me-lju gus-to¢e mno²- 
+ []
+
+)
+\tf@lof=\write4
+\openout4 = `zavrsni.lof'.
+
+ [41] [42]
+Poglavlje A.
+[43
+
+] [44] [45]
+Poglavlje B.
+[46
+
+]
+Overfull \hbox (11.72679pt too wide) in paragraph at lines 1635--1653
+[][] 
+ []
+
+[47] (./zavrsni.aux) ) 
+Here is how much of TeX's memory you used:
+ 7548 strings out of 480994
+ 108074 string characters out of 5912127
+ 390923 words of memory out of 5000000
+ 22873 multiletter control sequences out of 15000+600000
+ 599068 words of font info for 98 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 49i,14n,46p,818b,514s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/base/
+8r.enc}</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmex1
+0.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12
+.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.p
+fb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
+></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
+/usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></us
+r/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/l
+ocal/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
+cal/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/loca
+l/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/
+texlive/2019/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive
+/2019/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2019/t
+exmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2019/texmf-di
+st/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/t
+ype1/urw/times/utmbi8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/urw/
+times/utmr8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/urw/times/utmr
+8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on zavrsni.pdf (52 pages, 2427612 bytes).
+PDF statistics:
+ 297 PDF objects out of 1000 (max. 8388607)
+ 173 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 176 words of extra memory for PDF output out of 10000 (max. 10000000)
+

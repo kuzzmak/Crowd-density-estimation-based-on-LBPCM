@@ -1,0 +1,47 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[{Barkan} et~al.(2013){Barkan}, {Weill}, {Wolf}, i {Aronowitz}]{barkan}
+O.~{Barkan}, J.~{Weill}, L.~{Wolf}, i H.~{Aronowitz}.
+\newblock Fast high dimensional vector multiplication face recognition.
+\newblock U \emph{2013 IEEE International Conference on Computer Vision},
+  stranice 1960--1967, 2013.
+
+\bibitem[{Dong-chen He} i {Li Wang}(1990)]{dong}
+{Dong-chen He} i {Li Wang}.
+\newblock Texture unit, texture spectrum, and texture analysis.
+\newblock \emph{IEEE Transactions on Geoscience and Remote Sensing},
+  28\penalty0 (4):\penalty0 509--512, 1990.
+
+\bibitem[{Haralick}(1979)]{haralick}
+R.~M. {Haralick}.
+\newblock Statistical and structural approaches to texture.
+\newblock \emph{Proceedings of the IEEE}, 67\penalty0 (5):\penalty0 786--804,
+  1979.
+
+\bibitem[{Marana} et~al.(1997){Marana}, {Velastin}, {Costa}, i
+  {Lotufo}]{marana}
+A.~N. {Marana}, S.~A. {Velastin}, L.~F. {Costa}, i R.~A. {Lotufo}.
+\newblock Estimation of crowd density using image processing.
+\newblock U \emph{IEE Colloquium on Image Processing for Security Applications
+  (Digest No: 1997/074)}, stranice 11/1--11/8, 1997.
+
+\bibitem[{Ojala} et~al.(1994){Ojala}, {Pietikainen}, i {Harwood}]{ojala}
+T.~{Ojala}, M.~{Pietikainen}, i D.~{Harwood}.
+\newblock Performance evaluation of texture measures with classification based
+  on kullback discrimination of distributions.
+\newblock U \emph{Proceedings of 12th International Conference on Pattern
+  Recognition}, svezak~1, stranice 582--585 vol.1, 1994.
+
+\bibitem[Polus et~al.(1983)Polus, Schofer, i Ushpiz]{polus}
+Abishai Polus, Joseph~L. Schofer, i Ariela Ushpiz.
+\newblock Pedestrian flow and level of service.
+\newblock \emph{Journal of Transportation Engineering}, 109\penalty0
+  (1):\penalty0 46--56, 1983.
+\newblock \doi{10.1061/(ASCE)0733-947X(1983)109:1(46)}.
+
+\end{thebibliography}
