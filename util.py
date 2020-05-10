@@ -414,3 +414,31 @@ def makeConfigurationFile():
     with open(fileName, 'w') as f:
         json.dump(data, f, indent=4)
 
+def getPeopleCount(labels):
+    """
+    Funkcija za procjenu broja ljudi na temelju labela
+    0 -> [+0, +0]
+    1 -> [+1, +2]
+    2 -> [+3, +5]
+    3 -> [+6, +8]
+    4 -> [+9, +12]
+
+    :param labels:
+    :return:
+    """
+
+    interval = [0, 0]
+
+    pd = {0: [0, 0],
+          1: [1, 2],
+          2: [3, 5],
+          3: [6, 8],
+          4: [9, 12]}
+
+    for label in labels:
+
+        _pd = pd.get(label)
+        interval[0] += _pd[0]
+        interval[1] += _pd[1]
+
+    return interval
