@@ -17,6 +17,8 @@
 
 \newcommand{\STAB}[1]{\begin{tabular}{@{}c@{}}#1\end{tabular}}
 
+\DeclareMathOperator*{\argmax}{arg\,max}
+
 \begin{document}
 
 % TODO: Navedite broj rada.
@@ -807,7 +809,7 @@ stvaranja, vektori značajki, se predaju \textit{k}-NN klasifikatoru ili SVM-u.
 \bigbreak
 
 Na kraju se pristupa evaluaciji samih klasifikatora i eventualnoj izmjeni
-saih parametara nadi boljeg rezultata u sljedećoj iteraciji učenja. Za učenje
+samih parametara u nadi boljeg rezultata u sljedećoj iteraciji učenja. Za učenje
 klasifikatora korisiti se \(70\%\) izvornih slika, a za testiranje ostatak.
 
 \newpage
@@ -826,7 +828,6 @@ Jednom kada su ocijenjeni klasifikatori moguće je napraviti prividnu
 fuziju u jedan klasifikator.
 
 \bigbreak
-
 
 Sjedinjenje dvaju različitih klasifikatora obavlja se pomoću nove vrste
 klasifikatora - glasačkog klasifikatora (\textit{engl. voting classifier}).
@@ -851,13 +852,44 @@ moguće je množiti svaku vjerojatnost nekom težinom i time utjecati na ishod o
 Odabrana je druga vrsta glasanja, tzv. \enquote{meko glasanje} jer je eksperimentom
 utvrđeno da daje bolje rezultate nad skupom podataka koji se koristi u radu.  
 
-\newline
+\bigbreak
 
 Primjer dobivanja vjerojatnosti glasačkog klasifikatora
 
-\[y = argmax\]
+\[y = \argmax_i \sum_{j=1}^mw_jp_{ij}\]
+
+gdje \(w_j\) predstavlja težinu pridijeljenu \(j\)-tom klasifikatoru.
+
+Uzmimo 3 klasifikatora i dva moguća razreda pripadnosti svakog uzorka 
+\(C_1(x) \rightarrow [0.9,0.1], C_2(x) \rightarrow [0.8,0.2], C_3(x) \rightarrow [0.4,0.6]\)
 
 \newpage
+
+Koristeći unoformne težine dobivamo sljedeće srednje vjerojatnosti
+\begin{center}
+\(p(i_0|x)=\frac{0.9+0.8+0.4}{3}=0.7\)
+
+\(p(i_1|x)=\frac{0.1+0.2+0.6}{3}=0.3\)
+
+\(y=\argmax_i [p(i_0|x),p(i_1|x)]=0\)
+\end{center}
+
+Promjenimo iznose težina svakog klasifikatora sljedećim \(\{0.1,0.1,0.8\}\). Sada izračun
+vjerojatnosti izgleda sljedeće
+
+\begin{center}
+\(p(i_0|x) = 0.1 \cdot 0.9 + 0.1 \cdot 0.8 + 0.8 \cdot 0.4 = 0.49\)
+
+\(p(i_1|x) = 0.1 \cdot 0.1 + 0.2 \cdot 0.1 + 0.8 \cdot 0.6 = 0.51\)
+
+\(y=\argmax_i [p(i_0|x),p(i_1|x)]=1\)
+\end{center}
+
+Iz primjer je jasno vidljivo koliku važnost imaju pridijeljene težine svakom od
+klasifikatora.
+
+
+
 
 \begin{figure}[ht]
 \centering
@@ -1619,7 +1651,16 @@ Q(i,j) = \sum_k \frac{p(i,k)p(j,k)}{p_x(i)p_y(k)}
 
 \begin{adjustwidth}{-30pt}{0pt}
 \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
-\hline
+\
+
+
+
+
+
+
+
+
+
 \STAB{\rotatebox[origin=c]{90}{redni broj}} & 
 \STAB{\rotatebox[origin=c]{90}{\;\;vrsta klasifikatora\;\;}} & 
 \STAB{\rotatebox[origin=c]{90}{vrsta podslike}} & 

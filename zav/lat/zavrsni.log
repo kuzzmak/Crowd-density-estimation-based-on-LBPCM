@@ -1,15 +1,18 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2020.3.16)  10 MAY 2020 15:43
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.5.11)  11 MAY 2020 20:06
 entering extended mode
- restricted \write18 enabled.
- %&-line parsing enabled.
-**zavrsni.tex
-(./zavrsni.tex
+**C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/la
+t/zavrsni.tex
+
+(C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/lat
+/zavrsni.tex
 LaTeX2e <2020-02-02> patch level 5
-L3 programming layer <2020-02-25> (./fer.cls
+L3 programming layer <2020-04-06>
+(C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/lat
+\fer.cls
 Document Class: fer 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/report.cls
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\report.cls"
 Document Class: report 2019/12/20 v1.4l Standard LaTeX document class
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/size12.clo
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\size12.clo"
 File: size12.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
 )
 \c@part=\count167
@@ -25,18 +28,21 @@ File: size12.clo 2019/12/20 v1.4l Standard LaTeX file (size option)
 \belowcaptionskip=\skip48
 \bibindent=\dimen134
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/geometry/geometry.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/geometry\geometry.
+sty"
 Package: geometry 2020/01/02 v5.9 Page Geometry
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/keyval.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\keyval.st
+y"
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks15
 )
-(/usr/local/texlive/2019/texmf-dist/tex/generic/iftex/ifvtex.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\ifvtex.sty
+"
 Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
-
-(/usr/local/texlive/2019/texmf-dist/tex/generic/iftex/iftex.sty
-Package: iftex 2019/11/07 v1.0c TeX engine tests
+ ("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\iftex.sty
+"
+Package: iftex 2020/03/06 v1.0d TeX engine tests
 ))
 \Gm@cnth=\count176
 \Gm@cntv=\count177
@@ -50,57 +56,75 @@ Package: iftex 2019/11/07 v1.0c TeX engine tests
 \Gm@layouthoffset=\dimen141
 \Gm@layoutvoffset=\dimen142
 \Gm@dimlist=\toks16
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/inputenc.sty
+
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/geometry\geometry.
+cfg"))
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\inputenc.sty"
 Package: inputenc 2018/08/11 v1.3c Input encoding file
 \inpenc@prehook=\toks17
 \inpenc@posthook=\toks18
-)
-(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2020/02/28 3.41 The Babel package
+) ("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\babel.st
+y"
+Package: babel 2020/03/22 3.42 The Babel package
 
-(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/switch.def
-File: switch.def 2020/02/28 3.41 Babel switching mechanism
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\switch.def
+"
+File: switch.def 2020/03/22 3.42 Babel switching mechanism
 )
-(/usr/local/texlive/2019/texmf-dist/tex/generic/babel-croatian/croatian.ldf
+*************************************
+* Local config file bblopts.cfg used
+*
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/arabi\bblopts.cfg"
+File: bblopts.cfg 2005/09/08 v0.1 add Arabic and Farsi to "declared" options of
+ babel
+)
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/babel-croatian\cro
+atian.ldf"
 Language: croatian 2014/03/31 v1.3m Croatian support from the babel system
 
-(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/babel.def
-File: babel.def 2020/02/28 3.41 Babel common definitions
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\babel.def"
+File: babel.def 2020/03/22 3.42 Babel common definitions
 \babel@savecnt=\count179
 \U@D=\dimen143
 
-(/usr/local/texlive/2019/texmf-dist/tex/generic/babel/txtbabel.def)
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\txtbabel.d
+ef")
 \bbl@readstream=\read2
 \bbl@dirlevel=\count180
 )))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/fontenc.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\fontenc.sty"
 Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphicx.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\graphicx.
+sty"
 Package: graphicx 2019/11/30 v1.2a Enhanced LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphics.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\graphics.
+sty"
 Package: graphics 2019/11/30 v1.4a Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/trig.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\trig.sty"
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics-cfg\graph
+ics.cfg"
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 105.
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/pdftex.def
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics-def\pdfte
+x.def"
 File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 ))
 \Gin@req@height=\dimen144
 \Gin@req@width=\dimen145
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/amssymb.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\amssymb.s
+ty"
 Package: amssymb 2013/01/14 v3.01 AMS font symbols
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/amsfonts.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\amsfonts.
+sty"
 Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
 \@emptytoks=\toks19
 \symAMSa=\mathgroup4
@@ -109,24 +133,30 @@ LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
 LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
 ))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsmath.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsmath\amsmath.st
+y"
 Package: amsmath 2020/01/20 v2.17e AMS math features
 \@mathmargin=\skip49
 
 For additional information on amsmath, use the `?' option.
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amstext.sty
+
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsmath\amstext.st
+y"
 Package: amstext 2000/06/29 v2.01 AMS text
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsgen.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsmath\amsgen.sty
+"
 File: amsgen.sty 1999/11/30 v2.0 generic functions
 \@emptytoks=\toks20
 \ex@=\dimen146
 ))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsbsy.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsmath\amsbsy.sty
+"
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 \pmbraise@=\dimen147
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsmath/amsopn.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsmath\amsopn.sty
+"
 Package: amsopn 2016/03/08 v2.02 operator names
 )
 \inf@bad=\count181
@@ -167,20 +197,22 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 734.
 LaTeX Info: Redefining \[ on input line 2859.
 LaTeX Info: Redefining \] on input line 2860.
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/fixltx2e.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\fixltx2e.sty"
 Package: fixltx2e 2016/12/29 v2.1a fixes to LaTeX (obsolete)
 Applying: [2015/01/01] Old fixltx2e package on input line 46.
-
 
 Package fixltx2e Warning: fixltx2e is not required with releases after 2015
 (fixltx2e)                All fixes are now in the LaTeX kernel.
 (fixltx2e)                See the latexrelease package for details.
 
 Already applied: [0000/00/00] Old fixltx2e package on input line 53.
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/caption/caption.sty
+)
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\caption.st
+y"
 Package: caption 2020/01/03 v3.4h Customizing captions (AR)
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/caption/caption3.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\caption3.s
+ty"
 Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
 Package caption3 Info: TeX engine: e-TeX on input line 61.
 \captionmargin=\dimen155
@@ -195,14 +227,15 @@ Package caption Info: Standard document class detected.
 \c@caption@flags=\count193
 \c@continuedfloat=\count194
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/base/ifthen.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\ifthen.sty"
 Package: ifthen 2014/09/29 v1.1c Standard LaTeX ifthen package (DPC)
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/url/url.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/url\url.sty"
 \Urlmuskip=\muskip17
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/enumitem/enumitem.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/enumitem\enumitem.
+sty"
 Package: enumitem 2019/06/20 v3.9 Customized lists
 \labelindent=\skip52
 \enit@outerparindent=\dimen162
@@ -211,17 +244,19 @@ Package: enumitem 2019/06/20 v3.9 Customized lists
 \enit@count@id=\count195
 \enitdp@description=\count196
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/tocbibind/tocbibind.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tocbibind\tocbibin
+d.sty"
 Package: tocbibind 2010/10/13 v1.5k extra ToC listings
 Package tocbibind Info: The document has chapter divisions on input line 50.
 
 
 Package tocbibind Note: Using chapter style headings, unless overridden.
 
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/times.sty
-Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+) ("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\times.sty
+"
+Package: times 2020/03/25 PSNFSS-v9.3 (SPQR) 
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/natbib/natbib.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/natbib\natbib.sty"
 Package: natbib 2010/09/13 8.31b (PWD, AO)
 \bibhang=\skip53
 \bibsep=\skip54
@@ -230,7 +265,8 @@ LaTeX Info: Redefining \cite on input line 694.
 )
 \listindentation=\dimen163
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/booktabs/booktabs.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/booktabs\booktabs.
+sty"
 Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \heavyrulewidth=\dimen164
 \lightrulewidth=\dimen165
@@ -250,7 +286,8 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count267
 \@thisrulewidth=\dimen176
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/multicol.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\multicol.sty
+"
 Package: multicol 2019/12/09 v1.8y multicolumn formatting (FMi)
 \c@tracingmulticols=\count268
 \mult@box=\box48
@@ -319,8 +356,7 @@ Package: multicol 2019/12/09 v1.8y multicolumn formatting (FMi)
 \mult@nat@firstbox=\box92
 \colbreak@box=\box93
 \mc@col@check@num=\count277
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/array.sty
+) ("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\array.sty"
 Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
 \col@sep=\dimen186
 \ar@mcellbox=\box94
@@ -330,7 +366,8 @@ Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
 \backup@length=\skip58
 \ar@cellbox=\box95
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/tabularx.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\tabularx.sty
+"
 Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
 \TX@col@width=\dimen188
 \TX@old@table=\dimen189
@@ -339,8 +376,7 @@ Package: tabularx 2020/01/15 v2.11c `tabularx' package (DPC)
 \TX@delta=\dimen192
 \TX@cols=\count278
 \TX@ftn=\toks27
-)
-(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/calc.sty
+) ("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\calc.sty"
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count279
 \calc@Bcount=\count280
@@ -353,15 +389,18 @@ LaTeX Info: Redefining \addtolength on input line 81.
 \calc@Ccount=\count281
 \calc@Cskip=\skip61
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/caption/subcaption.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\subcaption
+.sty"
 Package: subcaption 2020/01/22 v1.3d Sub-captions (AR)
 \c@subfigure=\count282
 \c@subtable=\count283
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\csquotes.
+sty"
 Package: csquotes 2019-12-06 v5.2j context-sensitive quotations (JAW)
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/etoolbox\etoolbox.
+sty"
 Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
 \etb@tempcnta=\count284
 )
@@ -373,16 +412,19 @@ Package: etoolbox 2019/09/21 v2.5h e-TeX tools for LaTeX (JAW)
 \csq@tshold=\count290
 \csq@ltx@everypar=\toks28
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.def
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\csquotes.
+def"
 File: csquotes.def 2019-12-06 v5.2j csquotes generic definitions (JAW)
 )
 Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
 Package csquotes Info: ... configuration file loaded successfully.
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/csquotes/csquotes.cfg
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\csquotes.
+cfg"
 File: csquotes.cfg 
 ))
-(/usr/local/texlive/2019/texmf-dist/tex/latex/tools/longtable.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/tools\longtable.st
+y"
 Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \LTleft=\skip62
 \LTright=\skip63
@@ -400,7 +442,8 @@ Package: longtable 2020/01/07 v4.13 Multi-page Table package (DPC)
 \c@LT@chunks=\count295
 \LT@p@ftn=\toks29
 )
-(/usr/local/texlive/2019/texmf-dist/tex/latex/changepage/changepage.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/changepage\changep
+age.sty"
 Package: changepage 2009/10/20 v1.0c check page and change page layout
 \c@cp@cntr=\count296
 \cp@tempcnt=\count297
@@ -410,31 +453,34 @@ Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'croatian'.
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/l3backend/l3backend-pdfmode.def
-File: l3backend-pdfmode.def 2020-02-23 L3 backend support: PDF mode
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/l3backend\l3backen
+d-pdfmode.def"
+File: l3backend-pdfmode.def 2020-03-12 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count298
 \l__pdf_internal_box=\box100
 )
-(./zavrsni.aux)
+(C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/lat
+\zavrsni.aux)
 \openout1 = `zavrsni.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Trying to load font information for T1+ptm on input line 20
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Trying to load font information for T1+ptm on input line 22
 .
- (/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1ptm.fd
+
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1ptm.fd"
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 *geometry* driver: auto-detecting
@@ -471,7 +517,9 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-(/usr/local/texlive/2019/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/context/base/mkii\supp-p
+df.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count299
 \scratchdimen=\dimen196
@@ -484,69 +532,49 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 \MPnumerator=\count303
 \makeMPintoPDFobject=\count304
 \everyMPtoPDFconversion=\toks31
-) (/usr/local/texlive/2019/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+)
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/epstopdf-pkg\epsto
+pdf-base.sty"
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
+)
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: longtable package is loaded.
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/caption/ltcaption.sty
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\ltcaption.
+sty"
 Package: ltcaption 2018/08/26 v1.4a longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 31
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 33
 .
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1phv.fd
-File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
-
-
-LaTeX Warning: Font shape declaration has incorrect series value `mc'.
-               It should not contain an `m'! Please correct it.
-               Found on input line 20.
-
-
-LaTeX Warning: Font shape declaration has incorrect series value `mc'.
-               It should not contain an `m'! Please correct it.
-               Found on input line 23.
-
-
-LaTeX Warning: Font shape declaration has incorrect series value `mc'.
-               It should not contain an `m'! Please correct it.
-               Found on input line 26.
-
-
-LaTeX Warning: Font shape declaration has incorrect series value `mc'.
-               It should not contain an `m'! Please correct it.
-               Found on input line 46.
-
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1phv.fd"
+File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 33.
 
- (/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsa.fd
+
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 33.
 
-
-(/usr/local/texlive/2019/texmf-dist/tex/latex/amsfonts/umsb.fd
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd"
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 34
+{C:/Users/kuzmi/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 36
 .
 
-(/usr/local/texlive/2019/texmf-dist/tex/latex/psnfss/t1pcr.fd
+("C:\Users\kuzmi\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1pcr.fd"
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [1] [3]
-(./zavrsni.toc [4
+)
+[1] [3]
+(C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/lat
+\zavrsni.toc [4
 
 ])
 \tf@toc=\write3
@@ -561,132 +589,141 @@ Poglavlje 2.
 [2
 
 ]
-<img/jKxBPc.png, id=40, 179.16937pt x 178.41656pt>
+<img/jKxBPc.png, id=39, 179.16937pt x 178.41656pt>
 File: img/jKxBPc.png Graphic file (type png)
 <use img/jKxBPc.png>
-Package pdftex.def Info: img/jKxBPc.png  used on input line 128.
+Package pdftex.def Info: img/jKxBPc.png  used on input line 130.
 (pdftex.def)             Requested size: 89.58446pt x 89.20805pt.
 
-Overfull \hbox (3.69606pt too wide) in paragraph at lines 146--146
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 148--148
  []|\T1/ptm/m/n/12 130| 
  []
 
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 136--149
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 138--151
 []$[]$ 
  []
 
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 150--163
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 152--165
 []$[]$ 
  []
 
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 180--193
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 182--195
 []$[]$ 
  []
 
 
-Overfull \hbox (3.69606pt too wide) in paragraph at lines 204--204
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 206--206
  []|\T1/ptm/m/n/12 171| 
  []
 
 
-Overfull \hbox (3.69606pt too wide) in paragraph at lines 204--204
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 206--206
  []|\T1/ptm/m/n/12 190| 
  []
 
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 194--207
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 196--209
 []$[]$ 
  []
 
-[3 <./img/jKxBPc.png>]
-<img/1.jpg, id=46, 48.18pt x 48.18pt>
+[3 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/
+lat/img/jKxBPc.png>]
+<img/1.jpg, id=45, 48.18pt x 48.18pt>
 File: img/1.jpg Graphic file (type jpg)
 <use img/1.jpg>
-Package pdftex.def Info: img/1.jpg  used on input line 225.
+Package pdftex.def Info: img/1.jpg  used on input line 227.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
-<img/2.jpg, id=47, 48.18pt x 48.18pt>
+<img/2.jpg, id=46, 48.18pt x 48.18pt>
 File: img/2.jpg Graphic file (type jpg)
 <use img/2.jpg>
-Package pdftex.def Info: img/2.jpg  used on input line 229.
+Package pdftex.def Info: img/2.jpg  used on input line 231.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
-<img/3.jpg, id=48, 48.18pt x 48.18pt>
+<img/3.jpg, id=47, 48.18pt x 48.18pt>
 File: img/3.jpg Graphic file (type jpg)
 <use img/3.jpg>
-Package pdftex.def Info: img/3.jpg  used on input line 233.
+Package pdftex.def Info: img/3.jpg  used on input line 235.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
-<img/4.jpg, id=49, 48.18pt x 48.18pt>
+<img/4.jpg, id=48, 48.18pt x 48.18pt>
 File: img/4.jpg Graphic file (type jpg)
 <use img/4.jpg>
-Package pdftex.def Info: img/4.jpg  used on input line 237.
+Package pdftex.def Info: img/4.jpg  used on input line 239.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
- [4 <./img/1.jpg> <./img/2.jpg> <./img/3.jpg> <./img/4.jpg>]
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 283--298
+ [4 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/1.jpg> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-
+on-LBPCM/zav/lat/img/2.jpg> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estim
+ation-based-on-LBPCM/zav/lat/img/3.jpg> <C:/Users/kuzmi/PycharmProjects/Crowd-d
+ensity-estimation-based-on-LBPCM/zav/lat/img/4.jpg>]
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 285--300
 []$[]$ 
  []
 
 [5]
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 322--342
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 324--344
 []$[]$ 
  []
 
 [6]
-<img/krivo.png, id=59, 324.21124pt x 186.6975pt>
+<img/krivo.png, id=58, 324.21124pt x 186.6975pt>
 File: img/krivo.png Graphic file (type png)
 <use img/krivo.png>
-Package pdftex.def Info: img/krivo.png  used on input line 421.
+Package pdftex.def Info: img/krivo.png  used on input line 423.
 (pdftex.def)             Requested size: 161.0266pt x 92.72748pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 418--424
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 420--426
 []$[]$ 
  []
 
-[7 <./img/krivo.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 439--440
+[7 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/
+lat/img/krivo.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 441--442
 
  []
 
-<img/klas.png, id=63, 500.87125pt x 254.9525pt>
+<img/klas.png, id=62, 500.87125pt x 254.9525pt>
 File: img/klas.png Graphic file (type png)
 <use img/klas.png>
-Package pdftex.def Info: img/klas.png  used on input line 447.
+Package pdftex.def Info: img/klas.png  used on input line 449.
 (pdftex.def)             Requested size: 330.05322pt x 168.0085pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 444--450
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 446--452
 []$[]$ 
  []
 
-[8 <./img/klas.png>]
-<img/linearniklasifikator.png, id=68, 484.81125pt x 349.305pt>
+[8 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/
+lat/img/klas.png>]
+<img/linearniklasifikator.png, id=67, 484.81125pt x 349.305pt>
 File: img/linearniklasifikator.png Graphic file (type png)
 <use img/linearniklasifikator.png>
-Package pdftex.def Info: img/linearniklasifikator.png  used on input line 483.
+Package pdftex.def Info: img/linearniklasifikator.png  used on input line 485.
 (pdftex.def)             Requested size: 242.40503pt x 174.65207pt.
-<img/slika10.png, id=69, 550.055pt x 377.41pt>
+<img/slika10.png, id=68, 550.055pt x 377.41pt>
 File: img/slika10.png Graphic file (type png)
 <use img/slika10.png>
-Package pdftex.def Info: img/slika10.png  used on input line 506.
+Package pdftex.def Info: img/slika10.png  used on input line 508.
 (pdftex.def)             Requested size: 275.02682pt x 188.70453pt.
- [9 <./img/linearniklasifikator.png>] [10 <./img/slika10.png>]
-<img/neseparabilni.png, id=76, 258.9675pt x 238.8925pt>
+ [9 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/linearniklasifikator.png>] [10 <C:/Users/kuzmi/PycharmProjects/Crowd-d
+ensity-estimation-based-on-LBPCM/zav/lat/img/slika10.png>]
+<img/neseparabilni.png, id=75, 258.9675pt x 238.8925pt>
 File: img/neseparabilni.png Graphic file (type png)
 <use img/neseparabilni.png>
-Package pdftex.def Info: img/neseparabilni.png  used on input line 593.
+Package pdftex.def Info: img/neseparabilni.png  used on input line 595.
 (pdftex.def)             Requested size: 161.0266pt x 148.54922pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 590--596
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 592--598
 []$[]$ 
  []
 
-<img/3d.png, id=77, 401.5pt x 314.17375pt>
+<img/3d.png, id=76, 401.5pt x 314.17375pt>
 File: img/3d.png Graphic file (type png)
 <use img/3d.png>
-Package pdftex.def Info: img/3d.png  used on input line 600.
+Package pdftex.def Info: img/3d.png  used on input line 602.
 (pdftex.def)             Requested size: 161.0266pt x 126.00763pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 597--603
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 599--605
 []$[]$ 
  []
 
@@ -697,236 +734,289 @@ Overfull \vbox (6.84654pt too high) has occurred while \output is active []
 Overfull \vbox (3.55026pt too high) has occurred while \output is active []
 
 
-[11 <./img/neseparabilni.png> <./img/3d.png>] [12]
-<img/Gradient2.png, id=87, 1284.8pt x 640.3925pt>
+[11 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/neseparabilni.png> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estim
+ation-based-on-LBPCM/zav/lat/img/3d.png>] [12]
+<img/Gradient2.png, id=86, 1284.8pt x 640.3925pt>
 File: img/Gradient2.png Graphic file (type png)
 <use img/Gradient2.png>
-Package pdftex.def Info: img/Gradient2.png  used on input line 652.
+Package pdftex.def Info: img/Gradient2.png  used on input line 654.
 (pdftex.def)             Requested size: 330.05322pt x 164.50471pt.
- [13 <./img/Gradient2.png>]
-<img/2982.jpg, id=92, 192.72pt x 144.54pt>
+ [13 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/za
+v/lat/img/Gradient2.png>]
+<img/2982.jpg, id=91, 192.72pt x 144.54pt>
 File: img/2982.jpg Graphic file (type jpg)
 <use img/2982.jpg>
-Package pdftex.def Info: img/2982.jpg  used on input line 713.
+Package pdftex.def Info: img/2982.jpg  used on input line 715.
 (pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 711--716
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 713--718
 []$[]$ 
  []
 
-<img/sobel.jpg, id=93, 192.72pt x 144.54pt>
+<img/sobel.jpg, id=92, 192.72pt x 144.54pt>
 File: img/sobel.jpg Graphic file (type jpg)
 <use img/sobel.jpg>
-Package pdftex.def Info: img/sobel.jpg  used on input line 719.
+Package pdftex.def Info: img/sobel.jpg  used on input line 721.
 (pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 717--722
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 719--724
 []$[]$ 
  []
 
-<img/sobely.jpg, id=94, 192.72pt x 144.54pt>
+<img/sobely.jpg, id=93, 192.72pt x 144.54pt>
 File: img/sobely.jpg Graphic file (type jpg)
 <use img/sobely.jpg>
-Package pdftex.def Info: img/sobely.jpg  used on input line 725.
+Package pdftex.def Info: img/sobely.jpg  used on input line 727.
 (pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 723--728
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 725--730
 []$[]$ 
  []
 
-<img/sobelx.jpg, id=95, 192.72pt x 144.54pt>
+<img/sobelx.jpg, id=94, 192.72pt x 144.54pt>
 File: img/sobelx.jpg Graphic file (type jpg)
 <use img/sobelx.jpg>
-Package pdftex.def Info: img/sobelx.jpg  used on input line 731.
+Package pdftex.def Info: img/sobelx.jpg  used on input line 733.
 (pdftex.def)             Requested size: 161.0266pt x 120.76874pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 729--734
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 731--736
 []$[]$ 
  []
 
-[14 <./img/2982.jpg> <./img/sobel.jpg> <./img/sobely.jpg> <./img/sobelx.jpg>]
-[15]
+[14 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/2982.jpg> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-bas
+ed-on-LBPCM/zav/lat/img/sobel.jpg> <C:/Users/kuzmi/PycharmProjects/Crowd-densit
+y-estimation-based-on-LBPCM/zav/lat/img/sobely.jpg> <C:/Users/kuzmi/PycharmProj
+ects/Crowd-density-estimation-based-on-LBPCM/zav/lat/img/sobelx.jpg>] [15]
 Poglavlje 3.
-<img/noflow.jpg, id=103, 144.54pt x 108.405pt>
+<img/noflow.jpg, id=102, 144.54pt x 108.405pt>
 File: img/noflow.jpg Graphic file (type jpg)
 <use img/noflow.jpg>
-Package pdftex.def Info: img/noflow.jpg  used on input line 769.
+Package pdftex.def Info: img/noflow.jpg  used on input line 771.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/freeflow.jpg, id=104, 144.54pt x 108.405pt>
+<img/freeflow.jpg, id=103, 144.54pt x 108.405pt>
 File: img/freeflow.jpg Graphic file (type jpg)
 <use img/freeflow.jpg>
-Package pdftex.def Info: img/freeflow.jpg  used on input line 774.
+Package pdftex.def Info: img/freeflow.jpg  used on input line 776.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/restrictedflow.jpg, id=105, 144.54pt x 108.405pt>
+<img/restrictedflow.jpg, id=104, 144.54pt x 108.405pt>
 File: img/restrictedflow.jpg Graphic file (type jpg)
 <use img/restrictedflow.jpg>
-Package pdftex.def Info: img/restrictedflow.jpg  used on input line 779.
+Package pdftex.def Info: img/restrictedflow.jpg  used on input line 781.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/denseflow.jpg, id=106, 144.54pt x 108.405pt>
+<img/denseflow.jpg, id=105, 144.54pt x 108.405pt>
 File: img/denseflow.jpg Graphic file (type jpg)
 <use img/denseflow.jpg>
-Package pdftex.def Info: img/denseflow.jpg  used on input line 784.
+Package pdftex.def Info: img/denseflow.jpg  used on input line 786.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/jammedflow.jpg, id=107, 144.54pt x 108.405pt>
+<img/jammedflow.jpg, id=106, 144.54pt x 108.405pt>
 File: img/jammedflow.jpg Graphic file (type jpg)
 <use img/jammedflow.jpg>
-Package pdftex.def Info: img/jammedflow.jpg  used on input line 789.
+Package pdftex.def Info: img/jammedflow.jpg  used on input line 791.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
 [16
 
- <./img/noflow.jpg> <./img/freeflow.jpg> <./img/restrictedflow.jpg> <./img/dens
-eflow.jpg> <./img/jammedflow.jpg>] [17]
+ <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/la
+t/img/noflow.jpg> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-base
+d-on-LBPCM/zav/lat/img/freeflow.jpg> <C:/Users/kuzmi/PycharmProjects/Crowd-dens
+ity-estimation-based-on-LBPCM/zav/lat/img/restrictedflow.jpg> <C:/Users/kuzmi/P
+ycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/lat/img/denseflow.jp
+g> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/
+lat/img/jammedflow.jpg>]
+
+! LaTeX Error: There's no line here to end.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.856 \newline
+              
+? 
+[17]
+<img/somprobajzbrisati.png, id=113, 2398.9625pt x 2964.07375pt>
+File: img/somprobajzbrisati.png Graphic file (type png)
+<use img/somprobajzbrisati.png>
+Package pdftex.def Info: img/somprobajzbrisati.png  used on input line 866.
+(pdftex.def)             Requested size: 431.79462pt x 533.51025pt.
+
+Overfull \hbox (19.22964pt too wide) in paragraph at lines 866--867
+ [][] 
+ []
+
+[18 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/somprobajzbrisati.png>]
 Poglavlje 4.
-<img/startpage.png, id=114, 780.9175pt x 770.88pt>
+<img/startpage.png, id=118, 780.9175pt x 770.88pt>
 File: img/startpage.png Graphic file (type png)
 <use img/startpage.png>
-Package pdftex.def Info: img/startpage.png  used on input line 861.
+Package pdftex.def Info: img/startpage.png  used on input line 890.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
-[18
+[19
 
- <./img/startpage.png>]
-<img/mainscreen.png, id=119, 780.9175pt x 770.88pt>
+ <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/la
+t/img/startpage.png>]
+<img/mainscreen.png, id=123, 780.9175pt x 770.88pt>
 File: img/mainscreen.png Graphic file (type png)
 <use img/mainscreen.png>
-Package pdftex.def Info: img/mainscreen.png  used on input line 875.
+Package pdftex.def Info: img/mainscreen.png  used on input line 904.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
- [19 <./img/mainscreen.png>]
-<img/preprocessdata.png, id=124, 780.9175pt x 770.88pt>
+ [20 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/za
+v/lat/img/mainscreen.png>]
+<img/preprocessdata.png, id=129, 780.9175pt x 770.88pt>
 File: img/preprocessdata.png Graphic file (type png)
 <use img/preprocessdata.png>
-Package pdftex.def Info: img/preprocessdata.png  used on input line 921.
+Package pdftex.def Info: img/preprocessdata.png  used on input line 950.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
- [20 <./img/preprocessdata.png>]
-<img/seeonpic.png, id=130, 780.9175pt x 770.88pt>
+ [21 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/za
+v/lat/img/preprocessdata.png>]
+<img/seeonpic.png, id=134, 780.9175pt x 770.88pt>
 File: img/seeonpic.png Graphic file (type png)
 <use img/seeonpic.png>
-Package pdftex.def Info: img/seeonpic.png  used on input line 935.
+Package pdftex.def Info: img/seeonpic.png  used on input line 964.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
- [21 <./img/seeonpic.png>]
-<img/splitted.png, id=135, 869.2475pt x 299.1175pt>
+ [22 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/za
+v/lat/img/seeonpic.png>]
+<img/splitted.png, id=139, 869.2475pt x 299.1175pt>
 File: img/splitted.png Graphic file (type png)
 <use img/splitted.png>
-Package pdftex.def Info: img/splitted.png  used on input line 953.
+Package pdftex.def Info: img/splitted.png  used on input line 982.
 (pdftex.def)             Requested size: 347.69284pt x 119.64487pt.
-<img/dataannotation.png, id=136, 780.9175pt x 770.88pt>
+<img/dataannotation.png, id=140, 780.9175pt x 770.88pt>
 File: img/dataannotation.png Graphic file (type png)
 <use img/dataannotation.png>
-Package pdftex.def Info: img/dataannotation.png  used on input line 966.
+Package pdftex.def Info: img/dataannotation.png  used on input line 995.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
- [22 <./img/splitted.png> <./img/dataannotation.png>] [23]
-<img/fvc1.png, id=144, 780.9175pt x 770.88pt>
+ [23 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/za
+v/lat/img/splitted.png> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimatio
+n-based-on-LBPCM/zav/lat/img/dataannotation.png>]
+[24]
+<img/fvc1.png, id=148, 780.9175pt x 770.88pt>
 File: img/fvc1.png Graphic file (type png)
 <use img/fvc1.png>
-Package pdftex.def Info: img/fvc1.png  used on input line 1022.
+Package pdftex.def Info: img/fvc1.png  used on input line 1051.
 (pdftex.def)             Requested size: 273.32521pt x 269.81204pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1020--1025
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1049--1054
 []$[]$ 
  []
 
-<img/fvc2.png, id=145, 780.9175pt x 770.88pt>
+<img/fvc2.png, id=149, 780.9175pt x 770.88pt>
 File: img/fvc2.png Graphic file (type png)
 <use img/fvc2.png>
-Package pdftex.def Info: img/fvc2.png  used on input line 1030.
+Package pdftex.def Info: img/fvc2.png  used on input line 1059.
 (pdftex.def)             Requested size: 273.32521pt x 269.81204pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1028--1033
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1057--1062
 []$[]$ 
  []
 
-[24 <./img/fvc1.png> <./img/fvc2.png>]
-Overfull \hbox (3.77676pt too wide) in paragraph at lines 1051--1093
+[25 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/fvc1.png> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-bas
+ed-on-LBPCM/zav/lat/img/fvc2.png>]
+Overfull \hbox (3.77676pt too wide) in paragraph at lines 1080--1122
 [][] 
  []
 
-<img/fvc3.png, id=151, 780.9175pt x 770.88pt>
+<img/fvc3.png, id=155, 780.9175pt x 770.88pt>
 File: img/fvc3.png Graphic file (type png)
 <use img/fvc3.png>
-Package pdftex.def Info: img/fvc3.png  used on input line 1137.
+Package pdftex.def Info: img/fvc3.png  used on input line 1166.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1135--1140
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1164--1169
 []$[]$ 
  []
 
-[25] [26]
-<img/cl1.png, id=159, 780.9175pt x 770.88pt>
+[26] [27]
+<img/cl1.png, id=163, 780.9175pt x 770.88pt>
 File: img/cl1.png Graphic file (type png)
 <use img/cl1.png>
-Package pdftex.def Info: img/cl1.png  used on input line 1152.
+Package pdftex.def Info: img/cl1.png  used on input line 1181.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1150--1155
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1179--1184
 []$[]$ 
  []
 
-[27 <./img/fvc3.png>] [28 <./img/cl1.png>]
-<img/cl2.png, id=168, 780.9175pt x 770.88pt>
+[28 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/fvc3.png>] [29 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimatio
+n-based-on-LBPCM/zav/lat/img/cl1.png>]
+<img/cl2.png, id=172, 780.9175pt x 770.88pt>
 File: img/cl2.png Graphic file (type png)
 <use img/cl2.png>
-Package pdftex.def Info: img/cl2.png  used on input line 1194.
+Package pdftex.def Info: img/cl2.png  used on input line 1223.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
-
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1192--1197
-[]$[]$ 
- []
-
-<img/cl3.png, id=169, 780.9175pt x 770.88pt>
-File: img/cl3.png Graphic file (type png)
-<use img/cl3.png>
-Package pdftex.def Info: img/cl3.png  used on input line 1223.
-(pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
 
 Overfull \hbox (17.62482pt too wide) in paragraph at lines 1221--1226
 []$[]$ 
  []
 
-[29 <./img/cl2.png>]
-<img/cl5.png, id=174, 780.9175pt x 770.88pt>
-File: img/cl5.png Graphic file (type png)
-<use img/cl5.png>
-Package pdftex.def Info: img/cl5.png  used on input line 1231.
+<img/cl3.png, id=173, 780.9175pt x 770.88pt>
+File: img/cl3.png Graphic file (type png)
+<use img/cl3.png>
+Package pdftex.def Info: img/cl3.png  used on input line 1252.
 (pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1229--1235
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1250--1255
 []$[]$ 
  []
 
-[30 <./img/cl3.png> <./img/cl5.png>] [31]
+[30 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/cl2.png>]
+<img/cl5.png, id=178, 780.9175pt x 770.88pt>
+File: img/cl5.png Graphic file (type png)
+<use img/cl5.png>
+Package pdftex.def Info: img/cl5.png  used on input line 1260.
+(pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1258--1264
+[]$[]$ 
+ []
+
+[31 <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav
+/lat/img/cl3.png> <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-base
+d-on-LBPCM/zav/lat/img/cl5.png>] [32]
 Poglavlje 5.
-<img/sw1.png, id=183, 780.9175pt x 770.88pt>
+<img/sw1.png, id=188, 780.9175pt x 770.88pt>
 File: img/sw1.png Graphic file (type png)
 <use img/sw1.png>
-Package pdftex.def Info: img/sw1.png  used on input line 1278.
+Package pdftex.def Info: img/sw1.png  used on input line 1307.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1276--1281
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1305--1310
 []$[]$ 
  []
 
-[32
+[33
 
- <./img/sw1.png>] [33] [34] [35]
+ <C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/la
+t/img/sw1.png>] [34] [35] [36]
 Poglavlje 6.
-[36
-
-]
-Poglavlje 7.
 [37
 
 ]
+Poglavlje 7.
+[38
+
+]
 Poglavlje 8.
-(./zavrsni.bbl [38
 
-]) [39
+(C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/lat
+\zavrsni.bbl [39
 
-] (./zavrsni.lof
+]) [40
+
+]
+(C:/Users/kuzmi/PycharmProjects/Crowd-density-estimation-based-on-LBPCM/zav/lat
+\zavrsni.lof
 Overfull \hbox (0.63914pt too wide) in paragraph at lines 18--18
  [][] []\T1/ptm/m/n/12 Prikaz smjera gra-di-jenta pla-vim stre-li-cama, tam-nij
 a boja oz-na-£ava ve¢e 
  []
 
-[40
+[41
 
 ]
 Overfull \hbox (3.60315pt too wide) in paragraph at lines 38--38
@@ -938,50 +1028,53 @@ a te-me-lju gus-to¢e mno²-
 \tf@lof=\write4
 \openout4 = `zavrsni.lof'.
 
- [41] [42]
+ [42] [43]
 Poglavlje A.
-[43
+[44
 
-] [44] [45]
+] [45] [46]
 Poglavlje B.
-[46
+[47
 
 ]
-Overfull \hbox (11.72679pt too wide) in paragraph at lines 1635--1653
+Overfull \hbox (11.72679pt too wide) in paragraph at lines 1664--1682
 [][] 
  []
 
-[47] (./zavrsni.aux) ) 
+[48] (zavrsni.aux) ) 
 Here is how much of TeX's memory you used:
- 7548 strings out of 480994
- 108074 string characters out of 5912127
- 390923 words of memory out of 5000000
- 22873 multiletter control sequences out of 15000+600000
- 599068 words of font info for 98 fonts, out of 8000000 for 9000
+ 7561 strings out of 480930
+ 111557 string characters out of 2899761
+ 392196 words of memory out of 3000000
+ 23239 multiletter control sequences out of 15000+200000
+ 599068 words of font info for 98 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 49i,14n,46p,818b,514s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2019/texmf-dist/fonts/enc/dvips/base/
-8r.enc}</usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmex1
-0.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12
-.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.p
-fb></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
-></usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><
-/usr/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></us
-r/local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/l
-ocal/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
-cal/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/loca
-l/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/
-texlive/2019/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive
-/2019/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2019/t
-exmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2019/texmf-di
-st/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/t
-ype1/urw/times/utmbi8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/urw/
-times/utmr8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/urw/times/utmr
-8a.pfb></usr/local/texlive/2019/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on zavrsni.pdf (52 pages, 2427612 bytes).
+ 49i,14n,46p,897b,514s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/enc
+/dvips/base/8r.enc}<C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmex10.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2
+.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/kuzmi/AppData/Local/Prog
+rams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/kuzmi/AppDat
+a/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/
+kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pf
+b><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts
+/cm/cmr6.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/publ
+ic/amsfonts/cm/cmr8.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts
+/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiK
+TeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/kuzmi/AppData/Local/
+Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/kuzmi/Ap
+pData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/courier/ucrro8a.pfb><C:/Users/k
+uzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/
+Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.p
+fb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmb
+8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/
+utmbi8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/t
+imes/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/u
+rw/times/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/typ
+e1/urw/times/utmri8a.pfb>
+Output written on zavrsni.pdf (53 pages, 3438357 bytes).
 PDF statistics:
- 297 PDF objects out of 1000 (max. 8388607)
- 173 compressed objects within 2 object streams
+ 299 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 176 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 181 words of extra memory for PDF output out of 10000 (max. 10000000)
 
