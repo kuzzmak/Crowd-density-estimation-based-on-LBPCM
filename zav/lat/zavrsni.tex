@@ -810,20 +810,28 @@ Na kraju se pristupa evaluaciji samih klasifikatora i eventualnoj izmjeni
 saih parametara nadi boljeg rezultata u sljedećoj iteraciji učenja. Za učenje
 klasifikatora korisiti se \(70\%\) izvornih slika, a za testiranje ostatak.
 
+\newpage
+
+Arhitektura, odnosno izgled, opisanog sustava prikazana je na slici 3.2.
+Na samoj slici prikazano je nekoliko faza koje su i kasnije u poglavlju 4 
+detaljnije opisane. Prva faza obuhvaća samu pripremu podslika koje se 
+koriste za stvaranje vektora značajki. Nakon prve faze događa se grananje
+u dva dijela: prvi dio obuhvaća klasifikatore koji koriste slike sivih razina 
+nad kojima se primjenjuje operator LBP, dok drugi dio predstavlja klasifikatore
+koji koriste slike sivih razina nad kojima se primjenjuje operator gradijenta
+i tek nakon toga operator LBP. Nakon što su dobiveni vektori značajki 
+svakog, oni se prosljeđuju odgovarajućem klasifikatoru kako bi se izvršila
+ocjena njihove točnosti, odnosno validacija na testnom skupu podataka.
+Jednom kada su ocijenjeni klasifikatori moguće je napraviti prividnu 
+fuziju u jedan klasifikator.
+
 \bigbreak
 
-Cijeli sustav podijeljen je u dva dijela koji se na kraju sjedinjavaju u 
-jednu cjelinu. Prvi dio sastoji se od klasifikator koji služi samo za 
-klasifikaciju slika sivih razina (klasifikator može biti \textit{k}-NN ili SVM)
-dok drugi dio služi samo za klasifikaciju slika nad kojima se primjenjuje
-operator gradijenta (klasifikator može biti \textit{k}-NN ili SVM).
-
-\bigbreak
 
 Sjedinjenje dvaju različitih klasifikatora obavlja se pomoću nove vrste
 klasifikatora - glasačkog klasifikatora (\textit{engl. voting classifier}).
 Ovakva vrsta klasifikatora pogodna je zbog načina na koji daje važnost pojedinim
-klasifikatoru od kojih se sastoji. Na odluku klasifikatora može se utjecati
+klasifikatorima od kojih se sastoji. Na odluku klasifikatora može se utjecati
 na više načina. Prvi je \enquote{tvrdo glasanje} (većinsko glasanje), gdje svaki od klasifikator glasa
 za neku labelu, a najbrojnija labela pobjeđuje i dodjeljuje se novome uzorku 
 koji se klasificira. Ovakvo glasanje je moguće i modificirati na način da 
@@ -838,16 +846,35 @@ uprosječe se, pa se na temelju tih novih vjerojatnosnih vrijednosti određuje
 pripadnost dosad neviđenog uzorka. Pošto su poznate vjerojatnosti klasifikacije
 moguće je množiti svaku vjerojatnost nekom težinom i time utjecati na ishod odluke.
 
+\bigbreak
 
-\begin{center}
+Odabrana je druga vrsta glasanja, tzv. \enquote{meko glasanje} jer je eksperimentom
+utvrđeno da daje bolje rezultate nad skupom podataka koji se koristi u radu.  
 
-SLIKA ARHITEKTURE SUSTAVA
+\newline
 
-\end{center}
+Primjer dobivanja vjerojatnosti glasačkog klasifikatora
+
+\[y = argmax\]
+
+\newpage
+
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.18]{img/somprobajzbrisati.png}
+\caption{Prikaz arhitekture sustava}
+\end{figure}
+
+
+
+
+
+
+
 
 \chapter{Upute za korištenje i prikaz međukoraka}
 
-rogramska podrška ovdje obrađivanog postupaka pisana je u Python 3.6 
+Programska podrška ovdje obrađivanog postupaka pisana je u Python 3.6 
 programskom jeziku. Usto je potrebno instalirati dodatne Python 
 knjižnice: OpenCV, scikit-learn i PIL.
 
