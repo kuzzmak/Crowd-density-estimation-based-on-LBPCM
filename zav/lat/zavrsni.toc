@@ -11,9 +11,9 @@
 \contentsline {chapter}{\numberline {3}Opis postupka}{16}%
 \contentsline {chapter}{\numberline {4}Upute za korištenje i prikaz međukoraka}{20}%
 \contentsline {subsection}{\numberline {4.0.1}Podjela slika u podslike}{22}%
-\contentsline {subsection}{\numberline {4.0.2}Označavanje podslika}{23}%
-\contentsline {subsection}{\numberline {4.0.3}Stvaranje vektora značajki}{24}%
-\contentsline {subsection}{\numberline {4.0.4}Klasifikacija slike postojećim modelima}{30}%
+\contentsline {subsection}{\numberline {4.0.2}Označavanje podslika}{24}%
+\contentsline {subsection}{\numberline {4.0.3}Stvaranje vektora značajki}{25}%
+\contentsline {subsection}{\numberline {4.0.4}Klasifikacija slike postojećim modelima}{29}%
 \contentsline {chapter}{\numberline {5}Tehnika klizećeg okna}{34}%
 \contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{38}%
 \contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{39}%

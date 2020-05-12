@@ -9,6 +9,7 @@
 \usepackage{csquotes}
 \usepackage{longtable}
 \usepackage{changepage}
+\usepackage{url}
 
 \newcolumntype {z}[1] {
 @ {{\centering \parbox [c]{\tabcolsep}{\rule {0pt}{#1 + 2\tabcolsep}}}}
@@ -842,13 +843,13 @@ Haralickovih značajki svakog okna, odnosno vektor značajki neke podslike
 sastoji se od vrijednosti Haralickovih značajki njezinih okana. Po završteku 
 stvaranja, vektori značajki, se predaju \textit{k}-NN klasifikatoru ili SVM-u.
 
-\bigbreak
+\newpage
 
 Na kraju se pristupa evaluaciji samih klasifikatora i eventualnoj izmjeni
 samih parametara u nadi boljeg rezultata u sljedećoj iteraciji učenja. Za učenje
 klasifikatora korisiti se \(70\%\) izvornih slika, a za testiranje ostatak.
 
-\newpage
+\bigbreak
 
 Prethodno opisan postupak moguće je vidjeti na slici 3.2. gdje je
 prikazana arhitektura sustava i pojedine faze koje su kasnije u poglavlju 4 
@@ -895,7 +896,7 @@ moguće je množiti svaku vjerojatnost nekom težinom i time utjecati na ishod o
 Odabrana je druga vrsta glasanja, tzv. \enquote{meko glasanje} jer je eksperimentom
 utvrđeno da daje bolje rezultate nad skupom podataka koji se koristi u radu.  
 
-\bigbreak
+\newpage
 
 Primjer dobivanja vjerojatnosti glasačkog klasifikatora
 
@@ -903,7 +904,7 @@ Primjer dobivanja vjerojatnosti glasačkog klasifikatora
 
 gdje \(w_j\) predstavlja težinu pridijeljenu \(j\)-tom klasifikatoru.
 
-\newpage
+\bigbreak
 
 Uzmimo 3 klasifikatora i dva moguća razreda pripadnosti svakog uzorka 
 
@@ -951,7 +952,7 @@ biti značajno lošiji od svakog pojedinog klasifikatora.
 
 Programska podrška ovdje obrađivanog postupaka pisana je u Python 3.6 
 programskom jeziku. Usto je potrebno instalirati dodatne Python 
-knjižnice: OpenCV, scikit-learn i PIL.
+knjižnice: OpenCV\footnote{\cite{opencv.org}}, scikit-learn\footnote{\cite{scikit}} i PIL\footnote{\cite{pil}}.
 
 Za pokretanje aplikacije putem grafičkog sučelja potrebno je kliknuti 
 na app.py ili putem terminala upisati naredbu „python app.py“ iz 
@@ -960,7 +961,7 @@ otvoren je sljedeći prozor.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.4]{img/startpage.png}
+\includegraphics[scale=0.35]{img/startpage.png}
 \caption{Prikaz početnog prozora nakon pokretanja aplikacije}
 \end{figure}
 
@@ -1016,15 +1017,19 @@ korak mogao preskočiti pa bi se uštedjelo vrijeme.
 
 \bigbreak
 
-Aplikacija nudi potporu za izvođenje navedenog postupka. Kako bi se izvorne
-slike podijelile u manje podslike potrebno je pritisnuti na gumb \enquote{Preprocess data}
-koji otvara stranicu sljedećeg izgleda.
-
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.4]{img/preprocessdata.png}
 \caption{Prikaz stranice za obradu izvornih slika}
 \end{figure}
+
+\bigbreak
+
+Aplikacija nudi potporu za izvođenje navedenog postupka. Kako bi se izvorne
+slike podijelile u manje podslike potrebno je pritisnuti na gumb \enquote{Preprocess data}
+koji otvara stranicu izgleda na slici 4.3.
+
+\bigbreak
 
 Prozor na samom vrhu ima gumb za odabir direktorija koji sadrži izvorne slike
 za učenje i testiranje. Po odabiru navedenog direktorija mogu se upisati 
@@ -1050,8 +1055,6 @@ direktorij \enquote{preprocessedData}. Taj direktorij nakon završenog postupka
 sadrži 3536 podslika u sivim razinama, ukoliko su korištene dienzije 192 x 144, 
 pa je moguće prijeću u sljedeću fazu, a to je označavanje svake pojedine podslike.
 
-\newpage
-
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.4]{img/splitted.png}
@@ -1067,9 +1070,11 @@ u glavnom prozoru aplikacije. Nakon pritiska na gumb otvara se sljedeći prozor.
 
 \begin{figure}[ht]
 \centering
-\includegraphics[scale=0.4]{img/dataannotation.png}
+\includegraphics[scale=0.38]{img/dataannotation.png}
 \caption{Prikaz prozora za označavanje podslika}
 \end{figure}
+
+\newpage
 
 Najgornji dio prozora prikazuje ime trenutne podslike koju je potrebno označiti.
 Ispod naziva se nalazi konkretna slika koja se označava, a i prisutan je brojač
@@ -1246,16 +1251,11 @@ bi se kasnije prilikom faze klasifikacije mogao učitati ispravan model.
 
 Jednom kada je stvaranje vektora značajki završeno i kada je model spremljen 
 moguće je pristupiti postupku klasifikacije dosad neviđene slike. 
+
 Kako bi se pristupilo stranici za klasifikaciju potrebno je 
 pritisnuti gumb \enquote{Classification} koji se nalazi na glavnoj 
 stranici aplikacije. Izgled stranice za klasifikaciju prikazan je na 
 slici 4.10.
-
-\begin{minipage}{\linewidth}
-\centering
-\includegraphics[scale=0.4]{img/cl1.png}
-\captionof{figure}{Prikaz stranice za odabir jednog modela}
-\end{minipage}
 
 \bigbreak 
 
@@ -1264,9 +1264,12 @@ disku računala. Prikazane su sve komponente konkretne konfiguracije
 trenutnog modela, a uz to je i prikazana greška klasifikacije pod
 nazivom \enquote{error}. Ta greška je omjer točno klasificiranih
 podslika i ukupnog broja podslika koji se koristi za testiranje klasifikatora
-na podslikama koje nije vidio tijekom faze učenja. 
+na podslikama koje nije vidio tijekom faze učenja. Ukoliko nije niti 
+jedan model klasifikatora dostupan, prikazana je labela \enquote{NO MODEL}
+koja javlja korisniku kako nije moguće klasificirati slike pošto nikakvog modela
+nema.
 
-\bigbreak 
+\bigbreak
 
 Trenutno je prikazan model koji je učen na slikama sive razine i moguće
 je vidjeti da trenutno takvih modela na disku ima 4 (redni broj modela
@@ -1279,6 +1282,14 @@ se prikazani model učitava u memoriju i moguće ga je koristiti za klasifikacij
 Ako je model ispravno učitan, tekst ispod trenutnog modela se mijenja
 u \enquote{model loaded} sa zalenom kvačicom.
 
+\bigbreak 
+
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[scale=0.4]{img/cl1.png}
+\captionof{figure}{Prikaz stranice za odabir jednog modela}
+\end{minipage}
+
 \bigbreak
 
 Opisani postupak se primjenjuje kada želimo klasificirati novu sliku
@@ -1288,7 +1299,9 @@ Nakon pritiska na gumb i učitavanja oba modela izgled stranice je prikazan
 na slici 4.11. Jednom učitane modele moguće je koristiti za klasifikaciju. Kako
 bi se odabrala željena slika za klasifikaciju potrebno je pritisnuti 
 gumb \enquote{Select picture} nakon čega se otvara prozor za odabir slike.
-Nakon odabira slike potrebno je pritisnuti na gumb \enquote{Classify} koji 
+Ako slika nije učitana, korisniku se ispisuje prikladna poruka te nije moguće 
+nastaviti na klasifikaciju sve do kada se ne učita neka slika.
+Nakon jednom učitane slike potrebno je pritisnuti na gumb \enquote{Classify} koji 
 otvara prozor prikazan na slici 4.12.
 
 \bigbreak 
@@ -1311,9 +1324,14 @@ su dodijeljene pojedinom razredu gustoće mnoštva radi vizualnog
 prikaza rezultata klasifikacije. Klasifikacija se napokon može pokrenuti
 pritiskom na gumb \enquote{Start classification} nakon čega je potrebno
 pričekati neko vrijeme koje ovisi o složenosti učitanog modela. 
-
-\bigbreak
-
+Ovdje je moguće zamijetiti koliki utjecaj imaju različiti parametri i broj parametara 
+na performanse programa i koje značajke se \enquote{isplati}
+koristiti za stvaranje vektora značajki. Neke od značajki su izuzetno 
+skupe za izračunavati i njihov doprinos možda i nije znatan u odnosu 
+ne naku drugu koja se brže izračunava stoga je potrebno naći nekakav
+kompromis između procesorskog vremena i točnosti klasifikatora jer 
+nikome nije u cilju čekati neko duže vrijeme na rezultat klasifikacije pogotovo
+ukoliko se radi o nekakvoj video sekenci.
 Podno najveće slike se nakon gotove klasifikacije prikazuje interval
 procjene broja ljudi. Ako nije potrebno vidjeti rezultate svakog od
 klasifikatora moguće je označiti  \enquote{Only voting classifier}
@@ -1337,7 +1355,7 @@ završila moguće je vidjeti rezultat na slici 4.13.
 temelju gustoće mnoštva}
 \end{minipage}
 
-\bigbreak
+\newpage
 
 Na slikama koje pokazuju rezultate klasifikacije pojedinih klasifikatora s 
 desne strane može se zamijetiti kako točnosti klasifikacije utječu na

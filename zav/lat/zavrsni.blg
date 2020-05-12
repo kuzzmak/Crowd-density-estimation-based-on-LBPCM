@@ -1,46 +1,46 @@
-This is BibTeX, Version 0.99d (TeX Live 2019/dev/Debian)
-Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+This is BibTeX, Version 0.99d (MiKTeX 2.9.7400 64-bit)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: zavrsni.aux
 The style file: fer.bst
 Database file #1: literatura.bib
-You've used 6 entries,
+You've used 7 entries,
             2773 wiz_defined-function locations,
-            635 strings with 5979 characters,
-and the built_in function-call counts, 3429 in all, are:
-= -- 308
-> -- 169
-< -- 6
-+ -- 57
-- -- 51
-* -- 273
-:= -- 489
-add.period$ -- 19
-call.type$ -- 6
-change.case$ -- 35
-chr.to.int$ -- 6
-cite$ -- 12
-duplicate$ -- 164
-empty$ -- 294
-format.name$ -- 59
-if$ -- 757
+            641 strings with 6054 characters,
+and the built_in function-call counts, 3732 in all, are:
+= -- 336
+> -- 179
+< -- 7
++ -- 61
+- -- 54
+* -- 286
+:= -- 536
+add.period$ -- 23
+call.type$ -- 7
+change.case$ -- 39
+chr.to.int$ -- 7
+cite$ -- 14
+duplicate$ -- 179
+empty$ -- 326
+format.name$ -- 63
+if$ -- 823
 int.to.chr$ -- 1
 int.to.str$ -- 1
 missing$ -- 6
-newline$ -- 39
-num.names$ -- 24
-pop$ -- 72
+newline$ -- 45
+num.names$ -- 28
+pop$ -- 84
 preamble$ -- 1
-purify$ -- 29
+purify$ -- 32
 quote$ -- 0
-skip$ -- 138
+skip$ -- 150
 stack$ -- 0
-substring$ -- 187
-swap$ -- 41
+substring$ -- 189
+swap$ -- 42
 text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 66
+type$ -- 77
 warning$ -- 0
-while$ -- 27
+while$ -- 30
 width$ -- 0
-write$ -- 88
+write$ -- 102
