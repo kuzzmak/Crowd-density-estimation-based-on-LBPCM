@@ -97,9 +97,9 @@ predstavlja najmanju potpunu jedinicu (u smislu postojanja osam
 smjerova oko piksela). Obzirom na 3x3 susjedstvo koje će biti 
 označeno skupom od devet elemenata \(V = \left\{V_0, V_1,..., V_8\right\}\),
 gdje \(V_0\) predstavlja intenzite srednjeg piksela, a 
-\(\left\{V_0, V_1,..., V_8\right\}\) predstavlja skup intentiteta susjednih piksela.
+\(\left\{V_0, V_1,..., V_8\right\}\) predstavlja entiteta susjednih piksela.
 Jedinica teksture je skup od osam elemenata TU = \(\left\{E_1, V_2,..., E_8\right\}\),
-gdje su \(E_i = (1,2,...,8)\) i određuje se formulom
+gdje su \(E_i = (0,1 ili 2)\) i određuje se formulom
 
 \[
 E_i = \left\{
@@ -125,13 +125,25 @@ Moguće je elemente poredati na različite načine, ali se uzima
 način prikazan na slici 2.1. Prvi element je element \(a\), zatim \(b\) i 
 tako sve do \(h\).  
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[scale=0.5]{img/jKxBPc.png}
-\caption{Prikaz poretka jedinica teksture u susjedstvu srednjeg piksela.}
-\end{figure}
+\bigbreak
 
-\textbf{Primjer dobivanja teksturne jedinice}
+\begin{minipage}{\linewidth}
+\centering
+\begin{tabularx}{0.25\textwidth}{| X | X | X |}
+\hline
+a & b & c \\ 
+\hline
+h &  & d  \\ 
+\hline
+g & f & e  \\
+\hline
+\end{tabularx}
+\captionof{figure}{Prikaz poretka jedinica teksture u susjedstvu srednjeg piksela.}
+\end{minipage}
+
+\vspace{0.7cm}
+
+\textbf{Primjer:} Dobivanje teksturne jedinice
 
 \begin{multicols}{2}
 
@@ -168,6 +180,8 @@ tako sve do \(h\).
 \begin{center}
 \(TU = 2 \cdot 3^0 + 2 \cdot 3^2 + 3^5 + 2 \cdot 3^6 + 2 \cdot 3^7 + 2 \cdot 3^8 = 6094\)
 \end{center}
+
+\medskip
 
 Nakon definicije jedinice teksture, lako je objasniti lokalnu binarnu značajku. 
 LBP se izračunava na potpuno jednak način osim što postoje samo dvije vrijednosti 
@@ -210,6 +224,8 @@ tonovima prigodne.
 \end{multicols}
 
 \[LBP = 2^0 + 2^1 + 2^2 + 2^3 + 2^4 = 31\]
+
+\newpage
 
 U prethodnim primjerima razmatrano je susjedstvo udaljeno samo za 
 jedan piksel, međutim, to ne mora uvijek biti tako. Moguće je 
@@ -316,6 +332,11 @@ Potrebno je pronaći gdje se u izvornoj slici nalaze sive razine intenziteta
 jedino mjesto pojave takvih razina u zdanjem retku, stoga u \(f(i,j,1,0)\)
 na mjestu s indeksima \(2,3\) upisujemo 1. 
 
+\bigbreak
+\bigbreak
+\bigbreak
+
+
 \newpage
 
 Daljnjim nastavkom istog postupka
@@ -342,6 +363,8 @@ dolazi se do krajnjeg oblika matrice \(f(i,j,1,0)\) koja izgleda ovako
 \captionof{figure}{Prikaz GLCM prije i nakon normalizacije}
 \end{minipage}
 
+\bigbreak
+
 Prikazana GLCM je oblika \(4,4\) jer sive razine izvorne slike mogu poprimiti
 4 različit vrijednosti. U radu se koriste slike zapisane u 8-bitnom formatu
 što znači da se veličina matrice povećava na \(256,256\) jer svaki piksel može
@@ -352,9 +375,7 @@ nulama.
 
 \bigbreak
 
-\underline{\textbf{Primjer}}
-
-Dobivanje vrijednosti Haralickove značajke - energija. Uzmimo izvornu sliku.
+\textbf{Primjer:} Dobivanje vrijednosti Haralickove značajke - energija. Uzmimo izvornu sliku.
 Energija se računa prema
 \[
 f_1 = \sum_{i}\sum_{j}p(i,j)^2
@@ -438,7 +459,7 @@ komponenti vektora neprilagođene njihovoj značajnosti pa je njihov ukupan dopr
 
 \bigbreak
 
-\underline{\textbf{Primjer} - Klasifikacija \textit{k}-NN klasifikatorom.} \newline
+\textbf{Primjer:}  Klasifikacija \textit{k}-NN klasifikatorom. 
 
 Raspored uzoraka prikazan je na slici 2.10. Postoje 2 razreda - crveni i plavi. 
 Uzorak koji se pokušava klasificirati označen je crnom bojom. 
@@ -743,25 +764,37 @@ G = \sqrt{G_x^2 + G_y^2}
 Početna pretpostavka u karakterizaciji teksture slike je da 
 matrica pojavnosti sivih tonova sadrži svu  informaciju o teksturi slike. 
 Samim time sve teksturne značajke će se izračunavati iz matrice pojavnosti sivih 
-tonova. Funkcije koje definiraju skup od 14 mjera teksturnih značajki dane se ispod. 
+tonova. Funkcije koje definiraju skup od 14 mjera teksturnih značajki dane su u dodatku A. 
 Neke od tih mjera se odnose na specifične teksturne karakteristike poput homogenosti, 
 kontrasta i prisutnosti grupiranih ili usmjerenih struktura unutar slike. Druge mjere 
-opisuju složenost i način promjene sivih tonova unutar slike. Iako te mjere sadrže 
-informaciju o teksturnim značajkama slike, teško je identificirati koja je teksturna 
-značajka karakterizirana nekom konkretnom funkcijom. Definicije sljedećih funkcija preuzete su
-iz izvornog rada Haralicka i drugih. \footnote{\cite{haralick}}
+opisuju složenost i način promjene sivih tonova unutar slike.
 
+\bigbreak
 
+Postoje neka intuitivna očekivanja u pogledu svojstava koja se odnose na neke značajke.
+Primjerice, bilo bi za očekivati da će vrijednost entropije poprimati veće vrijednosti za složenije slike. 
+Možda bi također bilo moguće uočiti neke linearne zavisnosti u slikama koje imaju velike 
+vrijednosti funkcije korelacije.
 
+\bigbreak
 
+Utjecaj na vrijednosti Haralickovih značajki uvelike ima i veličina slike nad kojom se konstruira
+GLCM te iz koje se izračunavaju i same značajke. Ukoliko slika nije dovoljno velika, neće sadržavati
+dovoljno teksturnih informacija koje su zaslužne za razlikovanje različitih područja interesa dok s druge
+strane prevelika slika može sadržavati više različitih razreda ili regija koje pokušavamo odvojiti i razlikovati.
 
+\bigbreak
+
+Iako te mjere sadrže informaciju o teksturnim značajkama slike, teško je identificirati koja je teksturna 
+značajka karakterizirana nekom konkretnom funkcijom. Definicije funkcija iz dodatka A
+preuzete su iz izvornog rada Haralicka i drugih. \footnote{\cite{haralick}}
 
 \chapter{Opis postupka}
 
 Predlaže se tehnika klizećeg prozora za klasifikaciju i lociranje područja
 mnoštva. Pripremne radnje obuhvaćaju pretvorbu izvornih slika, dimennzija
 768 x 576, u sive tonove i dijeljenje njih samih u manje podslike, dimenzija
-192 x 144, kojih ima 16 po svakoj izvornoj slici. Svaka podslika varira
+192 x 144, kojih ima 16 po svakoj izvornoj slici. Svaka podslika razlikuje se 
 po gustoći mnoštva, pozadini i uvjetima osvjetljenja.  
 
 
@@ -794,16 +827,19 @@ po gustoći mnoštva, pozadini i uvjetima osvjetljenja.
 \caption{Prikaz pojedinih gustoća mnoštva}
 \end{figure}
 
-Sve se podslike ručno označene pripadnim razredima gustoće prema
+Sve se podslike ručno označe pripadnim razredima gustoće prema
 \footnote{\cite{polus}} uz dotadnu oznaku \enquote{no flow} koja 
 predstavlja podslike u kojima nema nikakvog mnoštva. Sljedeće se primjenjuje
-operator LBP nad svakom podslikom. Nakon dobivanje slike lokalnih binarnih 
+operator LBP nad svakom podslikom i pritom je potrebno napomenuti da
+ postoje dvije vrste izračuna LBP operatora. Jedan se izračunava nad slikama 
+sive razine, a drugi nad slikama koje su također sive razine, ali je nad njima 
+primjenjen operator gradijenta. Nakon dobivanje slike lokalnih binarnih 
 značajki, koristeći se tenhnikom kliznog prozora, konstruira se matrica 
 pojavnosti lokalnih binarnih značajki(LBPCM) nad svakim oknom podslike. 
 Iz svake LBPCM izračunavaju se željene Haralickove značajke i te se vrijednosti
 pohranjuju u vektor značajki. Vektor značajki se sastoji od vrijednosti
 Haralickovih značajki svakog okna, odnosno vektor značajki neke podslike 
-sastoji se od vrijednosti Haralickovih značajki njezinih okna. Po završteku 
+sastoji se od vrijednosti Haralickovih značajki njezinih okana. Po završteku 
 stvaranja, vektori značajki, se predaju \textit{k}-NN klasifikatoru ili SVM-u.
 
 \bigbreak
@@ -814,8 +850,8 @@ klasifikatora korisiti se \(70\%\) izvornih slika, a za testiranje ostatak.
 
 \newpage
 
-Arhitektura, odnosno izgled, opisanog sustava prikazana je na slici 3.2.
-Na samoj slici prikazano je nekoliko faza koje su i kasnije u poglavlju 4 
+Prethodno opisan postupak moguće je vidjeti na slici 3.2. gdje je
+prikazana arhitektura sustava i pojedine faze koje su kasnije u poglavlju 4 
 detaljnije opisane. Prva faza obuhvaća samu pripremu podslika koje se 
 koriste za stvaranje vektora značajki. Nakon prve faze događa se grananje
 u dva dijela: prvi dio obuhvaća klasifikatore koji koriste slike sivih razina 
@@ -831,13 +867,20 @@ fuziju u jedan klasifikator.
 
 Sjedinjenje dvaju različitih klasifikatora obavlja se pomoću nove vrste
 klasifikatora - glasačkog klasifikatora (\textit{engl. voting classifier}).
+Poželjno je da se koristi jedan koji koristi slike sivih razina, a jedan 
+slike nad kojima je primijenjen operator gradijenta kako bi tako
+stvoren klasifikator bio robusniji te dao potencijalno bolji rezultat.
 Ovakva vrsta klasifikatora pogodna je zbog načina na koji daje važnost pojedinim
-klasifikatorima od kojih se sastoji. Na odluku klasifikatora može se utjecati
-na više načina. Prvi je \enquote{tvrdo glasanje} (većinsko glasanje), gdje svaki od klasifikator glasa
-za neku labelu, a najbrojnija labela pobjeđuje i dodjeljuje se novome uzorku 
-koji se klasificira. Ovakvo glasanje je moguće i modificirati na način da 
-se svakome klasifikatoru dodijeli neka težina, npr. ovisno o točnosti njegove
-klasifikacije na setu slika za učenje.
+klasifikatorima od kojih se sastoji. 
+
+\bigbreak
+
+Na odluku klasifikatora može se utjecati
+na više načina. Prvi je \enquote{tvrdo glasanje} (većinsko glasanje), gdje
+svaki od klasifikator glasa za neku labelu, a najbrojnija labela pobjeđuje 
+i dodjeljuje se novome uzorku koji se klasificira. Ovakvo glasanje je moguće i 
+modificirati na način da se svakome klasifikatoru dodijeli neka težina, 
+npr. ovisno o točnosti njegove klasifikacije na setu slika za učenje.
 
 \bigbreak
 
@@ -860,10 +903,19 @@ Primjer dobivanja vjerojatnosti glasačkog klasifikatora
 
 gdje \(w_j\) predstavlja težinu pridijeljenu \(j\)-tom klasifikatoru.
 
-Uzmimo 3 klasifikatora i dva moguća razreda pripadnosti svakog uzorka 
-\(C_1(x) \rightarrow [0.9,0.1], C_2(x) \rightarrow [0.8,0.2], C_3(x) \rightarrow [0.4,0.6]\)
-
 \newpage
+
+Uzmimo 3 klasifikatora i dva moguća razreda pripadnosti svakog uzorka 
+
+\begin{center}
+\(C_1(x) \rightarrow [0.9,0.1]\),
+\end{center}
+\begin{center}
+\(C_2(x) \rightarrow [0.8,0.2]\),
+\end{center}
+\begin{center}
+\(C_3(x) \rightarrow [0.4,0.6]\)
+\end{center}
 
 Koristeći unoformne težine dobivamo sljedeće srednje vjerojatnosti
 \begin{center}
@@ -886,23 +938,14 @@ vjerojatnosti izgleda sljedeće
 \end{center}
 
 Iz primjer je jasno vidljivo koliku važnost imaju pridijeljene težine svakom od
-klasifikatora.
-
-
-
+klasifikatora i ukoliko nisu ispravno dodijeljene, rezultat klasifikacije može
+biti značajno lošiji od svakog pojedinog klasifikatora.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[scale=0.18]{img/somprobajzbrisati.png}
 \caption{Prikaz arhitekture sustava}
 \end{figure}
-
-
-
-
-
-
-
 
 \chapter{Upute za korištenje i prikaz međukoraka}
 
@@ -920,6 +963,8 @@ otvoren je sljedeći prozor.
 \includegraphics[scale=0.4]{img/startpage.png}
 \caption{Prikaz početnog prozora nakon pokretanja aplikacije}
 \end{figure}
+
+\newpage
 
 Početni prozor prikazuje naziv rada na kojem se temelji ovaj završni rad, 
 slikovni prikaz postupka lokalnih binarnih značajki i gumb \enquote{Main screen}
@@ -948,7 +993,7 @@ klizećeg okna gdje je moguće vidjeti kako se mijenjaju iznosi Haralickovih zna
 prilikom putovanja klizećeg okna po pojedinoj slici i na kraju korištenje
 opertora gradijenta na odabranoj slici.
 
-\bigbreak
+\newpage
 
 Zadnji dio prozora obuhvaća samu fazu stvaranja vektora značajki (učenje
 klasifikatora) gdje se postavljaju svi parametri pojedinog modela i pokreće

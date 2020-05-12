@@ -9,16 +9,16 @@
 \contentsline {subsection}{\numberline {2.0.6}Sobelov operator}{14}%
 \contentsline {subsection}{\numberline {2.0.7}Haralickove značajke}{15}%
 \contentsline {chapter}{\numberline {3}Opis postupka}{16}%
-\contentsline {chapter}{\numberline {4}Upute za korištenje i prikaz međukoraka}{18}%
-\contentsline {subsection}{\numberline {4.0.1}Podjela slika u podslike}{20}%
-\contentsline {subsection}{\numberline {4.0.2}Označavanje podslika}{22}%
-\contentsline {subsection}{\numberline {4.0.3}Stvaranje vektora značajki}{23}%
-\contentsline {subsection}{\numberline {4.0.4}Klasifikacija slike postojećim modelima}{27}%
-\contentsline {chapter}{\numberline {5}Tehnika klizećeg okna}{32}%
-\contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{36}%
-\contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{37}%
-\contentsline {chapter}{\numberline {8}Zaključak}{38}%
-\contentsline {chapter}{Literatura}{39}%
-\contentsline {chapter}{Popis slika}{40}%
-\contentsline {chapter}{\numberline {A}Teksturne značajke}{43}%
-\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{46}%
+\contentsline {chapter}{\numberline {4}Upute za korištenje i prikaz međukoraka}{20}%
+\contentsline {subsection}{\numberline {4.0.1}Podjela slika u podslike}{22}%
+\contentsline {subsection}{\numberline {4.0.2}Označavanje podslika}{23}%
+\contentsline {subsection}{\numberline {4.0.3}Stvaranje vektora značajki}{24}%
+\contentsline {subsection}{\numberline {4.0.4}Klasifikacija slike postojećim modelima}{30}%
+\contentsline {chapter}{\numberline {5}Tehnika klizećeg okna}{34}%
+\contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{38}%
+\contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{39}%
+\contentsline {chapter}{\numberline {8}Zaključak}{40}%
+\contentsline {chapter}{Literatura}{41}%
+\contentsline {chapter}{Popis slika}{42}%
+\contentsline {chapter}{\numberline {A}Teksturne značajke}{45}%
+\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{48}%
