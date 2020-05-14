@@ -4,7 +4,7 @@ import Writer
 import util
 
 import os
-from sklearn.externals import joblib
+import joblib
 from PIL import ImageTk, Image
 
 class ModelPage(tk.Frame):
@@ -266,7 +266,6 @@ class ModelPage(tk.Frame):
         """
 
         if modelId != -1:
-            controller.consolePrint("modelId: " + str(modelId))
             writer = Writer.Writer()
 
             classifierType, \

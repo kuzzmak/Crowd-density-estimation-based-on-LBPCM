@@ -193,7 +193,7 @@ def classifyImage(filename, model, configuration, multiple=False):
             container.append(Container(subImage, copy.deepcopy(model), configuration, multiple))
 
     # pokretanje onoliko novih procesa koliko računalo procesora ima
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor() as executor:
         for container, label in zip(container, executor.map(classify, container)):
             # izlaz je labela pripadnosti pojedine podslike nekom od razreda gustoće
             labels.append(label)

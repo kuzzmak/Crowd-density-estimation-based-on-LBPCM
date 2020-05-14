@@ -163,7 +163,7 @@ class App:
             self.gui.console.insert(tk.END, str(conf) + "\n")
             self.gui.console.see(tk.END)
 
-            frame = tk.Frame(self.gui.frames[fvcP.FeatureVectorCreationPage].twoFrame)
+            frame = tk.Frame(self.gui.frames[fvcP.FeatureVectorCreationPage].middleFrame)
             frame.pack(pady=10)
 
             progressBar = Progressbar(frame, orient=tk.HORIZONTAL, length=400, mode='determinate')
