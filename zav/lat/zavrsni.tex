@@ -1397,26 +1397,34 @@ na glavnoj stranici aplikacije.
 
 \begin{minipage}{\linewidth}
 \centering
-\includegraphics[scale=0.4]{img/sw1.png}
+\includegraphics[scale=0.6]{img/sw1.png}
 \captionof{figure}{Prikaz prozora tehnike klizećeg okna}
 \end{minipage}
 
 \bigbreak
 
 Na slici 5.1. prikazane s dvije podslike koje su izravno učitane iz direktorija
-s već obrađenim podslikama za ilustraciju postupka. Ako želimo učitati neku
-specifičnu podsliku, to je moguće učiniti pritiskom na gumb \enquote{Select Image}
-nakon čega se otvara prozor za odabir željene podslike.
+s već obrađenim podslikama za ilustraciju postupka. Ukoliko je prikazan tekst 
+\enquote{NO IMAGE} na mjestu namijenjenom za slike, to znači da još nisu 
+izvorne slike obrađene i da podslike 
+još ne postoje pa je potrebno učitati sliku iz nekog drugog direktorija pritiskom 
+na gumb \enquote{Select Image} nakon čega se otvara prozor za odabir željene podslike.
 
-\bigbreak
+\newpage
 
-Vrh prozora omogućava primjenu postupka nad podslikama sive razine i nad slikama
-na koje se primijeni operator gradijenta. Za promjenu iz jednog stanja u
+Na vrhu prozora postoje mogućnosti prikaza postupka nad podslikama sive 
+razine i nad slikama koje su također sive razina, ali se nad njima još dodatno 
+primijeni operator gradijenta. Za promjenu iz jednog stanja u
 drugo potrebno je samo pritisnuti na željeni gumb. Za pomicanje okna na sljedeću
-poziciju zaslužan je gumb \enquote{Next cell}. Sljedeća slika iz 
+poziciju zaslužan je gumb \enquote{Next cell}. Pritiskom na dotični gumb se okno, koje
+je na slici prikazano crvenim rubovima, pomiče na sljedeću poziciju. Sljedeća slika iz 
 direktorija obrađenih podslika dohvaća se pritiskom na gumb \enquote{Next pic}, a 
 prethodna gumbom \enquote{Prev pic}. Podnožje prozora zaokupljaju 
-područja za upis parametara vezanih uz LBP i GLCM. 
+područja za upis parametara vezanih uz LBP i GLCM. Pretpostavljene vrijednosti
+su prikazane ulaskom u prozor i ukoliko se želi vidjeti utjecaj drugačijih parametara,
+potrebno je upisati novu vrijednost parametra u odgovarajuće područje za upis i
+pritisnuti na gumb \enquote{Reset} čime se ažurira podslika i resetira pozicija 
+klizećeg okna.
 
 \bigbreak
 
@@ -1426,25 +1434,30 @@ prozora te pritisnuti gumb \enquote{Calculate funciton(s)}. Ukoliko
 nije jasno kako su neke značajke definirane, moguće je vidjeti njihov
 algebarski zapis pritiskom na gumb \enquote{Function definitions}. 
 Nakon pritiska na gumb za izračun Haralickovih značajki, njihove vrijednosti
-se pojavljuju u konzoli aplikacije. 
+se pojavljuju u konzoli aplikacije. Izračun Haralickovih značajki se ovdje 
+ne izračunava svakim pomakom okna jer su neke značajke iznimno 
+računski zahtjevne, a i možda nam neka područja podslike nisu zanimljiva
+pa se značajke samo izračunavaju pritiskom na odgovarajući gumb.
 
 \bigbreak
 
-Pogledom u izračune različitih Haralickovih značajki vrijednosti funkcija 
-se razlikuju u nekoliko redova veličina stoga ih je potrebno normalizirati
-prije nego se vektori značajki predaju klasifikatoru. Normalizacija
-je nužan postupak iz razloga što klasifikator koristi mjeru udaljenosti
-kao funkciju koja određuje pripadnosti nekom razredu te ako bi ostavili 
-vrijednosti ovakvima, neke od njih uopće ne bi imale kikakvog utjecaja zbog 
+Pogledom u izračune različitih Haralickovih značajki može se zamijetiti da vrijednosti funkcija 
+odskaču u nekoliko redova veličina jedne od drugih, stoga ih je potrebno normalizirati
+prije nego što se vektori značajki predaju klasifikatoru. Normalizacija
+je nužan postupak iz razloga što ovdje korišteni klasifikatori koriste mjeru udaljenosti
+kao funkciju koja određuje pripadnost nekom razredu te ako bi ostavili 
+vrijednosti ovakvima, neke od njih uopće ne bi imale ikakvog utjecaja zbog 
 svoje veličine dok bi druge, koje su možda manje važne u nekim slučajevima,
-dominirale i previše utjecale na krajnji rezultat klasifikacije. 
+dominirale i previše utjecale na krajnji rezultat klasifikacije. Postoje više različitih 
+metoda kojom se vektori značajki normaliziraju, npr. min-max, oko srednje vrijednosti, 
+normalizacija z-ocjenom, skaliranje na jedinični vektor i dr. 
 
 \bigbreak
 
-Normalizacijom se vektori značajki svode na srednju vrijednost oko 0
+U ovom radu je odabrana normalizacije kojom se vektori značajki svode na srednju vrijednost oko 0
 i jediničnu varijancu.
 
-\bigbreak
+\newpage
 
 Postupak normalizacije:
 \begin{center}
@@ -1477,7 +1490,7 @@ Nakon postupka normalizacije svi vektori imaju srednje vrijednosti oko nule
 i jediničnu varijancu. 
 
 \bigbreak
-\underline{\textbf{Primjer}} Stvaranje vektora značajki
+\underline{\textbf{Primjer:}} Stvaranje vektora značajki
 \bigbreak
 
 Kao primjer uzmimo 4 Haralickove značajke: kontrast, energiju, homogenost i entropiju. 
@@ -1559,10 +1572,202 @@ dim = 15 \cdot 12 = 180
 
 \end{center}
 
+Iz primjera je vidljivo kako dimenzionalnost pojedine podslike može postati
+iznimno velika. Izbor broja Haralickovih značajki. udaljenosti i broja kutova u 
+GLCM ima velik utjecaj na krajnju dimenzionalnost vektora značajki stoga je
+od velike važnosti promišljanje o izboru parametara svakog modela. 
+
 
 \chapter{Rezultati eksperimenta}
-Prikaz rezultata 
-\newline
+
+U svrhu boljeg razumijevanja dobivenih rezultata eksperimenta napravljena je manja  analiza
+prostorne raspodjele uzoraka za svaki razred. Za analizu su uzeti sljedeći parametri
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|c}
+parametar & vrijednost \\
+\hline
+vrsta klasifikatora & \textit{k}-NN \\
+broj susjeda & 1 \\
+vrsta slike & sivih razina \\
+LBP radijus & 1 \\
+korak okna & 32 \\
+veličina okna & 64x64 \\
+GLCM udaljenosti & 1 \\
+GLCM kutovi & 0, \(\pi\) \\
+\end{tabular}
+\caption{Prametri primjera} 
+\end{table}
+
+Analiza se također vrši nad skupom slika koji je korišten u radu. Stvoreni su vektori
+značajki svake podslike, koji s navedenim parametrima poprimaju dimenzionalnost 240, 
+normlizirani i raspoređeni na način da je svaki
+od vektora značajki zbrojen zajedno s vektorima razreda kojem pripadaju.
+Sljedeće su ti vektori uprosječeni čime je dobiven vektor značajki 
+koji ne pripada niti jednoj podslici, a označava zamišljeno središte
+pojedinog razreda (prototip), u fizici bi to bilo težište. 
+
+\bigbreak
+
+Nakon dobivenih središta razreda izračunate su euklidske udaljenosti između svakog
+od razreda kako bi se dobila neka predodžba o razdiobi uzoraka u prostoru. 
+Oznake u tablici 6.2. predstavaljaju razrede gustoće:\( c_0 \rightarrow \) \enquote{no flow},
+\( c_1 \rightarrow \) \enquote{free flow}, \( c_2 \rightarrow \) \enquote{restricted flow}, 
+\( c_3 \rightarrow \) \enquote{dense flow}, \( c_4 \rightarrow \) \enquote{jammed flow}.
+
+Euklidska udaljenost se računa prema:
+\[
+d(x_1, x_2) = \sqrt{\left(\sum_{i=1}^{240} \left(x_{1i}-x_{2i}\right)^2\right)}
+\]
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(c_0, c_1)\) & 4.49 \\
+\(d(c_0, c_2)\) & 6.75 \\
+\(d(c_0, c_3)\) & 10.11 \\
+\(d(c_0, c_4)\) & 13.62 \\
+\(d(c_1, c_2)\) & 4.69 \\
+\(d(c_1, c_3)\) & 8.65 \\
+\(d(c_1, c_4)\) & 12.5 \\
+\(d(c_2, c_3)\) & 5.63 \\
+\(d(c_2, c_4)\) & 9.98 \\
+\(d(c_3, c_4)\) & 6.27
+\end{tabular}
+\caption{Euklidske udaljenosti među razredima} 
+\end{table}
+
+Iz priložene tablice moguće je vidjeti kako su središta razreda gustoća koji su bliski jedni drugima, npr.
+\enquote{restricted flow} i \enquote{dense flow}, odnosno \(c_2\) i \(c_3\), bliža 
+nego razredima koji su veoma različiti poput \(c_0\) i \(c_4\). Manja udaljenost središta znači
+i povećana vjerojatnost krive klasifikacije. U idealnom slučaju bi razredi bili strogo odvojivi
+i svaki razredi bi sačinjavali vektori značajki koji formiraju nekakav oblik hiperkugle ili nekog srodnog oblika
+te ne bi postojali slučajevi gdje neke jedinke previše odskaču od središta svoga razreda i oblika toga razreda.
+Stvarni život nije savršen te postoji skoro uvijek neki primjer koji je poseban.  Potrebno je naglasiti da
+su udaljenosti izračunate nad normaliziranim vektorima pa su radi toga razloga toliko male.
+
+\bigbreak
+
+U te posebne slučajeve
+spadaju pogreške prilikom označavanja uzoraka i uzorci koje je moguće svrstati u više različitih razreda. Primjer je
+segmentacija izvorne slike u manje podslike gdje se stvara podslika koja cijepa gusto mnoštvo na dva dijela
+i sad je problematično jer klasifikator ne zna da li gleda samo gustoću mnoštva koje je prepolovljeno ili gustoću 
+tog mnoštva naspram površine cijele podslike čime dolazi u konflikt jer se dvoumi između dva različita razreda gustoće.
+Isto tako, baš kao i klasifikator, čovjek se nekad može nedoumiti prilikom označavanja uzoraka
+odgovarajućim razredima gustoće. Iz istih razloga naša odluka jednom može biti u jednom smjeru, a 
+drugi put u drugom smjeru čime unosimo nekonzistentnost u skup podataka za učenje. Izbjegavati takve
+stvari nije lako te je zbog toga potrebno imati čim veći skup podataka kako bi se posebni slučajevi
+dovoljno malo puta pojavili i kako ne bi stvarali prevelikog utjecaja na ostatak skupa. 
+
+
+\begin{table}[ht]
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_0, c_0)\) & 10.03 \\
+\(d(x_0, c_1)\) & 10.91 \\
+\(d(x_0, c_2)\) & 10.63 \\
+\(d(x_0, c_3)\) & 12.74 \\
+\(d(x_0, c_4)\) & 13.08 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{no flow}}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_1, c_0)\) & 11.4 \\
+\(d(x_1, c_1)\) & 10.93 \\
+\(d(x_1, c_2)\) & 10.33 \\
+\(d(x_1, c_3)\) & 11.75 \\
+\(d(x_1, c_4)\) & 13.37 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{free flow}}
+}
+\end{table}
+\vspace{-1.5em}
+\begin{table}[ht]
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_2, c_0)\) & 21.46 \\
+\(d(x_2, c_1)\) & 20.33 \\
+\(d(x_2, c_2)\) & 19.75 \\
+\(d(x_2, c_3)\) & 17.86 \\
+\(d(x_2, c_4)\) & 19.38 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{restricted flow}}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_3, c_0)\) & 23.25 \\
+\(d(x_3, c_1)\) & 22.55 \\
+\(d(x_3, c_2)\) & 21.33 \\
+\(d(x_3, c_3)\) & 18.26 \\
+\(d(x_3, c_4)\) & 18.37 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{dense flow}}
+}
+\end{table}
+
+
+\vspace{-1.5em}
+\begin{table}[!ht]
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_4, c_0)\) & 13.83 \\
+\(d(x_4, c_1)\) & 13.35 \\
+\(d(x_4, c_2)\) & 12.01 \\
+\(d(x_4, c_3)\) & 9.37 \\
+\(d(x_4, c_4)\) & 8.6 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{jammed flow}}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+ispravna oznaka & odluka klasifikatora \\
+\hline
+0 & 0 \\
+1 & 1 \\
+2 & 2 \\
+3 & 3 \\
+4 & 4 \\
+\end{tabular}
+\caption{Predočeni uzorci klasifikatoru i rezultati klasifikacije}
+}
+\end{table}
+
+Za svaki od razreda uzet je jedan još neviđen uzorak, izračunat je vektor značajki te je  za taj vektor
+ izračunata udaljenost do svakog od središta razreda (\(c_o, c_1, c_2, c_3, c_4\)). Uz to je pripremljen 
+\textit{k}-NN klasifikator s parametrima navedenim u tablici 6.1. Svaki od još neviđenih vektora
+predat je klasifikatoru kako bi vidjeli i njegov odluku. Svaki \(x_i\) u tablicama iznad, gdje je \(i=0,1,2,3,4\),
+označava pripadnika jednog od razreda gustoće.
+
+\bigbreak
+
+Uz tablice 6.8. moguće je vidjeti kako je klasifikator ispravno dodijelio oznaku svakome uzorku iako
+je njegova točnost 
+
+
+
 Diskusija o utjecaju značajki na točnost klasifikacije - utjecaj
 broja značajki na točnost, ima li smisla koristiti puno različitih značajki,
 čime se vrijeme izračuna vektora značajki veoma povećava
@@ -1585,11 +1790,13 @@ Zaključak.
 \bibliographystyle{fer}
 
 \listoffigures
+\listoftables
 
 \begin{sazetak}
 Sažetak na hrvatskom jeziku.
 
-\kljucnerijeci{Ključne riječi, odvojene zarezima.}
+\kljucnerijeci{Lokalna binarna značajka, Matrica pojavnosti lokalnih binarnih uzoraka, Vektor značajki, \textit{k}-NN klasifikator,
+SVM klasifikator, gustoća mnoštva}
 \end{sazetak}
 
 % TODO: Navedite naslov na engleskom jeziku.
