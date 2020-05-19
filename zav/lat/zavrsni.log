@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.5.12)  19 MAY 2020 11:41
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.5.12)  19 MAY 2020 18:02
 entering extended mode
 **./zavrsni.tex
 (zavrsni.tex
@@ -973,14 +973,19 @@ Overfull \hbox (11.13742pt too wide) in paragraph at lines 1755--1755
  []
 
 [40] [41]
+
+Package natbib Warning: Citation `6266412' on page 42 undefined on input line 1
+821.
+
+[42]
 Poglavlje 7.
-[42
+[43
 
 ]
 Poglavlje 8.
-(zavrsni.bbl [43
+(zavrsni.bbl [44
 
-]) [44
+]) [45
 
 ] (zavrsni.lof
 Overfull \hbox (0.63914pt too wide) in paragraph at lines 18--18
@@ -988,7 +993,7 @@ Overfull \hbox (0.63914pt too wide) in paragraph at lines 18--18
 a boja oz-na-£ava ve¢e 
  []
 
-[45
+[46
 
 ]
 Overfull \hbox (3.60315pt too wide) in paragraph at lines 39--39
@@ -1000,34 +1005,34 @@ a te-me-lju gus-to¢e mno²-
 \tf@lof=\write4
 \openout4 = `zavrsni.lof'.
 
- [46] (zavrsni.lot)
+ [47] (zavrsni.lot)
 \tf@lot=\write5
 \openout5 = `zavrsni.lot'.
 
- [47
+ [48
 
-] [48]
+] [49]
 Poglavlje A.
-[49
+[50
 
-] [50] [51]
+] [51] [52]
 Poglavlje B.
 
-Overfull \hbox (0.6741pt too wide) in paragraph at lines 1921--1965
+Overfull \hbox (0.6741pt too wide) in paragraph at lines 1992--2036
 [][] 
  []
 
-[52
+[53
 
 ]
-Overfull \hbox (11.72679pt too wide) in paragraph at lines 1971--1989
+Overfull \hbox (11.72679pt too wide) in paragraph at lines 2042--2060
 [][] 
  []
 
 
 Package natbib Warning: There were undefined citations.
 
-[53] (zavrsni.aux) ) 
+[54] (zavrsni.aux) ) 
 Here is how much of TeX's memory you used:
  7564 strings out of 480930
  111035 string characters out of 2899761
@@ -1059,9 +1064,9 @@ times/utmbi8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 /urw/times/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/urw/times/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fon
 ts/type1/urw/times/utmri8a.pfb>
-Output written on zavrsni.pdf (58 pages, 3410200 bytes).
+Output written on zavrsni.pdf (59 pages, 3415824 bytes).
 PDF statistics:
- 317 PDF objects out of 1000 (max. 8388607)
+ 320 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  176 words of extra memory for PDF output out of 10000 (max. 10000000)
 

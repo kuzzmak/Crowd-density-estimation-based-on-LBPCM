@@ -1763,16 +1763,72 @@ označava pripadnika jednog od razreda gustoće.
 
 \bigbreak
 
-Uz tablice 6.8. moguće je vidjeti kako je klasifikator ispravno dodijelio oznaku svakome uzorku iako
-je njegova točnost 
+Iz tablice 6.8. moguće je vidjeti kako je klasifikator ispravno dodijelio oznaku svakome uzorku iako
+je njegova točnost 90.52\%. Iščitavanjem tablica 6.3. - 6.7. zamjećuje se da se odluka klasifikatora
+razlikuje od odluke koja bi se donijela ako bi se promatrale najmanje udaljenosti do središta pojedinih 
+razreda gustoće. Razlog za takvu odluku klasifikatora je jer radi na principu najbližih \textit{k} 
+susjeda, u ovom primjeru najbližeg jednog susjeda. Rezultati klasifikacije odgovaraju
+najbližim središtima za slučajeve razreda: 0, 3, 4 dok je kod ostalih središte razreda različito od
+dodijeljene odluke. 
 
+\bigbreak
 
+Primjer pokazuje kako je veoma važno uzeti prikladnu mjeru udaljenosti koju klasifikator koristi
+za usporedbu dva različita uzorka. Pritom nije svejedno uspoređuje li se nepoznati 
+uzorak sa svim ostalim uzorcima ili samo onim umjetnim uzorcima koji bi trebali
+predstavljati središta svakog od razreda. Izbor vrste usporedbe pojedinih vektora
+značajki ovisi o samim podatcima koje koristimo za učenje klasifikatora. Ako su nepravilne
+grupe vektora značajki u \textit{n}-dimenzionalnom prostoru, možda je bolja ideja izabrati
+klasifikaciju prema biližim susjedima dok u slučaju da imamo donekle pravilne grupe (hiperkugle i sl.) 
+je bolje izabrati središta pojedinih razreda kao vektore s kojima se svi dosad neviđeni uspoređuju
+jer i time u krajnjem slučaju štedimo vrijeme potrošeno na usporedbu. 
 
-Diskusija o utjecaju značajki na točnost klasifikacije - utjecaj
-broja značajki na točnost, ima li smisla koristiti puno različitih značajki,
-čime se vrijeme izračuna vektora značajki veoma povećava
-\newline
-Izdvojiti najbolji/optimalni skup parametara
+\bigbreak
+
+Eksperimentom se došlo do zaključka kako \textit{k}-NN klasifikator daje dobre rezultate
+za manje vrijednosti broja \textit{k} pri čemu je on neparan i to za vrijednosti \(k=1\) ili \(k=3\).
+Većim vrijednostima se unosi određena greška jer raspodjela vektora značajki nije uvelike pravilna.
+Veličina koraka okna od 64 i 32 pokazala se kao najbolja  mjera obzirom na veličinu okna od 64x64. 
+Manji koraci ne donose nikakvu novu informaciju nego samo povečavaju vrijeme potrebno za 
+obradu pojedine podslike, a koraci veći od 64 nemaju smisla obzirom da je veličina okna zadržana
+stalnom. 
+
+\bigbreak
+
+Općenito je uvođenje većeg broja različitih vrijednosti kutova davalo bolje rezultate
+vezano uz točnost klasifikacije međutim pogledom u tablicu rezultata u dodatku B moguće je 
+vidjeti kako postoje modeli klasifikatora koji rade samo s kutem od 0 stupnjeva i postižu
+bolje rezultate od nekih drugih koji imaju npr. 4 različita kuta. Klasifikatori koji su koristili
+slike sivih razina generalno imaju neznatno veću točnost klasifikacije u usporedbi s klasifikatorima 
+koji rade sa slikama sivih razina nad kojima je primijenjen operator gradijenta, pritom su obje vrste
+klasifikatora imala iste parametre osim vrste slike koju koriste.
+
+\bigbreak
+
+Izbor Haralickovih značajki koje će model klasifikatora koristiti za izračunavanje nad nekom
+podslikom je jedna od najvažnijih ako ne i najvažnija stavka. Važno je napomenuti kako se
+pojedine značajke mogu izuzetno brzo izračunati jer je npr. potrebna samo suma GLCM
+pomnožena s nekim brojem dok druge značajke izuzetno vremenski opterete postupak 
+učenja pa je stoga izbor značajki ogreničeni i tom ogradom. U ovom radu nikad nije uzeto
+više od 7 različitih Haralickovih značajki zbog ograničenih računalnih i vremenskih resursa.
+Smisleno je koristiti skup parametara koji nije prezahtjevan jer preveliko čekanje na klasifikaciju
+slike nije poželjno u situacijama koje zahtijevaju možda brzu reakciju. Druga opcije je 
+koristiti grafičke procesore i paralelizirati koliko je to moguće sam postupak izračunavanja
+čime se automatski diže kompleksnost samog sustava.
+
+\bigbreak
+
+U radu \footnote{\cite{6266412}} odabrane su Haralickove značajke: energija, kontrast,
+homogenost i entropija. Te konkretne značajke veoma se brzo daju izračunati, a daju 
+vrlo dobre rezultate kako je vidljivo iz tablice u dodatku B. Izbor tih značajki uvelike poboljšava
+performanse samog postupka naspram nekih drugih izbora parametara s više različitih značajki, a
+ne narušava značajno točnost klasifikacije. Postoje bolji odabiri značajki, ali kako je već navedeno, 
+računski su zahtjevniji i time njihovo korištenje baš nema smisla. 
+
+\bigbreak
+
+ODABRATI NEKE KLASIFIKAORE I PROVJERITI TOČNOST
+
 
 \chapter{Prikladnost korištenog postupka na drugome skupu podataka}
 
@@ -1793,7 +1849,14 @@ Zaključak.
 \listoftables
 
 \begin{sazetak}
-Sažetak na hrvatskom jeziku.
+Procjena gustoće mnoštva od velike je važnosti u video nadzoru i upravljanju mnoštvom. Predložene
+su različite metode za rješavanje ovog problema, međutim, većina ih procjenjuje gustoću mnoštva
+cijele slike pritom ignorirajući lokalna mnoštva. U ovom radu primjenjuje se operator lokalnih binarnih
+značajki nad sivim slikama i sivim slikama nad kojima je primjenjen operator gradijenta. Iz takvih slika
+se pomoću matrice pojavnosti lokalnih binarnih značajki, postupkom klizećeg okna, izračunavaju
+ Haralickove značajke koje tvore vektore značajki. Koriste se dvije vrste klasifikatora: \textit{k}-NN i SVM koji 
+se na kraju spajaju u jedan klasifikator i utjecaj svakog klasifikatora uvjetovan je njegovom točnošću 
+klasifikacije.
 
 \kljucnerijeci{Lokalna binarna značajka, Matrica pojavnosti lokalnih binarnih uzoraka, Vektor značajki, \textit{k}-NN klasifikator,
 SVM klasifikator, gustoća mnoštva}
@@ -1802,7 +1865,13 @@ SVM klasifikator, gustoća mnoštva}
 % TODO: Navedite naslov na engleskom jeziku.
 \engtitle{Crowd density estimation based on local binary pattern co-occurence matrix}
 \begin{abstract}
-Abstract.
+Crowd density estimation is of great importance in video surveillance and in crowd management. 
+Most of the existing methods estimate crowd density of a whole image while ignoring local density areas.
+In this work local binary pattern is used on gray and gradient images. These pictures are used to 
+extract Haralick features from local binary pattern co-occurence matrix, using sliding window
+technique, which later form feature vectors. Two type of classifiers are used: \textit{k}-NN and SVM.
+They are later fused together and the influence of each one is dependant on the classifier accuracy of 
+training set of images.
 
 \keywords{Keywords.}
 \end{abstract}
