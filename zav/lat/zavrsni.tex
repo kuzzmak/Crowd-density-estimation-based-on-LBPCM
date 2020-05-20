@@ -100,7 +100,7 @@ označeno skupom od devet elemenata \(V = \left\{V_0, V_1,..., V_8\right\}\),
 gdje \(V_0\) predstavlja intenzite srednjeg piksela, a 
 \(\left\{V_0, V_1,..., V_8\right\}\) predstavlja entiteta susjednih piksela.
 Jedinica teksture je skup od osam elemenata TU = \(\left\{E_1, V_2,..., E_8\right\}\),
-gdje su \(E_i = (0,1 ili 2)\) i određuje se formulom
+gdje su \(E_i = (0,1\; ili \;2)\) i određuje se formulom
 
 \[
 E_i = \left\{
@@ -1832,6 +1832,35 @@ ODABRATI NEKE KLASIFIKAORE I PROVJERITI TOČNOST
 
 \chapter{Prikladnost korištenog postupka na drugome skupu podataka}
 
+Postupak pripazan u ovome radu prikladan je za vrstu slika kojima se parametri ne mijenjaju. Pod 
+pojmom parametri misli se na položaj ili kut kamere, osvjetljenje slike ili preveliku gustoću mnoštva, 
+primjerice mnoštvo gledano iz zraka. Korištenjem lokalne binarne značajke i tehnike kliznog prozora
+nije moguće izvući neko smisleno značenje iz sivih razina slike. Haralickove značajke imaju
+mogućnost izvlačenja neke vrste informacija iz slike što na kraju rezultira određenom vrijednošću
+koja odgovara pojedinome oknu. Za ograničen skup slika, vrijednosti Haralickovih značajki 
+se kreću u nekom intervalu te se stoga predočavanjem nove, još dosad neviđene slike koja
+svojim teksturnim sastavom ne odgovara dosad viđenim slikama, u klasifikatoru stvara pomutnja.
+Takva slika može biti veoma udaljena od svakog središta razreda i najbližeg uzorka stoga 
+će se s velikom vjerojatnošću krivo klasificirati. 
+
+\bigbreak
+
+Zbog navedenih razloga korištenje jednom već naučenog klasifikatora nad novim skupom
+slika rezultira poražavajućom točnošću klasifikacije. Takvi rezultati mogu se izbjeći
+ponovljenim postupkom prikazanim na slici 3.2. koji uključuje ponovnu podjelu
+izvornih slika u manje podslike, ručno označavanje pojedinih razreda gustoće i 
+na kraju stvaranje vektora značajki. 
+
+\bigbreak
+
+Iako ova metoda nije tolike općenitosti da bi jednom naučeni klasifikatori mogli
+prepozanavati mnoštvo na bilo kakvim slikama, dovoljno je općenita i jednostavna
+da se u primjenjuje u uvjetima gdje se parametri slike ne mijenjaju ili se mijenjaju vrlo
+malo. Primjer takvih primjerna je identifikacija osobe temeljem otiska dlana \footnote{\cite{1512051}}
+ili u šoping centrima u kojima su uvjeti osvjetljenja i položaj kamere nepromjenjeni.
+
+
+
 Naći neki skup podataka na internetu s velikom brojem ljudi.
 \newline
 Ocijeniti prikladnost postupka na novome skupu podataka.
@@ -1840,7 +1869,69 @@ Ocijeniti prikladnost postupka na novome skupu podataka.
 
 
 \chapter{Zaključak}
-Zaključak.
+
+Kako je navedeno u i uvodu, procjena gustoće mnoštva izuzetno je važna komponenta sustava
+za nadziranje i upravljanje mnoštvom. Video prijenos sigurnosnih kamera prilikom znatnijih 
+okupljanja ljudi mogu se obraditi na način da prikazuju korisne informacije poput procjene
+broja ljudi u svakoj sličici prijenosa ili označena mjesta od interesa koja ukazuju na kakvu 
+nepravilnost ili potencijalnu opasnost. Takva mjesta mogu biti gužve, iznenadne promjene
+sastava mnoštva ili npr. mjesta koja zahtijevaju održavanje socijalne distance, a ona sama
+je narušena prevelikim brojem ljudi. Korištenje takvih sustava uvelike olakšava posao ljudi
+zaduženih za obavljanje tih zadaća, ali i uvodi jednu novu razinu trenutnog odziva na novonastalu 
+situaciju gdje svaka sekunda može biti važna. 
+
+\bigbreak
+
+Razvijen je relativno jednostavan sustav za procjenu gustoće i broja ljudi koji se temelji na 
+tehnici kliznog okna i lokalnoj binarnoj značajki. Kako bi se povećala robusnost cijelog sustava
+klasifikacija se sastoji od sjedinjenja dvaju različitih klasifikatora: jednog koji koristi slike
+sivih razina i drugog koji koristi također slike sivih razina, ali je nad njima primijenjen operator 
+gradijenta. Takva kombinacija klasifikatora generalno daje bolje rezultate i ima mogućnost
+ispraviti pogrešne klasifikacije pojedinog klasifikatora tako što se važnost svakog klasifikatora
+regulira težinom koja odgovara točnosti klasifikacije dotičnog. Regulirati te težine se može i 
+na druge načine, ali pritom treba pripaziti jer to uvelike može promijeniti odluke klasifikacije.
+
+\bigbreak
+
+Ovakva fuzija dvaju klasifikatora pokazala se dobrom što je i na kraju rezulziralo zadovoljavajućim
+rezultatima. Primjena operatora LBP i tehnike klizajuće ćelije nad slikama s mnoštvom omogućilo je 
+izvlačenje informacija o slici koje su zatim korištene za izračune Haralickovih značajki. Iako nije moguće 
+izravno povezati neku značajku i njezino značenje u smislu argumentiranja vrijednosti funkcije
+nad nekom slikom, moguće je doći do zaključka kako je npr. vrijednost entropije veća za kompleksnije slike.
+Provođenjem eksperimenta s različitim parametrima zaključeno je kako porast broja različitih 
+parametara, odnosno dodavanje novih Haralickovih značajki, ne mora nužno značiti da će točnost
+klasifikacije porasti. Uvođenje kompleksnijeg skupa parametara ima za posljedicu duže izvođenje
+postupka klasifikacije, a porast točnosti nije znatan da bi se opravdalo veće čekanje na klasifikaciju.
+
+\bigbreak 
+
+Opisani razlozi ne znače da nije poželjno povećavati broj značajki. Povećanje je opravdavajuće
+ako se problem prilagodi na način da se izračuni značajki paraleliziraju što je više moguće. 
+Paralelizacija problema imala bi i više nego značajno poboljšanje performansi samog postupka
+izračuna Haralickovih značajki gdje bi se svaka značajka, svakog okna podslike, mogla izračunavati sama 
+za sebe, istovremeno sa svim ostalim. Za takav postupak mogu se koristiti grafički procesori
+koji imaju i više nego dovoljno jezgara za takve izračune. Upotreba grafičkih kartica za ubrzanje
+postupka moglo bi dovesti do primjene metode opisane u radu za procjenu gustoće mnoštva 
+u realnom vremenu s nekim pristojnim brojem sličica u sekundi.
+
+\bigbreak
+
+Prikladnost korištenja LBP i tehnike kliznog okna pokazana je u ovom radu, međutim jednom
+naučeni klasifikatori na jednom skupu slika nisu u mogućnosti preslikati svoje znanje
+na novi skup slika koji se od prošlog može razlikovati po broju ljudi, odnosno gustoći,
+uvjetima osvjetljenja ili kutu kamere. To je ograničenje ovakvog postupka jer on 
+nema mogućnosti izvlačenja semantičkog značenja piksela koji su mu predočeni 
+u obliku slike. Pikseli sivih razina  svojim vrijednostima doprinose vrijednostima Haralickovih 
+značajki, ali promjena svjetlosnih uvjeta odmah rezultira različitim vrijednostima sivih
+razina i cijeli postupak više nije primjenjiv nad novom vrstom slika. Kako bi koristili 
+opisani postupak nad novim skupom slika, potrebno ih je opet podijeliti u podslike, 
+ručno označiti i opet provesti postupak učenja te prilagoditi parametre pojedinog klasifikatora
+jer možda jednak skup parametara ne radi najbolje za različite skupove slika. 
+Smisleno korištenje ovakvog sustava je opisano u \footnote{\cite{1512051}} gdje
+se prepoznaje identitet osobe na temelju otiska ruke. Ovdje su uvjeti u kojim se 
+dohvaća slika dlana skoro identični u svako doba dana i stoga nema veće razlike
+u sivim razinama čime se veoma lako primjenjuje i daje izuzetne rezultate.
+
 
 \bibliography{literatura}
 \bibliographystyle{fer}
@@ -1862,7 +1953,6 @@ klasifikacije.
 SVM klasifikator, gustoća mnoštva}
 \end{sazetak}
 
-% TODO: Navedite naslov na engleskom jeziku.
 \engtitle{Crowd density estimation based on local binary pattern co-occurence matrix}
 \begin{abstract}
 Crowd density estimation is of great importance in video surveillance and in crowd management. 
@@ -1873,7 +1963,7 @@ technique, which later form feature vectors. Two type of classifiers are used: \
 They are later fused together and the influence of each one is dependant on the classifier accuracy of 
 training set of images.
 
-\keywords{Keywords.}
+\keywords{local binary pattern, gray level co-occurence matrix, feature vectors, \textit{k}-NN, SVM, crowd density}
 \end{abstract}
 
 \appendix
@@ -1990,16 +2080,6 @@ Q(i,j) = \sum_k \frac{p(i,k)p(j,k)}{p_x(i)p_y(k)}
 
 \begin{adjustwidth}{-30pt}{0pt}
 \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
-\
-
-
-
-
-
-
-
-
-
 \STAB{\rotatebox[origin=c]{90}{redni broj}} & 
 \STAB{\rotatebox[origin=c]{90}{\;\;vrsta klasifikatora\;\;}} & 
 \STAB{\rotatebox[origin=c]{90}{vrsta podslike}} & 

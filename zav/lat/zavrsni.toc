@@ -18,8 +18,8 @@
 \contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{38}%
 \contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{43}%
 \contentsline {chapter}{\numberline {8}Zaključak}{44}%
-\contentsline {chapter}{Literatura}{45}%
-\contentsline {chapter}{Popis slika}{46}%
-\contentsline {chapter}{Popis tablica}{48}%
-\contentsline {chapter}{\numberline {A}Teksturne značajke}{50}%
-\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{53}%
+\contentsline {chapter}{Literatura}{46}%
+\contentsline {chapter}{Popis slika}{47}%
+\contentsline {chapter}{Popis tablica}{49}%
+\contentsline {chapter}{\numberline {A}Teksturne značajke}{51}%
+\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{54}%
