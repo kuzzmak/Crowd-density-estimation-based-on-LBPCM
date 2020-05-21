@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.5.12)  12 MAY 2020 21:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.5.12)  20 MAY 2020 19:50
 entering extended mode
 **./zavrsni.tex
 (zavrsni.tex
@@ -926,11 +926,11 @@ Overfull \hbox (17.62482pt too wide) in paragraph at lines 1351--1357
 
 [32 <./img/cl3.png> <./img/cl5.png>] [33]
 Poglavlje 5.
-<img/sw1.png, id=189, 780.9175pt x 770.88pt>
+<img/sw1.png, id=189, 517.935pt x 569.12625pt>
 File: img/sw1.png Graphic file (type png)
 <use img/sw1.png>
 Package pdftex.def Info: img/sw1.png  used on input line 1400.
-(pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
+(pdftex.def)             Requested size: 310.76338pt x 341.47838pt.
 
 Overfull \hbox (17.62482pt too wide) in paragraph at lines 1398--1403
 []$[]$ 
@@ -942,15 +942,59 @@ Overfull \hbox (17.62482pt too wide) in paragraph at lines 1398--1403
 Poglavlje 6.
 [38
 
-]
+] [39]
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1679--1679
+ [][] 
+ []
+
+
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1693--1693
+ [][] 
+ []
+
+
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1709--1709
+ [][] 
+ []
+
+
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1723--1723
+ [][] 
+ []
+
+
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1741--1741
+ [][] 
+ []
+
+
+Overfull \hbox (11.13742pt too wide) in paragraph at lines 1755--1755
+ [][] 
+ []
+
+[40] [41]
+
+Package natbib Warning: Citation `6266412' on page 42 undefined on input line 1
+821.
+
+[42]
 Poglavlje 7.
-[39
+
+Package natbib Warning: Citation `1512051' on page 43 undefined on input line 1
+859.
+
+[43
 
 ]
 Poglavlje 8.
-(zavrsni.bbl [40
+[44
 
-]) [41
+]
+
+Package natbib Warning: Citation `1512051' on page 45 undefined on input line 1
+930.
+
+(zavrsni.bbl [45]) [46
 
 ] (zavrsni.lof
 Overfull \hbox (0.63914pt too wide) in paragraph at lines 18--18
@@ -958,7 +1002,7 @@ Overfull \hbox (0.63914pt too wide) in paragraph at lines 18--18
 a boja oz-na-£ava ve¢e 
  []
 
-[42
+[47
 
 ]
 Overfull \hbox (3.60315pt too wide) in paragraph at lines 39--39
@@ -970,33 +1014,34 @@ a te-me-lju gus-to¢e mno²-
 \tf@lof=\write4
 \openout4 = `zavrsni.lof'.
 
- [43] [44]
+ [48] (zavrsni.lot)
+\tf@lot=\write5
+\openout5 = `zavrsni.lot'.
+
+ [49
+
+] [50]
 Poglavlje A.
-[45
+[51
 
-] [46] [47]
+] [52] [53]
 Poglavlje B.
-
-Overfull \hbox (0.6741pt too wide) in paragraph at lines 1716--1760
-[][] 
- []
-
-[48
+[54
 
 ]
-Overfull \hbox (11.72679pt too wide) in paragraph at lines 1766--1784
+Overfull \hbox (11.72679pt too wide) in paragraph at lines 2122--2140
 [][] 
  []
 
 
 Package natbib Warning: There were undefined citations.
 
-[49] (zavrsni.aux) ) 
+[55] (zavrsni.aux) ) 
 Here is how much of TeX's memory you used:
- 7559 strings out of 480930
- 110919 string characters out of 2899761
- 394220 words of memory out of 3000000
- 23238 multiletter control sequences out of 15000+200000
+ 7564 strings out of 480930
+ 111035 string characters out of 2899761
+ 393220 words of memory out of 3000000
+ 23240 multiletter control sequences out of 15000+200000
  599689 words of font info for 100 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  49i,14n,46p,820b,513s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1023,9 +1068,9 @@ times/utmbi8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 /urw/times/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/urw/times/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fon
 ts/type1/urw/times/utmri8a.pfb>
-Output written on zavrsni.pdf (54 pages, 3441149 bytes).
+Output written on zavrsni.pdf (60 pages, 3422745 bytes).
 PDF statistics:
- 304 PDF objects out of 1000 (max. 8388607)
+ 323 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  176 words of extra memory for PDF output out of 10000 (max. 10000000)
 

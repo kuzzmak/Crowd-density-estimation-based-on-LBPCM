@@ -100,7 +100,7 @@ označeno skupom od devet elemenata \(V = \left\{V_0, V_1,..., V_8\right\}\),
 gdje \(V_0\) predstavlja intenzite srednjeg piksela, a 
 \(\left\{V_0, V_1,..., V_8\right\}\) predstavlja entiteta susjednih piksela.
 Jedinica teksture je skup od osam elemenata TU = \(\left\{E_1, V_2,..., E_8\right\}\),
-gdje su \(E_i = (0,1 ili 2)\) i određuje se formulom
+gdje su \(E_i = (0,1\; ili \;2)\) i određuje se formulom
 
 \[
 E_i = \left\{
@@ -1397,26 +1397,34 @@ na glavnoj stranici aplikacije.
 
 \begin{minipage}{\linewidth}
 \centering
-\includegraphics[scale=0.4]{img/sw1.png}
+\includegraphics[scale=0.6]{img/sw1.png}
 \captionof{figure}{Prikaz prozora tehnike klizećeg okna}
 \end{minipage}
 
 \bigbreak
 
 Na slici 5.1. prikazane s dvije podslike koje su izravno učitane iz direktorija
-s već obrađenim podslikama za ilustraciju postupka. Ako želimo učitati neku
-specifičnu podsliku, to je moguće učiniti pritiskom na gumb \enquote{Select Image}
-nakon čega se otvara prozor za odabir željene podslike.
+s već obrađenim podslikama za ilustraciju postupka. Ukoliko je prikazan tekst 
+\enquote{NO IMAGE} na mjestu namijenjenom za slike, to znači da još nisu 
+izvorne slike obrađene i da podslike 
+još ne postoje pa je potrebno učitati sliku iz nekog drugog direktorija pritiskom 
+na gumb \enquote{Select Image} nakon čega se otvara prozor za odabir željene podslike.
 
-\bigbreak
+\newpage
 
-Vrh prozora omogućava primjenu postupka nad podslikama sive razine i nad slikama
-na koje se primijeni operator gradijenta. Za promjenu iz jednog stanja u
+Na vrhu prozora postoje mogućnosti prikaza postupka nad podslikama sive 
+razine i nad slikama koje su također sive razina, ali se nad njima još dodatno 
+primijeni operator gradijenta. Za promjenu iz jednog stanja u
 drugo potrebno je samo pritisnuti na željeni gumb. Za pomicanje okna na sljedeću
-poziciju zaslužan je gumb \enquote{Next cell}. Sljedeća slika iz 
+poziciju zaslužan je gumb \enquote{Next cell}. Pritiskom na dotični gumb se okno, koje
+je na slici prikazano crvenim rubovima, pomiče na sljedeću poziciju. Sljedeća slika iz 
 direktorija obrađenih podslika dohvaća se pritiskom na gumb \enquote{Next pic}, a 
 prethodna gumbom \enquote{Prev pic}. Podnožje prozora zaokupljaju 
-područja za upis parametara vezanih uz LBP i GLCM. 
+područja za upis parametara vezanih uz LBP i GLCM. Pretpostavljene vrijednosti
+su prikazane ulaskom u prozor i ukoliko se želi vidjeti utjecaj drugačijih parametara,
+potrebno je upisati novu vrijednost parametra u odgovarajuće područje za upis i
+pritisnuti na gumb \enquote{Reset} čime se ažurira podslika i resetira pozicija 
+klizećeg okna.
 
 \bigbreak
 
@@ -1426,25 +1434,30 @@ prozora te pritisnuti gumb \enquote{Calculate funciton(s)}. Ukoliko
 nije jasno kako su neke značajke definirane, moguće je vidjeti njihov
 algebarski zapis pritiskom na gumb \enquote{Function definitions}. 
 Nakon pritiska na gumb za izračun Haralickovih značajki, njihove vrijednosti
-se pojavljuju u konzoli aplikacije. 
+se pojavljuju u konzoli aplikacije. Izračun Haralickovih značajki se ovdje 
+ne izračunava svakim pomakom okna jer su neke značajke iznimno 
+računski zahtjevne, a i možda nam neka područja podslike nisu zanimljiva
+pa se značajke samo izračunavaju pritiskom na odgovarajući gumb.
 
 \bigbreak
 
-Pogledom u izračune različitih Haralickovih značajki vrijednosti funkcija 
-se razlikuju u nekoliko redova veličina stoga ih je potrebno normalizirati
-prije nego se vektori značajki predaju klasifikatoru. Normalizacija
-je nužan postupak iz razloga što klasifikator koristi mjeru udaljenosti
-kao funkciju koja određuje pripadnosti nekom razredu te ako bi ostavili 
-vrijednosti ovakvima, neke od njih uopće ne bi imale kikakvog utjecaja zbog 
+Pogledom u izračune različitih Haralickovih značajki može se zamijetiti da vrijednosti funkcija 
+odskaču u nekoliko redova veličina jedne od drugih, stoga ih je potrebno normalizirati
+prije nego što se vektori značajki predaju klasifikatoru. Normalizacija
+je nužan postupak iz razloga što ovdje korišteni klasifikatori koriste mjeru udaljenosti
+kao funkciju koja određuje pripadnost nekom razredu te ako bi ostavili 
+vrijednosti ovakvima, neke od njih uopće ne bi imale ikakvog utjecaja zbog 
 svoje veličine dok bi druge, koje su možda manje važne u nekim slučajevima,
-dominirale i previše utjecale na krajnji rezultat klasifikacije. 
+dominirale i previše utjecale na krajnji rezultat klasifikacije. Postoje više različitih 
+metoda kojom se vektori značajki normaliziraju, npr. min-max, oko srednje vrijednosti, 
+normalizacija z-ocjenom, skaliranje na jedinični vektor i dr. 
 
 \bigbreak
 
-Normalizacijom se vektori značajki svode na srednju vrijednost oko 0
+U ovom radu je odabrana normalizacije kojom se vektori značajki svode na srednju vrijednost oko 0
 i jediničnu varijancu.
 
-\bigbreak
+\newpage
 
 Postupak normalizacije:
 \begin{center}
@@ -1477,7 +1490,7 @@ Nakon postupka normalizacije svi vektori imaju srednje vrijednosti oko nule
 i jediničnu varijancu. 
 
 \bigbreak
-\underline{\textbf{Primjer}} Stvaranje vektora značajki
+\underline{\textbf{Primjer:}} Stvaranje vektora značajki
 \bigbreak
 
 Kao primjer uzmimo 4 Haralickove značajke: kontrast, energiju, homogenost i entropiju. 
@@ -1559,17 +1572,294 @@ dim = 15 \cdot 12 = 180
 
 \end{center}
 
+Iz primjera je vidljivo kako dimenzionalnost pojedine podslike može postati
+iznimno velika. Izbor broja Haralickovih značajki. udaljenosti i broja kutova u 
+GLCM ima velik utjecaj na krajnju dimenzionalnost vektora značajki stoga je
+od velike važnosti promišljanje o izboru parametara svakog modela. 
+
 
 \chapter{Rezultati eksperimenta}
-Prikaz rezultata 
-\newline
-Diskusija o utjecaju značajki na točnost klasifikacije - utjecaj
-broja značajki na točnost, ima li smisla koristiti puno različitih značajki,
-čime se vrijeme izračuna vektora značajki veoma povećava
-\newline
-Izdvojiti najbolji/optimalni skup parametara
+
+U svrhu boljeg razumijevanja dobivenih rezultata eksperimenta napravljena je manja  analiza
+prostorne raspodjele uzoraka za svaki razred. Za analizu su uzeti sljedeći parametri
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|c}
+parametar & vrijednost \\
+\hline
+vrsta klasifikatora & \textit{k}-NN \\
+broj susjeda & 1 \\
+vrsta slike & sivih razina \\
+LBP radijus & 1 \\
+korak okna & 32 \\
+veličina okna & 64x64 \\
+GLCM udaljenosti & 1 \\
+GLCM kutovi & 0, \(\pi\) \\
+\end{tabular}
+\caption{Prametri primjera} 
+\end{table}
+
+Analiza se također vrši nad skupom slika koji je korišten u radu. Stvoreni su vektori
+značajki svake podslike, koji s navedenim parametrima poprimaju dimenzionalnost 240, 
+normlizirani i raspoređeni na način da je svaki
+od vektora značajki zbrojen zajedno s vektorima razreda kojem pripadaju.
+Sljedeće su ti vektori uprosječeni čime je dobiven vektor značajki 
+koji ne pripada niti jednoj podslici, a označava zamišljeno središte
+pojedinog razreda (prototip), u fizici bi to bilo težište. 
+
+\bigbreak
+
+Nakon dobivenih središta razreda izračunate su euklidske udaljenosti između svakog
+od razreda kako bi se dobila neka predodžba o razdiobi uzoraka u prostoru. 
+Oznake u tablici 6.2. predstavaljaju razrede gustoće:\( c_0 \rightarrow \) \enquote{no flow},
+\( c_1 \rightarrow \) \enquote{free flow}, \( c_2 \rightarrow \) \enquote{restricted flow}, 
+\( c_3 \rightarrow \) \enquote{dense flow}, \( c_4 \rightarrow \) \enquote{jammed flow}.
+
+Euklidska udaljenost se računa prema:
+\[
+d(x_1, x_2) = \sqrt{\left(\sum_{i=1}^{240} \left(x_{1i}-x_{2i}\right)^2\right)}
+\]
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(c_0, c_1)\) & 4.49 \\
+\(d(c_0, c_2)\) & 6.75 \\
+\(d(c_0, c_3)\) & 10.11 \\
+\(d(c_0, c_4)\) & 13.62 \\
+\(d(c_1, c_2)\) & 4.69 \\
+\(d(c_1, c_3)\) & 8.65 \\
+\(d(c_1, c_4)\) & 12.5 \\
+\(d(c_2, c_3)\) & 5.63 \\
+\(d(c_2, c_4)\) & 9.98 \\
+\(d(c_3, c_4)\) & 6.27
+\end{tabular}
+\caption{Euklidske udaljenosti među razredima} 
+\end{table}
+
+Iz priložene tablice moguće je vidjeti kako su središta razreda gustoća koji su bliski jedni drugima, npr.
+\enquote{restricted flow} i \enquote{dense flow}, odnosno \(c_2\) i \(c_3\), bliža 
+nego razredima koji su veoma različiti poput \(c_0\) i \(c_4\). Manja udaljenost središta znači
+i povećana vjerojatnost krive klasifikacije. U idealnom slučaju bi razredi bili strogo odvojivi
+i svaki razredi bi sačinjavali vektori značajki koji formiraju nekakav oblik hiperkugle ili nekog srodnog oblika
+te ne bi postojali slučajevi gdje neke jedinke previše odskaču od središta svoga razreda i oblika toga razreda.
+Stvarni život nije savršen te postoji skoro uvijek neki primjer koji je poseban.  Potrebno je naglasiti da
+su udaljenosti izračunate nad normaliziranim vektorima pa su radi toga razloga toliko male.
+
+\bigbreak
+
+U te posebne slučajeve
+spadaju pogreške prilikom označavanja uzoraka i uzorci koje je moguće svrstati u više različitih razreda. Primjer je
+segmentacija izvorne slike u manje podslike gdje se stvara podslika koja cijepa gusto mnoštvo na dva dijela
+i sad je problematično jer klasifikator ne zna da li gleda samo gustoću mnoštva koje je prepolovljeno ili gustoću 
+tog mnoštva naspram površine cijele podslike čime dolazi u konflikt jer se dvoumi između dva različita razreda gustoće.
+Isto tako, baš kao i klasifikator, čovjek se nekad može nedoumiti prilikom označavanja uzoraka
+odgovarajućim razredima gustoće. Iz istih razloga naša odluka jednom može biti u jednom smjeru, a 
+drugi put u drugom smjeru čime unosimo nekonzistentnost u skup podataka za učenje. Izbjegavati takve
+stvari nije lako te je zbog toga potrebno imati čim veći skup podataka kako bi se posebni slučajevi
+dovoljno malo puta pojavili i kako ne bi stvarali prevelikog utjecaja na ostatak skupa. 
+
+
+\begin{table}[ht]
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_0, c_0)\) & 10.03 \\
+\(d(x_0, c_1)\) & 10.91 \\
+\(d(x_0, c_2)\) & 10.63 \\
+\(d(x_0, c_3)\) & 12.74 \\
+\(d(x_0, c_4)\) & 13.08 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{no flow}}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_1, c_0)\) & 11.4 \\
+\(d(x_1, c_1)\) & 10.93 \\
+\(d(x_1, c_2)\) & 10.33 \\
+\(d(x_1, c_3)\) & 11.75 \\
+\(d(x_1, c_4)\) & 13.37 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{free flow}}
+}
+\end{table}
+\vspace{-1.5em}
+\begin{table}[ht]
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_2, c_0)\) & 21.46 \\
+\(d(x_2, c_1)\) & 20.33 \\
+\(d(x_2, c_2)\) & 19.75 \\
+\(d(x_2, c_3)\) & 17.86 \\
+\(d(x_2, c_4)\) & 19.38 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{restricted flow}}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_3, c_0)\) & 23.25 \\
+\(d(x_3, c_1)\) & 22.55 \\
+\(d(x_3, c_2)\) & 21.33 \\
+\(d(x_3, c_3)\) & 18.26 \\
+\(d(x_3, c_4)\) & 18.37 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{dense flow}}
+}
+\end{table}
+
+
+\vspace{-1.5em}
+\begin{table}[!ht]
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+udaljenost između & iznos udaljenosti \\
+\hline
+\(d(x_4, c_0)\) & 13.83 \\
+\(d(x_4, c_1)\) & 13.35 \\
+\(d(x_4, c_2)\) & 12.01 \\
+\(d(x_4, c_3)\) & 9.37 \\
+\(d(x_4, c_4)\) & 8.6 \\
+\end{tabular}
+\caption{Uzorak koji pripada razredu \enquote{jammed flow}}
+}
+\hfill
+\parbox{.45\linewidth}{
+\centering
+\begin{tabular}{c|c}
+ispravna oznaka & odluka klasifikatora \\
+\hline
+0 & 0 \\
+1 & 1 \\
+2 & 2 \\
+3 & 3 \\
+4 & 4 \\
+\end{tabular}
+\caption{Predočeni uzorci klasifikatoru i rezultati klasifikacije}
+}
+\end{table}
+
+Za svaki od razreda uzet je jedan još neviđen uzorak, izračunat je vektor značajki te je  za taj vektor
+ izračunata udaljenost do svakog od središta razreda (\(c_o, c_1, c_2, c_3, c_4\)). Uz to je pripremljen 
+\textit{k}-NN klasifikator s parametrima navedenim u tablici 6.1. Svaki od još neviđenih vektora
+predat je klasifikatoru kako bi vidjeli i njegov odluku. Svaki \(x_i\) u tablicama iznad, gdje je \(i=0,1,2,3,4\),
+označava pripadnika jednog od razreda gustoće.
+
+\bigbreak
+
+Iz tablice 6.8. moguće je vidjeti kako je klasifikator ispravno dodijelio oznaku svakome uzorku iako
+je njegova točnost 90.52\%. Iščitavanjem tablica 6.3. - 6.7. zamjećuje se da se odluka klasifikatora
+razlikuje od odluke koja bi se donijela ako bi se promatrale najmanje udaljenosti do središta pojedinih 
+razreda gustoće. Razlog za takvu odluku klasifikatora je jer radi na principu najbližih \textit{k} 
+susjeda, u ovom primjeru najbližeg jednog susjeda. Rezultati klasifikacije odgovaraju
+najbližim središtima za slučajeve razreda: 0, 3, 4 dok je kod ostalih središte razreda različito od
+dodijeljene odluke. 
+
+\bigbreak
+
+Primjer pokazuje kako je veoma važno uzeti prikladnu mjeru udaljenosti koju klasifikator koristi
+za usporedbu dva različita uzorka. Pritom nije svejedno uspoređuje li se nepoznati 
+uzorak sa svim ostalim uzorcima ili samo onim umjetnim uzorcima koji bi trebali
+predstavljati središta svakog od razreda. Izbor vrste usporedbe pojedinih vektora
+značajki ovisi o samim podatcima koje koristimo za učenje klasifikatora. Ako su nepravilne
+grupe vektora značajki u \textit{n}-dimenzionalnom prostoru, možda je bolja ideja izabrati
+klasifikaciju prema biližim susjedima dok u slučaju da imamo donekle pravilne grupe (hiperkugle i sl.) 
+je bolje izabrati središta pojedinih razreda kao vektore s kojima se svi dosad neviđeni uspoređuju
+jer i time u krajnjem slučaju štedimo vrijeme potrošeno na usporedbu. 
+
+\bigbreak
+
+Eksperimentom se došlo do zaključka kako \textit{k}-NN klasifikator daje dobre rezultate
+za manje vrijednosti broja \textit{k} pri čemu je on neparan i to za vrijednosti \(k=1\) ili \(k=3\).
+Većim vrijednostima se unosi određena greška jer raspodjela vektora značajki nije uvelike pravilna.
+Veličina koraka okna od 64 i 32 pokazala se kao najbolja  mjera obzirom na veličinu okna od 64x64. 
+Manji koraci ne donose nikakvu novu informaciju nego samo povečavaju vrijeme potrebno za 
+obradu pojedine podslike, a koraci veći od 64 nemaju smisla obzirom da je veličina okna zadržana
+stalnom. 
+
+\bigbreak
+
+Općenito je uvođenje većeg broja različitih vrijednosti kutova davalo bolje rezultate
+vezano uz točnost klasifikacije međutim pogledom u tablicu rezultata u dodatku B moguće je 
+vidjeti kako postoje modeli klasifikatora koji rade samo s kutem od 0 stupnjeva i postižu
+bolje rezultate od nekih drugih koji imaju npr. 4 različita kuta. Klasifikatori koji su koristili
+slike sivih razina generalno imaju neznatno veću točnost klasifikacije u usporedbi s klasifikatorima 
+koji rade sa slikama sivih razina nad kojima je primijenjen operator gradijenta, pritom su obje vrste
+klasifikatora imala iste parametre osim vrste slike koju koriste.
+
+\bigbreak
+
+Izbor Haralickovih značajki koje će model klasifikatora koristiti za izračunavanje nad nekom
+podslikom je jedna od najvažnijih ako ne i najvažnija stavka. Važno je napomenuti kako se
+pojedine značajke mogu izuzetno brzo izračunati jer je npr. potrebna samo suma GLCM
+pomnožena s nekim brojem dok druge značajke izuzetno vremenski opterete postupak 
+učenja pa je stoga izbor značajki ogreničeni i tom ogradom. U ovom radu nikad nije uzeto
+više od 7 različitih Haralickovih značajki zbog ograničenih računalnih i vremenskih resursa.
+Smisleno je koristiti skup parametara koji nije prezahtjevan jer preveliko čekanje na klasifikaciju
+slike nije poželjno u situacijama koje zahtijevaju možda brzu reakciju. Druga opcije je 
+koristiti grafičke procesore i paralelizirati koliko je to moguće sam postupak izračunavanja
+čime se automatski diže kompleksnost samog sustava.
+
+\bigbreak
+
+U radu \footnote{\cite{6266412}} odabrane su Haralickove značajke: energija, kontrast,
+homogenost i entropija. Te konkretne značajke veoma se brzo daju izračunati, a daju 
+vrlo dobre rezultate kako je vidljivo iz tablice u dodatku B. Izbor tih značajki uvelike poboljšava
+performanse samog postupka naspram nekih drugih izbora parametara s više različitih značajki, a
+ne narušava značajno točnost klasifikacije. Postoje bolji odabiri značajki, ali kako je već navedeno, 
+računski su zahtjevniji i time njihovo korištenje baš nema smisla. 
+
+\bigbreak
+
+ODABRATI NEKE KLASIFIKAORE I PROVJERITI TOČNOST
+
 
 \chapter{Prikladnost korištenog postupka na drugome skupu podataka}
+
+Postupak pripazan u ovome radu prikladan je za vrstu slika kojima se parametri ne mijenjaju. Pod 
+pojmom parametri misli se na položaj ili kut kamere, osvjetljenje slike ili preveliku gustoću mnoštva, 
+primjerice mnoštvo gledano iz zraka. Korištenjem lokalne binarne značajke i tehnike kliznog prozora
+nije moguće izvući neko smisleno značenje iz sivih razina slike. Haralickove značajke imaju
+mogućnost izvlačenja neke vrste informacija iz slike što na kraju rezultira određenom vrijednošću
+koja odgovara pojedinome oknu. Za ograničen skup slika, vrijednosti Haralickovih značajki 
+se kreću u nekom intervalu te se stoga predočavanjem nove, još dosad neviđene slike koja
+svojim teksturnim sastavom ne odgovara dosad viđenim slikama, u klasifikatoru stvara pomutnja.
+Takva slika može biti veoma udaljena od svakog središta razreda i najbližeg uzorka stoga 
+će se s velikom vjerojatnošću krivo klasificirati. 
+
+\bigbreak
+
+Zbog navedenih razloga korištenje jednom već naučenog klasifikatora nad novim skupom
+slika rezultira poražavajućom točnošću klasifikacije. Takvi rezultati mogu se izbjeći
+ponovljenim postupkom prikazanim na slici 3.2. koji uključuje ponovnu podjelu
+izvornih slika u manje podslike, ručno označavanje pojedinih razreda gustoće i 
+na kraju stvaranje vektora značajki. 
+
+\bigbreak
+
+Iako ova metoda nije tolike općenitosti da bi jednom naučeni klasifikatori mogli
+prepozanavati mnoštvo na bilo kakvim slikama, dovoljno je općenita i jednostavna
+da se u primjenjuje u uvjetima gdje se parametri slike ne mijenjaju ili se mijenjaju vrlo
+malo. Primjer takvih primjerna je identifikacija osobe temeljem otiska dlana \footnote{\cite{1512051}}
+ili u šoping centrima u kojima su uvjeti osvjetljenja i položaj kamere nepromjenjeni.
+
+
 
 Naći neki skup podataka na internetu s velikom brojem ljudi.
 \newline
@@ -1579,25 +1869,101 @@ Ocijeniti prikladnost postupka na novome skupu podataka.
 
 
 \chapter{Zaključak}
-Zaključak.
+
+Kako je navedeno u i uvodu, procjena gustoće mnoštva izuzetno je važna komponenta sustava
+za nadziranje i upravljanje mnoštvom. Video prijenos sigurnosnih kamera prilikom znatnijih 
+okupljanja ljudi mogu se obraditi na način da prikazuju korisne informacije poput procjene
+broja ljudi u svakoj sličici prijenosa ili označena mjesta od interesa koja ukazuju na kakvu 
+nepravilnost ili potencijalnu opasnost. Takva mjesta mogu biti gužve, iznenadne promjene
+sastava mnoštva ili npr. mjesta koja zahtijevaju održavanje socijalne distance, a ona sama
+je narušena prevelikim brojem ljudi. Korištenje takvih sustava uvelike olakšava posao ljudi
+zaduženih za obavljanje tih zadaća, ali i uvodi jednu novu razinu trenutnog odziva na novonastalu 
+situaciju gdje svaka sekunda može biti važna. 
+
+\bigbreak
+
+Razvijen je relativno jednostavan sustav za procjenu gustoće i broja ljudi koji se temelji na 
+tehnici kliznog okna i lokalnoj binarnoj značajki. Kako bi se povećala robusnost cijelog sustava
+klasifikacija se sastoji od sjedinjenja dvaju različitih klasifikatora: jednog koji koristi slike
+sivih razina i drugog koji koristi također slike sivih razina, ali je nad njima primijenjen operator 
+gradijenta. Takva kombinacija klasifikatora generalno daje bolje rezultate i ima mogućnost
+ispraviti pogrešne klasifikacije pojedinog klasifikatora tako što se važnost svakog klasifikatora
+regulira težinom koja odgovara točnosti klasifikacije dotičnog. Regulirati te težine se može i 
+na druge načine, ali pritom treba pripaziti jer to uvelike može promijeniti odluke klasifikacije.
+
+\bigbreak
+
+Ovakva fuzija dvaju klasifikatora pokazala se dobrom što je i na kraju rezulziralo zadovoljavajućim
+rezultatima. Primjena operatora LBP i tehnike klizajuće ćelije nad slikama s mnoštvom omogućilo je 
+izvlačenje informacija o slici koje su zatim korištene za izračune Haralickovih značajki. Iako nije moguće 
+izravno povezati neku značajku i njezino značenje u smislu argumentiranja vrijednosti funkcije
+nad nekom slikom, moguće je doći do zaključka kako je npr. vrijednost entropije veća za kompleksnije slike.
+Provođenjem eksperimenta s različitim parametrima zaključeno je kako porast broja različitih 
+parametara, odnosno dodavanje novih Haralickovih značajki, ne mora nužno značiti da će točnost
+klasifikacije porasti. Uvođenje kompleksnijeg skupa parametara ima za posljedicu duže izvođenje
+postupka klasifikacije, a porast točnosti nije znatan da bi se opravdalo veće čekanje na klasifikaciju.
+
+\bigbreak 
+
+Opisani razlozi ne znače da nije poželjno povećavati broj značajki. Povećanje je opravdavajuće
+ako se problem prilagodi na način da se izračuni značajki paraleliziraju što je više moguće. 
+Paralelizacija problema imala bi i više nego značajno poboljšanje performansi samog postupka
+izračuna Haralickovih značajki gdje bi se svaka značajka, svakog okna podslike, mogla izračunavati sama 
+za sebe, istovremeno sa svim ostalim. Za takav postupak mogu se koristiti grafički procesori
+koji imaju i više nego dovoljno jezgara za takve izračune. Upotreba grafičkih kartica za ubrzanje
+postupka moglo bi dovesti do primjene metode opisane u radu za procjenu gustoće mnoštva 
+u realnom vremenu s nekim pristojnim brojem sličica u sekundi.
+
+\bigbreak
+
+Prikladnost korištenja LBP i tehnike kliznog okna pokazana je u ovom radu, međutim jednom
+naučeni klasifikatori na jednom skupu slika nisu u mogućnosti preslikati svoje znanje
+na novi skup slika koji se od prošlog može razlikovati po broju ljudi, odnosno gustoći,
+uvjetima osvjetljenja ili kutu kamere. To je ograničenje ovakvog postupka jer on 
+nema mogućnosti izvlačenja semantičkog značenja piksela koji su mu predočeni 
+u obliku slike. Pikseli sivih razina  svojim vrijednostima doprinose vrijednostima Haralickovih 
+značajki, ali promjena svjetlosnih uvjeta odmah rezultira različitim vrijednostima sivih
+razina i cijeli postupak više nije primjenjiv nad novom vrstom slika. Kako bi koristili 
+opisani postupak nad novim skupom slika, potrebno ih je opet podijeliti u podslike, 
+ručno označiti i opet provesti postupak učenja te prilagoditi parametre pojedinog klasifikatora
+jer možda jednak skup parametara ne radi najbolje za različite skupove slika. 
+Smisleno korištenje ovakvog sustava je opisano u \footnote{\cite{1512051}} gdje
+se prepoznaje identitet osobe na temelju otiska ruke. Ovdje su uvjeti u kojim se 
+dohvaća slika dlana skoro identični u svako doba dana i stoga nema veće razlike
+u sivim razinama čime se veoma lako primjenjuje i daje izuzetne rezultate.
+
 
 \bibliography{literatura}
 \bibliographystyle{fer}
 
 \listoffigures
+\listoftables
 
 \begin{sazetak}
-Sažetak na hrvatskom jeziku.
+Procjena gustoće mnoštva od velike je važnosti u video nadzoru i upravljanju mnoštvom. Predložene
+su različite metode za rješavanje ovog problema, međutim, većina ih procjenjuje gustoću mnoštva
+cijele slike pritom ignorirajući lokalna mnoštva. U ovom radu primjenjuje se operator lokalnih binarnih
+značajki nad sivim slikama i sivim slikama nad kojima je primjenjen operator gradijenta. Iz takvih slika
+se pomoću matrice pojavnosti lokalnih binarnih značajki, postupkom klizećeg okna, izračunavaju
+ Haralickove značajke koje tvore vektore značajki. Koriste se dvije vrste klasifikatora: \textit{k}-NN i SVM koji 
+se na kraju spajaju u jedan klasifikator i utjecaj svakog klasifikatora uvjetovan je njegovom točnošću 
+klasifikacije.
 
-\kljucnerijeci{Ključne riječi, odvojene zarezima.}
+\kljucnerijeci{Lokalna binarna značajka, Matrica pojavnosti lokalnih binarnih uzoraka, Vektor značajki, \textit{k}-NN klasifikator,
+SVM klasifikator, gustoća mnoštva}
 \end{sazetak}
 
-% TODO: Navedite naslov na engleskom jeziku.
 \engtitle{Crowd density estimation based on local binary pattern co-occurence matrix}
 \begin{abstract}
-Abstract.
+Crowd density estimation is of great importance in video surveillance and in crowd management. 
+Most of the existing methods estimate crowd density of a whole image while ignoring local density areas.
+In this work local binary pattern is used on gray and gradient images. These pictures are used to 
+extract Haralick features from local binary pattern co-occurence matrix, using sliding window
+technique, which later form feature vectors. Two type of classifiers are used: \textit{k}-NN and SVM.
+They are later fused together and the influence of each one is dependant on the classifier accuracy of 
+training set of images.
 
-\keywords{Keywords.}
+\keywords{local binary pattern, gray level co-occurence matrix, feature vectors, \textit{k}-NN, SVM, crowd density}
 \end{abstract}
 
 \appendix
@@ -1714,16 +2080,6 @@ Q(i,j) = \sum_k \frac{p(i,k)p(j,k)}{p_x(i)p_y(k)}
 
 \begin{adjustwidth}{-30pt}{0pt}
 \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
-\
-
-
-
-
-
-
-
-
-
 \STAB{\rotatebox[origin=c]{90}{redni broj}} & 
 \STAB{\rotatebox[origin=c]{90}{\;\;vrsta klasifikatora\;\;}} & 
 \STAB{\rotatebox[origin=c]{90}{vrsta podslike}} & 
