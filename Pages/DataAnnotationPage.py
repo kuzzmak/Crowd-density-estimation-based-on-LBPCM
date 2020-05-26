@@ -3,9 +3,10 @@ import cv2 as cv
 import os
 from PIL import Image, ImageTk
 from Pages import InitializationPage as iP
+import Writer
 
 class DataAnnotationPage(tk.Frame):
-    """ razred za oznacavanje pripadnosti pojedinog slikovnog elementa odredjenom razredu gustoce
+    """ razred za oznacavanje pripadnosti pojedinog slikovnog elementa određenom razredu gustoće
     """
 
     def __init__(self, parent, controller):
@@ -28,32 +29,43 @@ class DataAnnotationPage(tk.Frame):
         buttonFrame.pack()
 
         # gumbi
-        buttonZero = tk.Button(buttonFrame, text="No flow", command=lambda: self.annotate('0'))
+        buttonZero = tk.Button(buttonFrame, text="No flow",
+                               command=lambda: self.annotate('0', controller))
         buttonZero.grid(row=0, column=0, padx=10, pady=10)
 
-        buttonFreeFlow = tk.Button(buttonFrame, text="Free Flow", command=lambda: self.annotate('1'))
+        buttonFreeFlow = tk.Button(buttonFrame, text="Free Flow",
+                                   command=lambda: self.annotate('1', controller))
         buttonFreeFlow.grid(row=0, column=1, padx=10, pady=10)
 
-        buttonRestrictedFlow = tk.Button(buttonFrame, text="Restricted flow", command=lambda: self.annotate('2'))
+        buttonRestrictedFlow = tk.Button(buttonFrame, text="Restricted flow",
+                                         command=lambda: self.annotate('2', controller))
         buttonRestrictedFlow.grid(row=0, column=2, padx=10, pady=10)
 
-        buttonDenseFlow = tk.Button(buttonFrame, text="Dense flow", command=lambda: self.annotate('3'))
+        buttonDenseFlow = tk.Button(buttonFrame, text="Dense flow",
+                                    command=lambda: self.annotate('3', controller))
         buttonDenseFlow.grid(row=0, column=3, padx=10, pady=10)
 
-        buttonJammedFlow = tk.Button(buttonFrame, text="Jammed flow", command=lambda: self.annotate('4'))
+        buttonJammedFlow = tk.Button(buttonFrame, text="Jammed flow",
+                                     command=lambda: self.annotate('4', controller))
         buttonJammedFlow.grid(row=0, column=4, padx=10, pady=10)
 
         frameNav = tk.Frame(self)
         frameNav.pack(padx=10, pady=10)
 
-        buttonPreviousPic = tk.Button(frameNav, text="Prev pic", command=self.prevPicAnnotation)
-        buttonPreviousPic.grid(row=0, column=0, padx=10, pady=10)
+        buttonLoadLabels = tk.Button(frameNav, text="Load labels", command=lambda: self.loadLabels(controller))
+        buttonLoadLabels.grid(row=0, column=0, padx=10, pady=10)
 
-        buttonSave = tk.Button(frameNav, text="Save", command=self.saveAnnotedData, state="disabled")
-        buttonSave.grid(row=0, column=1, padx=10, pady=10)
+        buttonPreviousPic = tk.Button(frameNav, text="Prev pic", command=lambda: self.prevPicAnnotation(controller))
+        buttonPreviousPic.grid(row=0, column=1, padx=10, pady=10)
+
+        buttonSave = tk.Button(frameNav, text="Save", command=lambda: self.saveAnnotedData(controller))
+        buttonSave.grid(row=0, column=2, padx=10, pady=10)
 
         buttonBack = tk.Button(frameNav, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
-        buttonBack.grid(row=0, column=2, padx=10, pady=10)
+        buttonBack.grid(row=0, column=3, padx=10, pady=10)
+
+        self.writer = Writer.Writer()
+        self.labelDictionary = {}
 
     def updateDataAnnotationFrame(self, controller):
         pass
@@ -73,51 +85,52 @@ class DataAnnotationPage(tk.Frame):
         self.labelAnnotedDataCounter.configure(
             text=str(self.dataAnnotationCounter) + "/" + str(self.processedDataPictures.__len__()))
 
-    def prevPicAnnotation(self):
-        pass
-    #     """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
-    #     """
-    #
-    #     if self.dataAnnotationCounter >= 1:
-    #         self.dataAnnotationCounter -= 1
-    #         self.updateDataAnnotationFrame()
-    #     else:
-    #         self.console.insert(tk.END, "[WARNING] no previous pictures remaining\n")
-    #         self.console.insert(tk.END, "----------------------------------------\n")
-    #         self.console.see(tk.END)
+    def prevPicAnnotation(self, controller):
+        """ funkcija za prikaz prethodne slike na stranici za oznacavanje slika
+        """
 
-    def annotate(self, label):
-        pass
-    #     """ funkcija za stvaranje oznake pojedine slke i spremanje u rjecnik i datoteku
-    #     """
-    #
-    #     # ime slike
-    #     picName = self.processedDataPictures[self.dataAnnotationCounter]
-    #     # dodijeljena labela
-    #     saveString = picName + ":" + label
-    #     self.labelDictionary[picName] = label
-    #
-    #     # ako smo dosli do zadnje onda se staje
-    #     if self.dataAnnotationCounter < self.processedDataPictures.__len__():
-    #         self.dataAnnotationCounter += 1
-    #         self.updateDataAnnotationFrame()
-    #         self.console.insert(tk.END, saveString + "\n")
-    #         self.console.see(tk.END)
-    #     else:
-    #         self.console.insert(tk.END, "[INFO] all pictures labeled\n")
-    #         self.console.insert(tk.END, "----------------------------------------\n")
-    #         self.console.see(tk.END)
+        if self.dataAnnotationCounter >= 1:
+            self.dataAnnotationCounter -= 1
+            self.updateDataAnnotationFrame(controller)
+        else:
+            controller.consolePrint("[WARNING] no previous pictures remaining")
 
-    def saveAnnotedData(self):
-        pass
-    #     """ funkcija za spremanje rjecnika slika i oznaka
-    #     """
-    #
-    #     self.writer.saveDirectory = r"data2/normalData"
-    #     self.writer.labelDictionary = self.labelDictionary
-    #     self.writer.writeAnnotedDataToFile()
-    #
-    #     self.console.insert(tk.END, "[INFO] labels and images saved to: " + self.writer.saveDirectory + "\n")
-    #     self.console.insert(tk.END, "[INFO] saved " + str(self.labelDictionary.__len__()) + " labeled images\n")
-    #     self.console.insert(tk.END, "----------------------------------------\n")
-    #     self.console.see(tk.END)
+    def annotate(self, label, controller):
+        """ funkcija za stvaranje oznake pojedine slke i spremanje u rjecnik i datoteku
+        """
+
+        # ime slike
+        picName = self.processedDataPictures[self.dataAnnotationCounter]
+        # dodijeljena labela
+        saveString = picName + ":" + label
+        self.labelDictionary[picName] = label
+
+        # ako smo dosli do zadnje onda se staje
+        if self.dataAnnotationCounter < self.processedDataPictures.__len__():
+            self.dataAnnotationCounter += 1
+            self.updateDataAnnotationFrame(controller)
+            controller.consolePrint(saveString, dots=False)
+        else:
+            controller.consolePrint("[INFO] all pictures labeled")
+
+    def saveAnnotedData(self, controller):
+        """ funkcija za spremanje rječnika slika i oznaka
+        """
+
+        self.writer.labelDictionary = self.labelDictionary
+        self.writer.writeAnnotedDataToFile(controller)
+
+        controller.consolePrint("[INFO] labels and images saved to: " +
+                                os.path.join(controller.app.configuration['labeledDataDirectory'], 'labeledData.txt'),
+                                dots=False)
+
+        controller.consolePrint("[INFO] saved " + str(self.labelDictionary.__len__()) + " labeled images")
+
+    def loadLabels(self, controller):
+
+        self.writer.loadAnnotedDataFromFile(
+            os.path.join(controller.app.configuration['labeledDataDirectory'], "labeledData.txt"))
+        self.labelDictionary = self.writer.labelDictionary
+        self.dataAnnotationCounter = self.labelDictionary.__len__()
+        self.updateDataAnnotationFrame(controller)
+        controller.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
