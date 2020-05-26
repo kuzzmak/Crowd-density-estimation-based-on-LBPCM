@@ -125,8 +125,5 @@ class LBPCM:
             if not(progressLabel is None):
                 progressLabel.configure(text=str(i) + "/" + str(pictures.__len__()) + "   Feature vectors completed.")
 
-            # if verbose:
-            #     app.gui.consolePrint("\t\t" + str(i) + "/" + str(pictures.__len__()), dots=False)
-
         if verbose:
             app.gui.consolePrint("[INFO] vector creation finished")
