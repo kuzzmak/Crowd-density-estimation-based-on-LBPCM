@@ -61,7 +61,7 @@ class App:
         Funkcija za učitavanje oznaka slika koje su već procesirane
         """
 
-        self.writer.loadAnnotedDataFromFile(self.configuration['labeledData'])
+        self.writer.loadAnnotedDataFromFile(os.path.join(self.configuration['labeledDataDirectory'], 'labeledData.txt'))
         self.labelDictionary = self.writer.labelDictionary
         self.dataAnnotationCounter = self.writer.labelDictionary.__len__()
         self.gui.consolePrint("[INFO] loaded " + str(self.labelDictionary.__len__()) + " labels")
