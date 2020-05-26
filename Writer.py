@@ -15,7 +15,7 @@ class Writer:
         Funkcija za spremanje oznacenih slika u datoteku self.pathToLabels
         """
 
-        filename = os.path.join(controller.configuration['modelsDirectory'], "labeledData.txt")
+        filename = os.path.join(controller.app.configuration['labeledDataDirectory'], "labeledData.txt")
 
         f = open(filename, "w")
 
