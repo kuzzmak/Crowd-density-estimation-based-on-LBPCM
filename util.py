@@ -403,12 +403,12 @@ def makeConfigurationFile():
         'dataDirectory': r'_data',
         'rawDataDirectory': os.path.join('_data', 'rawData'),
         'processedDataDirectory': os.path.join('_data', 'processedData'),
-        'modelsDirectory': os.path.join('_data', 'models'),
-        'grayModelsDirectory': os.path.join('_data', 'models', 'grayModels'),
-        'gradModelsDirectory': os.path.join('_data', 'models', 'gradModels'),
+        'modelsDirectory': os.path.join('data', 'models'),
+        'grayModelsDirectory': os.path.join('data', 'models', 'grayModels'),
+        'gradModelsDirectory': os.path.join('data', 'models', 'gradModels'),
         'iconsDirectory': os.path.join('_data', 'icons'),
-        'labeledData': os.path.join('_data', 'labeledData.txt'),
-        'functionInformation': os.path.join('data', 'Latex', 'main.pdf')
+        'labeledData': os.path.join('data', 'labeledData.txt'),
+        'functionInformation': os.path.join('_data', 'Latex', 'main.pdf')
     }
 
     with open(fileName, 'w') as f:
@@ -442,3 +442,26 @@ def getPeopleCount(labels):
         interval[1] += _pd[1]
 
     return interval
+
+def makeSubPictures(pathToRawData, pathToProcessedData):
+
+    rawPictures = os.listdir(pathToRawData)
+
+    x_size = 160
+    y_size = 88
+    imageX = 640
+    imageY = 352
+    stepX = imageX // x_size
+    stepY = imageY // y_size
+
+    i = 0
+    for im in rawPictures:
+
+        rawPicture = cv.imread(os.path.join(pathToRawData, im), cv.IMREAD_GRAYSCALE)
+
+        for y in range(stepY):
+            for x in range(stepX):
+                subImage = rawPicture[y * y_size:(y + 1) * y_size, x * x_size:(x + 1) * x_size]
+                cv.imwrite(os.path.join(pathToProcessedData, str(i) + '.jpg'), subImage)
+                i += 1
+                print(i)
