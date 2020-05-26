@@ -4,7 +4,7 @@ from os import listdir
 import cv2 as cv
 from PIL import ImageTk, Image
 import numpy as np
-
+import os
 import FunctionDescriptions
 import util
 from skimage.feature import local_binary_pattern
@@ -103,8 +103,14 @@ class SlidingWindowPage(tk.Frame):
                                               command=lambda: FunctionDescriptions.FD(self))
         buttonFunctionDefinitions.grid(row=16, padx=5, pady=2, sticky="w")
 
-        buttonBack = tk.Button(self, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
-        buttonBack.pack(side="bottom", padx=5, pady=5)
+        buttonFrame = tk.Frame(self)
+        buttonFrame.pack(side="bottom")
+
+        buttonReset = tk.Button(buttonFrame, text="Reset", command=self.reset)
+        buttonReset.pack(side="left", padx=10, pady=10)
+
+        buttonBack = tk.Button(buttonFrame, text="Back", command=lambda: controller.show_frame(iP.InitializationPage))
+        buttonBack.pack(side="left", padx=10, pady=10)
 
         # frame s unosom parametara
         parameterFrame = tk.Frame(self)
@@ -198,8 +204,8 @@ class SlidingWindowPage(tk.Frame):
             self.currentCell = 0
             self.currentPicture -= 1
 
-            self.currentPicturePath = controller.app.configuration['processedDataDirectory'] + "/" + \
-                                      self.processedImages[self.currentPicture]
+            self.currentPicturePath = os.path.join(controller.app.configuration['processedDataDirectory'],
+                                      self.processedImages[self.currentPicture])
 
             self.updateImages()
         else:
@@ -287,3 +293,27 @@ class SlidingWindowPage(tk.Frame):
             self.currentPicturePath = path
             self.picDims = util.makePicDims(cv.imread(self.currentPicturePath))
             self.updateImages()
+
+    def reset(self):
+        """
+        Funkcija za resetiranje okna na početnu poziciju.
+
+        """
+
+        self.currentCell = 0
+        self.stepSize = int(self.entryStepSize.get())
+        self.cellSize = [int(x) for x in self.entryCellSize.get().split('x')]
+        self.picDims = util.makePicDims(cv.imread(self.currentPicturePath), self.stepSize, self.cellSize)
+        self.updateImages()
+
+    def reset(self):
+        """
+        Funkcija za resetiranje okna na početnu poziciju.
+
+        """
+
+        self.currentCell = 0
+        self.stepSize = int(self.entryStepSize.get())
+        self.cellSize = [int(x) for x in self.entryCellSize.get().split('x')]
+        self.picDims = util.makePicDims(cv.imread(self.currentPicturePath), self.stepSize, self.cellSize)
+        self.updateImages()
