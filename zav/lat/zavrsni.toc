@@ -1,25 +1,25 @@
 \babel@toc {croatian}{}
 \contentsline {chapter}{\numberline {1}Uvod}{1}%
 \contentsline {chapter}{\numberline {2}Teorijske osnove}{2}%
-\contentsline {subsection}{\numberline {2.0.1}LBP (\textit {engl. Local binary pattern}) - lokalna binarna značajka}{2}%
+\contentsline {subsection}{\numberline {2.0.1}LBP (engl. \textit {Local binary pattern}) - lokalna binarna značajka}{2}%
 \contentsline {subsection}{\numberline {2.0.2}Matrica pojavnosti sivih razina}{5}%
 \contentsline {subsection}{\numberline {2.0.3}Klasifikator \textit {k} najbližih susjeda - \textit {k}-NN}{7}%
-\contentsline {subsection}{\numberline {2.0.4}Stroj s potpornim vektorima(\textit {engl.} Support vector machine) - SVM}{9}%
-\contentsline {subsection}{\numberline {2.0.5}Gradijent slike}{13}%
-\contentsline {subsection}{\numberline {2.0.6}Sobelov operator}{14}%
-\contentsline {subsection}{\numberline {2.0.7}Haralickove značajke}{15}%
-\contentsline {chapter}{\numberline {3}Opis postupka}{16}%
-\contentsline {chapter}{\numberline {4}Upute za korištenje i prikaz međukoraka}{20}%
-\contentsline {subsection}{\numberline {4.0.1}Podjela slika u podslike}{22}%
-\contentsline {subsection}{\numberline {4.0.2}Označavanje podslika}{24}%
-\contentsline {subsection}{\numberline {4.0.3}Stvaranje vektora značajki}{25}%
-\contentsline {subsection}{\numberline {4.0.4}Klasifikacija slike postojećim modelima}{29}%
-\contentsline {chapter}{\numberline {5}Tehnika klizećeg okna}{34}%
-\contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{38}%
-\contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{43}%
-\contentsline {chapter}{\numberline {8}Zaključak}{44}%
-\contentsline {chapter}{Literatura}{46}%
-\contentsline {chapter}{Popis slika}{47}%
-\contentsline {chapter}{Popis tablica}{49}%
-\contentsline {chapter}{\numberline {A}Teksturne značajke}{51}%
-\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{54}%
+\contentsline {subsection}{\numberline {2.0.4}Stroj s potpornim vektorima(engl. \textit {Support vector machine - SVM}}{9}%
+\contentsline {subsection}{\numberline {2.0.5}Gradijent slike}{14}%
+\contentsline {subsection}{\numberline {2.0.6}Sobelov operator}{15}%
+\contentsline {subsection}{\numberline {2.0.7}Haralickove značajke}{16}%
+\contentsline {chapter}{\numberline {3}Opis postupka}{17}%
+\contentsline {chapter}{\numberline {4}Upute za korištenje i prikaz međukoraka}{21}%
+\contentsline {subsection}{\numberline {4.0.1}Podjela slika u podslike}{23}%
+\contentsline {subsection}{\numberline {4.0.2}Označavanje podslika}{25}%
+\contentsline {subsection}{\numberline {4.0.3}Stvaranje vektora značajki}{26}%
+\contentsline {subsection}{\numberline {4.0.4}Klasifikacija slike postojećim modelima}{30}%
+\contentsline {chapter}{\numberline {5}Tehnika klizećeg okna}{35}%
+\contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{39}%
+\contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{44}%
+\contentsline {chapter}{\numberline {8}Zaključak}{45}%
+\contentsline {chapter}{Literatura}{47}%
+\contentsline {chapter}{Popis slika}{49}%
+\contentsline {chapter}{Popis tablica}{51}%
+\contentsline {chapter}{\numberline {A}Teksturne značajke}{53}%
+\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{56}%

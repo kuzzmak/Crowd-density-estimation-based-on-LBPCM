@@ -11,34 +11,35 @@
 \contentsline {figure}{\numberline {2.8}{\ignorespaces Prikaz GLCM prije i nakon normalizacije\relax }}{6}%
 \contentsline {figure}{\numberline {2.9}{\ignorespaces Prikaz dva razreda s jednim nestandardnim uzorkom\relax }}{7}%
 \contentsline {figure}{\numberline {2.10}{\ignorespaces Prikaz uzoraka dva razreda i novog uzorka za klasifikaciju\relax }}{8}%
-\contentsline {figure}{\numberline {2.11}{\ignorespaces Prikaz dviju mogućih hiperravnina između dva razreda\relax }}{9}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces Prikaz dviju mogućih hiperravnina između dva razreda.\relax }}{9}%
 \contentsline {figure}{\numberline {2.12}{\ignorespaces Prikaz potencijalnih hiperravnina koje dijele najbliže točke razreda\relax }}{10}%
 \contentsline {figure}{\numberline {2.13}{\ignorespaces Linearno nerazdvojivi razredi\relax }}{11}%
-\contentsline {figure}{\numberline {2.14}{\ignorespaces Linearno nerazdvojivi razredi u većoj dimenziji postaju linearno odvojivi\relax }}{11}%
-\contentsline {figure}{\numberline {2.15}{\ignorespaces Prikaz smjera gradijenta plavim strelicama, tamnija boja označava veće vrijednosti.\relax }}{13}%
-\contentsline {figure}{\numberline {2.16}{\ignorespaces Izvorna slika\relax }}{14}%
-\contentsline {figure}{\numberline {2.17}{\ignorespaces Prijenjen Sobelov operator na izvornoj slici\relax }}{14}%
-\contentsline {figure}{\numberline {2.18}{\ignorespaces Prijenjen Sobelov operator u smjeru y na izvornoj slici\relax }}{14}%
-\contentsline {figure}{\numberline {2.19}{\ignorespaces Prijenjen Sobelov operator u smjeru x na izvornoj slici\relax }}{14}%
+\contentsline {figure}{\numberline {2.14}{\ignorespaces Linearno nerazdvojivi razredi u većoj dimenziji postaju linearno odvojivi\relax }}{12}%
+\contentsline {figure}{\numberline {2.15}{\ignorespaces Prikaz mreže s potpornim vektorima\relax }}{13}%
+\contentsline {figure}{\numberline {2.16}{\ignorespaces Prikaz smjera gradijenta plavim strelicama, tamnija boja označava veće vrijednosti.\relax }}{14}%
+\contentsline {figure}{\numberline {2.17}{\ignorespaces Izvorna slika\relax }}{15}%
+\contentsline {figure}{\numberline {2.18}{\ignorespaces Primijenjen Sobelov operator na izvornoj slici\relax }}{15}%
+\contentsline {figure}{\numberline {2.19}{\ignorespaces Primijenjen Sobelov operator u smjeru y na izvornoj slici\relax }}{15}%
+\contentsline {figure}{\numberline {2.20}{\ignorespaces Primijenjen Sobelov operator u smjeru x na izvornoj slici\relax }}{15}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Prikaz pojedinih gustoća mnoštva\relax }}{16}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Prikaz arhitekture sustava\relax }}{19}%
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Prikaz pojedinih gustoća mnoštva\relax }}{17}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Prikaz arhitekture sustava\relax }}{20}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Prikaz početnog prozora nakon pokretanja aplikacije\relax }}{20}%
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Prikaz glavnog prozora\relax }}{21}%
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Prikaz stranice za obradu izvornih slika\relax }}{22}%
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Prikaz izgleda podslike s nešenih dimenzijama\relax }}{23}%
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Prikaz podijeljene izvorne slika na manje podslike\relax }}{24}%
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Prikaz prozora za označavanje podslika\relax }}{24}%
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Početni prozor za stvaranje vektora značajki\relax }}{26}%
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Izgled prozora za stvaranje konfiguracije\relax }}{26}%
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Prikaz napretka pojedinih konfiguracija\relax }}{29}%
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Prikaz stranice za odabir jednog modela\relax }}{30}%
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Prikaz stranice za odabir dva modela\relax }}{31}%
-\contentsline {figure}{\numberline {4.12}{\ignorespaces Prikaz stranice za klasifikaciju slika\relax }}{32}%
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Prikaz klasificirane slike i procjene broja ljudi na temelju gustoće mnoštva\relax }}{32}%
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Prikaz početnog prozora nakon pokretanja aplikacije\relax }}{21}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Prikaz glavnog prozora\relax }}{22}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Prikaz stranice za obradu izvornih slika\relax }}{23}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Prikaz izgleda podslike s nešenih dimenzijama\relax }}{24}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Prikaz podijeljene izvorne slika na manje podslike\relax }}{25}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Prikaz prozora za označavanje podslika\relax }}{25}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Početni prozor za stvaranje vektora značajki\relax }}{27}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Izgled prozora za stvaranje konfiguracije\relax }}{27}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Prikaz napretka pojedinih konfiguracija\relax }}{30}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Prikaz stranice za odabir jednog modela\relax }}{31}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Prikaz stranice za odabir dva modela\relax }}{32}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Prikaz stranice za klasifikaciju slika\relax }}{33}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Prikaz klasificirane slike i procjene broja ljudi na temelju gustoće mnoštva\relax }}{33}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {5.1}{\ignorespaces Prikaz prozora tehnike klizećeg okna\relax }}{34}%
+\contentsline {figure}{\numberline {5.1}{\ignorespaces Prikaz prozora tehnike klizećeg okna\relax }}{35}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }

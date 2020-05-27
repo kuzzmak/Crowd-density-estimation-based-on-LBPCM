@@ -1,4 +1,4 @@
-\begin{thebibliography}{7}
+\begin{thebibliography}{13}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -10,6 +10,26 @@ O.~{Barkan}, J.~{Weill}, L.~{Wolf}, i H.~{Aronowitz}.
 \newblock Fast high dimensional vector multiplication face recognition.
 \newblock U \emph{2013 IEEE International Conference on Computer Vision},
   stranice 1960--1967, 2013.
+
+\bibitem[Clark(2011)]{pil}
+Alex Clark.
+\newblock pypi.org/project/pillow.
+\newblock \url{https://pypi.org/project/Pillow/}, 2011.
+\newblock Posjećeno 12.5.2020.
+
+\bibitem[Cortes i Vapnik(1995)]{vapnik}
+Corinna Cortes i Vladimir Vapnik.
+\newblock Support-vector networks.
+\newblock \emph{Mach. Learn.}, 20\penalty0 (3):\penalty0 273–297, Rujan 1995.
+\newblock ISSN 0885-6125.
+\newblock \doi{10.1023/A:1022627411411}.
+\newblock URL \url{https://doi.org/10.1023/A:1022627411411}.
+
+\bibitem[Cournapeau(2007)]{scikit}
+David Cournapeau.
+\newblock scikit-learn.org.
+\newblock \url{https://scikit-learn.org/stable/}, 2007.
+\newblock Posjećeno 12.5.2020.
 
 \bibitem[{Dong-chen He} i {Li Wang}(1990)]{dong}
 {Dong-chen He} i {Li Wang}.
@@ -28,6 +48,13 @@ Intel.
 \newblock Opencv.org.
 \newblock \url{https://opencv.org/}, 2000.
 \newblock Posjećeno 12.5.2020.
+
+\bibitem[Koutroumbas i Theodoridis(2008)]{pattern}
+K.~Koutroumbas i S.~Theodoridis.
+\newblock \emph{Pattern Recognition}.
+\newblock Elsevier Science, 2008.
+\newblock ISBN 9780080949123.
+\newblock URL \url{https://books.google.hr/books?id=QgD-3Tcj8DkC}.
 
 \bibitem[{Marana} et~al.(1997){Marana}, {Velastin}, {Costa}, i
   {Lotufo}]{marana}
@@ -49,5 +76,19 @@ Abishai Polus, Joseph~L. Schofer, i Ariela Ushpiz.
 \newblock \emph{Journal of Transportation Engineering}, 109\penalty0
   (1):\penalty0 46--56, 1983.
 \newblock \doi{10.1061/(ASCE)0733-947X(1983)109:1(46)}.
+
+\bibitem[{Ribaric} i {Fratric}(2005)]{1512051}
+S.~{Ribaric} i I.~{Fratric}.
+\newblock A biometric identification system based on eigenpalm and eigenfinger
+  features.
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence}, 27\penalty0 (11):\penalty0 1698--1709, 2005.
+
+\bibitem[{Wang} et~al.(2012){Wang}, {Liu}, {Qian}, i {Xu}]{6266412}
+Z.~{Wang}, H.~{Liu}, Y.~{Qian}, i T.~{Xu}.
+\newblock Crowd density estimation based on local binary pattern co-occurrence
+  matrix.
+\newblock U \emph{2012 IEEE International Conference on Multimedia and Expo
+  Workshops}, stranice 372--377, 2012.
 
 \end{thebibliography}
