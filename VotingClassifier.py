@@ -52,7 +52,7 @@ class VotingClassifier:
         :return: lista labela razreda pojedine podslike
         """
 
-        dim = (192, 144)
+        dim = (160, 88)
         # zeljena sirina slikovnog elementa
         x_size = dim[0]
         # zeljena visina slikovnog elementa
