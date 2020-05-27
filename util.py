@@ -408,7 +408,8 @@ def makeConfigurationFile():
         'gradModelsDirectory': os.path.join('data', 'models', 'gradModels'),
         'iconsDirectory': os.path.join('_data', 'icons'),
         'labeledData': os.path.join('data', 'labeledData.txt'),
-        'functionInformation': os.path.join('_data', 'Latex', 'main.pdf')
+        'functionInformation': os.path.join('_data', 'Latex', 'main.pdf'),
+        'labeledDataDirectory': r'_data'
     }
 
     with open(fileName, 'w') as f:
