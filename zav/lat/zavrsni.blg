@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: .\zavrsni.aux
 The style file: fer.bst
 Database file #1: literatura.bib
-You've used 13 entries,
+You've used 14 entries,
             2773 wiz_defined-function locations,
-            684 strings with 6947 characters,
-and the built_in function-call counts, 6352 in all, are:
-= -- 578
-> -- 301
-< -- 13
-+ -- 103
-- -- 90
-* -- 472
-:= -- 931
-add.period$ -- 48
-call.type$ -- 13
-change.case$ -- 68
-chr.to.int$ -- 13
-cite$ -- 26
-duplicate$ -- 302
-empty$ -- 560
-format.name$ -- 111
-if$ -- 1393
+            690 strings with 7055 characters,
+and the built_in function-call counts, 6655 in all, are:
+= -- 606
+> -- 311
+< -- 14
++ -- 107
+- -- 93
+* -- 485
+:= -- 978
+add.period$ -- 52
+call.type$ -- 14
+change.case$ -- 72
+chr.to.int$ -- 14
+cite$ -- 28
+duplicate$ -- 317
+empty$ -- 592
+format.name$ -- 115
+if$ -- 1459
 int.to.chr$ -- 1
 int.to.str$ -- 1
 missing$ -- 11
-newline$ -- 82
-num.names$ -- 52
-pop$ -- 149
+newline$ -- 88
+num.names$ -- 56
+pop$ -- 161
 preamble$ -- 1
-purify$ -- 56
+purify$ -- 59
 quote$ -- 0
-skip$ -- 249
+skip$ -- 261
 stack$ -- 0
-substring$ -- 283
-swap$ -- 59
+substring$ -- 285
+swap$ -- 60
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 138
+type$ -- 149
 warning$ -- 0
-while$ -- 52
+while$ -- 55
 width$ -- 0
-write$ -- 191
+write$ -- 205

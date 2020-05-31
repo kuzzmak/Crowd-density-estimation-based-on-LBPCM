@@ -1885,6 +1885,165 @@ da se u primjenjuje u uvjetima gdje se parametri slike ne mijenjaju ili se mijen
 malo. Primjer takvih primjerna je identifikacija osobe temeljem otiska dlana \footnote{\cite{1512051}}
 ili u šoping centrima u kojima su uvjeti osvjetljenja i položaj kamere nepromjenjeni.
 
+\bigbreak
+
+Za ilustraciju navedenih tvrdnji uzet je jedan novi skup podataka, odnosno slika. Hrvatska 
+nogometna reprezentacija je 2018. godine postigla izniman uspjeh, osvojivši drugo mjesto
+na svjetskom prvenstvu. Povratak pripadnika nogometne reprezentacije (Vatrenih) snimljen
+je od strane Hrvatske radiotelevizije te ga je moguće pogledati na stranicama youtube.com
+servisa \footnote{\cite{vatreni}}. Upravo je uzet djelić snimke gdje su snimljene 
+velike grupe ljudi u ukupnom trajanju od deset sekundi.  
+
+\bigbreak
+
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[scale=0.5]{img/data2.jpg}
+\captionof{figure}{Prikaz jedne od slika novog skupa podataka}
+\end{minipage}
+
+\bigbreak
+
+Na slici 7.1 vidljivo je koliko su dva korištena skupa podataka različita. Prvi skup sadrži
+manje grupacije ljudi do tridesetak ljudi, dok se kod drugog skupa toliko ljudi može naći
+samo u jednoj podslici. Iz priloženog je vidljivo kako primjena jednog naućenih klasifikatora
+nije moguća na potpuno novom skupu podataka jer se mogu razlikovati u veličini slike, 
+broju podslika, koraku i veličini okna te brojnim drugim parametrima. 
+
+\bigbreak 
+
+Kako nije moguću izravna primjena već naučenih klasifikatora, ponovljen je postupak 
+prikazan na slici 3.2. Snimka vatrenih je podijeljenana sličice kojih je ukupno ispalo 200. 
+Rezolucija svake slike iznosi 640x352 piksela što je manje nego izvorni skup podataka 
+nad kojim se prvotno vršilo eksperimentiranje. Kako bi se održvala neka vrsta usporedivosti,
+ slike novog skupa također su podijeljene u 16 jednakih podslika, svaka dimenzija 160x88 piksela. 
+Jednom podijeljene slike su ručno označene te je pokrenut postupak
+stvaranja vektora značajki. Korišteni su drugačiji parametri nego dosad gdje je za
+veličinu okna uzeto 40x40 piksela kako bi se pokrila cijela slika i korak okna od 20 piksela.
+Odabrane Haralickove značajke su: energija, homogenost, homogenost i kontrast.
+
+\bigbreak
+
+Kako nije svrha tražiti optimalne parametre drugog skupa podataka nego samo pokazati 
+korisnost postupka opisanog u radu, svega je par puta pokrenut postupak učenja nakon 
+
+\begin{figure}[ht]
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.5]{img/noflow.jpg}
+		\caption{No flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.5]{img/freeflow.jpg}
+		\caption{Free flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.5]{img/restrictedflow.jpg}
+		\caption{Restricted flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.5]{img/denseflow.jpg}
+		\caption{Dense flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.5]{img/jammedflow.jpg}
+		\caption{Jammed flow}
+	\end{subfigure}
+\caption{Reprezentativni uzorci svakog od razreda prvog skupa podataka}
+\end{figure}
+
+\begin{figure}[ht]
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.4]{img/noflow2.jpg}
+		\caption{No flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.4]{img/freeflow2.jpg}
+		\caption{Free flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.4]{img/restrictedflow2.jpg}
+		\caption{Restricted flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.4]{img/denseflow2.jpg}
+		\caption{Dense flow}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.19\linewidth}
+		\centering
+		\includegraphics[scale=0.4]{img/jammedflow2.jpg}
+		\caption{Jammed flow}
+	\end{subfigure}
+\caption{Reprezentativni uzorci svakog od razreda drugog skupa podataka}
+\end{figure}
+
+\bigbreak
+
+kojeg je najbolji rezultat imao točnost od 77.79\%. Ovakva točnost klasifikatora nikako
+nije idealna, a to može biti iz nekoliko razloga. Pogreške kod označavanja podslika je 
+već naveden kao jedan od problema koji se može javiti, zatim nedovoljno ispitivanje
+različitih vrijednosti parametara i Haralickovih značajki. Novi problem koji je utjecao
+na točnost, a nije prisutan u prvom skupu podataka su nedovoljno jasne i čiste podslike.
+Naime rezolucija izvornog videozapisa bila je 480p, što i nije toliko loše, međutim platforme 
+poput youtube.com koriste različite algoritme kompresije kako bi se uštedjelo na mjestu i 
+time povećao protok informacija. Navedene kompresije spadaju u vrstu kompresija s gubitcima, 
+odnosno u pojedinim sličicama videozapisa počinju se javljati različiti fragmenti koji narušavaju 
+ukupnu kvalitetu slike što na kraju rezultira
+
+\bigbreak
+
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics{img/clas2.png}
+\captionof{figure}{Klasificirana slika novog skupa podataka}
+\end{minipage}
+
+\noindent uništenim detaljima koji su u ovom slučaju znatni jer su mnoštva velika i veličina glava 
+svakog od čovjeka je mala. Kompresija jednog takvog videozapisa može rezultirati 
+fragmentima jednake boje koji nadomještaju glave nekoliko
+ljudi čime se gubi na informaciji koju je moguće izvući iz slike Haralickovim značajkama.
+
+\bigbreak
+
+Prikaz usporedbe dvaju skupova razreda prikazan je na slikama 7.2 i 7.3. Odmah je vidljivo 
+koliko se izgled i gustoća mnoštva razlikuju. Slika 7.4 prikazuje rezultat klasifikacije jedne do sada
+neviđene slike za klasifikator. Iako je točnost klasifikacije znatno manja od klasifikatora na prijašnjem
+skupu podataka, mogu se lijepo vidjeti različiti slojevi gustoće mnoštva i rezultat na prikazanoj slici
+je zadovoljavajuć osim što je veoma teško podesiti intervale ljudi koje pojedini razred gustoće 
+predstavlja stoga intervali procjene ljudi mogu biti dosta široki. 
+
+\bigbreak
+
+Odabir gore navedenih parametara je bio brzinski i nije uložen prevelik trud u učenje novog 
+klasifikatora, osim označavanja podslika, a dobiven je rezultat koji zadovoljava. Jednom razvijen
+sustav kao u ovom radu sposoban je davati dobre rezultate nad različitim gustoćama mnoštva
+ukoliko se postupak učenje ponovi prilikom pormjene skupa podataka i ukoliko se mnoštvo te uvjeti
+u kojima je kamera znatno ne mijenjaju. Ako bi se sustav naučio na slikama gdje je mnoštvo kao na
+slici 7.1, a drugi dan bi se gužva raščistila te bi ulice bile prazne, rezultati klasifikacije bi bili poražavajući
+jer bi se teksturna svojstva slike drastično promjenila.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2019,7 +2178,8 @@ p_{x-y}(k)=\sum_{i=1}^{N_g} \sum_{j=1}^{N_g} p(i,j) \;\;\; k=0,1,...,N_g-1, \; \
 \sum_{j} \; \textrm{predstavlja pokratu} \; \sum_{j=1}^{N_g}
 \]
 
-\bigbreak
+\newpage
+
 1) Angular second moment:
 \[
 f_1 = \sum_{i}\sum_{j}p(i,j)^2
@@ -2161,6 +2321,19 @@ Q(i,j) = \sum_k \frac{p(i,k)p(j,k)}{p_x(i)p_y(k)}
 32 & SVM & grad & 1 & 1 & 32 & 64x64 & 0 & - & f2,f6,f7,f8,f9 & 8.95\% \\
 32 & SVM & grad & 1 & 1 & 32 & 64x64 & 0 & - & f2,f6,f7,f8,f9 & 8.95\% \\
 32 & SVM & grad & 1 & 1 & 32 & 64x64 & 0 & - & f2,f6,f7,f8,f9 & 8.95\% \\
+33 & SVM & grad & 1 & 1 & 64 & 64x64 & \(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\) & - & f1,f2,f3,f10,f11,f12,f13 & 8.48\% \\
+34 & \textit{k}-NN & grad & 1 & 1 & 64 & 64x64 & \(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\) & 1 & f1,f2,f3,f10,f11,f12,f13 & 10.37\% \\
+35 & SVM & gray & 1 & 1 & 64 & 64x64 & \(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\) & - & f1,f2,f3,f10,f11,f12,f13 & 8.95\% \\
+36 & \textit{k}-NN & gray & 1 & 1 & 64 & 64x64 & \(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\) & 1 & f1,f2,f3,f10,f11,f12,f13 & 9.99\% \\
+37 & SVM & grad & 1 & 1 & 32 & 64x64 & \(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\) & - & f1,f2,f3,f4,f5,f6,f7 & 8.95\% \\
+38 & SVM & gray & 1 & 1 & 32 & 64x64 & \(0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}\) & - & f1,f2,f3,f4,f5,f6,f7 & 7.82\% \\
+39 & \textit{k}-NN & gray & 1 & 1 & 32 & 64x64 & \(0, \pi\) & 1 & f1,f2,f3,f5,f9 & 9.14\% \\
+40 & \textit{k}-NN & gray & 1 & 1 & 32 & 64x64 & \(0, \pi\) & 1 & f1,f2,f3,f4,f5,f9 & 7.35\% \\
+41 & \textit{k}-NN & gray & 1 & 1 & 32 & 64x64 & \(0, \pi\) & 1 & f1,f2,f5,f9,f12,f13 & 8.77\% \\
+42 & \textit{k}-NN & gray & 1 & 1 & 32 & 64x64 & \(0, \pi\) & 1 & f1,f2,f3,f4,f5,f9 & 7.07\% \\
+43 & \textit{k}-NN & gray & 1 & 1 & 32 & 64x64 & \(0, \pi\) & 1 & f1,f2,f5,f9,f11,f12,f13 & 8.58\% \\
+44 & \textit{k}-NN & gray & 1 & 1 & 32 & 64x64 & \(0, \pi\) & 1 & f1,f2,f5,f9,f10,f12,f13 & 8.86\% \\
+45 & SVM & gray & 1 & 1 & 20 & 40x40 & \(0, \pi\) & - & f1,f2,f5,f9 & 23.02\% \\
 \end{tabular}
 \end{adjustwidth}
 \caption{Prikaz rezultata različitih modela klasifikatora} 

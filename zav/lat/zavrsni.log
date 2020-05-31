@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.5.12)  27 MAY 2020 11:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7400 64-bit) (preloaded format=pdflatex 2020.5.12)  31 MAY 2020 21:43
 entering extended mode
 **./zavrsni.tex
 (zavrsni.tex
@@ -979,24 +979,98 @@ Poglavlje 7.
 [44
 
 ]
-Poglavlje 8.
-[45
+<img/data2.jpg, id=228, 642.4pt x 353.32pt>
+File: img/data2.jpg Graphic file (type jpg)
+<use img/data2.jpg>
+Package pdftex.def Info: img/data2.jpg  used on input line 1901.
+(pdftex.def)             Requested size: 321.19922pt x 176.65956pt.
 
-] (zavrsni.bbl [46]
-Underfull \hbox (badness 1057) in paragraph at lines 53--58
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1899--1904
+[]$[]$ 
+ []
+
+File: img/noflow.jpg Graphic file (type jpg)
+<use img/noflow.jpg>
+Package pdftex.def Info: img/noflow.jpg  used on input line 1933.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+File: img/freeflow.jpg Graphic file (type jpg)
+<use img/freeflow.jpg>
+Package pdftex.def Info: img/freeflow.jpg  used on input line 1938.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+File: img/restrictedflow.jpg Graphic file (type jpg)
+<use img/restrictedflow.jpg>
+Package pdftex.def Info: img/restrictedflow.jpg  used on input line 1943.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+File: img/denseflow.jpg Graphic file (type jpg)
+<use img/denseflow.jpg>
+Package pdftex.def Info: img/denseflow.jpg  used on input line 1948.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+File: img/jammedflow.jpg Graphic file (type jpg)
+<use img/jammedflow.jpg>
+Package pdftex.def Info: img/jammedflow.jpg  used on input line 1953.
+(pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
+[45 <./img/data2.jpg>]
+<img/noflow2.jpg, id=232, 160.6pt x 88.33pt>
+File: img/noflow2.jpg Graphic file (type jpg)
+<use img/noflow2.jpg>
+Package pdftex.def Info: img/noflow2.jpg  used on input line 1962.
+(pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
+<img/freeflow2.jpg, id=233, 160.6pt x 88.33pt>
+File: img/freeflow2.jpg Graphic file (type jpg)
+<use img/freeflow2.jpg>
+Package pdftex.def Info: img/freeflow2.jpg  used on input line 1967.
+(pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
+<img/restrictedflow2.jpg, id=234, 160.6pt x 88.33pt>
+File: img/restrictedflow2.jpg Graphic file (type jpg)
+<use img/restrictedflow2.jpg>
+Package pdftex.def Info: img/restrictedflow2.jpg  used on input line 1972.
+(pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
+<img/denseflow2.jpg, id=235, 160.6pt x 88.33pt>
+File: img/denseflow2.jpg Graphic file (type jpg)
+<use img/denseflow2.jpg>
+Package pdftex.def Info: img/denseflow2.jpg  used on input line 1977.
+(pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
+<img/jammedflow2.jpg, id=236, 160.6pt x 88.33pt>
+File: img/jammedflow2.jpg Graphic file (type jpg)
+<use img/jammedflow2.jpg>
+Package pdftex.def Info: img/jammedflow2.jpg  used on input line 1982.
+(pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
+<img/clas2.png, id=237, 264.23718pt x 184.43906pt>
+File: img/clas2.png Graphic file (type png)
+<use img/clas2.png>
+Package pdftex.def Info: img/clas2.png  used on input line 2005.
+(pdftex.def)             Requested size: 264.23653pt x 184.4386pt.
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 2003--2008
+[]$[]$ 
+ []
+
+[46 <./img/noflow2.jpg> <./img/freeflow2.jpg> <./img/restrictedflow2.jpg> <./im
+g/denseflow2.jpg> <./img/jammedflow2.jpg> <./img/clas2.png>] [47]
+Poglavlje 8.
+[48
+
+] (zavrsni.bbl [49]
+Underfull \hbox (badness 10000) in paragraph at lines 47--51
+[]\T1/ptm/m/n/12 HRT.  Do-£ek va-tre-nih.  $\T1/pcr/m/n/12 https : / / www . yo
+utube . com / watch ? v =
+ []
+
+
+Underfull \hbox (badness 1057) in paragraph at lines 59--64
 \T1/ptm/m/n/12 ISBN 9780080949123.  URL $\T1/pcr/m/n/12 https : / / books . goo
 gle . hr / books ? id =
  []
 
-[47
+[50
 
-]) [48] (zavrsni.lof
+]) [51] (zavrsni.lof
 Overfull \hbox (0.63914pt too wide) in paragraph at lines 19--19
  [][] []\T1/ptm/m/n/12 Prikaz smjera gra-di-jenta pla-vim stre-li-cama, tam-nij
 a boja oz-na-£ava ve¢e 
  []
 
-[49
+[52
 
 ]
 Overfull \hbox (3.60315pt too wide) in paragraph at lines 40--40
@@ -1008,31 +1082,31 @@ a te-me-lju gus-to¢e mno²-
 \tf@lof=\write4
 \openout4 = `zavrsni.lof'.
 
- [50] (zavrsni.lot)
+ [53] (zavrsni.lot)
 \tf@lot=\write5
 \openout5 = `zavrsni.lot'.
 
- [51
+ [54
 
-] [52]
+] [55]
 Poglavlje A.
-[53
-
-] [54] [55]
-Poglavlje B.
 [56
 
+] [57] [58]
+Poglavlje B.
+[59
+
 ]
-Overfull \hbox (11.72679pt too wide) in paragraph at lines 2147--2165
+Overfull \hbox (11.72679pt too wide) in paragraph at lines 2307--2338
 [][] 
  []
 
-[57] (zavrsni.aux) ) 
+[60] (zavrsni.aux) ) 
 Here is how much of TeX's memory you used:
- 7588 strings out of 480930
- 111380 string characters out of 2899761
- 394456 words of memory out of 3000000
- 23263 multiletter control sequences out of 15000+200000
+ 7633 strings out of 480930
+ 112238 string characters out of 2899761
+ 394479 words of memory out of 3000000
+ 23301 multiletter control sequences out of 15000+200000
  599689 words of font info for 100 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  49i,14n,46p,820b,513s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1059,9 +1133,9 @@ times/utmbi8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 /urw/times/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/urw/times/utmr8a.pfb><C:/Users/kuzmi/AppData/Local/Programs/MiKTeX 2.9/fon
 ts/type1/urw/times/utmri8a.pfb>
-Output written on zavrsni.pdf (62 pages, 3446103 bytes).
+Output written on zavrsni.pdf (65 pages, 3624399 bytes).
 PDF statistics:
- 332 PDF objects out of 1000 (max. 8388607)
+ 349 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 181 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 216 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -17,9 +17,9 @@
 \contentsline {chapter}{\numberline {5}Tehnika klizećeg okna}{35}%
 \contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{39}%
 \contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{44}%
-\contentsline {chapter}{\numberline {8}Zaključak}{45}%
-\contentsline {chapter}{Literatura}{47}%
-\contentsline {chapter}{Popis slika}{49}%
-\contentsline {chapter}{Popis tablica}{51}%
-\contentsline {chapter}{\numberline {A}Teksturne značajke}{53}%
-\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{56}%
+\contentsline {chapter}{\numberline {8}Zaključak}{48}%
+\contentsline {chapter}{Literatura}{50}%
+\contentsline {chapter}{Popis slika}{52}%
+\contentsline {chapter}{Popis tablica}{54}%
+\contentsline {chapter}{\numberline {A}Teksturne značajke}{56}%
+\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{59}%
