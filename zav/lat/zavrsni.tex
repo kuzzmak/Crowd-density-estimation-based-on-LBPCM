@@ -1853,7 +1853,15 @@ računski su zahtjevniji i time njihovo korištenje baš nema smisla.
 
 \bigbreak
 
-ODABRATI NEKE KLASIFIKAORE I PROVJERITI TOČNOST
+Pogledom u tablicu rezultata eksperimenta moguće je također vidjeti kako neke konfiguracije 
+kreću s četiri različite Haralickove značajke i onda im se dodaje po jedna nova značajka ne bi
+li se točnost povećala. U nekim slučajevima se dodavanjem novih značajki točnost čak i smanjila
+što ukazuje na to da nije za povećanje točnosti samo dovoljno dodati veliki broj značajki nego 
+treba dobro promisliti i eksperimentom pokušati doći do zaključka. Pokazalo se kako najbolji skup
+značajki sadržava: entropiju, homogenost, kontrast i energija kako je i navedeno u radu Wanga i drugih.
+Odabir ovih značajki je smislen jer pružaju veoma dobru točnost klasifikacije, a i 
+vrijeme izračuna nije veliko. Kao dodatna mjeru robusnosti ima smisla koristiti takav klasifikatora na sivim
+slikama u simbiozi s drugim koji koristi gradijentne slike.
 
 
 \chapter{Prikladnost korištenog postupka na drugome skupu podataka}
@@ -2029,28 +2037,6 @@ ukoliko se postupak učenje ponovi prilikom pormjene skupa podataka i ukoliko se
 u kojima je kamera znatno ne mijenjaju. Ako bi se sustav naučio na slikama gdje je mnoštvo kao na
 slici 7.1, a drugi dan bi se gužva raščistila te bi ulice bile prazne, rezultati klasifikacije bi bili poražavajući
 jer bi se teksturna svojstva slike drastično promjenila.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 \chapter{Zaključak}
 
