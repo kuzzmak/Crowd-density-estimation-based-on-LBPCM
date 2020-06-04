@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.5.27)  1 JUN 2020 00:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (MiKTeX 2.9.7440 64-bit) (preloaded format=pdflatex 2020.5.27)  4 JUN 2020 19:02
 entering extended mode
 **./zavrsni.tex
 (zavrsni.tex
@@ -460,7 +460,14 @@ nd-pdfmode.def"
 File: l3backend-pdfmode.def 2020-05-05 L3 backend support: PDF mode
 \l__kernel_color_stack_int=\count298
 \l__pdf_internal_box=\box100
-) (zavrsni.aux)
+) (zavrsni.aux
+
+LaTeX Warning: Label `first' multiply defined.
+
+
+LaTeX Warning: Label `sub@first' multiply defined.
+
+)
 \openout1 = `zavrsni.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
@@ -479,8 +486,7 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
 LaTeX Font Info:    ... okay on input line 23.
 LaTeX Font Info:    Trying to load font information for T1+ptm on input line 23
 .
-
-("C:\Users\tonkec\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1ptm.fd"
+ ("C:\Users\tonkec\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1ptm.fd"
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
 *geometry* driver: auto-detecting
@@ -547,18 +553,18 @@ Package caption Info: longtable package is loaded.
 Package: ltcaption 2018/08/26 v1.4a longtable captions (AR)
 )
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for T1+phv on input line 34
+LaTeX Font Info:    Trying to load font information for T1+phv on input line 31
 .
 
 ("C:\Users\tonkec\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1phv.fd"
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 34.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
 
 ("C:\Users\tonkec\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsa.fd"
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 34.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
 
  ("C:\Users\tonkec\AppData\Local\Programs\MiKTeX 2.9\tex/latex/amsfonts\umsb.fd
 "
@@ -566,7 +572,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {C:/Users/tonkec/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for T1+pcr on input line 37
+LaTeX Font Info:    Trying to load font information for T1+pcr on input line 34
 .
 
 ("C:\Users\tonkec\AppData\Local\Programs\MiKTeX 2.9\tex/latex/psnfss\t1pcr.fd"
@@ -586,117 +592,106 @@ Poglavlje 2.
 [2
 
 ]
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 131--144
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 127--140
 []$[]$ 
  []
 
 
-Overfull \hbox (3.69606pt too wide) in paragraph at lines 161--161
- []|\T1/ptm/m/n/12 130| 
- []
-
-
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 151--164
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 147--160
 []$[]$ 
  []
 
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 165--178
-[]$[]$ 
- []
-
-
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 197--210
-[]$[]$ 
- []
-
-
-Overfull \hbox (3.69606pt too wide) in paragraph at lines 221--221
- []|\T1/ptm/m/n/12 171| 
- []
-
-
-Overfull \hbox (3.69606pt too wide) in paragraph at lines 221--221
- []|\T1/ptm/m/n/12 190| 
- []
-
-
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 211--224
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 163--176
 []$[]$ 
  []
 
 [3]
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 194--207
+[]$[]$ 
+ []
+
+
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 218--218
+ []|\T1/ptm/m/n/12 171| 
+ []
+
+
+Overfull \hbox (3.69606pt too wide) in paragraph at lines 218--218
+ []|\T1/ptm/m/n/12 190| 
+ []
+
+
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 208--221
+[]$[]$ 
+ []
+
 <img/1.jpg, id=42, 48.18pt x 48.18pt>
 File: img/1.jpg Graphic file (type jpg)
 <use img/1.jpg>
-Package pdftex.def Info: img/1.jpg  used on input line 244.
+Package pdftex.def Info: img/1.jpg  used on input line 242.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
 <img/2.jpg, id=43, 48.18pt x 48.18pt>
 File: img/2.jpg Graphic file (type jpg)
 <use img/2.jpg>
-Package pdftex.def Info: img/2.jpg  used on input line 248.
+Package pdftex.def Info: img/2.jpg  used on input line 246.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
 <img/3.jpg, id=44, 48.18pt x 48.18pt>
 File: img/3.jpg Graphic file (type jpg)
 <use img/3.jpg>
-Package pdftex.def Info: img/3.jpg  used on input line 252.
+Package pdftex.def Info: img/3.jpg  used on input line 250.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
 <img/4.jpg, id=45, 48.18pt x 48.18pt>
 File: img/4.jpg Graphic file (type jpg)
 <use img/4.jpg>
-Package pdftex.def Info: img/4.jpg  used on input line 256.
+Package pdftex.def Info: img/4.jpg  used on input line 254.
 (pdftex.def)             Requested size: 48.17986pt x 48.17986pt.
- [4 <./img/1.jpg> <./img/2.jpg> <./img/3.jpg> <./img/4.jpg>]
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 302--317
+[4 <./img/1.jpg> <./img/2.jpg> <./img/3.jpg> <./img/4.jpg>]
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 301--316
 []$[]$ 
  []
 
-[5]
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 342--362
-[]$[]$ 
- []
-
-[6]
-<img/krivo.png, id=55, 324.21124pt x 186.6975pt>
+[5] [6]
+<img/krivo.png, id=57, 324.21124pt x 186.6975pt>
 File: img/krivo.png Graphic file (type png)
 <use img/krivo.png>
-Package pdftex.def Info: img/krivo.png  used on input line 444.
+Package pdftex.def Info: img/krivo.png  used on input line 445.
 (pdftex.def)             Requested size: 161.0266pt x 92.72748pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 441--447
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 442--448
 []$[]$ 
  []
 
 [7 <./img/krivo.png>]
-<img/klas.png, id=59, 500.87125pt x 254.9525pt>
+<img/klas.png, id=61, 500.87125pt x 254.9525pt>
 File: img/klas.png Graphic file (type png)
 <use img/klas.png>
-Package pdftex.def Info: img/klas.png  used on input line 472.
+Package pdftex.def Info: img/klas.png  used on input line 473.
 (pdftex.def)             Requested size: 330.05322pt x 168.0085pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 469--475
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 470--476
 []$[]$ 
  []
 
 [8 <./img/klas.png>]
-<img/linearniklasifikator.png, id=64, 484.81125pt x 349.305pt>
+<img/linearniklasifikator.png, id=66, 484.81125pt x 349.305pt>
 File: img/linearniklasifikator.png Graphic file (type png)
 <use img/linearniklasifikator.png>
-Package pdftex.def Info: img/linearniklasifikator.png  used on input line 508.
+Package pdftex.def Info: img/linearniklasifikator.png  used on input line 509.
 (pdftex.def)             Requested size: 242.40503pt x 174.65207pt.
-<img/slika10.png, id=65, 550.055pt x 377.41pt>
+<img/slika10.png, id=67, 550.055pt x 377.41pt>
 File: img/slika10.png Graphic file (type png)
 <use img/slika10.png>
-Package pdftex.def Info: img/slika10.png  used on input line 534.
+Package pdftex.def Info: img/slika10.png  used on input line 535.
 (pdftex.def)             Requested size: 275.02682pt x 188.70453pt.
  [9 <./img/linearniklasifikator.png>] [10 <./img/slika10.png>]
-<img/neseparabilni.png, id=72, 258.9675pt x 238.8925pt>
+<img/neseparabilni.png, id=74, 258.9675pt x 238.8925pt>
 File: img/neseparabilni.png Graphic file (type png)
 <use img/neseparabilni.png>
-Package pdftex.def Info: img/neseparabilni.png  used on input line 620.
+Package pdftex.def Info: img/neseparabilni.png  used on input line 621.
 (pdftex.def)             Requested size: 161.0266pt x 148.54922pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 617--623
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 618--624
 []$[]$ 
  []
 
@@ -705,35 +700,35 @@ Overfull \vbox (1.39903pt too high) has occurred while \output is active []
 
 
 [11 <./img/neseparabilni.png>]
-<img/3d.png, id=76, 401.5pt x 314.17375pt>
+<img/3d.png, id=78, 401.5pt x 314.17375pt>
 File: img/3d.png Graphic file (type png)
 <use img/3d.png>
-Package pdftex.def Info: img/3d.png  used on input line 629.
+Package pdftex.def Info: img/3d.png  used on input line 630.
 (pdftex.def)             Requested size: 288.79422pt x 225.99399pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 626--632
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 627--633
 []$[]$ 
  []
 
 [12 <./img/3d.png>]
-<img/svmnn.png, id=83, 338.76563pt x 341.77687pt>
+<img/svmnn.png, id=85, 338.76563pt x 341.77687pt>
 File: img/svmnn.png Graphic file (type png)
 <use img/svmnn.png>
-Package pdftex.def Info: img/svmnn.png  used on input line 684.
+Package pdftex.def Info: img/svmnn.png  used on input line 685.
 (pdftex.def)             Requested size: 288.79422pt x 291.3722pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 681--687
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 682--688
 []$[]$ 
  []
 
 [13 <./img/svmnn.png>]
-<img/Gradient2.png, id=89, 1284.8pt x 640.3925pt>
+<img/Gradient2.png, id=91, 1284.8pt x 640.3925pt>
 File: img/Gradient2.png Graphic file (type png)
 <use img/Gradient2.png>
-Package pdftex.def Info: img/Gradient2.png  used on input line 702.
+Package pdftex.def Info: img/Gradient2.png  used on input line 703.
 (pdftex.def)             Requested size: 330.05322pt x 164.50471pt.
  [14 <./img/Gradient2.png>]
-<img/2982.jpg, id=95, 192.72pt x 144.54pt>
+<img/2982.jpg, id=97, 192.72pt x 144.54pt>
 File: img/2982.jpg Graphic file (type jpg)
 <use img/2982.jpg>
 Package pdftex.def Info: img/2982.jpg  used on input line 763.
@@ -743,7 +738,7 @@ Overfull \hbox (17.62482pt too wide) in paragraph at lines 761--766
 []$[]$ 
  []
 
-<img/sobel.jpg, id=96, 192.72pt x 144.54pt>
+<img/sobel.jpg, id=98, 192.72pt x 144.54pt>
 File: img/sobel.jpg Graphic file (type jpg)
 <use img/sobel.jpg>
 Package pdftex.def Info: img/sobel.jpg  used on input line 769.
@@ -753,7 +748,7 @@ Overfull \hbox (17.62482pt too wide) in paragraph at lines 767--772
 []$[]$ 
  []
 
-<img/sobely.jpg, id=97, 192.72pt x 144.54pt>
+<img/sobely.jpg, id=99, 192.72pt x 144.54pt>
 File: img/sobely.jpg Graphic file (type jpg)
 <use img/sobely.jpg>
 Package pdftex.def Info: img/sobely.jpg  used on input line 775.
@@ -763,7 +758,7 @@ Overfull \hbox (17.62482pt too wide) in paragraph at lines 773--778
 []$[]$ 
  []
 
-<img/sobelx.jpg, id=98, 192.72pt x 144.54pt>
+<img/sobelx.jpg, id=100, 192.72pt x 144.54pt>
 File: img/sobelx.jpg Graphic file (type jpg)
 <use img/sobelx.jpg>
 Package pdftex.def Info: img/sobelx.jpg  used on input line 781.
@@ -776,171 +771,171 @@ Overfull \hbox (17.62482pt too wide) in paragraph at lines 779--784
 [15 <./img/2982.jpg> <./img/sobel.jpg> <./img/sobely.jpg> <./img/sobelx.jpg>]
 [16]
 Poglavlje 3.
-<img/noflow.jpg, id=105, 144.54pt x 108.405pt>
+<img/noflow.jpg, id=107, 144.54pt x 108.405pt>
 File: img/noflow.jpg Graphic file (type jpg)
 <use img/noflow.jpg>
-Package pdftex.def Info: img/noflow.jpg  used on input line 831.
+Package pdftex.def Info: img/noflow.jpg  used on input line 830.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/freeflow.jpg, id=106, 144.54pt x 108.405pt>
+<img/freeflow.jpg, id=108, 144.54pt x 108.405pt>
 File: img/freeflow.jpg Graphic file (type jpg)
 <use img/freeflow.jpg>
-Package pdftex.def Info: img/freeflow.jpg  used on input line 836.
+Package pdftex.def Info: img/freeflow.jpg  used on input line 835.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/restrictedflow.jpg, id=107, 144.54pt x 108.405pt>
+<img/restrictedflow.jpg, id=109, 144.54pt x 108.405pt>
 File: img/restrictedflow.jpg Graphic file (type jpg)
 <use img/restrictedflow.jpg>
-Package pdftex.def Info: img/restrictedflow.jpg  used on input line 841.
+Package pdftex.def Info: img/restrictedflow.jpg  used on input line 840.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/denseflow.jpg, id=108, 144.54pt x 108.405pt>
+<img/denseflow.jpg, id=110, 144.54pt x 108.405pt>
 File: img/denseflow.jpg Graphic file (type jpg)
 <use img/denseflow.jpg>
-Package pdftex.def Info: img/denseflow.jpg  used on input line 846.
+Package pdftex.def Info: img/denseflow.jpg  used on input line 845.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-<img/jammedflow.jpg, id=109, 144.54pt x 108.405pt>
+<img/jammedflow.jpg, id=111, 144.54pt x 108.405pt>
 File: img/jammedflow.jpg Graphic file (type jpg)
 <use img/jammedflow.jpg>
-Package pdftex.def Info: img/jammedflow.jpg  used on input line 851.
+Package pdftex.def Info: img/jammedflow.jpg  used on input line 850.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
 [17
 
  <./img/noflow.jpg> <./img/freeflow.jpg> <./img/restrictedflow.jpg> <./img/dens
-eflow.jpg> <./img/jammedflow.jpg>] [18]
-<img/somprobajzbrisati.png, id=116, 2398.9625pt x 2964.07375pt>
+eflow.jpg> <./img/jammedflow.jpg>]
+<img/somprobajzbrisati.png, id=115, 2398.9625pt x 2964.07375pt>
 File: img/somprobajzbrisati.png Graphic file (type png)
 <use img/somprobajzbrisati.png>
-Package pdftex.def Info: img/somprobajzbrisati.png  used on input line 973.
+Package pdftex.def Info: img/somprobajzbrisati.png  used on input line 879.
 (pdftex.def)             Requested size: 431.79462pt x 533.51025pt.
 
-Overfull \hbox (19.22964pt too wide) in paragraph at lines 973--974
+Overfull \hbox (19.22964pt too wide) in paragraph at lines 879--880
  [][] 
  []
 
-[19] [20 <./img/somprobajzbrisati.png>]
+[18 <./img/somprobajzbrisati.png>] [19] [20]
 Poglavlje 4.
-<img/startpage.png, id=125, 780.9175pt x 770.88pt>
+<img/startpage.png, id=127, 780.9175pt x 770.88pt>
 File: img/startpage.png Graphic file (type png)
 <use img/startpage.png>
-Package pdftex.def Info: img/startpage.png  used on input line 990.
+Package pdftex.def Info: img/startpage.png  used on input line 991.
 (pdftex.def)             Requested size: 273.32521pt x 269.81204pt.
 [21
 
  <./img/startpage.png>]
-<img/mainscreen.png, id=130, 780.9175pt x 770.88pt>
+<img/mainscreen.png, id=132, 780.9175pt x 770.88pt>
 File: img/mainscreen.png Graphic file (type png)
 <use img/mainscreen.png>
-Package pdftex.def Info: img/mainscreen.png  used on input line 1006.
+Package pdftex.def Info: img/mainscreen.png  used on input line 1007.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
  [22 <./img/mainscreen.png>]
-<img/preprocessdata.png, id=135, 780.9175pt x 770.88pt>
+<img/preprocessdata.png, id=137, 780.9175pt x 770.88pt>
 File: img/preprocessdata.png Graphic file (type png)
 <use img/preprocessdata.png>
-Package pdftex.def Info: img/preprocessdata.png  used on input line 1048.
+Package pdftex.def Info: img/preprocessdata.png  used on input line 1049.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
  [23 <./img/preprocessdata.png>]
-<img/seeonpic.png, id=140, 780.9175pt x 770.88pt>
+<img/seeonpic.png, id=142, 780.9175pt x 770.88pt>
 File: img/seeonpic.png Graphic file (type png)
 <use img/seeonpic.png>
-Package pdftex.def Info: img/seeonpic.png  used on input line 1070.
+Package pdftex.def Info: img/seeonpic.png  used on input line 1071.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
  [24 <./img/seeonpic.png>]
-<img/splitted.png, id=145, 869.2475pt x 299.1175pt>
+<img/splitted.png, id=147, 869.2475pt x 299.1175pt>
 File: img/splitted.png Graphic file (type png)
 <use img/splitted.png>
-Package pdftex.def Info: img/splitted.png  used on input line 1086.
+Package pdftex.def Info: img/splitted.png  used on input line 1087.
 (pdftex.def)             Requested size: 347.69284pt x 119.64487pt.
-<img/dataannotation.png, id=146, 780.9175pt x 770.88pt>
+<img/dataannotation.png, id=148, 780.9175pt x 770.88pt>
 File: img/dataannotation.png Graphic file (type png)
 <use img/dataannotation.png>
-Package pdftex.def Info: img/dataannotation.png  used on input line 1099.
+Package pdftex.def Info: img/dataannotation.png  used on input line 1100.
 (pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
  [25 <./img/splitted.png> <./img/dataannotation.png>] [26]
-<img/fvc1.png, id=155, 780.9175pt x 770.88pt>
+<img/fvc1.png, id=157, 780.9175pt x 770.88pt>
 File: img/fvc1.png Graphic file (type png)
 <use img/fvc1.png>
-Package pdftex.def Info: img/fvc1.png  used on input line 1155.
+Package pdftex.def Info: img/fvc1.png  used on input line 1156.
 (pdftex.def)             Requested size: 273.32521pt x 269.81204pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1153--1158
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1154--1159
 []$[]$ 
  []
 
-<img/fvc2.png, id=156, 780.9175pt x 770.88pt>
+<img/fvc2.png, id=158, 780.9175pt x 770.88pt>
 File: img/fvc2.png Graphic file (type png)
 <use img/fvc2.png>
-Package pdftex.def Info: img/fvc2.png  used on input line 1163.
+Package pdftex.def Info: img/fvc2.png  used on input line 1164.
 (pdftex.def)             Requested size: 273.32521pt x 269.81204pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1161--1166
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1162--1167
 []$[]$ 
  []
 
 [27 <./img/fvc1.png> <./img/fvc2.png>]
-Overfull \hbox (3.77676pt too wide) in paragraph at lines 1184--1226
+Overfull \hbox (3.77676pt too wide) in paragraph at lines 1185--1227
 [][] 
  []
 
-<img/fvc3.png, id=162, 780.9175pt x 770.88pt>
+<img/fvc3.png, id=164, 780.9175pt x 770.88pt>
 File: img/fvc3.png Graphic file (type png)
 <use img/fvc3.png>
-Package pdftex.def Info: img/fvc3.png  used on input line 1270.
+Package pdftex.def Info: img/fvc3.png  used on input line 1271.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1268--1273
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1269--1274
 []$[]$ 
  []
 
 [28] [29] [30 <./img/fvc3.png>]
-<img/cl1.png, id=173, 780.9175pt x 770.88pt>
+<img/cl1.png, id=175, 780.9175pt x 770.88pt>
 File: img/cl1.png Graphic file (type png)
 <use img/cl1.png>
-Package pdftex.def Info: img/cl1.png  used on input line 1315.
+Package pdftex.def Info: img/cl1.png  used on input line 1316.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1313--1318
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1314--1319
 []$[]$ 
  []
 
-<img/cl2.png, id=174, 780.9175pt x 770.88pt>
+<img/cl2.png, id=176, 780.9175pt x 770.88pt>
 File: img/cl2.png Graphic file (type png)
 <use img/cl2.png>
-Package pdftex.def Info: img/cl2.png  used on input line 1337.
+Package pdftex.def Info: img/cl2.png  used on input line 1338.
 (pdftex.def)             Requested size: 312.36147pt x 308.34654pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1335--1340
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1336--1341
 []$[]$ 
  []
 
 [31 <./img/cl1.png>]
-<img/cl3.png, id=179, 780.9175pt x 770.88pt>
+<img/cl3.png, id=181, 780.9175pt x 770.88pt>
 File: img/cl3.png Graphic file (type png)
 <use img/cl3.png>
-Package pdftex.def Info: img/cl3.png  used on input line 1371.
+Package pdftex.def Info: img/cl3.png  used on input line 1372.
 (pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1369--1374
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1370--1375
 []$[]$ 
  []
 
 [32 <./img/cl2.png>]
-<img/cl5.png, id=185, 780.9175pt x 770.88pt>
+<img/cl5.png, id=187, 780.9175pt x 770.88pt>
 File: img/cl5.png Graphic file (type png)
 <use img/cl5.png>
-Package pdftex.def Info: img/cl5.png  used on input line 1379.
+Package pdftex.def Info: img/cl5.png  used on input line 1380.
 (pdftex.def)             Requested size: 296.75172pt x 292.93744pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1377--1383
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1378--1384
 []$[]$ 
  []
 
 [33 <./img/cl3.png> <./img/cl5.png>] [34]
 Poglavlje 5.
-<img/sw1.png, id=194, 517.935pt x 569.12625pt>
+<img/sw1.png, id=196, 517.935pt x 569.12625pt>
 File: img/sw1.png Graphic file (type png)
 <use img/sw1.png>
-Package pdftex.def Info: img/sw1.png  used on input line 1426.
+Package pdftex.def Info: img/sw1.png  used on input line 1427.
 (pdftex.def)             Requested size: 310.76338pt x 341.47838pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1424--1429
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1425--1430
 []$[]$ 
  []
 
@@ -951,32 +946,32 @@ Poglavlje 6.
 [39
 
 ] [40]
-Overfull \hbox (7.40494pt too wide) in paragraph at lines 1705--1705
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1706--1706
  [][] 
  []
 
 
-Overfull \hbox (7.40494pt too wide) in paragraph at lines 1719--1719
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1720--1720
  [][] 
  []
 
 
-Overfull \hbox (7.40494pt too wide) in paragraph at lines 1735--1735
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1736--1736
  [][] 
  []
 
 
-Overfull \hbox (7.40494pt too wide) in paragraph at lines 1749--1749
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1750--1750
  [][] 
  []
 
 
-Overfull \hbox (7.40494pt too wide) in paragraph at lines 1767--1767
+Overfull \hbox (7.40494pt too wide) in paragraph at lines 1768--1768
  [][] 
  []
 
 
-Overfull \hbox (11.13742pt too wide) in paragraph at lines 1781--1781
+Overfull \hbox (11.13742pt too wide) in paragraph at lines 1782--1782
  [][] 
  []
 
@@ -985,69 +980,69 @@ Poglavlje 7.
 [44
 
 ]
-<img/data2.jpg, id=228, 642.4pt x 353.32pt>
+<img/data2.jpg, id=230, 642.4pt x 353.32pt>
 File: img/data2.jpg Graphic file (type jpg)
 <use img/data2.jpg>
-Package pdftex.def Info: img/data2.jpg  used on input line 1909.
+Package pdftex.def Info: img/data2.jpg  used on input line 1911.
 (pdftex.def)             Requested size: 321.19922pt x 176.65956pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 1907--1912
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 1909--1914
 []$[]$ 
  []
 
 File: img/noflow.jpg Graphic file (type jpg)
 <use img/noflow.jpg>
-Package pdftex.def Info: img/noflow.jpg  used on input line 1941.
+Package pdftex.def Info: img/noflow.jpg  used on input line 1943.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
 File: img/freeflow.jpg Graphic file (type jpg)
 <use img/freeflow.jpg>
-Package pdftex.def Info: img/freeflow.jpg  used on input line 1946.
+Package pdftex.def Info: img/freeflow.jpg  used on input line 1948.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
 File: img/restrictedflow.jpg Graphic file (type jpg)
 <use img/restrictedflow.jpg>
-Package pdftex.def Info: img/restrictedflow.jpg  used on input line 1951.
+Package pdftex.def Info: img/restrictedflow.jpg  used on input line 1953.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
 File: img/denseflow.jpg Graphic file (type jpg)
 <use img/denseflow.jpg>
-Package pdftex.def Info: img/denseflow.jpg  used on input line 1956.
+Package pdftex.def Info: img/denseflow.jpg  used on input line 1958.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
 File: img/jammedflow.jpg Graphic file (type jpg)
 <use img/jammedflow.jpg>
-Package pdftex.def Info: img/jammedflow.jpg  used on input line 1961.
+Package pdftex.def Info: img/jammedflow.jpg  used on input line 1963.
 (pdftex.def)             Requested size: 72.2698pt x 54.20236pt.
-[45 <./img/data2.jpg>]
-<img/noflow2.jpg, id=232, 160.6pt x 88.33pt>
+<img/noflow2.jpg, id=231, 160.6pt x 88.33pt>
 File: img/noflow2.jpg Graphic file (type jpg)
 <use img/noflow2.jpg>
-Package pdftex.def Info: img/noflow2.jpg  used on input line 1970.
+Package pdftex.def Info: img/noflow2.jpg  used on input line 1972.
 (pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
-<img/freeflow2.jpg, id=233, 160.6pt x 88.33pt>
+<img/freeflow2.jpg, id=232, 160.6pt x 88.33pt>
 File: img/freeflow2.jpg Graphic file (type jpg)
 <use img/freeflow2.jpg>
-Package pdftex.def Info: img/freeflow2.jpg  used on input line 1975.
+Package pdftex.def Info: img/freeflow2.jpg  used on input line 1977.
 (pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
-<img/restrictedflow2.jpg, id=234, 160.6pt x 88.33pt>
+<img/restrictedflow2.jpg, id=233, 160.6pt x 88.33pt>
 File: img/restrictedflow2.jpg Graphic file (type jpg)
 <use img/restrictedflow2.jpg>
-Package pdftex.def Info: img/restrictedflow2.jpg  used on input line 1980.
+Package pdftex.def Info: img/restrictedflow2.jpg  used on input line 1982.
 (pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
-<img/denseflow2.jpg, id=235, 160.6pt x 88.33pt>
+<img/denseflow2.jpg, id=234, 160.6pt x 88.33pt>
 File: img/denseflow2.jpg Graphic file (type jpg)
 <use img/denseflow2.jpg>
-Package pdftex.def Info: img/denseflow2.jpg  used on input line 1985.
+Package pdftex.def Info: img/denseflow2.jpg  used on input line 1987.
 (pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
-<img/jammedflow2.jpg, id=236, 160.6pt x 88.33pt>
+<img/jammedflow2.jpg, id=235, 160.6pt x 88.33pt>
 File: img/jammedflow2.jpg Graphic file (type jpg)
 <use img/jammedflow2.jpg>
-Package pdftex.def Info: img/jammedflow2.jpg  used on input line 1990.
+Package pdftex.def Info: img/jammedflow2.jpg  used on input line 1992.
 (pdftex.def)             Requested size: 64.23885pt x 35.33136pt.
-<img/clas2.png, id=237, 264.23718pt x 184.43906pt>
+[45 <./img/data2.jpg>]
+<img/clas2.png, id=239, 264.23718pt x 184.43906pt>
 File: img/clas2.png Graphic file (type png)
 <use img/clas2.png>
-Package pdftex.def Info: img/clas2.png  used on input line 2013.
+Package pdftex.def Info: img/clas2.png  used on input line 2015.
 (pdftex.def)             Requested size: 264.23653pt x 184.4386pt.
 
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 2011--2016
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 2013--2018
 []$[]$ 
  []
 
@@ -1057,20 +1052,32 @@ Poglavlje 8.
 [48
 
 ] (zavrsni.bbl [49]
-Underfull \hbox (badness 10000) in paragraph at lines 47--51
+Underfull \hbox (badness 1102) in paragraph at lines 15--19
+[]\T1/ptm/m/n/12 Alex Clark.  pypi.org/project/pillow.  $\T1/pcr/m/n/12 https :
+ / / pypi . org / project /
+ []
+
+
+Underfull \hbox (badness 4084) in paragraph at lines 47--51
 []\T1/ptm/m/n/12 HRT.  Do-£ek va-tre-nih.  $\T1/pcr/m/n/12 https : / / www . yo
 utube . com / watch ? v =
  []
 
-
-Underfull \hbox (badness 1057) in paragraph at lines 59--64
-\T1/ptm/m/n/12 ISBN 9780080949123.  URL $\T1/pcr/m/n/12 https : / / books . goo
-gle . hr / books ? id =
- []
-
 [50
 
-]) [51] (zavrsni.lof
+]
+Underfull \hbox (badness 7221) in paragraph at lines 101--106
+[]\T1/ptm/m/n/12 Wikipedia, the free en-cy-clo-pe-dia.  Gra-di-jent slike, 2013
+.  URL
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 101--106
+\T1/pcr/m/n/12 https : / / en . wikipedia . org / wiki / Gradient # /media / Fi
+le :
+ []
+
+) [51] (zavrsni.lof
 Overfull \hbox (0.63914pt too wide) in paragraph at lines 19--19
  [][] []\T1/ptm/m/n/12 Prikaz smjera gra-di-jenta pla-vim stre-li-cama, tam-nij
 a boja oz-na-£ava ve¢e 
@@ -1103,45 +1110,51 @@ Poglavlje B.
 [59
 
 ]
-Overfull \hbox (11.72679pt too wide) in paragraph at lines 2293--2324
+Overfull \hbox (11.72679pt too wide) in paragraph at lines 2294--2325
 [][] 
  []
 
-[60] (zavrsni.aux) ) 
+[60] (zavrsni.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 7766 strings out of 480795
- 114785 string characters out of 2895102
- 399507 words of memory out of 3000000
- 23571 multiletter control sequences out of 15000+200000
- 599689 words of font info for 100 fonts, out of 3000000 for 9000
+ 7771 strings out of 480795
+ 114912 string characters out of 2895102
+ 398631 words of memory out of 3000000
+ 23579 multiletter control sequences out of 15000+200000
+ 596792 words of font info for 100 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 46i,14n,47p,820b,513s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/en
-c/dvips/base/8r.enc}<C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmex10.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/tonkec/AppData/Local/
-Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/tonkec/A
-ppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/U
-sers/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
-r12.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/a
-msfonts/cm/cmr6.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmr8.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/tonkec/AppData/Local/Pr
-ograms/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/tonkec/App
-Data/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Use
-rs/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb>
-<C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/courier/ucrr
-o8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/helv
-etic/uhvb8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
-urw/helvetic/uhvr8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/font
-s/type1/urw/times/utmb8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9
-/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKT
-eX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Users/tonkec/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Users/tonkec/AppData/Local/Pro
-grams/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on zavrsni.pdf (65 pages, 3625252 bytes).
+ 46i,14n,47p,820b,599s stack positions out of 5000i,500n,10000p,200000b,50000s
+{C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/enc/dvips/base/8r.en
+c}<C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmex10.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
+public/amsfonts/cm/cmmi10.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/tonkec/AppData/Local/Prog
+rams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/tonkec/AppDa
+ta/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users
+/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.
+pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
+nts/cm/cmr12.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
+/public/amsfonts/cm/cmr6.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9
+/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/tonkec/AppData/Local/Program
+s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/tonkec/AppData
+/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/t
+onkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy8.pf
+b><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/courier/uc
+rr8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/urw/cou
+rier/ucrro8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
+/urw/helvetic/uhvb8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX 2.9/fon
+ts/type1/urw/helvetic/uhvr8a.pfb><C:/Users/tonkec/AppData/Local/Programs/MiKTeX
+ 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Users/tonkec/AppData/Local/Programs/M
+iKTeX 2.9/fonts/type1/urw/times/utmbi8a.pfb><C:/Users/tonkec/AppData/Local/Prog
+rams/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Users/tonkec/AppData/Local
+/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Users/tonkec/AppData/
+Local/Programs/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on zavrsni.pdf (65 pages, 3641804 bytes).
 PDF statistics:
- 349 PDF objects out of 1000 (max. 8388607)
+ 357 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  216 words of extra memory for PDF output out of 10000 (max. 10000000)
 

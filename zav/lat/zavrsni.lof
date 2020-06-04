@@ -4,12 +4,12 @@
 \contentsline {figure}{\numberline {2.1}{\ignorespaces Prikaz poretka jedinica teksture u susjedstvu srednjeg piksela.\relax }}{3}%
 \contentsline {figure}{\numberline {2.2}{\ignorespaces Susjedstvo V = \{40, 62, 20, 41, 30, 10, 40, 130, 79\}\relax }}{3}%
 \contentsline {figure}{\numberline {2.3}{\ignorespaces Jedinica teksture TU = \{2, 0, 2, 0, 0, 1, 2, 2\}\relax }}{3}%
-\contentsline {figure}{\numberline {2.4}{\ignorespaces Susjedstvo nakon usporedbe s centralnim pikselom\relax }}{3}%
-\contentsline {figure}{\numberline {2.5}{\ignorespaces Susjedstvo V = \{55, 71, 171, 190, 78, 78, 12, 24, 5\}\relax }}{3}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Susjedstvo nakon usporedbe s centralnim pikselom\relax }}{4}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Susjedstvo V = \{55, 71, 171, 190, 78, 78, 12, 24, 5\}\relax }}{4}%
 \contentsline {figure}{\numberline {2.6}{\ignorespaces Primjer dobivenih LBP slika iz izvorne slike uz različite radijuse oko centralnog piksela\relax }}{4}%
 \contentsline {figure}{\numberline {2.7}{\ignorespaces Primjer crno bijele slike\relax }}{5}%
 \contentsline {figure}{\numberline {2.8}{\ignorespaces Prikaz GLCM prije i nakon normalizacije\relax }}{6}%
-\contentsline {figure}{\numberline {2.9}{\ignorespaces Prikaz dva razreda s jednim nestandardnim uzorkom\relax }}{7}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces Prikaz dva razreda s jednim nestandardnim uzorkom (koji previše odskače od prosjeka uzoraka svojeg razreda)\relax }}{7}%
 \contentsline {figure}{\numberline {2.10}{\ignorespaces Prikaz uzoraka dva razreda i novog uzorka za klasifikaciju\relax }}{8}%
 \contentsline {figure}{\numberline {2.11}{\ignorespaces Prikaz dviju mogućih hiperravnina između dva razreda.\relax }}{9}%
 \contentsline {figure}{\numberline {2.12}{\ignorespaces Prikaz potencijalnih hiperravnina koje dijele najbliže točke razreda\relax }}{10}%
@@ -23,7 +23,7 @@
 \contentsline {figure}{\numberline {2.20}{\ignorespaces Primijenjen Sobelov operator u smjeru x na izvornoj slici\relax }}{15}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {3.1}{\ignorespaces Prikaz pojedinih gustoća mnoštva\relax }}{17}%
-\contentsline {figure}{\numberline {3.2}{\ignorespaces Prikaz arhitekture sustava\relax }}{20}%
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Prikaz arhitekture sustava\relax }}{18}%
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {4.1}{\ignorespaces Prikaz početnog prozora nakon pokretanja aplikacije\relax }}{21}%
 \contentsline {figure}{\numberline {4.2}{\ignorespaces Prikaz glavnog prozora\relax }}{22}%

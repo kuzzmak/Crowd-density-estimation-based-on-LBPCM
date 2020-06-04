@@ -4,7 +4,7 @@
 \contentsline {subsection}{\numberline {2.0.1}LBP (engl. \textit {Local binary pattern}) - lokalna binarna značajka}{2}%
 \contentsline {subsection}{\numberline {2.0.2}Matrica pojavnosti sivih razina}{5}%
 \contentsline {subsection}{\numberline {2.0.3}Klasifikator \textit {k} najbližih susjeda - \textit {k}-NN}{7}%
-\contentsline {subsection}{\numberline {2.0.4}Stroj s potpornim vektorima(engl. \textit {Support vector machine - SVM}}{9}%
+\contentsline {subsection}{\numberline {2.0.4}Stroj s potpornim vektorima (engl. \textit {Support vector machine - SVM}}{9}%
 \contentsline {subsection}{\numberline {2.0.5}Gradijent slike}{14}%
 \contentsline {subsection}{\numberline {2.0.6}Sobelov operator}{15}%
 \contentsline {subsection}{\numberline {2.0.7}Haralickove značajke}{16}%
