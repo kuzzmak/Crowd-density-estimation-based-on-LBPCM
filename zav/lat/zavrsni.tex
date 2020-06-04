@@ -1877,6 +1877,47 @@ vrijeme izračuna nije veliko. Kao dodatna mjeru robusnosti ima smisla koristiti
 slikama u fuziji s drugim koji koristi gradijentne slike čime se točnost klasifikacije može podići
 za nekoliko postotaka.
 
+\bigbreak
+
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[scale=0.6]{img/lijevo.png}
+\captionof{figure}{Klasifikacije mnoštva koje se nalazi na krajnjem lijevom dijelu slike}
+\end{minipage}
+
+\bigbreak
+
+Na slici 6.1 klasifikator nema nikakvih problema s okolnim područjem oko mnoštva koje je prazno.
+
+
+\bigbreak
+
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[scale=0.6]{img/cijela.png}
+\captionof{figure}{Klasifikacije mnoštva koje se proteže kroz cijelu sliku}
+\end{minipage}
+
+\bigbreak
+
+Razasuto mnoštvo na slici 6.2 nije ignorirano i ispravno se klasificira.
+
+\bigbreak
+
+\begin{minipage}{\linewidth}
+\centering
+\includegraphics[scale=0.6]{img/malo.png}
+\captionof{figure}{Klasifikacija mnoštva koje se nalaza na kranjem desnom dijelu slike}
+\end{minipage}
+
+\bigbreak
+
+Na slici 6.3 moguće je vidjeti problematičnu situaciju, mnoštvo je pocijepano i rezultat nije najbolji.
+
+
+
+
+
 
 \chapter{Prikladnost korištenog postupka na drugome skupu podataka}
 
@@ -1893,8 +1934,28 @@ Takva slika može biti veoma udaljena od svakog središta razreda i najbližeg u
 
 \bigbreak
 
-Zbog navedenih razloga korištenje jednom već naučenog klasifikatora nad novim skupom
-slika rezultira poražavajućom točnošću klasifikacije. Takvi rezultati mogu se izbjeći
+\begin{figure}[ht]
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\includegraphics[scale=0.38]{img/wrong1.png}
+		\caption{Pogled 1}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\includegraphics[scale=0.38]{img/wrong2.png}
+		\caption{Pogled 2}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\linewidth}
+		\centering
+		\includegraphics[scale=0.38]{img/wrong3.png}
+		\caption{Pogled 3}
+	\end{subfigure}
+\caption{Prikaz klasifikacije drugih skupova podataka iz PETS2009}
+\end{figure}
+
+Iz priložene slike 7.1 vidi se koliko promjena izgleda slike utječe na klasifikaciju. Iako se na slici vidi 
+da postoji nekakvo mnoštvo, klasifikator to nije u mogućnosti vidjeti, odnosno klasificira skoro svaku
+podsliku kao da ne sadrži mnoštvo. Takvi rezultati mogu se izbjeći
 ponovljenim postupkom prikazanim na slici 3.2 koji uključuje ponovnu podjelu
 izvornih slika u manje podslike, ručno označavanje pojedinih razreda gustoće i 
 na kraju stvaranje vektora značajki. 
@@ -2027,6 +2088,8 @@ ukupnu kvalitetu slike što na kraju rezultira
 \includegraphics{img/clas2.png}
 \captionof{figure}{Klasificirana slika novog skupa podataka}
 \end{minipage}
+
+\bigbreak
 
 \noindent uništenim detaljima koji su u ovom slučaju znatni jer su mnoštva velika, a veličina glave 
 pojedinog čovjeka je mala. Kompresija jednog takvog videozapisa može rezultirati 

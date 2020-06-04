@@ -16,10 +16,10 @@
 \contentsline {subsection}{\numberline {4.0.4}Klasifikacija slike postojećim modelima}{30}%
 \contentsline {chapter}{\numberline {5}Tehnika klizećeg okna}{35}%
 \contentsline {chapter}{\numberline {6}Rezultati eksperimenta}{39}%
-\contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{44}%
-\contentsline {chapter}{\numberline {8}Zaključak}{48}%
-\contentsline {chapter}{Literatura}{50}%
-\contentsline {chapter}{Popis slika}{52}%
-\contentsline {chapter}{Popis tablica}{54}%
-\contentsline {chapter}{\numberline {A}Teksturne značajke}{56}%
-\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{59}%
+\contentsline {chapter}{\numberline {7}Prikladnost korištenog postupka na drugome skupu podataka}{45}%
+\contentsline {chapter}{\numberline {8}Zaključak}{49}%
+\contentsline {chapter}{Literatura}{51}%
+\contentsline {chapter}{Popis slika}{53}%
+\contentsline {chapter}{Popis tablica}{55}%
+\contentsline {chapter}{\numberline {A}Teksturne značajke}{57}%
+\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{60}%
