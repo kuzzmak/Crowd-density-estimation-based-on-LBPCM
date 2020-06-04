@@ -980,19 +980,21 @@ biti značajno lošiji od svakog pojedinog klasifikatora.
 Programska podrška ovdje obrađivanog postupaka pisana je u Python 3.6 
 programskom jeziku. Usto je potrebno instalirati dodatne Python 
 knjižnice: OpenCV \citep{opencv.org}, scikit-learn \citep{scikit} i PIL \citep{pil}.
+OpenCV koristi se za učitavanje slika i pretvorbu slika u boji u slike sivih tonova. Scikit 
+daje implementaciju \textit{k}-NN i SVM klasifikatora kako i funkciju za generiranje 
+GLCM pojedine slike. PIL je korišten za pretvrbu normalne slike u oblik koji 
+se koristi u Tkinter biblioteci koja je korištena za grafičko sučelje same aplikacije.
+Za Haralickove značajke nije korištena nikakva biblioteka nego je izračun svake implementiran
+zasebno.
+
+\bigbreak
 
 Za pokretanje aplikacije putem grafičkog sučelja potrebno je kliknuti 
 na app.py ili putem terminala upisati naredbu „python app.py“ iz 
 vršnog direktorija projekta. Nakon što je aplikacija pokrenuta 
 otvoren je sljedeći prozor. 
 
-\begin{figure}[ht]
-\centering
-\includegraphics[scale=0.35]{img/startpage.png}
-\caption{Prikaz početnog prozora nakon pokretanja aplikacije}
-\end{figure}
-
-\newpage
+\bigbreak
 
 Početni prozor prikazuje naziv rada \citep{6266412} na kojem se temelji ovaj završni rad, 
 slikovni prikaz postupka lokalnih binarnih značajki i gumb \enquote{Main screen}
@@ -1002,9 +1004,19 @@ mjesta u koje se ispisuju važnije informacije poput upozorenja, eventualnih
 grešaka i rezultata izvođenja nekih drugih funkcija. Pritiskom na gumb \enquote{Main screen}
 otvara se glavni prozor koji sadrži sve funkcionalnosti aplikacije.
 
-\begin{figure}[ht]
+\bigbreak
+
+\begin{figure}[!ht]
 \centering
-\includegraphics[scale=0.4]{img/mainscreen.png}
+\includegraphics[scale=0.37]{img/startpage.png}
+\caption{Prikaz početnog prozora nakon pokretanja aplikacije}
+\end{figure}
+
+\hfill
+
+\begin{figure}[!ht]
+\centering
+\includegraphics[scale=0.37]{img/mainscreen.png}
 \caption{Prikaz glavnog prozora}
 \end{figure}
 
@@ -1014,14 +1026,14 @@ priprema izvornih slika podjelom u manje podslike i označavanje svake
 podslike odgovarajućim razredom gustoće mnoštva. Po završetku navedenih radnja
 moguće je nastaviti s daljnjim postupkom.
 
-\bigbreak
+\newpage
 
 Drugi dio prozora služi za promjenu parametara aplikacije, uvid u tehniku 
 klizećeg okna gdje je moguće vidjeti kako se mijenjaju iznosi Haralickovih značajki
 prilikom putovanja klizećeg okna po pojedinoj slici i na kraju korištenje
 opertora gradijenta na odabranoj slici.
 
-\newpage
+\bigbreak
 
 Zadnji dio prozora obuhvaća samu fazu stvaranja vektora značajki (učenje
 klasifikatora) gdje se postavljaju svi parametri pojedinog modela te pokreće
@@ -1042,11 +1054,9 @@ novonastalih podslika ima 3536 koje se zatim pretvaraju u slike sivih razina kak
 bi se prilikom računanja Haralickovih značajki tijekom učenja klasifikatora taj
 korak mogao preskočiti i time uštedjeti procesorsko vrijeme.
 
-\bigbreak
-
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
-\includegraphics[scale=0.4]{img/preprocessdata.png}
+\includegraphics[scale=0.37]{img/preprocessdata.png}
 \caption{Prikaz stranice za obradu izvornih slika}
 \end{figure}
 
@@ -1066,11 +1076,13 @@ unešenih dimenzija moguće je vidjeti kako bi izgledale konkretne dimenzije
 na izvornoj slici pritiskom na gumb \enquote{See on pic}. Nakon pritiska na gumb
 pojavljuje se sljedeći dio prozora.
 
-\begin{figure}[ht]
+\begin{figure}[!ht]
 \centering
-\includegraphics[scale=0.4]{img/seeonpic.png}
+\includegraphics[scale=0.37]{img/seeonpic.png}
 \caption{Prikaz izgleda podslike s unešenim dimenzijama}
 \end{figure}
+
+\bigbreak
 
 Novi dio prozora prikazuje jednu izvornu sliku iz odabranog direktorija
 s podjelom na manje podslike, a one su dimenzija unešenih iznad. Svaka podslika
@@ -1100,8 +1112,6 @@ u glavnom prozoru aplikacije. Nakon pritiska na gumb otvara se sljedeći prozor.
 \includegraphics[scale=0.38]{img/dataannotation.png}
 \caption{Prikaz prozora za označavanje podslika}
 \end{figure}
-
-\newpage
 
 Najgornji dio prozora prikazuje ime trenutne podslike koju je potrebno označiti.
 Ispod naziva se nalazi konkretna slika koja se označava, a prisutan je i brojač
@@ -1149,7 +1159,7 @@ te pojedine konfiguracije. Stvaranju vektora značajki prethodi stvaranje neke k
 stvorila nova konfiguracija potrebno je pritisnuti na gumb \enquote{Add configurations}.
 Nakon pritiska na gumb otvara se prozor prikazan na slici 4.8.
 
-\newpage
+\bigbreak
 
 \begin{minipage}{\linewidth}
 \centering
@@ -1266,6 +1276,8 @@ dodanih konfiguracija. Nakon završetka svake konfiguracije objekt koji predstav
 model klasifikatora sprema se na disk kako i konfiguracija samog modela kako
 bi se kasnije prilikom faze klasifikacije mogao učitati ispravan model.
 
+\bigbreak
+
 \begin{minipage}{\linewidth}
 \centering
 \includegraphics[scale=0.4]{img/fvc3.png}
@@ -1300,7 +1312,7 @@ je vidjeti da trenutno takvih modela na disku ima 4 (redni broj modela
 \enquote{Current model}). Kako bi vidjeli moguće modele koji su učeni na
 gradijentnim slikama potrebno je pritisnuti gumb \enquote{Grad}.
 
-\newpage
+\bigbreak
 
 Za dohvat sljedećeg ili prethodnog dostupnog modela potrebno je pritisnuti na 
 gumbe \enquote{Next} ili \enquote{Previous}. Jednom kada je odabran željeni
