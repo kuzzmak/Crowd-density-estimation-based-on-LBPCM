@@ -20,6 +20,6 @@
 \contentsline {chapter}{\numberline {8}Zaključak}{49}%
 \contentsline {chapter}{Literatura}{51}%
 \contentsline {chapter}{Popis slika}{53}%
-\contentsline {chapter}{Popis tablica}{55}%
-\contentsline {chapter}{\numberline {A}Teksturne značajke}{57}%
-\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{60}%
+\contentsline {chapter}{Popis tablica}{54}%
+\contentsline {chapter}{\numberline {A}Teksturne značajke}{56}%
+\contentsline {chapter}{\numberline {B}Rezultati eksperimenta}{59}%
