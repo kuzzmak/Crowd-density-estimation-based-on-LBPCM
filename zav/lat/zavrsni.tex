@@ -44,11 +44,11 @@ koji su sposobni analizirati velika mnoštva ljudi koristeći video prijenos
 iz sigurnosnih kamera. Brojenje mnoštva je ključna komponenta takvih 
 automatiziranih sustava za analizu gustoće mnoštva. Sustav uključuje 
 procjenu broja ljudi u mnoštvu kao i distribuciju gustoće mnoštva
-dotičnog mjesta. Identifikaicija regija s gustoćom mnoštva većom
+dotičnog mjesta. Identifikacija regija s gustoćom mnoštva većom
 od neke sigurne granice može pomoći kod izdavanja upozorenja i spriječiti
 potencijalne gužve. Procjena broja grupacija mnoštva može doprinijeti
 do bolje raspodjele ljudi, resursa i logistike kod organizacije događaja
-kojem prisupa veći broj ljudi ili kontroliranje već postojećih, npr. 
+kojem pristupa veći broj ljudi ili kontroliranje postojećih, npr. 
 utakmica, prosvjedi ili bilo kakva slična okupljanja.
 
 \bigbreak
@@ -80,7 +80,7 @@ U ovom poglavlju objašnjavaju se detaljnije termini i metodologije korištene u
 
 \subsection{LBP (engl. \textit{Local binary pattern}) - lokalna binarna značajka}
 
-LBP se razvio kao poseban slučaj jedinice teksture (\textit{engl. Texture unit})
+LBP se razvio kao poseban slučaj jedinice teksture (engl. \textit{Texture unit})
 koje je prvi put predstavljena u radu \citep{dong}.
 Jedinica teksture se definira na sljedeći način. 
 
@@ -88,14 +88,14 @@ Jedinica teksture se definira na sljedeći način.
 
 U kvadratnoj rasterskoj digitalnoj slici svaki piksel okružen je s
 osam susjednih piksela (osim krajnjih piksela na rubu slike). 
-Lokalna informacija teksture izvlači se iz susjedstva 3x3 koje 
+Lokalna informacija teksture izvlači se iz susjedstva \(3 \times 3\) koje 
 predstavlja najmanju potpunu jedinicu (u smislu postojanja osam 
-smjerova oko piksela). Obzirom na 3x3 susjedstvo koje će biti 
+smjerova oko piksela). S obzirom na \(3 \times 3\) susjedstvo koje će biti 
 označeno skupom od devet elemenata \(V = \left\{V_0, V_1,..., V_8\right\}\),
-gdje \(V_0\) predstavlja intenzite srednjeg piksela, a 
-\(\left\{V_0, V_1,..., V_8\right\}\) predstavlja entiteta susjednih piksela.
-Jedinica teksture je skup od osam elemenata TU = \(\left\{E_1, V_2,..., E_8\right\}\),
-gdje su \(E_i = (0,1\; ili \;2)\) i određuje se formulom
+gdje \(V_0\) predstavlja intenzitet srednjeg piksela, a 
+\(\left\{V_0, V_1,..., V_8\right\}\) predstavlja entitete susjednih piksela.
+Jedinica teksture je skup od osam elemenata TU = \(\left\{E_1, E_2,..., E_8\right\}\),
+gdje se \(E_i\) (i = 1,2,...,8) određuje formulom
 
 \[
 E_i = \left\{
@@ -112,7 +112,7 @@ postoji \(3^8 = 6561\) jedinica teksture. Broj \(N_{TU}\) predstavlja
 pojedinu jedinicu teksture, a dobiva se na sljedeći način:
 
 \[
-N_{TU} = \sum_{i=0}^{8} E_i \cdot 3^{i-1}
+N_{TU} = \sum_{i=1}^{8} E_i \cdot 3^{i-1}
 \]
 
 \newpage
@@ -266,7 +266,7 @@ LBP se naziva jednoličnim ako ima najviše dvije 0-1 ili 1-0 tranzicije.
  i on nije jednoličan. U izračunima LBP histograma, svaki uzorak ima 
  svoju grupu (poziciju), a svi koji nisu jednolični uzorci se 
  svrstavaju u zajedničku grupu. Koristeći jednolične uzorke,
-  dimenzionalnost vektora značajki možemo smanjiti sa 256 na 59 
+  dimenzionalnost vektora značajki možemo smanjiti s 256 na 59 
   (toliko ima jednoličnih uzoraka ako koristimo radijus jedan piksel).
 
 \newpage
@@ -290,7 +290,7 @@ je uvjetovana brojem sivih razina slike nad kojom se izračunava matrica.
 
 \bigbreak
 
-Primjer računanja matrice pojavnosti sivih razinai za \(d=0, \theta=0\). Slika 
+Primjer računanja matrice pojavnosti sivih razina i za \(d=0, \theta=0\). Slika 
 sa sivim razinama koja služi za izračunavanje funkcije \(f(i,j,1,0)\) nalazi 
 se na slici 2.7.
 
@@ -307,7 +307,7 @@ se na slici 2.7.
 \hline
 0 & 2 & 2 & 2 \\
 \hline
-2 & 2 & 3 & 4 \\
+2 & 2 & 3 & 3 \\
 \hline
 \end{tabularx}
 \captionof{figure}{Primjer crno bijele slike}
@@ -374,9 +374,9 @@ dolazi se do krajnjeg oblika matrice \(f(i,j,1,0)\) koja izgleda ovako
 
 \bigbreak
 
-Prikazana GLCM je oblika 4x4 jer sive razine izvorne slike mogu poprimiti
+Prikazana GLCM je oblika \(4 \times 4\) jer sive razine izvorne slike mogu poprimiti
 4 različite vrijednosti. U radu se koriste slike zapisane u 8-bitnom formatu
-što znači da se veličina matrice povećava na \(256,256\) jer svaki piksel može
+što znači da se veličina matrice povećava na \(256 \times 256\) jer svaki piksel može
 poprimiti jednu od 256 različitih vrijednosti. Zbog veličine matrice mnoge
 kombinacije razina piksela se često ne pojavljuju u izvornim slikama što
 dovodi do toga da su matrice dosta prazne, odnosno puno indeksa imaju popunjene 
@@ -400,7 +400,7 @@ f_1 = 3 \cdot 0.167^2 + 3 \cdot 0.083^2 + 0.25^2 = 0.166834
 \]
 
 U ovom radu se koristi matrica naziva LBPCM (engl. \textit{Local binary pattern co-occurence matrix})
-koja je u suštini GLCM samo što se izračnavanje vriijednosti matrice 
+koja je u suštini GLCM samo što se izračunavanje vrijednosti matrice 
 radi nad slikom sivih razina nad kojom je primijenjen operator LBP.
 
 \newpage
@@ -424,16 +424,16 @@ kada joj se preda neki, još do sada neviđeni uzorak.
 
 Slovo \textit{k} u nazivu \textit{k}-NN predstavlja broj susjeda koji sudjeluju
 u \enquote{glasanju}. To glasanje predstavlja dodjeljivanje labele od strane \textit{k}
-najbližih susjeda. Ukiliko je \(k=1\), labelu određuje samo najbliži susjed,
+najbližih susjeda. Ako je \(k=1\), labelu određuje samo najbliži susjed,
 ako je \(k=3\), razred s više glasova pobjeđuje te se kao labela novome, dosad
-nevđenome uzorku, dodjeljuje baš taj razred. Za broj susjeda se odabire pozitivan
+neviđenome uzorku, dodjeljuje baš taj razred. Za broj susjeda se odabire pozitivan
 broj koji je tipično malen. Kako bi odabrali dobru vrijednost broja \textit{k} poželjno
 je algoritam pokrenuti nekoliko puta. 
 
 \begin{multicols}{2}
 
 Smanjenjem broja \textit{k} odluke postaju
-sve nestablinije, npr. ako postoji jedan primjer nekog drugog 
+sve nestabilnije, npr. ako postoji jedan primjer nekog drugog 
 razreda (koji previše odskače od vrijednosti svoga razreda) u blizini suprotnog razreda, 
 može doći do krive klasifikacije što bi se inače izbjeglo povećanjem broja \textit{k}. 
 Crna točka iz slike 2.9 prikazuje još neklasificiran uzorak. 
@@ -479,7 +479,7 @@ Odabirom konstante \textit{k} utječemo na krajnju dodjelu labele.
 
 \begin{itemize}
 	\item \(k=1\) - Slučaj je prikazan crtkanom kružnicom zelene boje (kružnica najmanjeg 
-	radijusa). Pripadnost se određuje na temelju najblžeg susjeda pa labela
+	radijusa). Pripadnost se određuje na temelju najbližeg susjeda pa labela
 	novog uzorka postaje crveni razred.
 	\item \(k=2\) - Najbliža dva susjeda. Slučaj je prikazan plavom crtkanom kružnicom.
 	Ovakva situacija nije poželjna jer se unutar granica nalazi jednak 
@@ -497,10 +497,10 @@ Odabirom konstante \textit{k} utječemo na krajnju dodjelu labele.
 \subsection{Stroj s potpornim vektorima (engl. \textit{Support vector machine - SVM}}
 
 Ovaj klasifikator pripada vrsti linearnih klasifikatora što znači da 
-ako postoji neki skup vektora X u kojem svaki od vektora \(x_i, i = 0, 1, ..., N\), 
+ako postoji neki skup vektora \textbf{X} u kojem svaki od vektora \(x_i, i = 0, 1, ..., N\), 
 pripada jednom od razreda \(\omega_1\) ili \(\omega_2\) te su ti razredi odvojivi hiperravninom 
 u prostoru dimenzionalnosti \(N\). Cilj klasifikatora je izgraditi hiperravninu 
-\(g(x) = \omega^Tx+\omega_0=0\).
+\(g(\boldsymbol{x}) = \omega^T\boldsymbol{x}+\omega_0=0\).
 
 %slika linearnih razreda
 \begin{figure}[htbp]
@@ -524,8 +524,8 @@ bilo radi neke vrste šuma ili čega drugoga.
 Svaka hiperravnina je određena svojim smjerom (određeno s \textit{w}) i mjestom u prostoru (određeno s \(w_0\)). 
 Pošto ne bismo željeli favorizirati niti jednu ravninu, trebamo odabrati jednu koja je 
 jednako udaljena od odgovarajućih najbližih točaka razreda \(\omega_1\) i \(\omega_2\).  Odabrane hiperravnine 
-označene su crnim linijama na slici 2.12 (Preuzeta iz \citep{pattern}). Margina udljenosti 1 je 2\(z_1\), a udaljenosti 2 je 2\(z_2\). 
-Cilj je pronaći smjer koji daje maksmalnu moguću marginu. Margina je najmanja udaljenost 
+označene su crnim linijama na slici 2.12 (Preuzeta iz \citep{pattern}). Margina udaljenosti 1 je 2\(z_1\), a udaljenosti 2 je 2\(z_2\). 
+Cilj je pronaći smjer koji daje maksimalnu moguću marginu. Margina je najmanja udaljenost 
 između nekog vektora \(x_i\) i hiperravnine.
 
 %slika s granicama
@@ -537,7 +537,7 @@ između nekog vektora \(x_i\) i hiperravnine.
 
 \newpage
 
-Želimo postići da je vrijednost \(g(x)\) u blizini najbliže točke jednaka 1 za razred \(\omega_1\), a
+Želimo postići da je vrijednost \(g(\boldsymbol{x})\) u blizini najbliže točke jednaka 1 za razred \(\omega_1\), a
 -1 za razred \(\omega_2\) što je moguće zapisati na sljedeći način
 
 \begin{equation}
@@ -605,13 +605,13 @@ uvrštavanjem u (2.3). Prikazani postupak optimizacije vrijedi i daje dobre rezu
 kada su razredi linearno odvojivi, u slučaju kada nisu postupa se drugačijim pristupom problemu.
 
 \begin{multicols}{2}
-Slučaj kada razredi nisu linearno odvojivi prikazan je na slici 2.13. Koliko god se trudilil nikako 
+Slučaj kada razredi nisu linearno odvojivi prikazan je na slici 2.13. Koliko god se trudili nikako 
 nije moguće pravcem odijeliti dva razreda kako se ne bi događala kriva klasifikacija nekih 
 budućih uzoraka. Ideja je prijeći u neki viši dimenzijski sustav u nadi da će razredi postati 
-linearn odvojivi. Uzmimo kao primjer sliku 2.13. i prijeđimo u trodimenzionalni sustav. Novonastala 
+linearno odvojivi. Uzmimo kao primjer sliku 2.13. i prijeđimo u trodimenzionalni sustav. Novonastala 
 situacija prikazana je na slici 2.14. U ovoj dimenziji granica koja dijeli razrede uzoraka 
 postaje ravnina. Vidimo da je u prostoru s ovom dimenzionalnošću moguće odijeliti uzorke jedne 
-od drugih tako da ne postoje preklapanja dvaju razreda koja bi rezltirala krivom klasifikacijom.
+od drugih tako da ne postoje preklapanja dvaju razreda koja bi rezultirala krivom klasifikacijom.
 Granica koja dijeli dva razreda prikazana je zelenkastom bojom na slici 2.14.
 
 \begin{minipage}{\linewidth}
@@ -632,15 +632,15 @@ Granica koja dijeli dva razreda prikazana je zelenkastom bojom na slici 2.14.
 
 \bigbreak
 
-Funkcija kojom se prelazi u drugu dimenziju označava se s \(\varphi(x)\). Kako bi se navedena ideja
+Funkcija kojom se prelazi u drugu dimenziju označava se s \(\varphi(\boldsymbol{x})\). Kako bi se navedena ideja
 koristila u funkciji koja se maksimizira, dovoljno je samo napraviti sljedeće
-jer funkcija ovisi samo o polaznom skupu uzoraka, odnosno \(X\).
+jer funkcija ovisi samo o polaznom skupu uzoraka, odnosno \textbf{X}.
 
 \[
 L = \sum \alpha_i - \frac{1}{2} \sum_i \sum_j \alpha_i \alpha_j y_i y_j \varphi(x_i) \cdot \varphi(x_j)
 \]
 
-Kraći zapis zapis korišten za \(\varphi(x_i) \cdot \varphi(x_j)\) je \(k(x_i, x_j)\) čime se označavaju 
+Kraći zapis korišten za \(\varphi(x_i) \cdot \varphi(x_j)\) je \(k(x_i, x_j)\) čime se označavaju 
 jezgrene funkcije. Jezgrene funkcije služe za preslikavanje uzoraka iz početne, relativno niske 
 dimenzionalnosti, u višu, moguće puno veću dimenzionalnost od izvorne kako bi uzorci u višoj 
 dimenzionalnosti bili linearno odvojivi.
@@ -667,14 +667,14 @@ jedan problem s više razreda može se podijeliti u više manjih binarnih proble
 Popularne metode su: 
 
 \begin{itemize}
-	\item jedan protiv svih gdje se labela uzorku dodijeljuje prema klasifikatoru koji 
+	\item jedan protiv svih gdje se labela uzorku dodjeljuje prema klasifikatoru koji 
 	ima funkciju najveće vrijednosti 
 	\item jedan protiv drugog gdje se uzorak klasificira prema strategiji najvećeg 
 	broja pobjedi što znači da svaki od klasifikatora pridjeljuje pripadnost jednom od razreda i razred s najviše glasova pobjeđuje
 \end{itemize}
 
 Pojam stroja s potpornim vektorima javlja se već sredinom 60-ih godina prošlog stoljeća od strane
-Vladimira Vapnika čija ideja u tašnje vrijeme nije najbolje prihvaćena. Tek se 1990.-ih daje 
+Vladimira Vapnika čija ideja u tadašnje vrijeme nije najbolje prihvaćena. Tek se 1990.-ih daje 
 veća pažnja i uviđa potencijal SVM-a. Na slici 2.15 prikazan je jedan SVM sustav koji se koristio s
 neronskim mrežama, a bio je pod nazivom \enquote{mreža s potpornim vektorima}.
 
@@ -715,7 +715,7 @@ najveće promjene intenziteta, a duljina toga vektora odgovara brzini promjene u
 
 \bigbreak
 
-Kako je funkcija intenziteta slike pozanta samo u diskretnim točkama, derivacija ove funkcije 
+Kako je funkcija intenziteta slike poznata samo u diskretnim točkama, derivacija ove funkcije 
 ne može biti definirana ako se ne pretpostavi da iza svega toga leži kontinuirana funkcija 
 intenziteta koja je uzorkovana u nekim konkretnim pikselima. Aproksimacije ovih funkcija derivacije 
 mogu biti definirane s različitim stupnjevima točnosti. Jedan od popularnih načina za 
@@ -726,8 +726,8 @@ Slika 2.16 preuzeta iz \citep{wikiGradient}.
 
 \subsection{Sobelov operator}
 
-Ovaj operator koristi dvije 3 \(\times\) 3 jezgre koju su konvolirane s izvornom slikom kako bi se aproksimirale 
-derivacije – jedna za x smjer, a druga za y smjer. Označimo izvornu sliku kao dvodimenizonalnu matricu \(A\), sliku
+Ovaj operator koristi dvije 3 \(\times\) 3 jezgre koju su konvoluirane s izvornom slikom kako bi se aproksimirale 
+derivacije – jedna za x smjer, a druga za y smjer. Označimo izvornu sliku kao dvodimenzionalnu matricu \(A\), sliku
 koja je dobivena konvolucijom jezgre za x smjer i slike \(A\) kao \(G_x\), a sliku koja je dobivena konvolucijom 
 jezgre za y smjer i slike \(A\) s \(G_y\).
 
@@ -805,7 +805,7 @@ vrijednosti funkcije korelacije.
 \bigbreak
 
 Utjecaj na vrijednosti Haralickovih značajki uvelike ima i veličina slike nad kojom se konstruira
-GLCM te iz koje se izračunavaju i same značajke. Ukoliko slika nije dovoljno velika, neće sadržavati
+GLCM te iz koje se izračunavaju i same značajke. Ako slika nije dovoljno velika, neće sadržavati
 dovoljno teksturnih informacija koje su zaslužne za razlikovanje različitih područja interesa dok s druge
 strane prevelika slika može sadržavati više različitih razreda ili regija koje pokušavamo odvojiti i razlikovati.
 
@@ -819,8 +819,8 @@ preuzete su iz izvornog rada Haralicka i drugih \citep{haralick}.
 
 Predlaže se tehnika klizećeg okna za klasifikaciju i lociranje područja
 mnoštva. Pripremne radnje obuhvaćaju pretvorbu izvornih slika, dimenzija
-768 x 576, u sive razine i dijeljenje njih samih u manje podslike, dimenzija
-192 x 144, kojih ima 16 po svakoj izvornoj slici. Svaka podslika razlikuje se 
+\(768 \times 576\), u sive razine i dijeljenje njih samih u manje podslike, dimenzija
+\(192 \times 144\), kojih ima 16 po svakoj izvornoj slici. Svaka podslika razlikuje se 
 po gustoći mnoštva, pozadini i uvjetima osvjetljenja.  
 
 \begin{figure}[ht]
@@ -859,19 +859,19 @@ operator LBP nad svakom podslikom i pritom je potrebno napomenuti da
  postoje dvije vrste izračuna LBP operatora. Jedan se izračunava nad slikama 
 sivih razina, a drugi nad slikama koje su također sivih razina, ali je nad njima 
 primijenjen operator gradijenta. Nakon dobivene slike lokalnih binarnih 
-značajki, koristeći se tenhnikom kliznog okna, konstruira se matrica 
+značajki, koristeći se tehnikom kliznog okna, konstruira se matrica 
 pojavnosti lokalnih binarnih značajki (LBPCM) nad svakim oknom podslike. 
 Iz svake LBPCM izračunavaju se željene Haralickove značajke i te se vrijednosti
 pohranjuju u vektor značajki. Vektor značajki se sastoji od vrijednosti
 Haralickovih značajki svakog okna, odnosno vektor značajki neke podslike 
-sastoji se od vrijednosti Haralickovih značajki njezinih okana. Po završteku 
+sastoji se od vrijednosti Haralickovih značajki njezinih okana. Po završetku 
 stvaranja, vektori značajki, se predaju \textit{k}-NN klasifikatoru ili SVM-u.
 
 \newpage
 
 Na kraju se pristupa evaluaciji samih klasifikatora i eventualnoj izmjeni
 samih parametara u nadi boljeg rezultata u sljedećoj iteraciji učenja. Za učenje
-klasifikatora korisiti se \(70\%\) izvornih slika, a za testiranje ostatak.
+klasifikatora koristi se \(70\%\) izvornih slika, a za testiranje ostatak.
 
 \begin{figure}[!ht]
 \centering
@@ -910,7 +910,7 @@ Na odluku klasifikatora može se utjecati
 na više načina. Prvi je \enquote{tvrdo glasanje} (većinsko glasanje), gdje
 svaki od klasifikator glasa za neku labelu, a najbrojnija labela pobjeđuje 
 i dodjeljuje se novome uzorku koji se klasificira. Ovakvo glasanje je moguće i 
-modificirati na način da se svakome klasifikatoru dodijeli neka težina, 
+modificirati tako da se svakome klasifikatoru dodijeli neka težina, 
 npr. ovisno o točnosti njegove klasifikacije na setu slika za učenje.
 
 \bigbreak
@@ -957,7 +957,7 @@ Koristeći uniformne težine dobivamo sljedeće srednje vjerojatnosti (\(i_0\) i
 \(y=\argmax_i [p(i_0|x),p(i_1|x)]=0\)
 \end{center}
 
-Promjenimo iznose težina svakog klasifikatora sljedećim \(\{0.1,0.1,0.8\}\). Sada izračun
+Promijenimo iznose težina svakog klasifikatora sljedećim \(\{0.1,0.1,0.8\}\). Sada izračun
 vjerojatnosti izgleda na sljedeći način
 
 \begin{center}
@@ -969,7 +969,7 @@ vjerojatnosti izgleda na sljedeći način
 \end{center}
 
 Iz primjer je jasno vidljivo koliku važnost imaju pridijeljene težine svakom od
-klasifikatora i ukoliko nisu ispravno dodijeljene, rezultat klasifikacije može
+klasifikatora i ako nisu ispravno dodijeljene, rezultat klasifikacije može
 biti značajno lošiji od svakog pojedinog klasifikatora.
 
 
@@ -981,7 +981,7 @@ programskom jeziku. Usto je potrebno instalirati dodatne Python
 knjižnice: OpenCV \citep{opencv.org}, scikit-learn \citep{scikit} i PIL \citep{pil}.
 OpenCV koristi se za učitavanje slika i pretvorbu slika u boji u slike sivih tonova. Scikit 
 daje implementaciju \textit{k}-NN i SVM klasifikatora kako i funkciju za generiranje 
-GLCM pojedine slike. PIL je korišten za pretvrbu normalne slike u oblik koji 
+GLCM pojedine slike. PIL je korišten za pretvorbu normalne slike u oblik koji 
 se koristi u Tkinter biblioteci koja je korištena za grafičko sučelje same aplikacije.
 Za Haralickove značajke nije korištena nikakva biblioteka nego je izračun svake implementiran
 zasebno.
@@ -997,7 +997,7 @@ otvoren je sljedeći prozor.
 
 Početni prozor prikazuje naziv rada \citep{6266412} na kojem se temelji ovaj završni rad, 
 slikovni prikaz postupka lokalnih binarnih značajki i gumb \enquote{Main screen}
-koji otvara stranicu s glavnim funkcionalnostima aplikacije. U podnožuju svakog
+koji otvara stranicu s glavnim funkcionalnostima aplikacije. U podnožju svakog
 prozora nalazi se prazan prozor \enquote{Console window} koji ima ulogu
 mjesta u koje se ispisuju važnije informacije poput upozorenja, eventualnih 
 grešaka i rezultata izvođenja nekih drugih funkcija. Pritiskom na gumb \enquote{Main screen}
@@ -1030,7 +1030,7 @@ moguće je nastaviti s daljnjim postupkom.
 Drugi dio prozora služi za promjenu parametara aplikacije, uvid u tehniku 
 klizećeg okna gdje je moguće vidjeti kako se mijenjaju iznosi Haralickovih značajki
 prilikom putovanja klizećeg okna po pojedinoj slici i na kraju korištenje
-opertora gradijenta na odabranoj slici.
+operatora gradijenta na odabranoj slici.
 
 \bigbreak
 
@@ -1045,7 +1045,7 @@ dosad neviđenih uzoraka nekim od već naučenih modela.
 Prije svega potrebno je pripremiti skup slika koji se koristi za učenje i 
 kasnije za verifikaciju klasifikatora. Izvorni skup se sastoji od 221 slike (PETS2009 skup podataka)
 koje su izvučene iz video zapisa jedne nadzorne kamere. Svaka slika je dimenzija
-768 x 576 te se podijeli u 16 jednakih podslika 192 x 144. Ova konkretna dimenzija
+\(768 \times 576\) te se podijeli u 16 jednakih podslika \(192 \times 144\). Ova konkretna dimenzija
 podslika je odabrana kako ne bi ostalo neiskorištenih piksela na rubovima i 
 kako dimenzija novonastalih podslika ne bi previše odskakala od veličine mnoštva
 koje je prisutno u izvornim slikama. Nakon što su slike podijeljene na manje dijelove,
@@ -1071,27 +1071,27 @@ Prozor na samom vrhu ima gumb za odabir direktorija koji sadrži izvorne slike
 za učenje i testiranje. Po odabiru navedenog direktorija mogu se upisati 
 željene dimenzije podslika koje će nastati dijeljenjem izvorne slike.
 Prvi element unosa sadrži veličinu u x smjeru, a drugi u y smjeru. Nakon
-unešenih dimenzija moguće je vidjeti kako bi izgledale konkretne dimenzije
+unesenih dimenzija moguće je vidjeti kako bi izgledale konkretne dimenzije
 na izvornoj slici pritiskom na gumb \enquote{See on pic}. Nakon pritiska na gumb
 pojavljuje se sljedeći dio prozora.
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[scale=0.37]{img/seeonpic.png}
-\caption{Prikaz izgleda podslike s unešenim dimenzijama}
+\caption{Prikaz izgleda podslike s unesenim dimenzijama}
 \end{figure}
 
 \bigbreak
 
 Novi dio prozora prikazuje jednu izvornu sliku iz odabranog direktorija
-s podjelom na manje podslike, a one su dimenzija unešenih iznad. Svaka podslika
+s podjelom na manje podslike, a one su dimenzija unesenih iznad. Svaka podslika
 prikazana je crvenim linijama i ako nismo zadovoljni njihovom dimenzijom
 moguće je upisati neke druge vrijednosti i vidjeti novi rezultat. Ukoliko 
 nam odgovara veličina podslika potrebno je pritisnuti gumb \enquote{Preprocess}
 koji pokreće postupak dijeljenja slika iz odabranog direktorija i zapisuje ih u 
 direktorij \enquote{preprocessedData}. Taj direktorij nakon završenog postupka
-sadrži 3536 podslika u sivim razinama, ukoliko su korištene dienzije 192 x 144, 
-pa je moguće prijeći u u sljedeću fazu, a to je označavanje svake pojedine podslike.
+sadrži 3536 podslika u sivim razinama, ako su korištene dimenzije \(192 \times 144\), 
+pa je moguće prijeći u sljedeću fazu, a to je označavanje svake pojedine podslike.
 
 \begin{figure}[ht]
 \centering
@@ -1127,7 +1127,7 @@ odgovarajućim labelama, interni spremnik je moguće spremiti na disk u obliku
 tekstualne datoteke pritiskom na gumb \enquote{Save}. Nakon pritiska na gumb
 \enquote{Save} stvara se tekstualna datoteka imena \enquote{labeledData.txt}
 , a svaki redak je oblika 0.jpg:2, gdje 0.jpg predstavlja ime podslike koje 
-je jedinstveno, a 2 označava pripadni razred gustoće mnoštva. Ukoliko je 
+je jedinstveno, a 2 označava pripadni razred gustoće mnoštva. Ako je 
 došlo do pogreške prilikom označavanje neke podslike moguće je pritisnuti
 gumb \enquote{Prev pic} čime se vraća prethodna slika kojoj je moguće pridijeliti
 drugačiju labelu. Potrebno je napomenuti da se jednom označene podslike ne trebaju 
@@ -1142,7 +1142,7 @@ Kako bi pristupili tome prozoru, potrebno je pritisnuti gumb \enquote{Feature Ve
 nakon čega se otvara prozor prikazan na slici 4.7.
 
 Prozor ne prikazuje puno osim broja podslika i informacije jesu li labele
-podslika učitane u memoriju ili nisu. Kako bi ih učitali potrebno je pritusnuti
+podslika učitane u memoriju ili nisu. Kako bi ih učitali potrebno je pritisnuti
 na gumb \enquote{Load labels} nakon čega se otvara prozor za odabir tekstualne datoteke
 s labelama. Ako su labele uspješno učitane, mijenja se tekst ispod broja
 podslika u tekst zelene boje \enquote{LOADED}. Podnožje prozora još sadrži gumb
@@ -1244,7 +1244,7 @@ značajki koje se izračunavaju prilikom kreiranja vektora značajki svake pojed
 konfiguracije. Svaka konfiguracija može imati broj značajki veći ili jednak jedan. 
 Ovisno o broju odabranih značajki i broju različitih udaljenosti i kutova, vrijeme
 stvaranja vektora značajki može biti značajno dugačko stoga se u fazi eksperimentiranja
-stvara više konfiguracija koje se mogu izvoditi istovremeno ukoliko je računalo
+stvara više konfiguracija koje se mogu izvoditi istovremeno ako je računalo
 višeprocesorsko. Definicije Haralickovih značajki moguće je vidjeti u dodatku A
 ili pritiskom na gumb \enquote{Function definitions} nakon čega se otvara novi
 prozor u kojem je naveden algebarski oblik svake Haralickove značajke kao i 
@@ -1299,7 +1299,7 @@ disku računala. Prikazane su sve komponente konkretne konfiguracije
 trenutnog modela, a uz to je i prikazana greška klasifikacije pod
 nazivom \enquote{error}. Ta greška je omjer točno klasificiranih
 podslika i ukupnog broja podslika koji se koristi za testiranje klasifikatora,
-odnosno podslike koje nije vidio tijekom faze učenja. Ukoliko nije niti 
+odnosno podslike koje nije vidio tijekom faze učenja. Ako nije niti 
 jedan model klasifikatora dostupan, prikazana je labela \enquote{NO MODEL}
 koja javlja korisniku kako nije moguće klasificirati slike pošto nikakvog modela
 nema.
@@ -1318,7 +1318,7 @@ gumbe \enquote{Next} ili \enquote{Previous}. Jednom kada je odabran željeni
 model za klasifikaciju potrebno je pritisnuti gumb \enquote{Load model} čime
 se prikazani model učitava u memoriju i moguće ga je koristiti za klasifikaciju.
 Ako je model ispravno učitan, tekst ispod trenutnog modela se mijenja
-u \enquote{model loaded} sa zalenom kvačicom.
+u \enquote{model loaded} sa zelenom kvačicom.
 
 \bigbreak 
 
@@ -1357,7 +1357,7 @@ značenja. Na mjestu najveće slike će se prikazati rezultat klasifikacije komb
 obaju modela dok su slike s desne strane rezultati klasifikacije svakog 
 pojedinog klasifikatora. 
 Razlog za to je uvid u utjecaj pojedinih težina svakog klasifikatora na 
-krajnji rezultat klasifikacije. Vrh stranice prikazuje paletu boja koje
+rezultat klasifikacije. Vrh stranice prikazuje paletu boja koje
 su dodijeljene pojedinom razredu gustoće mnoštva radi vizualnog
 prikaza rezultata klasifikacije. Klasifikacija se napokon može pokrenuti
 pritiskom na gumb \enquote{Start classification} nakon čega je potrebno
@@ -1366,7 +1366,7 @@ Ovdje je moguće zamijetiti koliki utjecaj imaju različiti parametri i broj par
 na performanse programa i koje značajke se \enquote{isplati}
 koristiti za stvaranje vektora značajki. Neke od značajki su izuzetno 
 skupe za izračunavati i njihov doprinos možda i nije znatan u odnosu 
-ne naku drugu koja se brže izračunava stoga je potrebno naći nekakav
+ne neku drugu koja se brže izračunava stoga je potrebno naći nekakav
 kompromis između procesorskog vremena i točnosti klasifikatora jer 
 nikome nije u cilju čekati neko duže vrijeme na rezultat klasifikacije pogotovo
 ukoliko se radi o nekakvoj video sekvenci.
@@ -1415,7 +1415,7 @@ dio slike.
 
 \bigbreak
 
-Opisani problem bi se manifestirao na način da su neka 
+Opisani problem bi se manifestirao tako da su neka 
 područja slike, koja su u fokusu klasifikatora, ispravno klasificirana 
 dok druga nisu te jednako tako i za drugi klasifikator, ali kada
 su \enquote{spojeni} zajedno, daju jedan rezultat koji može biti bolji od 
@@ -1442,7 +1442,7 @@ na glavnoj stranici aplikacije.
 \bigbreak
 
 Na slici 5.1 prikazane s dvije podslike koje su izravno učitane iz direktorija
-s već obrađenim podslikama za ilustraciju postupka. Ukoliko je prikazan tekst 
+s već obrađenim podslikama za ilustraciju postupka. Ako je prikazan tekst 
 \enquote{NO IMAGE} na mjestu namijenjenom za slike, to znači da još nisu 
 izvorne slike obrađene i da podslike 
 još ne postoje pa je potrebno učitati sliku iz nekog drugog direktorija pritiskom 
@@ -1468,7 +1468,7 @@ klizećeg okna.
 
 Želimo li izračunati vrijednosti konkretnih Haralickovih značajki 
 trenutnog okna potrebno je odabrati sve željene značajke u desnom dijelu
-prozora te pritisnuti gumb \enquote{Calculate funciton(s)}. Ukoliko
+prozora te pritisnuti gumb \enquote{Calculate function(s)}. Ukoliko
 nije jasno kako su neke značajke definirane, moguće je vidjeti njihov
 algebarski zapis pritiskom na gumb \enquote{Function definitions}. 
 Nakon pritiska na gumb za izračun Haralickovih značajki, njihove vrijednosti
@@ -1482,11 +1482,11 @@ pa se značajke samo izračunavaju pritiskom na odgovarajući gumb.
 Pogledom u izračune različitih Haralickovih značajki može se zamijetiti da vrijednosti funkcija 
 odskaču u nekoliko redova veličina jedne od drugih, stoga ih je potrebno normalizirati
 prije nego što se vektori značajki predaju klasifikatoru. Normalizacija
-je nužan postupak iz razloga što ovdje korišteni klasifikatori koriste mjeru udaljenosti
+je nužan postupak jer ovdje korišteni klasifikatori koriste mjeru udaljenosti
 kao funkciju koja određuje pripadnost nekom razredu te ako bi ostavili 
 vrijednosti ovakvima, neke od njih uopće ne bi imale ikakvog utjecaja zbog 
 svoje veličine dok bi druge, koje su možda manje važne u nekim slučajevima,
-dominirale i previše utjecale na krajnji rezultat klasifikacije. Postoje više različitih 
+dominirale i previše utjecale na rezultat klasifikacije. Postoje više različitih 
 metoda kojom se vektori značajki normaliziraju, npr. min-max, oko srednje vrijednosti, 
 normalizacija z-ocjenom, skaliranje na jedinični vektor i dr. 
 
@@ -1514,7 +1514,7 @@ x_k = \frac{1}{N}\sum_{i=1}^{N}x_{ik}
 \]
 
 \item Od vrijednosti svake komponente vektora značajki se oduzme srednja
-vrijednost te koponente i podijeli drugim korijenom iz srednje vrijednosti
+vrijednost te komponente i podijeli drugim korijenom iz srednje vrijednosti
 devijacije te komponente
 
 \[
@@ -1562,8 +1562,8 @@ Z_{2,1}, Z_{3,1}, W_{1,1}, W_{2,1}, W_{3,1}\right)
 
 \bigbreak
 
-Kada je dobiven vektor značajki jednog okna, taj se vektor doda već postojećem 
-vektoru značajki podslike te se postupak ponavalja za svako okno podslike.
+Kada je dobiven vektor značajki jednog okna, taj se vektor doda postojećem 
+vektoru značajki podslike te se postupak ponavlja za svako okno podslike.
 \newline
 Dimenzionalnost vektora značajki pojedinog okna dobije se umnoškom:
 
@@ -1595,7 +1595,10 @@ N = \left(\left\lfloor\frac{X-d_1}{t}\right\rfloor + 1\right) \cdot
 \left(\left\lfloor\frac{Y-d_2}{t}\right\rfloor + 1\right)
 \]
 
-Ukupna dimenzionalnost vektora značajki pojedine podslike dobije se umnoškom:
+\end{center}
+
+Ukupna dimenzionalnost (\textit{dim}) vektora značajki pojedine podslike dobije se umnoškom:
+
 
 \[
 dim = N \cdot n
@@ -1607,8 +1610,6 @@ značajkama iz primjera iznad, dimenzionalnost vektora značajki bi iznosila:
 \[
 dim = 15 \cdot 12 = 180
 \]
-
-\end{center}
 
 Iz primjera je vidljivo kako dimenzionalnost pojedine podslike može postati
 iznimno velika. Izbor broja Haralickovih značajki, udaljenosti i broja kutova u 
@@ -1631,17 +1632,17 @@ broj susjeda & 1 \\
 vrsta slike & sivih razina \\
 LBP radijus & 1 \\
 korak okna & 32 \\
-veličina okna & 64x64 \\
+veličina okna & \(64 \times 64\) \\
 LBPCM udaljenosti & 1 \\
 LBPCM kutovi & 0, \(\pi\) \\
 \end{tabular}
-\caption{Prametri primjera} 
+\caption{Parametri primjera} 
 \end{table}
 
 Analiza se također vrši nad skupom slika koji je korišten u radu. Stvoreni su vektori
 značajki svake podslike, koji s navedenim parametrima poprimaju dimenzionalnost 240, 
-normlizirani i raspoređeni na način da je svaki
-od vektora značajki zbrojen zajedno s vektorima razreda kojem pripadaju.
+normalizirani i raspoređeni tako da je svaki
+od vektora značajki zbrojen s vektorima razreda kojem pripadaju.
 Sljedeće su ti vektori uprosječeni čime je dobiven vektor značajki 
 koji ne pripada niti jednoj podslici, a označava zamišljeno središte
 pojedinog razreda (prototip), u fizici bi to bilo težište. 
@@ -1650,7 +1651,7 @@ pojedinog razreda (prototip), u fizici bi to bilo težište.
 
 Nakon dobivenih središta razreda izračunate su euklidske udaljenosti između svakog
 od razreda kako bi se dobila neka predodžba o razdiobi uzoraka u prostoru. 
-Oznake u tablici 6.2 predstavaljaju razrede gustoće:\( c_0 \rightarrow \) \enquote{no flow},
+Oznake u tablici 6.2 predstavljaju razrede gustoće:\( c_0 \rightarrow \) \enquote{no flow},
 \( c_1 \rightarrow \) \enquote{free flow}, \( c_2 \rightarrow \) \enquote{restricted flow}, 
 \( c_3 \rightarrow \) \enquote{dense flow}, \( c_4 \rightarrow \) \enquote{jammed flow}.
 
@@ -1682,7 +1683,7 @@ Iz priložene tablice moguće je vidjeti kako su središta razreda gustoća koji
 \enquote{restricted flow} i \enquote{dense flow}, odnosno \(c_2\) i \(c_3\), bliža 
 nego razreda koji su veoma različiti poput \(c_0\) i \(c_4\). Manja udaljenost središta znači
 i povećana vjerojatnost krive klasifikacije. U idealnom slučaju bi razredi bili strogo odvojivi
-i svaki razredi bi sačinjavali vektori značajki koji formiraju nekakav oblik hiperkugle ili nekog srodnog oblika
+i svaki razredi bi sačinjavali vektori značajki koji formiraju nekakav oblik hiperkugli ili nekog srodnog oblika
 te ne bi postojali slučajevi gdje neke jedinke previše odskaču od središta svoga razreda i oblika toga razreda.
 Stvarni život nije savršen te postoji skoro uvijek neki primjer koji je poseban.  Potrebno je naglasiti da
 su udaljenosti izračunate nad normaliziranim vektorima pa su radi toga razloga toliko male.
@@ -1817,7 +1818,7 @@ uzorak sa svim ostalim uzorcima ili samo onim umjetnim uzorcima koji bi trebali
 predstavljati središta svakog od razreda. Izbor vrste usporedbe pojedinih vektora
 značajki ovisi o samim podatcima koje koristimo za učenje klasifikatora. Ako su nepravilne
 grupe vektora značajki u \textit{n}-dimenzionalnom prostoru, možda je bolja ideja izabrati
-klasifikaciju prema biližim susjedima dok u slučaju da imamo donekle pravilne grupe (hiperkugle i sl.) 
+klasifikaciju prema bližim susjedima dok u slučaju da imamo donekle pravilne grupe (hiperkugle i sl.) 
 je bolje izabrati središta pojedinih razreda kao vektore s kojima se svi dosad neviđeni uspoređuju
 jer i time u krajnjem slučaju štedimo vrijeme potrošeno na usporedbu. 
 
@@ -1826,9 +1827,9 @@ jer i time u krajnjem slučaju štedimo vrijeme potrošeno na usporedbu.
 Eksperimentom se došlo do zaključka kako \textit{k}-NN klasifikator daje dobre rezultate
 za manje vrijednosti broja \textit{k} pri čemu je on neparan i to za vrijednosti \(k=1\) ili \(k=3\).
 Većim vrijednostima se unosi određena greška jer raspodjela vektora značajki nije uvelike pravilna.
-Veličina koraka okna od 64 i 32 piksela pokazala se kao najbolja  mjera obzirom na veličinu okna od 64x64. 
-Manji koraci ne donose nikakvu novu informaciju nego samo povečavaju vrijeme potrebno za 
-obradu pojedine podslike, a koraci veći od 64 nemaju smisla obzirom da je veličina okna zadržana
+Veličina koraka okna od 64 i 32 piksela pokazala se kao najbolja mjera s obzirom na veličinu okna od \(64 \times 64\). 
+Manji koraci ne donose nikakvu novu informaciju nego samo povećavaju vrijeme potrebno za 
+obradu pojedine podslike, a koraci veći od 64 nemaju smisla jer je veličina okna zadržana
 stalnom. 
 
 \bigbreak
@@ -1847,7 +1848,7 @@ Izbor Haralickovih značajki koje će model klasifikatora koristiti za izračuna
 podslikom je jedna od najvažnijih ako ne i najvažnija stavka. Važno je napomenuti kako se
 pojedine značajke mogu izuzetno brzo izračunati jer je npr. potrebna samo suma LBPCM
 pomnožena s nekim brojem dok druge značajke izuzetno vremenski opterete postupak 
-učenja pa je stoga izbor značajki ogreničeni i tom ogradom. U ovom radu nikad nije uzeto
+učenja pa je stoga izbor značajki ograničeni i tom ogradom. U ovom radu nikad nije uzeto
 više od 7 različitih Haralickovih značajki zbog ograničenih računalnih i vremenskih resursa.
 Smisleno je koristiti skup parametara koji nije prezahtjevan jer preveliko čekanje na klasifikaciju
 slike nije poželjno u situacijama koje zahtijevaju možda brzu reakciju. Druga opcije je 
@@ -1920,7 +1921,7 @@ Na slici 6.3 moguće je vidjeti problematičnu situaciju, mnoštvo je pocijepano
 
 \chapter{Prikladnost korištenog postupka na drugome skupu podataka}
 
-Postupak pripazan u ovome radu prikladan je za vrstu slika kojima se parametri ne mijenjaju. Pod 
+Postupak prikazan u ovome radu prikladan je za vrstu slika kojima se parametri ne mijenjaju. Pod 
 pojmom parametri misli se na položaj ili kut kamere, osvjetljenje slike ili preveliku gustoću mnoštva, 
 primjerice mnoštvo gledano iz zraka. Korištenjem lokalne binarne značajke i tehnike kliznog prozora
 nije moguće izvući neko smisleno značenje iz sivih razina slike. Haralickove značajke imaju
@@ -1996,12 +1997,12 @@ broju podslika, koraku i veličini okna te brojnim drugim parametrima.
 
 Kako nije moguću izravna primjena već naučenih klasifikatora, ponovljen je postupak 
 prikazan na slici 3.2. Snimka Vatrenih je podijeljena na sličice kojih je ukupno ispalo 200. 
-Rezolucija svake slike iznosi 640x352 piksela što je manje nego izvorni skup podataka 
-nad kojim se prvotno vršilo eksperimentiranje. Kako bi se održvala neka vrsta usporedivosti,
- slike novog skupa također su podijeljene u 16 jednakih podslika, svaka dimenzija 160x88 piksela. 
+Rezolucija svake slike iznosi \(640 \times 352\) piksela što je manje nego izvorni skup podataka 
+nad kojim se prvotno vršilo eksperimentiranje. Kako bi se održala neka vrsta usporedivosti,
+ slike novog skupa također su podijeljene u 16 jednakih podslika, svaka dimenzije \(160 \times 88\) piksela. 
 Jednom podijeljene slike su ručno označene te je pokrenut postupak
 stvaranja vektora značajki. Korišteni su drugačiji parametri nego dosad gdje je za
-veličinu okna uzeto 40x40 piksela kako bi se pokrila cijela slika i korak okna od 20 piksela.
+veličinu okna uzeto \(40 \times 40\) piksela kako bi se pokrila cijela slika i korak okna od 20 piksela.
 Odabrane Haralickove značajke su: energija, homogenost, homogenost i kontrast.
 
 \bigbreak
@@ -2109,16 +2110,16 @@ predstavlja stoga intervali procjene ljudi mogu biti dosta široki.
 Odabir ovdje navedenih parametara je bio brzinski i nije uložen prevelik trud u učenje novog 
 klasifikatora, osim označavanja podslika, a dobiven je rezultat koji zadovoljava. Jednom razvijen
 sustav kao u ovom radu sposoban je davati dobre rezultate nad različitim gustoćama mnoštva
-ukoliko se postupak učenje ponovi prilikom promjene skupa podataka i ukoliko se mnoštvo te uvjeti
+ako se postupak učenje ponovi prilikom promjene skupa podataka i ukoliko se mnoštvo te uvjeti
 u kojima je kamera znatno ne mijenjaju. Ako bi se sustav naučio na slikama gdje je mnoštvo kao na
 slici 7.1, a drugi dan bi se gužva raščistila te bi ulice bile prazne, rezultati klasifikacije bi bili poražavajući
-jer bi se teksturna svojstva slike drastično promjenila.
+jer bi se teksturna svojstva slike drastično promijenila.
 
 \chapter{Zaključak}
 
-Kako je navedeno u i uvodu, procjena gustoće mnoštva izuzetno je važna komponenta sustava
+Kako je navedeno i u uvodu, procjena gustoće mnoštva izuzetno je važna komponenta sustava
 za nadziranje i upravljanje mnoštvom. Video prijenos sigurnosnih kamera prilikom znatnijih 
-okupljanja ljudi može se obraditi na način da prikazuju korisne informacije poput procjene
+okupljanja ljudi može se obraditi tako da prikazuju korisne informacije poput procjene
 broja ljudi u svakoj sličici prijenosa ili označena mjesta od interesa koja ukazuju na kakvu 
 nepravilnost ili potencijalnu opasnost. Takva mjesta mogu biti gužve, iznenadne promjene
 sastava mnoštva ili npr. mjesta koja zahtijevaju održavanje socijalne distance, a ona sama
@@ -2134,12 +2135,12 @@ klasifikacija se sastoji od sjedinjenja dvaju različitih klasifikatora: jednog 
 sivih razina i drugog koji koristi također slike sivih razina, ali je nad njima primijenjen operator 
 gradijenta. Takva kombinacija klasifikatora generalno daje bolje rezultate i ima mogućnost
 ispraviti pogrešne klasifikacije pojedinog klasifikatora tako što se važnost svakog klasifikatora
-regulira težinom koja odgovara točnosti klasifikacije dotičnog. Regulirati te težine se može i 
+regulira težinom koja odgovara točnosti klasifikacije njega samog. Regulirati te težine se može i 
 na druge načine, ali pritom treba pripaziti jer to uvelike može promijeniti odluke klasifikacije.
 
 \bigbreak
 
-Ovakva fuzija dvaju klasifikatora pokazala se dobrom što je i na kraju rezulziralo zadovoljavajućim
+Ovakva fuzija dvaju klasifikatora pokazala se dobrom što je i na kraju rezultiralo zadovoljavajućim
 rezultatima. Primjena operatora LBP i tehnike klizećeg okna nad slikama s mnoštvom omogućilo je 
 izvlačenje informacija o slici koje su zatim korištene za izračune Haralickovih značajki. Iako nije moguće 
 izravno povezati neku značajku i njezino značenje u smislu argumentiranja vrijednosti funkcije
@@ -2152,7 +2153,7 @@ postupka klasifikacije, a porast točnosti nije znatan da bi se opravdalo veće 
 \bigbreak 
 
 Opisani razlozi ne znače da nije poželjno povećavati broj značajki. Povećanje je opravdavajuće
-ako se problem prilagodi na način da se izračuni značajki paraleliziraju što je više moguće. 
+ako se problem prilagodi tako da se izračuni značajki paraleliziraju što je više moguće. 
 Paralelizacija problema imala bi i više nego značajno poboljšanje performansi samog postupka
 izračuna Haralickovih značajki gdje bi se svaka značajka, svakog okna podslike, mogla izračunavati sama 
 za sebe, istovremeno sa svim ostalim. Za takav postupak mogu se koristiti grafički procesori
@@ -2188,7 +2189,7 @@ u sivim razinama čime se veoma lako primjenjuje i daje izuzetne rezultate.
 Procjena gustoće mnoštva od velike je važnosti u video nadzoru i upravljanju mnoštvom. Predložene
 su različite metode za rješavanje ovog problema, međutim, većina ih procjenjuje gustoću mnoštva
 cijele slike pritom ignorirajući lokalna mnoštva. U ovom radu primjenjuje se operator lokalnih binarnih
-značajki nad sivim slikama i sivim slikama nad kojima je primjenjen operator gradijenta. Iz takvih slika
+značajki nad sivim slikama i sivim slikama nad kojima je primijenjen operator gradijenta. Iz takvih slika
 se pomoću matrice pojavnosti lokalnih binarnih značajki, postupkom klizećeg okna, izračunavaju
  Haralickove značajke koje tvore vektore značajki. Koriste se dvije vrste klasifikatora: \textit{k}-NN i SVM koji 
 se na kraju spajaju u jedan klasifikator i utjecaj svakog klasifikatora uvjetovan je njegovom točnošću 
@@ -2263,7 +2264,7 @@ f_4 = \sum_i\sum_j(i-\mu)^2p(i,j)
 
 5) Inverse difference moment:
 \[
-\sum_i\sum_j \frac{1}{1+(i-j)^2}p(i,j)
+f_5 = \sum_i\sum_j \frac{1}{1+(i-j)^2}p(i,j)
 \]
 
 6) Sum of average:
