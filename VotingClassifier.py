@@ -1,6 +1,7 @@
 import numpy as np
 import util
 import concurrent.futures
+import App
 
 class VotingClassifier:
     """
@@ -52,7 +53,7 @@ class VotingClassifier:
         :return: lista labela razreda pojedine podslike
         """
 
-        dim = (192, 144)
+        dim = App.subPictureSize
         # zeljena sirina slikovnog elementa
         x_size = dim[0]
         # zeljena visina slikovnog elementa
