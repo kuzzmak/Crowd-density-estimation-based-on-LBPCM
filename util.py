@@ -5,13 +5,14 @@ import LBPCM
 import concurrent.futures
 import copy
 import json
+import App
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7
 # brojac za slikovne elemente
 picCounter = 0
 
-dim = (192, 144)
+dim = App.subPictureSize
 # zeljena sirina slikovnog elementa
 x_size = dim[0]
 # zeljena visina slikovnog elementa
@@ -435,6 +436,12 @@ def getPeopleCount(labels):
           2: [3, 5],
           3: [6, 8],
           4: [9, 12]}
+
+    # pd = {0: [1, 5],
+    #       1: [6, 10],
+    #       2: [11, 20],
+    #       3: [21, 30],
+    #       4: [31, 40]}
 
     for label in labels:
 
