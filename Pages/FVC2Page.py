@@ -1,10 +1,13 @@
+import os
 import tkinter as tk
-from PIL import ImageTk, Image
-from Pages import InitializationPage as iP
+from tkinter import filedialog
+
+from PIL import Image, ImageTk
+
 import Pages.ModelPage as mp
 from Pages import CLP2 as clP2
-from tkinter import filedialog
-import os
+from Pages import InitializationPage as iP
+
 
 class FVC2Page(tk.Frame):
 

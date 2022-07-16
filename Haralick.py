@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class HaralickFeatures:
 
     def __init__(self, glcm, normalize=True):

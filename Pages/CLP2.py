@@ -1,12 +1,13 @@
+import os
 import tkinter as tk
 
 import cv2 as cv
-from PIL import ImageTk, Image
-import os
+from PIL import Image, ImageTk
 
 import util
 from Pages import FVC2Page as fvcP2
 from Pages import PictureClassificationFrame as pcp
+
 
 class CLP2(tk.Frame):
 

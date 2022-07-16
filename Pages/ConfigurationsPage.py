@@ -1,7 +1,9 @@
+import threading
 import tkinter as tk
+
 import FunctionDescriptions
 from Pages import FeatureVectorCreationPage as fvcP
-import threading
+
 
 class ConfigurationsPage(tk.Frame):
     """ razred za ucenje klasifikatora, nakon stvorenih vektora znacajki i oznacenih slika

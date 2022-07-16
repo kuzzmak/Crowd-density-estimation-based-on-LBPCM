@@ -1,9 +1,11 @@
 import tkinter as tk
+from tkinter import filedialog
+
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
-from tkinter import filedialog
-from Pages import InitializationPage as iP
+
 import util
+from Pages import InitializationPage as iP
 
 figSize = (3, 2)
 

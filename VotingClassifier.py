@@ -1,7 +1,10 @@
-import numpy as np
-import util
 import concurrent.futures
+
+import numpy as np
+
 import App
+import util
+
 
 class VotingClassifier:
     """

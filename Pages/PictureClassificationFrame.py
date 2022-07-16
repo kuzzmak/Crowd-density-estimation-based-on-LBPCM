@@ -1,7 +1,9 @@
-import tkinter as tk
-import cv2 as cv
-from PIL import ImageTk, Image
 import os
+import tkinter as tk
+
+import cv2 as cv
+from PIL import Image, ImageTk
+
 import util
 
 """

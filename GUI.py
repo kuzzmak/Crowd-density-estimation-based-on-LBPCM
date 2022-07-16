@@ -1,16 +1,17 @@
 import tkinter as tk
 
-import Pages.InitializationPage as iP
-import Pages.GradientPage as gP
-import Pages.StartPage as sP
-import Pages.FeatureVectorCreationPage as fvcP
-import Pages.ConfigurationsPage as coP
-import Pages.PreprocessPage as pP
-import Pages.ParameterSettingPage as psP
-import Pages.SlidingWindowPage as swP
-import Pages.DataAnnotationPage as daP
-import Pages.FVC2Page as fvc2P
 import Pages.CLP2 as clp2
+import Pages.ConfigurationsPage as coP
+import Pages.DataAnnotationPage as daP
+import Pages.FeatureVectorCreationPage as fvcP
+import Pages.FVC2Page as fvc2P
+import Pages.GradientPage as gP
+import Pages.InitializationPage as iP
+import Pages.ParameterSettingPage as psP
+import Pages.PreprocessPage as pP
+import Pages.SlidingWindowPage as swP
+import Pages.StartPage as sP
+
 
 class App(tk.Tk):
 

@@ -1,16 +1,18 @@
-import tkinter as tk
-from tkinter import filedialog
-from os import listdir
-import cv2 as cv
-from PIL import ImageTk, Image
-import numpy as np
 import os
+import tkinter as tk
+from os import listdir
+from tkinter import filedialog
+
+import cv2 as cv
+import numpy as np
+from PIL import Image, ImageTk
+from skimage.feature import greycomatrix, local_binary_pattern
+
 import FunctionDescriptions
-import util
-from skimage.feature import local_binary_pattern
-from skimage.feature import greycomatrix
-from Pages import InitializationPage as iP
 import Haralick
+import util
+from Pages import InitializationPage as iP
+
 
 class SlidingWindowPage(tk.Frame):
     """

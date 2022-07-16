@@ -1,12 +1,15 @@
+import os
+import random
 import tkinter as tk
 from tkinter.ttk import Progressbar
+
 import cv2 as cv
-import os
 import numpy as np
-import random
 from PIL import Image, ImageTk
+
 import util
 from Pages import InitializationPage as iP
+
 
 class PreprocessPage(tk.Frame):
 

@@ -1,9 +1,12 @@
-import tkinter as tk
-import cv2 as cv
 import os
+import tkinter as tk
+
+import cv2 as cv
 from PIL import Image, ImageTk
-from Pages import InitializationPage as iP
+
 import Writer
+from Pages import InitializationPage as iP
+
 
 class DataAnnotationPage(tk.Frame):
     """ razred za oznacavanje pripadnosti pojedinog slikovnog elementa određenom razredu gustoće

@@ -1,7 +1,9 @@
+import json
 import tkinter as tk
 from tkinter.filedialog import askdirectory
-import json
+
 from Pages import InitializationPage as iP
+
 
 class ParameterSettingPage(tk.Frame):
     """ razred gdje se odabiru parametri LBP-a

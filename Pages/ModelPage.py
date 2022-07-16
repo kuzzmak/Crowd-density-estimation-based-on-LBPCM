@@ -1,11 +1,12 @@
+import os
 import tkinter as tk
 from os import listdir
-import Writer
-import util
 
-import os
 import joblib
-from PIL import ImageTk, Image
+from PIL import Image, ImageTk
+
+import util
+import Writer
 
 
 class ModelPage(tk.Frame):

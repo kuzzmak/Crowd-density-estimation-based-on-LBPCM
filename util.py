@@ -1,11 +1,13 @@
-import os
-import cv2 as cv
-import numpy as np
-import LBPCM
 import concurrent.futures
 import copy
 import json
+import os
+
+import cv2 as cv
+import numpy as np
+
 import App
+import LBPCM
 
 # postotak ukupne kolicine slika koji se koristi za treniranje
 ratio = 0.7

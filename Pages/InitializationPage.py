@@ -1,12 +1,14 @@
 import tkinter as tk
-from Pages import GradientPage as gP
-from Pages import StartPage as sP
-from Pages import FeatureVectorCreationPage as fvcP
+
 from Pages import DataAnnotationPage as daP
+from Pages import FeatureVectorCreationPage as fvcP
+from Pages import FVC2Page as fvc2
+from Pages import GradientPage as gP
 from Pages import ParameterSettingPage as psP
 from Pages import PreprocessPage as pP
 from Pages import SlidingWindowPage as swP
-from Pages import FVC2Page as fvc2
+from Pages import StartPage as sP
+
 
 class InitializationPage(tk.Frame):
 

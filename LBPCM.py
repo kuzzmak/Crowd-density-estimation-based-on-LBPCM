@@ -1,11 +1,13 @@
-import cv2 as cv
 from os import listdir
-from skimage.feature import local_binary_pattern
-from skimage.feature import greycomatrix
-import util
+
+import cv2 as cv
 import numpy as np
+from skimage.feature import greycomatrix, local_binary_pattern
+
 import Haralick
+import util
 from Pages import FeatureVectorCreationPage as fvcP
+
 
 class LBPCM:
 

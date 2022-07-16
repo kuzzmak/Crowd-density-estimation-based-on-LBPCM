@@ -1,7 +1,10 @@
 from tkinter import *
-from PIL import ImageTk, Image
+
 import cv2 as cv
+from PIL import Image, ImageTk
+
 import util
+
 
 class FD:
 
