@@ -7,6 +7,7 @@ import os
 import joblib
 from PIL import ImageTk, Image
 
+
 class ModelPage(tk.Frame):
 
     def __init__(self, parent, upperFrame, controller):
@@ -20,15 +21,24 @@ class ModelPage(tk.Frame):
         self.modelType.set('gray')
 
         # dohvat svih .pkl imena
-        models = [x for x in listdir(controller.app.configuration["grayModelsDirectory"]) if x.endswith('.pkl')]
+        models = [
+            x
+            for x in listdir(
+                controller.app.configuration["grayModelsDirectory"])
+            if x.endswith('.pkl')]
         # id-jevi modela sa sivim slikama
         self.grayModels = [int(x.split('.')[0]) for x in models]
 
-        models = [x for x in listdir(controller.app.configuration["gradModelsDirectory"]) if x.endswith('.pkl')]
+        models = [
+            x
+            for x in listdir(
+                controller.app.configuration["gradModelsDirectory"])
+            if x.endswith('.pkl')]
         # id-jevi modela s gradijentnim slikama
         self.gradModels = [int(x.split('.')[0]) for x in models]
 
-        # broj modela koji koristi sive ili gradijentne slike, koristi se kod brojača za trenutni prikazani model
+        # broj modela koji koristi sive ili gradijentne slike, koristi se kod
+        # brojača za trenutni prikazani model
         self.numberOfGrayModels = len(self.grayModels)
         self.numberOfGradModels = len(self.gradModels)
 
@@ -43,12 +53,20 @@ class ModelPage(tk.Frame):
         frameRadioGrayGrad = tk.Frame(selectFrame1)
         frameRadioGrayGrad.pack()
 
-        rGray = tk.Radiobutton(frameRadioGrayGrad, text="Gray", variable=self.modelType, value='gray',
-                               command=lambda: self.loadModelInfo(controller))
+        rGray = tk.Radiobutton(
+            frameRadioGrayGrad,
+            text="Gray",
+            variable=self.modelType,
+            value='gray',
+            command=lambda: self.loadModelInfo(controller))
         rGray.pack(side="left", padx=10)
 
-        rGrad = tk.Radiobutton(frameRadioGrayGrad, text="Grad", variable=self.modelType, value='grad',
-                               command=lambda: self.loadModelInfo(controller))
+        rGrad = tk.Radiobutton(
+            frameRadioGrayGrad,
+            text="Grad",
+            variable=self.modelType,
+            value='grad',
+            command=lambda: self.loadModelInfo(controller))
         rGrad.pack(side="left", padx=10)
 
         # frame s parametrima pojedinog modela
@@ -142,26 +160,43 @@ class ModelPage(tk.Frame):
         self.modelStatusFrame = tk.Frame(frameButtonPrevNext)
         self.modelStatusFrame.pack(pady=20)
 
-        im = Image.open(os.path.join(controller.app.configuration["iconsDirectory"], 'xmark.jpg'))
+        im = Image.open(
+            os.path.join(
+                controller.app.configuration["iconsDirectory"],
+                'xmark.jpg'))
         im = im.resize((20, 20), Image.ANTIALIAS)
         self.im = ImageTk.PhotoImage(im)
 
         self.imageLabel = tk.Label(self.modelStatusFrame, image=self.im)
         self.imageLabel.pack(side="left", padx=5, pady=5)
 
-        self.imageLabelDescription = tk.Label(self.modelStatusFrame, text="model not loaded")
+        self.imageLabelDescription = tk.Label(
+            self.modelStatusFrame, text="model not loaded")
         self.imageLabelDescription.pack(side="left", padx=5, pady=5)
 
-        buttonPrev = tk.Button(frameButtonPrevNext, text="Previous",
-                               command=lambda: self.previousModel(self.modelType.get(), controller))
+        buttonPrev = tk.Button(
+            frameButtonPrevNext,
+            text="Previous",
+            command=lambda: self.previousModel(
+                self.modelType.get(),
+                controller))
         buttonPrev.pack(side="left", padx=10, pady=5, fill="x")
 
-        self.buttonLoadModel = tk.Button(frameButtonPrevNext, text="Load model", state="disabled",
-                                         command=lambda: self.loadModel(controller, upperFrame))
+        self.buttonLoadModel = tk.Button(
+            frameButtonPrevNext,
+            text="Load model",
+            state="disabled",
+            command=lambda: self.loadModel(
+                controller,
+                upperFrame))
         self.buttonLoadModel.pack(side="left", padx=10, pady=5, fill="x")
 
-        buttonNext = tk.Button(frameButtonPrevNext, text="Next",
-                               command=lambda: self.nextModel(self.modelType.get(), controller))
+        buttonNext = tk.Button(
+            frameButtonPrevNext,
+            text="Next",
+            command=lambda: self.nextModel(
+                self.modelType.get(),
+                controller))
         buttonNext.pack(side="left", padx=10, pady=5, fill="x")
 
         self.loadModelInfo(controller)
@@ -224,7 +259,8 @@ class ModelPage(tk.Frame):
             # spremanje učitanog modela
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
-            writer.modelConfiguration = writer.loadConfFromJSON(self.grayModels[self.currentGrayModel], controller)
+            writer.modelConfiguration = writer.loadConfFromJSON(
+                self.grayModels[self.currentGrayModel], controller)
             controller.app.writers.append(writer)
 
         else:
@@ -233,10 +269,12 @@ class ModelPage(tk.Frame):
                 str(self.gradModels[self.currentGradModel])) + ".pkl"
             writer = Writer.Writer()
             writer.model = joblib.load(modelPath)
-            writer.modelConfiguration = writer.loadConfFromJSON(self.gradModels[self.currentGradModel], controller)
+            writer.modelConfiguration = writer.loadConfFromJSON(
+                self.gradModels[self.currentGradModel], controller)
             controller.app.writers.append(writer)
 
-        #TODO napraviri da se pojavi gumb za sliku tek kad se ucitaju oba modela ako su izabrana
+        # TODO napraviri da se pojavi gumb za sliku tek kad se ucitaju oba
+        # modela ako su izabrana
 
         # if upperFrame.numberOfModels.get() == 1 and upperFrame.modelPages[0].writer.model != []:
         #     upperFrame.buttonSelectPicture['state'] = 'normal'
@@ -269,19 +307,19 @@ class ModelPage(tk.Frame):
             writer = Writer.Writer()
 
             classifierType, \
-            picType, \
-            lbpRadius, \
-            glcmDistances, \
-            stepSize, \
-            cellSize, \
-            angles, \
-            numberOfNeighbors, \
-            combineDistances, \
-            combineAngles, \
-            functions, \
-            mean, \
-            sigma, \
-            error = writer.loadConfFromJSON(modelId, controller)
+                picType, \
+                lbpRadius, \
+                glcmDistances, \
+                stepSize, \
+                cellSize, \
+                angles, \
+                numberOfNeighbors, \
+                combineDistances, \
+                combineAngles, \
+                functions, \
+                mean, \
+                sigma, \
+                error = writer.loadConfFromJSON(modelId, controller)
 
             fun = []
 
